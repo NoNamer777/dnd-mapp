@@ -1,6 +1,7 @@
 {
-    "extends": "nx/presets/npm.json",
     "$schema": "./node_modules/nx/schemas/nx-schema.json",
+    "extends": "nx/presets/npm.json",
+    "defaultProject": "client",
     "tasksRunnerOptions": {
         "default": {
             "runner": "@nrwl/nx-cloud",
@@ -10,28 +11,37 @@
             }
         }
     },
+    "targetDefaults": {
+        "lint": {
+            "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
+        },
+        "test": {
+            "inputs": ["default", "^default", "{workspaceRoot}/jest.preset.js"]
+        }
+    },
     "generators": {
         "@nrwl/angular:application": {
-            "style": "scss",
+            "e2eTestRunner": "none",
             "linter": "eslint",
-            "unitTestRunner": "jest",
-            "e2eTestRunner": "none"
+            "style": "scss",
+            "unitTestRunner": "jest"
         },
         "@nrwl/angular:library": {
+            "buildable": true,
+            "changeDetection": "OnPush",
             "linter": "eslint",
+            "prefix": "dma",
+            "style": "scss",
             "unitTestRunner": "jest"
         },
         "@nrwl/angular:component": {
+            "changeDetection": "OnPush",
+            "project": "client",
             "style": "scss"
-        }
-    },
-    "targetDefaults": {
-        "test": {
-            "inputs": ["default", "^default", "{workspaceRoot}/jest.preset.js"]
         },
-        "lint": {
-            "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
+        "@nrwl/angular:directive": {
+            "project": "client",
+            "flat": false
         }
-    },
-    "defaultProject": "client"
+    }
 }
