@@ -9,5 +9,29 @@
                 "accessToken": "NTk4MjJhNTgtMDA2NS00MTU5LWFlYWQtNzEwY2EzNmRkYzIzfHJlYWQtd3JpdGU="
             }
         }
-    }
+    },
+    "generators": {
+        "@nrwl/angular:application": {
+            "style": "scss",
+            "linter": "eslint",
+            "unitTestRunner": "jest",
+            "e2eTestRunner": "none"
+        },
+        "@nrwl/angular:library": {
+            "linter": "eslint",
+            "unitTestRunner": "jest"
+        },
+        "@nrwl/angular:component": {
+            "style": "scss"
+        }
+    },
+    "targetDefaults": {
+        "test": {
+            "inputs": ["default", "^default", "{workspaceRoot}/jest.preset.js"]
+        },
+        "lint": {
+            "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
+        }
+    },
+    "defaultProject": "client"
 }
