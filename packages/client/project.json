@@ -1,0 +1,105 @@
+{
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "name": "client",
+    "projectType": "application",
+    "sourceRoot": "packages/client/src",
+    "prefix": "dma",
+    "targets": {
+        "build": {
+            "executor": "@angular-devkit/build-angular:browser",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "assets": ["packages/client/src/favicon.ico", "packages/client/src/assets"],
+                "baseHref": "/",
+                "budgets": [
+                    {
+                        "type": "initial",
+                        "maximumWarning": "500kb",
+                        "maximumError": "1mb"
+                    },
+                    {
+                        "type": "anyComponentStyle",
+                        "maximumWarning": "2kb",
+                        "maximumError": "4kb"
+                    }
+                ],
+                "index": "packages/client/src/index.html",
+                "inlineStyleLanguage": "scss",
+                "main": "packages/client/src/main.ts",
+                "optimization": true,
+                "outputHashing": "all",
+                "outputPath": "dist/client",
+                "polyfills": ["zone.js"],
+                "scripts": [],
+                "sourceMap": {
+                    "scripts": true,
+                    "styles": false,
+                    "hidden": false,
+                    "vendor": false
+                },
+                "styles": ["packages/client/src/styles.scss"],
+                "tsConfig": "packages/client/tsconfig.app.json",
+                "watch": false
+            },
+            "configurations": {
+                "development": {
+                    "namedChunks": true,
+                    "outputHashing": "none",
+                    "optimization": {
+                        "scripts": true,
+                        "styles": false
+                    },
+                    "sourceMap": true,
+                    "vendorChunk": true
+                }
+            }
+        },
+        "serve": {
+            "executor": "@angular-devkit/build-angular:dev-server",
+            "options": {
+                "browserTarget": "client:build:development",
+                "host": "0.0.0.0",
+                "open": false,
+                "port": 4200,
+                "watch": true
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["{options.coverageDirectory}"],
+            "options": {
+                "codeCoverage": true,
+                "colors": true,
+                "coverageReporters": ["html", "text-summary"],
+                "coverageDirectory": "../../coverage/packages/client",
+                "jestConfig": "packages/client/jest.config.ts",
+                "onlyChanged": false,
+                "passWithNoTests": true,
+                "watch": false,
+                "watchAll": false
+            },
+            "configurations": {
+                "ci": {
+                    "options": {
+                        "ci": true
+                    }
+                }
+            }
+        },
+        "extract-i18n": {
+            "executor": "@angular-devkit/build-angular:extract-i18n",
+            "options": {
+                "browserTarget": "client:build",
+                "format": "json",
+                "outputPath": "dist/client/translations"
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "options": {
+                "lintFilePatterns": ["packages/client/**/*.ts", "packages/client/**/*.html"]
+            }
+        }
+    },
+    "tags": ["@dnd-mapp/client"]
+}
