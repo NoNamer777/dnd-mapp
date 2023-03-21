@@ -1,6 +1,6 @@
 {
-    "name": "client",
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "name": "client",
     "projectType": "application",
     "sourceRoot": "packages/client/src",
     "prefix": "dma",
@@ -9,76 +9,95 @@
             "executor": "@angular-devkit/build-angular:browser",
             "outputs": ["{options.outputPath}"],
             "options": {
-                "outputPath": "dist/packages/client",
-                "index": "packages/client/src/index.html",
-                "main": "packages/client/src/main.ts",
-                "polyfills": ["zone.js"],
-                "tsConfig": "packages/client/tsconfig.app.json",
-                "inlineStyleLanguage": "scss",
                 "assets": ["packages/client/src/favicon.ico", "packages/client/src/assets"],
+                "baseHref": "/",
+                "budgets": [
+                    {
+                        "type": "initial",
+                        "maximumWarning": "500kb",
+                        "maximumError": "1mb"
+                    },
+                    {
+                        "type": "anyComponentStyle",
+                        "maximumWarning": "2kb",
+                        "maximumError": "4kb"
+                    }
+                ],
+                "index": "packages/client/src/index.html",
+                "inlineStyleLanguage": "scss",
+                "main": "packages/client/src/main.ts",
+                "optimization": true,
+                "outputHashing": "all",
+                "outputPath": "dist/client",
+                "polyfills": ["zone.js"],
+                "scripts": [],
+                "sourceMap": {
+                    "scripts": true,
+                    "styles": false,
+                    "hidden": false,
+                    "vendor": false
+                },
                 "styles": ["packages/client/src/styles.scss"],
-                "scripts": []
+                "tsConfig": "packages/client/tsconfig.app.json",
+                "watch": false
             },
             "configurations": {
-                "production": {
-                    "budgets": [
-                        {
-                            "type": "initial",
-                            "maximumWarning": "500kb",
-                            "maximumError": "1mb"
-                        },
-                        {
-                            "type": "anyComponentStyle",
-                            "maximumWarning": "2kb",
-                            "maximumError": "4kb"
-                        }
-                    ],
-                    "outputHashing": "all"
-                },
                 "development": {
-                    "buildOptimizer": false,
-                    "optimization": false,
-                    "vendorChunk": true,
-                    "extractLicenses": false,
+                    "namedChunks": true,
+                    "outputHashing": "none",
+                    "optimization": {
+                        "scripts": true,
+                        "styles": false
+                    },
                     "sourceMap": true,
-                    "namedChunks": true
+                    "vendorChunk": true
                 }
-            },
-            "defaultConfiguration": "production"
+            }
         },
         "serve": {
             "executor": "@angular-devkit/build-angular:dev-server",
-            "configurations": {
-                "production": {
-                    "browserTarget": "client:build:production"
-                },
-                "development": {
-                    "browserTarget": "client:build:development"
-                }
-            },
-            "defaultConfiguration": "development",
             "options": {
-                "port": 4200
+                "browserTarget": "client:build:development",
+                "host": "0.0.0.0",
+                "open": false,
+                "port": 4200,
+                "watch": true
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["{options.coverageDirectory}"],
+            "options": {
+                "codeCoverage": true,
+                "colors": true,
+                "coverageReporters": ["html", "text-summary"],
+                "coverageDirectory": "../../coverage/packages/client",
+                "jestConfig": "packages/client/jest.config.ts",
+                "onlyChanged": false,
+                "passWithNoTests": true,
+                "watch": false,
+                "watchAll": false
+            },
+            "configurations": {
+                "ci": {
+                    "options": {
+                        "ci": true
+                    }
+                }
             }
         },
         "extract-i18n": {
             "executor": "@angular-devkit/build-angular:extract-i18n",
             "options": {
-                "browserTarget": "client:build"
+                "browserTarget": "client:build",
+                "format": "json",
+                "outputPath": "dist/client/translations"
             }
         },
         "lint": {
             "executor": "@nrwl/linter:eslint",
             "options": {
                 "lintFilePatterns": ["packages/client/**/*.ts", "packages/client/**/*.html"]
-            }
-        },
-        "test": {
-            "executor": "@nrwl/jest:jest",
-            "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
-            "options": {
-                "jestConfig": "packages/client/jest.config.ts",
-                "passWithNoTests": true
             }
         }
     },

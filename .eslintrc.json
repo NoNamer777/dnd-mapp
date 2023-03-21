@@ -13,8 +13,8 @@
                         "allow": [],
                         "depConstraints": [
                             {
-                                "sourceTag": "*",
-                                "onlyDependOnLibsWithTags": ["*"]
+                                "sourceTag": "@dnd-mapp/client",
+                                "onlyDependOnLibsWithTags": ["@dnd-mapp/client"]
                             }
                         ]
                     }
