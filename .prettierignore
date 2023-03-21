@@ -1,4 +1,34 @@
-# Add files here to ignore them from prettier formatting
+## Ignore everything but a few: https://stackoverflow.com/a/987162/2725711
+# Ignore all
+*
 
-/dist
-/coverage
+# Except for directories
+!*/
+
+# and except for specific file types
+!*.html
+!*.css
+!*.scss
+!*.js
+!*.ts
+!*.json
+!*.yaml
+!*.yml
+!*.md
+
+.angular
+coverage
+package-lock.json
+
+## IDE directories
+.idea/
+.vscode/
+
+## Imported source
+node_modules/
+
+## Output directories
+dist/
+.Ds_Store
+
+## Specific files and directories
