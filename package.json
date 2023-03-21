@@ -2,15 +2,16 @@
     "name": "dnd-mapp",
     "version": "0.0.0",
     "license": "MIT",
-    "scripts": {},
     "private": true,
+    "scripts": {},
     "workspaces": [
         "packages/*"
     ],
     "dependencies": {},
     "devDependencies": {
-        "@nrwl/nx-cloud": "latest",
-        "nx": "15.8.7",
-        "prettier": "^2.6.2"
+        "@nrwl/angular": "~15.2.3",
+        "@nrwl/nx-cloud": "~15.2.3",
+        "nx": "~15.2.3",
+        "prettier": "^2.8.6"
     }
 }
