@@ -99,6 +99,12 @@
             "options": {
                 "lintFilePatterns": ["packages/client/**/*.ts", "packages/client/**/*.html"]
             }
+        },
+        "docker-build": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "docker build -f packages/client/Dockerfile . -t dnd-mapp/client"
+            }
         }
     },
     "tags": ["@dnd-mapp/client"]

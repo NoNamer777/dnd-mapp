@@ -1,0 +1,11 @@
+node_modules
+package-lock.json
+
+dist
+.angular
+
+.idea
+.vscode
+
+packages/*
+!packages/client
