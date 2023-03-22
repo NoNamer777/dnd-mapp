@@ -30,7 +30,7 @@ jobs:
                   tags: |
                       type=ref,enable=false,event=branch
                       type=ref,enable=false,event=pr
-                      type=edge,enable=true
+                      type=edge,enable=true,branch={{branch}}
             - name: Build and push Docker image
               uses: docker/build-push-action@v4
               with:
