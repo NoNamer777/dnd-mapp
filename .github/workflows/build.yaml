@@ -1,28 +1,28 @@
 name: Build and Test
 on:
-  push:
-    branches:
-      - '**'
-      - '!main'
+    push:
+        branches:
+            - '**'
+            - '!main'
 jobs:
-  build-and-test:
-    concurrency: ci-${{ github.ref }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: 'npm'
-      - name: Install dependencies
-        run: npm ci
-      - name: Check linting and formatting
-        run: |
-          npx nx format:check
-          npx nx run-many --target=lint
-      - name: Build
-        run: npx nx run-many --target=build
-      - name: Test
-        run: npx nx run-many --target=test
+    build-and-test:
+        concurrency: ci-${{ github.ref }}
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+            - name: Setup Node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 16
+                  cache: 'npm'
+            - name: Install dependencies
+              run: npm ci
+            - name: Check linting and formatting
+              run: |
+                  npx nx format:check
+                  npx nx run-many --target=lint
+            - name: Build
+              run: npx nx run-many --target=build
+            - name: Test
+              run: npx nx run-many --target=test
