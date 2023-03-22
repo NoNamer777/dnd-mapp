@@ -2,7 +2,7 @@ name: Create and publish a Docker image
 on: push
 env:
     REGISTRY: ghcr.io
-    REPOSITORY: nonamer777/dnd-mapp
+    IMAGE_NAME: nonamer777/dnd-mapp-client
 jobs:
     build-and-push-docker-image:
         runs-on: ubuntu-latest
@@ -22,12 +22,18 @@ jobs:
                   registry: ${{ env.REGISTRY }}
                   username: ${{ github.actor }}
                   password: ${{ secrets.GITHUB_TOKEN }}
+            - name: Extract metadata (tags, labels) for Docker
+              id: meta
+              uses: docker/metadata-action@v4
+              with:
+                  images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
             - name: Build and push Docker image
               uses: docker/build-push-action@v4
               with:
                   context: .
                   file: packages/client/Dockerfile
                   push: true
-                  tags: ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:edge
+                  labels: ${{ steps.meta.outputs.labels }}
+                  tags: ${{ steps.meta.outputs.tags }}
                   cache-from: type=gha
                   cache-to: type=gha,mode=max
