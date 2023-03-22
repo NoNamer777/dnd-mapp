@@ -28,7 +28,8 @@ jobs:
               with:
                   images: ${{ env.REGISTRY }}/${{ env.REPOSITORY }}
                   tags: |
-                      type=ref,enable=false
+                      type=ref,enable=false,event=branch
+                      type=ref,enable=false,event=pr
                       type=edge,enable=true
             - name: Build and push Docker image
               uses: docker/build-push-action@v4
