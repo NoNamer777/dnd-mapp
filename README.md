@@ -30,17 +30,20 @@ Find the README's in the individual projects for more information and instructio
 
 Some commands are globally available, these include:
 
-- To check linting:
+-   To check linting:
+
 ```shell
 nx run-many --target=lint
 ```
 
-- To check formatting:
+-   To check formatting:
+
 ```shell
 nx format:check
 ```
 
 Alternatively, you can run the following command to fix the formatting:
+
 ```shell
 nx format:write
 ```

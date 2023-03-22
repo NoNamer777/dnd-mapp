@@ -2,10 +2,8 @@
 # Ignore all
 *
 
-# Except for directories
+# Except for directories and except for specific file types
 !*/
-
-# and except for specific file types
 !*.html
 !*.css
 !*.scss
