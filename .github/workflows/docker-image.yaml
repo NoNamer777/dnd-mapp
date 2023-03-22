@@ -2,7 +2,6 @@ name: Create and publish a Docker image
 on: push
 env:
     REGISTRY: ghcr.io
-    IMAGE_NAME: dnd-mapp/client
     REPOSITORY: dnd-mapp
 jobs:
     build-and-push-docker-image:
@@ -28,6 +27,9 @@ jobs:
               uses: docker/metadata-action@v4
               with:
                   images: ${{ env.REGISTRY }}/${{ env.REPOSITORY }}
+                  tags: |
+                      type=ref,enable=false
+                      type=edge,enable=true
             - name: Build and push Docker image
               uses: docker/build-push-action@v4
               with:
