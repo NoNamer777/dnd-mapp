@@ -34,6 +34,7 @@ jobs:
                       type=edge,enable=true,branch=$repo.default_branch
                       type=ref,enable=false,event=branch
                       type=ref,enable=false,event=pr
+                      type=raw,enable=true,value=dev
             - name: Build and push Docker image
               uses: docker/build-push-action@v4
               with:
