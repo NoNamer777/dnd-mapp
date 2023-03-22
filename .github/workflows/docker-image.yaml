@@ -1,8 +1,5 @@
 name: Create and publish a Docker image
-
-on:
-  push:
-    branches: ['main']
+on: push
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: dnd-mapp/client
