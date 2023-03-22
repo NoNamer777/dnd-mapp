@@ -33,7 +33,7 @@ jobs:
                   context: .
                   file: packages/client/Dockerfile
                   push: true
-                  tags: dnd-mapp/client:edge
+                  tags: ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:edge
                   labels: ${{ steps.meta.outputs.labels }}
                   cache-from: type=gha
                   cache-to: type=gha,mode=max
