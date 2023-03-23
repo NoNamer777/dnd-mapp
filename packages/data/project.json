@@ -1,0 +1,47 @@
+{
+    "name": "data",
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "packages/data/src",
+    "projectType": "library",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/js:tsc",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "assets": ["packages/data/*.md"],
+                "main": "packages/data/src/index.ts",
+                "outputPath": "dist/data",
+                "tsConfig": "packages/data/tsconfig.lib.json",
+                "watch": false
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["{options.coverageDirectory}"],
+            "options": {
+                "codeCoverage": true,
+                "colors": true,
+                "coverageReporters": ["html", "text-summary"],
+                "coverageDirectory": "../../coverage/data",
+                "jestConfig": "packages/data/jest.config.ts",
+                "onlyChanged": false,
+                "passWithNoTests": true,
+                "watch": false,
+                "watchAll": false
+            },
+            "configurations": {
+                "ci": {
+                    "ci": true
+                }
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["packages/data/**/*.ts"]
+            }
+        }
+    },
+    "tags": ["@dnd-mapp/data"]
+}
