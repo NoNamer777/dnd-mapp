@@ -15,6 +15,10 @@
                             {
                                 "sourceTag": "@dnd-mapp/client",
                                 "onlyDependOnLibsWithTags": ["@dnd-mapp/client"]
+                            },
+                            {
+                                "sourceTag": "@dnd-mapp/server",
+                                "onlyDependOnLibsWithTags": ["@dnd-mapp/server"]
                             }
                         ]
                     }
