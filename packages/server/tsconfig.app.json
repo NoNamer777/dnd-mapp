@@ -1,0 +1,12 @@
+{
+    "extends": "./tsconfig.json",
+    "include": ["src/**/*.ts"],
+    "exclude": ["jest.config.ts", "src/**/*.spec.ts"],
+    "compilerOptions": {
+        "emitDecoratorMetadata": true,
+        "module": "commonjs",
+        "outDir": "../../dist/out-tsc",
+        "target": "es2022",
+        "types": ["node"]
+    }
+}

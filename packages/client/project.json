@@ -31,12 +31,7 @@
                 "outputPath": "dist/client",
                 "polyfills": ["zone.js"],
                 "scripts": [],
-                "sourceMap": {
-                    "scripts": true,
-                    "styles": false,
-                    "hidden": false,
-                    "vendor": false
-                },
+                "sourceMap": false,
                 "styles": ["packages/client/src/styles.scss"],
                 "tsConfig": "packages/client/tsconfig.app.json",
                 "watch": false
@@ -51,6 +46,9 @@
                     },
                     "sourceMap": true,
                     "vendorChunk": true
+                },
+                "ci": {
+                    "outputHashing": "none"
                 }
             }
         },
@@ -86,6 +84,12 @@
                 }
             }
         },
+        "docker-build": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "docker build -f packages/client/Dockerfile . -t dnd-mapp/client"
+            }
+        },
         "extract-i18n": {
             "executor": "@angular-devkit/build-angular:extract-i18n",
             "options": {
@@ -98,12 +102,6 @@
             "executor": "@nrwl/linter:eslint",
             "options": {
                 "lintFilePatterns": ["packages/client/**/*.ts", "packages/client/**/*.html"]
-            }
-        },
-        "docker-build": {
-            "executor": "nx:run-commands",
-            "options": {
-                "command": "docker build -f packages/client/Dockerfile . -t dnd-mapp/client"
             }
         }
     },
