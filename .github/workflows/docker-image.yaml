@@ -1,7 +1,5 @@
 name: Dnd-Mapp Docker images
-on:
-    push:
-        branches: main
+on: push
 jobs:
     build-client-docker-image:
         uses: nonamer777/dnd-mapp/.github/workflows/client-docker-image.yaml
