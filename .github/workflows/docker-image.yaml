@@ -1,5 +1,7 @@
 name: Dnd-Mapp Docker images
-on: push
+on:
+    push:
+        branches: main
 permissions:
     contents: read
     packages: write
