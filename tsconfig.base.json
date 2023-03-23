@@ -7,14 +7,16 @@
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "importHelpers": true,
-        "lib": ["ES2021", "DOM"],
-        "module": "ES2022",
+        "lib": ["es2021", "DOM"],
+        "module": "es2022",
         "moduleResolution": "node",
-        "paths": {},
+        "paths": {
+            "@dnd-mapp/data": ["packages/data/src/index.ts"]
+        },
         "rootDir": ".",
         "skipLibCheck": true,
         "skipDefaultLibCheck": true,
         "sourceMap": true,
-        "target": "ES2022"
+        "target": "es2022"
     }
 }
