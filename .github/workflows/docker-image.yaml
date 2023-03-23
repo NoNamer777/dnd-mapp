@@ -1,5 +1,8 @@
 name: Dnd-Mapp Docker images
 on: push
+permissions:
+    contents: read
+    packages: write
 jobs:
     build-client-docker-image:
         uses: ./.github/workflows/client-docker-image.yaml
