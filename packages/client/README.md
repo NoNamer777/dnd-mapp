@@ -20,7 +20,7 @@ To build it in development (watch) mode:
 nx run client:build --watch
 ```
 
--   **To server the development application**
+-   **To serve the development application**
 
 ```shell
 nx run client:serve
