@@ -56,6 +56,7 @@
                 "jestConfig": "packages/server/jest.config.ts",
                 "onlyChanged": false,
                 "passWithNoTests": true,
+                "testPathIgnorePatterns": ["./src/test.ts"],
                 "watch": false,
                 "watchAll": false
             },
