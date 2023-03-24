@@ -1,6 +1,6 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { RACE_REPO_TOKEN } from '../../providers';
-import { Race } from '@dnd-mapp/data';
+import { CreateRaceData, Race } from '@dnd-mapp/data';
 
 @Injectable()
 export class RaceService {
@@ -26,5 +26,59 @@ export class RaceService {
             throw new NotFoundException(`Race with name: '${raceName}' is not found.`);
         }
         return raceByName;
+    }
+
+    async update(raceData: Race): Promise<Race> {
+        if (!(await this.doesRaceExistById(raceData.id))) {
+            throw new NotFoundException(`Cannot update Race with ID: '${raceData.id}' because it does not exist.`);
+        }
+        const raceByName = await this.doesRaceExistByName(raceData.name);
+
+        if (raceByName && raceByName.id !== raceData.id) {
+            throw new BadRequestException(
+                `Cannot update Race with ID: '${raceData.id}' because the name: '${raceData.name}' is already in use by another Race (ID: '${raceByName.id}').`
+            );
+        }
+        return this.raceRepository.update(raceData);
+    }
+
+    async create(raceData: CreateRaceData): Promise<Race> {
+        const raceByName = await this.doesRaceExistByName(raceData.name);
+
+        if (raceByName) {
+            throw new BadRequestException(
+                `Cannot create Race because the name: '${raceData.name}' is already in use by another Race (ID: '${raceByName.id}').`
+            );
+        }
+        return this.raceRepository.create(raceData);
+    }
+
+    async deleteById(raceId: number): Promise<void> {
+        if (!(await this.doesRaceExistById(raceId))) {
+            throw new NotFoundException(`Could not remove Race with ID: '${raceId}' because it does not exist.`);
+        }
+        this.raceRepository.deleteById(raceId);
+    }
+
+    private async doesRaceExistById(raceId: number): Promise<Race> {
+        try {
+            return await this.getById(raceId);
+        } catch (error) {
+            if (error instanceof NotFoundException) {
+                return null;
+            }
+            throw error;
+        }
+    }
+
+    private async doesRaceExistByName(raceName: string): Promise<Race> {
+        try {
+            return await this.getByName(raceName);
+        } catch (error) {
+            if (error instanceof NotFoundException) {
+                return null;
+            }
+            throw error;
+        }
     }
 }
