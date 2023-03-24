@@ -11,7 +11,8 @@
         "module": "es2022",
         "moduleResolution": "node",
         "paths": {
-            "@dnd-mapp/data": ["packages/data/src/index.ts"]
+            "@dnd-mapp/data": ["packages/data/src/index.ts"],
+            "@dnd-mapp/data/testing": ["packages/data/testing/index.ts"]
         },
         "rootDir": ".",
         "skipLibCheck": true,

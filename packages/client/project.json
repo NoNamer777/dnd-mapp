@@ -69,7 +69,7 @@
                 "codeCoverage": true,
                 "colors": true,
                 "coverageReporters": ["html", "text-summary"],
-                "coverageDirectory": "../../coverage/packages/client",
+                "coverageDirectory": "coverage/packages/client",
                 "jestConfig": "packages/client/jest.config.ts",
                 "onlyChanged": false,
                 "passWithNoTests": true,

@@ -13,6 +13,11 @@
                 "outputPath": "dist/data",
                 "tsConfig": "packages/data/tsconfig.lib.json",
                 "watch": false
+            },
+            "configurations": {
+                "dev": {
+                    "watch": true
+                }
             }
         },
         "test": {
@@ -22,7 +27,7 @@
                 "codeCoverage": true,
                 "colors": true,
                 "coverageReporters": ["html", "text-summary"],
-                "coverageDirectory": "../../coverage/data",
+                "coverageDirectory": "coverage/data",
                 "jestConfig": "packages/data/jest.config.ts",
                 "onlyChanged": false,
                 "passWithNoTests": true,
@@ -32,6 +37,9 @@
             "configurations": {
                 "ci": {
                     "ci": true
+                },
+                "dev": {
+                    "watchAll": true
                 }
             }
         },

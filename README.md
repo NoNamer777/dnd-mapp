@@ -25,6 +25,8 @@ Find the README's in the individual projects for more information and instructio
 | Project name |                                     |
 | ------------ | ----------------------------------- |
 | Client       | [README](packages/client/README.md) |
+| Server       | [README](packages/server/README.md) |
+| Data         | [README](packages/data/README.md)   |
 
 ## Commands
 

@@ -30,6 +30,9 @@
                 "ci": {
                     "memoryLimit": 1024,
                     "sourceMap": false
+                },
+                "dev": {
+                    "watch": true
                 }
             }
         },
@@ -49,16 +52,20 @@
                 "codeCoverage": true,
                 "colors": true,
                 "coverageReporters": ["html", "text-summary"],
-                "coverageDirectory": "../../coverage/server",
+                "coverageDirectory": "coverage/server",
                 "jestConfig": "packages/server/jest.config.ts",
                 "onlyChanged": false,
                 "passWithNoTests": true,
+                "testPathIgnorePatterns": ["./src/test.ts"],
                 "watch": false,
                 "watchAll": false
             },
             "configurations": {
                 "ci": {
                     "ci": true
+                },
+                "dev": {
+                    "watchAll": true
                 }
             }
         },
