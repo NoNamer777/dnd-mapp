@@ -30,6 +30,9 @@
                 "ci": {
                     "memoryLimit": 1024,
                     "sourceMap": false
+                },
+                "dev": {
+                    "watch": true
                 }
             }
         },
@@ -59,6 +62,9 @@
             "configurations": {
                 "ci": {
                     "ci": true
+                },
+                "dev": {
+                    "watchAll": true
                 }
             }
         },

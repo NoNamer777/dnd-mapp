@@ -13,6 +13,11 @@
                 "outputPath": "dist/data",
                 "tsConfig": "packages/data/tsconfig.lib.json",
                 "watch": false
+            },
+            "configurations": {
+                "dev": {
+                    "watch": true
+                }
             }
         },
         "test": {
@@ -32,6 +37,9 @@
             "configurations": {
                 "ci": {
                     "ci": true
+                },
+                "dev": {
+                    "watchAll": true
                 }
             }
         },
