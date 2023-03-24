@@ -27,7 +27,7 @@
                 "codeCoverage": true,
                 "colors": true,
                 "coverageReporters": ["html", "text-summary"],
-                "coverageDirectory": "../../coverage/data",
+                "coverageDirectory": "coverage/data",
                 "jestConfig": "packages/data/jest.config.ts",
                 "onlyChanged": false,
                 "passWithNoTests": true,
