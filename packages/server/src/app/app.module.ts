@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { RaceModule } from './models/race/race.module';
+import { RaceModule } from './models/race';
 
 @Module({
     imports: [RaceModule],
