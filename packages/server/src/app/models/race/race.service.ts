@@ -9,11 +9,11 @@ export class RaceService {
     constructor(@InjectRepository(RaceEntity) private raceRepository: Repository<RaceEntity>) {}
 
     async getAll(): Promise<Race[]> {
-        return this.raceRepository.find();
+        return await this.raceRepository.find();
     }
 
     async getById(raceId: number, throwsError = true): Promise<Race> {
-        const raceById = this.raceRepository.findOneBy({ id: raceId });
+        const raceById = await this.raceRepository.findOneBy({ id: raceId });
 
         if (throwsError && !raceById) {
             throw new NotFoundException(`Race with ID: '${raceId}' is not found.`);
@@ -22,7 +22,7 @@ export class RaceService {
     }
 
     async getByName(raceName: string, throwsError = true): Promise<Race> {
-        const raceByName = this.raceRepository.findOneBy({ name: raceName });
+        const raceByName = await this.raceRepository.findOneBy({ name: raceName });
 
         if (throwsError && !raceByName) {
             throw new NotFoundException(`Race with name: '${raceName}' is not found.`);
