@@ -3,7 +3,9 @@
     "version": "0.0.0",
     "license": "MIT",
     "private": true,
-    "scripts": {},
+    "scripts": {
+        "typeorm": "typeorm-ts-node-commonjs"
+    },
     "workspaces": [
         "packages/*"
     ],
