@@ -12,29 +12,29 @@ export class RaceService {
         return this.raceRepository.find();
     }
 
-    async getById(raceId: number): Promise<Race> {
+    async getById(raceId: number, throwsError = true): Promise<Race> {
         const raceById = this.raceRepository.findOneBy({ id: raceId });
 
-        if (!raceById) {
+        if (throwsError && !raceById) {
             throw new NotFoundException(`Race with ID: '${raceId}' is not found.`);
         }
         return raceById;
     }
 
-    async getByName(raceName: string): Promise<Race> {
+    async getByName(raceName: string, throwsError = true): Promise<Race> {
         const raceByName = this.raceRepository.findOneBy({ name: raceName });
 
-        if (!raceByName) {
+        if (throwsError && !raceByName) {
             throw new NotFoundException(`Race with name: '${raceName}' is not found.`);
         }
         return raceByName;
     }
 
     async update(raceData: Race): Promise<Race> {
-        if (!(await this.doesRaceExistById(raceData.id))) {
+        if (!(await this.getById(raceData.id, false))) {
             throw new NotFoundException(`Cannot update Race with ID: '${raceData.id}' because it does not exist.`);
         }
-        const raceByName = await this.doesRaceExistByName(raceData.name);
+        const raceByName = await this.getByName(raceData.name, false);
 
         if (raceByName && raceByName.id !== raceData.id) {
             throw new BadRequestException(
@@ -47,7 +47,7 @@ export class RaceService {
     }
 
     async create(raceData: CreateRaceData): Promise<Race> {
-        const raceByName = await this.doesRaceExistByName(raceData.name);
+        const raceByName = await this.getByName(raceData.name, false);
 
         if (raceByName) {
             throw new BadRequestException(
@@ -60,31 +60,9 @@ export class RaceService {
     }
 
     async deleteById(raceId: number): Promise<void> {
-        if (!(await this.doesRaceExistById(raceId))) {
+        if (!(await this.getById(raceId, false))) {
             throw new NotFoundException(`Could not remove Race with ID: '${raceId}' because it does not exist.`);
         }
         await this.raceRepository.delete({ id: raceId });
-    }
-
-    private async doesRaceExistById(raceId: number): Promise<Race> {
-        try {
-            return await this.getById(raceId);
-        } catch (error) {
-            if (error instanceof NotFoundException) {
-                return null;
-            }
-            throw error;
-        }
-    }
-
-    private async doesRaceExistByName(raceName: string): Promise<Race> {
-        try {
-            return await this.getByName(raceName);
-        } catch (error) {
-            if (error instanceof NotFoundException) {
-                return null;
-            }
-            throw error;
-        }
     }
 }
