@@ -1,17 +1,19 @@
-import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { RACE_REPO_TOKEN } from '../../providers';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateRaceData, Race } from '@dnd-mapp/data';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { RaceEntity } from './race.entity';
 
 @Injectable()
 export class RaceService {
-    constructor(@Inject(RACE_REPO_TOKEN) private raceRepository) {}
+    constructor(@InjectRepository(RaceEntity) private raceRepository: Repository<RaceEntity>) {}
 
     async getAll(): Promise<Race[]> {
-        return this.raceRepository.findAll();
+        return this.raceRepository.find();
     }
 
     async getById(raceId: number): Promise<Race> {
-        const raceById = this.raceRepository.findById(raceId);
+        const raceById = this.raceRepository.findOneBy({ id: raceId });
 
         if (!raceById) {
             throw new NotFoundException(`Race with ID: '${raceId}' is not found.`);
@@ -20,7 +22,7 @@ export class RaceService {
     }
 
     async getByName(raceName: string): Promise<Race> {
-        const raceByName = this.raceRepository.findByName(raceName);
+        const raceByName = this.raceRepository.findOneBy({ name: raceName });
 
         if (!raceByName) {
             throw new NotFoundException(`Race with name: '${raceName}' is not found.`);
@@ -39,7 +41,9 @@ export class RaceService {
                 `Cannot update Race with ID: '${raceData.id}' because the name: '${raceData.name}' is already in use by another Race (ID: '${raceByName.id}').`
             );
         }
-        return this.raceRepository.update(raceData);
+        await this.raceRepository.update({ id: raceData.id }, raceData);
+
+        return await this.getById(raceData.id);
     }
 
     async create(raceData: CreateRaceData): Promise<Race> {
@@ -50,14 +54,16 @@ export class RaceService {
                 `Cannot create Race because the name: '${raceData.name}' is already in use by another Race (ID: '${raceByName.id}').`
             );
         }
-        return this.raceRepository.create(raceData);
+        await this.raceRepository.insert(raceData);
+
+        return await this.getByName(raceData.name);
     }
 
     async deleteById(raceId: number): Promise<void> {
         if (!(await this.doesRaceExistById(raceId))) {
             throw new NotFoundException(`Could not remove Race with ID: '${raceId}' because it does not exist.`);
         }
-        this.raceRepository.deleteById(raceId);
+        await this.raceRepository.delete({ id: raceId });
     }
 
     private async doesRaceExistById(raceId: number): Promise<Race> {
