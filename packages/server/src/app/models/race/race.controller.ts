@@ -10,6 +10,7 @@ import {
     ParseIntPipe,
     Post,
     Put,
+    Req,
 } from '@nestjs/common';
 import { CreateRaceData, Race } from '@dnd-mapp/data';
 
@@ -38,19 +39,25 @@ export class RaceController {
     }
 
     @Put(':id')
-    async update(@Param('id', ParseIntPipe) raceId: number, @Body() requestBody: Race): Promise<Race> {
+    async update(
+        @Param('id', ParseIntPipe) raceId: number,
+        @Body() requestBody: Race,
+        @Req() request: Request
+    ): Promise<Race> {
+        const requestPath = request.url;
+
         try {
             await this.raceService.getById(raceId);
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw new NotFoundException(
-                    `Could not update Race on path: '/api/race/${raceId}', because it does not exist.`
+                    `Could not update Race on path: '${requestPath}', because it does not exist.`
                 );
             }
         }
         if (raceId !== requestBody.id) {
             throw new BadRequestException(
-                `'Could not update Race on path: '/api/race/${raceId}' with data from Race with ID: '${requestBody.id}'.`
+                `'Could not update Race on path: '${requestPath}' with data from Race with ID: '${requestBody.id}'.`
             );
         }
         return await this.raceService.update(requestBody);
