@@ -41,7 +41,6 @@
         "@angular/language-service": "~15.2.4",
         "@nestjs/schematics": "^9.0.0",
         "@nestjs/testing": "^9.0.0",
-        "@nrwl/nx-cloud": "~15.2.3",
         "@nrwl/angular": "~15.8.9",
         "@nrwl/eslint-plugin-nx": "~15.8.9",
         "@nrwl/jest": "~15.8.9",
