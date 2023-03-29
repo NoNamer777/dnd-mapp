@@ -3,6 +3,8 @@
     "name": "server",
     "sourceRoot": "packages/server/src",
     "projectType": "application",
+    "tags": ["@dnd-mapp/server"],
+    "implicitDependencies": ["data"],
     "targets": {
         "build": {
             "executor": "@nrwl/webpack:webpack",
@@ -24,7 +26,8 @@
                 "styles": [],
                 "target": "node",
                 "tsConfig": "packages/server/tsconfig.app.json",
-                "watch": false
+                "watch": false,
+                "webpackConfig": "packages/server/webpack.config.js"
             },
             "configurations": {
                 "ci": {
@@ -82,6 +85,5 @@
                 "lintFilePatterns": ["packages/server/**/*.ts"]
             }
         }
-    },
-    "tags": ["@dnd-mapp/server"]
+    }
 }
