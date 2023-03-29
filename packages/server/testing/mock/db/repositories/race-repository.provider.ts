@@ -1,8 +1,8 @@
-import { mockRaceDb } from '@dnd-mapp/data/testing';
-
-export const RACE_REPO_TOKEN = 'RACE_REPO';
+import { mockRaceDb } from 'packages/data/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { RaceEntity } from '../../../../src/app/models/race';
 
 export const RaceRepositoryProvider = {
-    provide: RACE_REPO_TOKEN,
+    provide: getRepositoryToken(RaceEntity),
     useValue: mockRaceDb,
 };

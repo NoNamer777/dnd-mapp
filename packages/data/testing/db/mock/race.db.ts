@@ -12,23 +12,25 @@ class MockRaceDb {
         this.reset();
     }
 
-    findAll(): Race[] {
+    find(): Race[] {
         return Object.values(this.db);
     }
 
-    findById(raceId: number): Race | null {
-        return Object.values<Race>(this.db).find((race) => race.id === raceId) ?? null;
-    }
-
-    findByName(raceName: string): Race | null {
-        return Object.values<Race>(this.db).find((race) => race.name === raceName) ?? null;
-    }
-
-    update(raceData: Race): Race {
-        if (!this.db[raceData.id]) {
-            throw new Error(`Could not update Race with ID: '${raceData.id}' because it does not exist.`);
+    findOneBy(params: { id?: number, name?: string }): Race | null {
+        if (params.id) {
+            return Object.values<Race>(this.db).find((race) => race.id === params.id) ?? null;
         }
-        this.db[raceData.id] = raceData;
+        if (params.name) {
+            return Object.values<Race>(this.db).find((race) => race.name === params.name) ?? null;
+        }
+        return null; 
+    }
+
+    update(params: { id: number }, raceData: Race): Race {
+        if (!this.db[params.id]) {
+            throw new Error(`Could not update Race with ID: '${params.id}' because it does not exist.`);
+        }
+        this.db[params.id] = raceData;
         return raceData;
     }
 
@@ -42,11 +44,11 @@ class MockRaceDb {
         return newRace;
     }
 
-    deleteById(raceId: number): void {
-        if (!this.db[raceId]) {
-            throw new Error(`Cannot delete Race with ID: '${raceId}' because it does not exist.`);
+    delete(params: { id: number }): void {
+        if (!this.db[params.id]) {
+            throw new Error(`Cannot delete Race with ID: '${params.id}' because it does not exist.`);
         }
-        delete this.db[raceId];
+        delete this.db[params.id];
     }
 
     reset(): void {
