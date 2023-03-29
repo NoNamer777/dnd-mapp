@@ -3,6 +3,8 @@
     "name": "client",
     "projectType": "application",
     "sourceRoot": "packages/client/src",
+    "tags": ["@dnd-mapp/client"],
+    "implicitDependencies": ["data"],
     "prefix": "dma",
     "targets": {
         "build": {
@@ -104,6 +106,5 @@
                 "lintFilePatterns": ["packages/client/**/*.ts", "packages/client/**/*.html"]
             }
         }
-    },
-    "tags": ["@dnd-mapp/client"]
+    }
 }

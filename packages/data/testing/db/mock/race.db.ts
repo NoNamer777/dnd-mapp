@@ -16,14 +16,14 @@ class MockRaceDb {
         return Object.values(this.db);
     }
 
-    findOneBy(params: { id?: number, name?: string }): Race | null {
+    findOneBy(params: { id?: number; name?: string }): Race | null {
         if (params.id) {
             return Object.values<Race>(this.db).find((race) => race.id === params.id) ?? null;
         }
         if (params.name) {
             return Object.values<Race>(this.db).find((race) => race.name === params.name) ?? null;
         }
-        return null; 
+        return null;
     }
 
     update(params: { id: number }, raceData: Race): Race {

@@ -12,6 +12,7 @@
             "options": {
                 "assets": ["packages/server/src/assets"],
                 "baseHref": "/",
+                "buildLibsFromSource": false,
                 "compiler": "tsc",
                 "extractLicenses": true,
                 "inspect": false,
