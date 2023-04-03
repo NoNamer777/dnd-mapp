@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigModuleOptions } from '@nestjs/config';
-import { environment } from '../../environments/environment';
+import { validate } from './validation/server-config.validator';
+import environment from '../../environments/environment';
 
 const configOptions: ConfigModuleOptions = {
-    load: [() => environment],
+    load: [environment],
     ignoreEnvFile: true,
     isGlobal: true,
+    validate,
 };
 
 @Module({
