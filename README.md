@@ -28,6 +28,26 @@ Find the README's in the individual projects for more information and instructio
 | Server       | [README](packages/server/README.md) |
 | Data         | [README](packages/data/README.md)   |
 
+## Generating SSL certificate and key
+
+It is possible to develop the server and client application with SSL enabled. For this you'll need to do the following:
+
+1. Install [mkcert](https://github.com/FiloSottile/mkcert) on your local machine
+2. Run the following command to install the root CA (You may need to restart your browsers)
+
+```shell
+mkcert -install
+```
+
+3. Run the following command to generate a certificate
+
+```shell
+mkcert -cert-file certificate.pem -key-file certificate-key.pem localhost.dndmapp.nl.eu.org localhost
+```
+
+Find the sections in the individual projects about developing with SSL enabled to find more information for those projects
+how to use the generated files to develop with SSL.
+
 ## Commands
 
 Some commands are globally available, these include:

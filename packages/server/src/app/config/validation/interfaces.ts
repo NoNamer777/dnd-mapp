@@ -15,10 +15,32 @@ export class ServerConfigEnvironmentVariables {
     @IsOptional()
     @IsInt()
     SERVER_PORT: number;
+
+    @Expose()
+    @IsOptional()
+    @IsBoolean()
+    SERVER_SECURE: boolean;
+
+    @Expose()
+    @IsOptional()
+    @IsString()
+    SEVER_SSL_CERT: string;
+
+    @Expose()
+    @IsOptional()
+    @IsString()
+    SERVER_SSL_KEY: string;
 }
 
 export interface ServerConfigOptions {
     production: boolean;
     host?: string;
     port?: number;
+    secure?: boolean;
+    ssl?: ServerSSLConfigOptions;
+}
+
+interface ServerSSLConfigOptions {
+    cert: string;
+    key: string;
 }
