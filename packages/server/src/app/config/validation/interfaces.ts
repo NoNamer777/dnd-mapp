@@ -1,5 +1,6 @@
 import { IsBoolean, IsInt, IsOptional, IsString } from 'class-validator';
 import { Expose } from 'class-transformer';
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 export class ServerConfigEnvironmentVariables {
     @Expose()
@@ -38,6 +39,7 @@ export interface ServerConfigOptions {
     port?: number;
     secure?: boolean;
     ssl?: ServerSSLConfigOptions;
+    database?: TypeOrmModuleOptions;
 }
 
 interface ServerSSLConfigOptions {

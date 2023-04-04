@@ -1,17 +1,22 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
-const typeOrmConfig: TypeOrmModuleOptions = {
-    type: 'sqlite',
-    database: ':memory:',
-    entities: [],
-    autoLoadEntities: true,
-    logging: 'all',
-    synchronize: true,
+const typeOrmConfig = {
+    imports: [ConfigModule],
+    inject: [ConfigService],
+    useFactory: (configService: ConfigService) => ({
+        ...configService.get('database'),
+        entities: [],
+        autoLoadEntities: true,
+        // TODO: Don't synchronize but use migrations instead
+        synchronize: true,
+        logging: 'all',
+    }),
 };
 
 @Module({
-    imports: [TypeOrmModule.forRoot({ ...typeOrmConfig })],
+    imports: [TypeOrmModule.forRootAsync(typeOrmConfig)],
     exports: [TypeOrmModule],
 })
 export class TypeOrmConfigModule {}

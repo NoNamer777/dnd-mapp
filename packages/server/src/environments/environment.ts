@@ -12,4 +12,8 @@ export default (): ServerConfigOptions => ({
                   cert: process.env.SEVER_SSL_CERT || '',
                   key: process.env.SERVER_SSL_KEY || '',
               },
+    database: {
+        type: 'sqlite',
+        database: ':memory:',
+    },
 });
