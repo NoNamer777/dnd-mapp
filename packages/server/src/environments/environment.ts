@@ -15,5 +15,7 @@ export default (): ServerConfigOptions => ({
     database: {
         type: 'sqlite',
         database: ':memory:',
+        migrations: ['./packages/server/src/**/migrations/*'],
+        migrationsRun: true,
     },
 });

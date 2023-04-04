@@ -9,9 +9,8 @@ const typeOrmConfig = {
         ...configService.get('database'),
         entities: [],
         autoLoadEntities: true,
-        // TODO: Don't synchronize but use migrations instead
-        synchronize: true,
-        logging: 'all',
+        synchronize: false,
+        logging: ['info', 'error', 'warn'],
     }),
 };
 
