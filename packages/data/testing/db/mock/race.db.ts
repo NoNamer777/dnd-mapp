@@ -34,7 +34,7 @@ class MockRaceDb {
         return raceData;
     }
 
-    create(raceData: CreateRaceData): Race {
+    insert(raceData: CreateRaceData): Race {
         const newRace: Race = {
             id: this.nextId++,
             ...raceData,
