@@ -10,7 +10,7 @@ const typeOrmConfig = {
         entities: [],
         autoLoadEntities: true,
         synchronize: false,
-        logging: ['info', 'error', 'warn'],
+        migrationsRun: true,
     }),
 };
 

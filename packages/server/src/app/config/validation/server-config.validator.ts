@@ -1,9 +1,9 @@
 import { plainToInstance } from 'class-transformer';
-import { ServerConfigEnvironmentVariables } from './interfaces';
+import { ServerEnvironmentVariables } from './interfaces';
 import { validateSync } from 'class-validator';
 
 export function validate(config: Record<string, unknown>) {
-    const validatedConfig = plainToInstance(ServerConfigEnvironmentVariables, config, {
+    const validatedConfig = plainToInstance(ServerEnvironmentVariables, config, {
         enableImplicitConversion: true,
         excludeExtraneousValues: true,
     });
