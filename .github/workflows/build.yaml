@@ -22,7 +22,5 @@ jobs:
               run: |
                   npx nx format:check
                   npx nx run-many --target=lint
-            - name: Build
-              run: npx nx run-many --target=build:ci
-            - name: Test
-              run: npx nx run-many --target=test:ci
+            - name: Build & Test
+              run: npx nx run-many --target test --configuration ci
