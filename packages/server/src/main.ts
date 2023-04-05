@@ -2,30 +2,34 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { ConfigService } from '@nestjs/config';
+import * as express from 'express';
+import * as https from 'https';
+import { ExpressAdapter } from '@nestjs/platform-express';
 import { readFileSync } from 'fs';
 
 async function bootstrap() {
-    const nestAppConfig =
-        process.env.SERVER_SECURE !== 'true'
-            ? {}
-            : {
-                  httpsOptions: {
-                      cert: readFileSync(process.env.SERVER_SSL_CERT),
-                      key: readFileSync(process.env.SERVER_SSL_KEY),
-                  },
-              };
+    const server = express();
 
-    const nestApp = await NestFactory.create(AppModule, nestAppConfig);
-    const configServer = nestApp.get(ConfigService);
+    const nestApp = await NestFactory.create(AppModule, new ExpressAdapter(server));
+    const configService = nestApp.get(ConfigService);
 
-    const { host, port } = {
-        host: configServer.get('host'),
-        port: configServer.get('port'),
+    const { host, port, secured, sslCert, sslKey } = {
+        host: configService.get('server.host'),
+        port: configService.get('server.port'),
+        secured: !!configService.get('server.ssl'),
+        sslCert: configService.get('server.ssl.cert'),
+        sslKey: configService.get('server.ssl.key'),
     };
 
-    await nestApp.listen(port, host);
+    const httpsServer = https.createServer(
+        !secured ? {} : { cert: readFileSync(sslCert), key: readFileSync(sslKey) },
+        server
+    );
 
-    Logger.log(`Application is running on: ${await nestApp.getUrl()}/`);
+    await nestApp.init();
+    await httpsServer.listen(port, host);
+
+    Logger.log(`Application is running on: http${secured ? 's' : ''}://${host}:${port}/`);
 }
 
 bootstrap();
