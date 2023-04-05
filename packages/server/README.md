@@ -4,6 +4,18 @@ This project contains the back-end application for the DnD Mapp project.
 
 This project is written in the [Nest.js](https://nestjs.com) framework, v9.0.0.
 
+## Developing with SSL
+
+Assuming you've followed the instructions in the README in the root of this repository, you can enable ssl for your local
+dev environment. This you can accomplish by, telling the server to enable secure mode, and by passing the path of the
+certificate and key to the server environment variables as follows:
+
+```
+SERVER_SECURE=true
+SEVER_SSL_CERT=../../certificate.pem
+SERVER_SSL_KEY=../../certificate-key.pem
+```
+
 ## Commands
 
 The available commands are:

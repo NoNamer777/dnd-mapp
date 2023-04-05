@@ -13,7 +13,8 @@
     "compilerOptions": {
         "alwaysStrict": true,
         "forceConsistentCasingInFileNames": true,
-        "module": "commonjs",
+        "module": "CommonJS",
+        "moduleResolution": "Node",
         "noFallthroughCasesInSwitch": true,
         "noImplicitAny": true,
         "noImplicitOverride": true,
@@ -26,6 +27,7 @@
         "strictBindCallApply": true,
         "strictFunctionTypes": true,
         "strictPropertyInitialization": false,
+        "target": "ES2022",
         "useDefineForClassFields": false,
         "useUnknownInCatchVariables": true
     }

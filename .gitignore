@@ -24,3 +24,5 @@ node_modules
 Thumbs.db
 
 .angular
+.env
+certificate*.pem
