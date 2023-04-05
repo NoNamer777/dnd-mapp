@@ -6,6 +6,7 @@ import * as express from 'express';
 import * as https from 'https';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import { readFileSync } from 'fs';
+import { buildServerUrl } from './app/common';
 
 async function bootstrap() {
     const server = express();
@@ -29,7 +30,7 @@ async function bootstrap() {
     await nestApp.init();
     await httpsServer.listen(port, host);
 
-    Logger.log(`Application is running on: http${secured ? 's' : ''}://${host}:${port}/`);
+    buildServerUrl(configService).forEach((url) => Logger.log(`Application is running on: ${url}`));
 }
 
 bootstrap();
