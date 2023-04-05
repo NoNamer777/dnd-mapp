@@ -10,7 +10,7 @@ RUN npm ci
 
 COPY . /app
 
-RUN nx run client:test:ci
+RUN npx nx run client:test:ci
 
 
 FROM nginx:1.23-alpine
