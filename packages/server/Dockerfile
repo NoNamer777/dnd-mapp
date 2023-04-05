@@ -10,8 +10,7 @@ RUN npm ci
 
 COPY . /server-app
 
-RUN npx nx run server:build:ci && \
-    npx nx run server:test:ci
+RUN npx nx run server:test:ci
 
 
 FROM node:16-alpine
