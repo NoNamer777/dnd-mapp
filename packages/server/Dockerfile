@@ -4,13 +4,9 @@ RUN mkdir /server-app
 
 WORKDIR /server-app
 
-COPY package*.json /server-app
-
-RUN npm ci
-
 COPY . /server-app
 
-RUN npx nx run server:test:ci
+RUN npm ci && npx nx run server:test:ci
 
 
 FROM node:18-alpine
