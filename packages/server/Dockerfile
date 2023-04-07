@@ -1,7 +1,4 @@
-FROM node:16-alpine AS build-step
-
-ARG serverConfigPath='./server-config.yaml'
-ENV SERVER_CONFIG='$serverConfigPath'
+FROM node:18-alpine AS build-step
 
 RUN mkdir /server-app
 
@@ -16,7 +13,7 @@ COPY . /server-app
 RUN npx nx run server:test:ci
 
 
-FROM node:16-alpine
+FROM node:18-alpine
 
 WORKDIR /usr/src/app
 
