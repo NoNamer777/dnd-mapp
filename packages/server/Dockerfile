@@ -1,5 +1,8 @@
 FROM node:16-alpine AS build-step
 
+ARG serverConfigPath='./server-config.yaml'
+ENV SERVER_CONFIG='$serverConfigPath'
+
 RUN mkdir /server-app
 
 WORKDIR /server-app
