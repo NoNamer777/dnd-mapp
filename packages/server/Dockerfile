@@ -1,27 +1,22 @@
-FROM node:16-alpine AS build-step
+FROM node:18-alpine AS build-step
 
 RUN mkdir /server-app
 
 WORKDIR /server-app
 
-COPY package*.json /server-app
-
-RUN npm ci
-
 COPY . /server-app
 
-RUN npx nx run server:test:ci
+RUN npm ci && npx nx run server:test:ci
 
 
-FROM node:16-alpine
+FROM node:18-alpine
 
 WORKDIR /usr/src/app
 
-COPY package*.json /usr/src/app
+COPY --from=build-step server-app/dist/server /usr/src/app/
 
-COPY --from=build-step server-app/dist/server /usr/src/app
+RUN npm ci
 
-RUN npm ci --omit dev
+COPY --from=build-step server-app/dist/data node_modules/@dnd-mapp/data/
 
 CMD ["node", "/usr/src/app/main"]
-

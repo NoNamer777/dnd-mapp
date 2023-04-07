@@ -13,6 +13,7 @@ import {
     Req,
 } from '@nestjs/common';
 import { CreateRaceData, Race } from '@dnd-mapp/data';
+import { Request } from 'express';
 
 @Controller('api/race')
 export class RaceController {
