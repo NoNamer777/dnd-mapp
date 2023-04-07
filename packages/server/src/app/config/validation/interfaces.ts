@@ -42,7 +42,7 @@ export class ServerConfigOptions {
     @Expose()
     @IsString()
     @IsOptional()
-    host?: string = 'localhost';
+    host?: string = '0.0.0.0';
 
     @Expose()
     @IsInt()
