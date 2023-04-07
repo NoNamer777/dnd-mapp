@@ -3,15 +3,17 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { ConfigService } from '@nestjs/config';
 import * as express from 'express';
-import * as https from 'https';
+import { createServer as createHttpsServer } from 'https';
+import { createServer as createHttpServer, Server } from 'http';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import { readFileSync } from 'fs';
 import { buildServerUrl } from './app/common';
 
 async function bootstrap() {
-    const server = express();
+    const expressServer = express();
+    let server: Server;
 
-    const nestApp = await NestFactory.create(AppModule, new ExpressAdapter(server));
+    const nestApp = await NestFactory.create(AppModule, new ExpressAdapter(expressServer));
     const configService = nestApp.get(ConfigService);
 
     const { host, port, secured, sslCert, sslKey } = {
@@ -22,13 +24,14 @@ async function bootstrap() {
         sslKey: configService.get('server.ssl.key'),
     };
 
-    const httpsServer = https.createServer(
-        !secured ? {} : { cert: readFileSync(sslCert), key: readFileSync(sslKey) },
-        server
-    );
-
+    if (secured) {
+        server = createHttpsServer({ cert: readFileSync(sslCert), key: readFileSync(sslKey) }, expressServer);
+    } else {
+        server = createHttpServer(expressServer);
+    }
     await nestApp.init();
-    await httpsServer.listen(port, host);
+
+    server.listen(port, host);
 
     buildServerUrl(configService).forEach((url) => Logger.log(`Application is running on: ${url}`));
 }
