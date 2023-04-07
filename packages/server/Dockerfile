@@ -17,11 +17,10 @@ FROM node:16-alpine
 
 WORKDIR /usr/src/app
 
-COPY package*.json /usr/src/app
+COPY --from=build-step server-app/dist/server /usr/src/app/
 
-COPY --from=build-step server-app/dist/server /usr/src/app
+RUN npm ci
 
-RUN npm ci --omit dev
+COPY --from=build-step server-app/dist/data node_modules/@dnd-mapp/data/
 
 CMD ["node", "/usr/src/app/main"]
-
