@@ -1,11 +1,6 @@
 import { load } from 'js-yaml';
 import { readFileSync } from 'fs';
-import {
-    ConfigOptions,
-    DatabaseConfigOptions,
-    ServerConfigOptions,
-    ServerSSLConfigOptions,
-} from './validation/interfaces';
+import { ConfigOptions, DatabaseConfigOptions, ServerConfigOptions } from './validation/interfaces';
 import { plainToInstance } from 'class-transformer';
 import { validateSync } from 'class-validator';
 
@@ -36,7 +31,6 @@ export default () => {
         config = new ConfigOptions() as Record<string, unknown>;
 
         config.server = new ServerConfigOptions();
-        (config.server as ServerConfigOptions).ssl = new ServerSSLConfigOptions();
         config.database = new DatabaseConfigOptions();
     }
     return validateConfig(config);

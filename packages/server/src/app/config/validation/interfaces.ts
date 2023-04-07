@@ -25,12 +25,12 @@ export class ServerSSLConfigOptions {
     @Expose()
     @IsString()
     @Matches(/.*\.pem$/gi)
-    cert = './certificate.pem';
+    cert: string;
 
     @Expose()
     @IsString()
     @Matches(/.*\.pem$/gi)
-    key = './certificate-key.pem';
+    key: string;
 }
 
 export class ServerConfigOptions {
@@ -42,7 +42,7 @@ export class ServerConfigOptions {
     @Expose()
     @IsString()
     @IsOptional()
-    host?: string = '0.0.0.0';
+    host?: string = 'localhost';
 
     @Expose()
     @IsInt()
@@ -72,7 +72,7 @@ export class DatabaseConfigOptions {
     @IsArray()
     @IsString({ each: true })
     @IsOptional()
-    migrations: string[] = ['./packages/server/src/app/**/migrations/*'];
+    migrations: string[] = [];
 
     @Expose()
     @IsArray()
