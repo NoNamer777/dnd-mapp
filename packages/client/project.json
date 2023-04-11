@@ -39,7 +39,7 @@
                 "watch": false
             },
             "configurations": {
-                "development": {
+                "dev": {
                     "namedChunks": true,
                     "outputHashing": "none",
                     "optimization": {
@@ -57,8 +57,8 @@
         "serve": {
             "executor": "@angular-devkit/build-angular:dev-server",
             "options": {
-                "browserTarget": "client:build:development",
-                "host": "0.0.0.0",
+                "browserTarget": "client:build:dev",
+                "host": "localhost",
                 "open": false,
                 "port": 4200,
                 "watch": true
@@ -79,10 +79,11 @@
                 "watchAll": false
             },
             "configurations": {
+                "dev": {
+                    "watchAll": true
+                },
                 "ci": {
-                    "options": {
-                        "ci": true
-                    }
+                    "ci": true
                 }
             }
         },
