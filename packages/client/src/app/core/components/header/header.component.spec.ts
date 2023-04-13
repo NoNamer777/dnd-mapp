@@ -1,15 +1,22 @@
 import { TestBed } from '@angular/core/testing';
-import { HeaderComponent } from './header.component';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HeaderComponentHarness } from '../../../../testing';
+import { HeaderModule } from './header.module';
+import { Component } from '@angular/core';
 
 describe('HeaderComponent', () => {
-    async function setupTestEnvironment() {
-        await TestBed.configureTestingModule({
-            declarations: [HeaderComponent],
-        }).compileComponents();
+    @Component({
+        template: '<dma-header></dma-header>',
+    })
+    class TestComponent {}
 
-        const harnessLoader = TestbedHarnessEnvironment.loader(TestBed.createComponent(HeaderComponent));
+    async function setupTestEnvironment() {
+        TestBed.configureTestingModule({
+            imports: [HeaderModule],
+            declarations: [TestComponent],
+        });
+
+        const harnessLoader = TestbedHarnessEnvironment.loader(TestBed.createComponent(TestComponent));
 
         return {
             harness: await harnessLoader.getHarness(HeaderComponentHarness),
