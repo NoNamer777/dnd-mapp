@@ -24,5 +24,8 @@ node_modules
 Thumbs.db
 
 .angular
+
+# Configurations, environments and certificates
 .env
 certificate*.pem
+server-config.yaml

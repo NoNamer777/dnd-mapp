@@ -6,7 +6,7 @@ WORKDIR /server-app
 
 COPY . /server-app
 
-RUN npm ci && npx nx run server:test:ci
+RUN npm ci && npx nx run server:build:ci && npx nx run server:test:ci
 
 
 FROM node:18-alpine

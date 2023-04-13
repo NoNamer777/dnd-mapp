@@ -17,7 +17,7 @@ nx run client:build
 To build it in development (watch) mode:
 
 ```shell
-nx run client:build --watch
+nx run client:build:dev
 ```
 
 -   **To serve the development application**
@@ -35,7 +35,8 @@ nx run client:test
 To run the test in watch mode:
 
 ```shell
-nx run client:test --watchAll # This will rerun all the tests after changes are detected.
+# This will rerun all the tests after changes are detected.
+nx run client:test:dev
 ```
 
 ## Docker

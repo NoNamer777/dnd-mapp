@@ -17,7 +17,7 @@ nx run data:build
 To build it in development (watch) mode:
 
 ```shell
-nx run data:build --watch
+nx run data:build:dev
 ```
 
 -   **To run the tests**
@@ -30,5 +30,5 @@ To run the test in watch mode:
 
 ```shell
 # This will rerun all the tests after changes are detected.
-nx run data:test --watchAll
+nx run data:test:dev
 ```
