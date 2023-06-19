@@ -1,12 +1,12 @@
 {
     "root": true,
     "ignorePatterns": ["**/*"],
-    "plugins": ["@nrwl/nx"],
+    "plugins": ["@nx"],
     "overrides": [
         {
             "files": ["*.ts", "*.js"],
             "rules": {
-                "@nrwl/nx/enforce-module-boundaries": [
+                "@nx/enforce-module-boundaries": [
                     "error",
                     {
                         "allow": [],
@@ -32,12 +32,12 @@
         },
         {
             "files": ["*.ts"],
-            "extends": ["plugin:@nrwl/nx/typescript"],
+            "extends": ["plugin:@nx/typescript"],
             "rules": {}
         },
         {
             "files": ["*.js"],
-            "extends": ["plugin:@nrwl/nx/javascript"],
+            "extends": ["plugin:@nx/javascript"],
             "rules": {}
         },
         {
