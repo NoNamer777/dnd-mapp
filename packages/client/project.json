@@ -65,25 +65,29 @@
             }
         },
         "test": {
-            "executor": "@nx/jest:jest",
-            "outputs": ["{options.coverageDirectory}"],
+            "executor": "@angular-devkit/build-angular:karma",
+            "outputs": ["coverage/client"],
             "options": {
+                "assets": ["packages/client/src/assets", "packages/client/src/favicon.ico"],
                 "codeCoverage": true,
-                "colors": true,
-                "coverageReporters": ["html", "text-summary"],
-                "coverageDirectory": "coverage/packages/client",
-                "jestConfig": "packages/client/jest.config.ts",
-                "onlyChanged": false,
-                "passWithNoTests": true,
-                "watch": false,
-                "watchAll": false
+                "codeCoverageExclude": ["**/testing/**", "**/*.module.ts"],
+                "inlineStyleLanguage": "scss",
+                "karmaConfig": "packages/client/karma.conf.js",
+                "polyfills": ["zone.js", "zone.js/testing"],
+                "scripts": [],
+                "styles": ["packages/client/src/styles.scss"],
+                "tsConfig": "packages/client/tsconfig.spec.json"
             },
             "configurations": {
                 "dev": {
-                    "watchAll": true
+                    "progress": true,
+                    "sourceMap": true,
+                    "watch": true
                 },
                 "ci": {
-                    "ci": true
+                    "watch": false,
+                    "progress": false,
+                    "sourceMap": false
                 }
             }
         },
