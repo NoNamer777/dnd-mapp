@@ -4,6 +4,7 @@
     "license": "MIT",
     "private": true,
     "scripts": {
+        "nx": "nx",
         "typeorm": "typeorm-ts-node-commonjs"
     },
     "workspaces": [
