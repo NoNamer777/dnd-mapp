@@ -1,0 +1,33 @@
+{
+    "name": "shared-components",
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "packages/shared-components/src",
+    "prefix": "dma",
+    "tags": ["@dnd-mapp/shared-components"],
+    "projectType": "library",
+    "targets": {
+        "build": {
+            "executor": "@nx/angular:ng-packagr-lite",
+            "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
+            "options": {
+                "project": "packages/shared-components/ng-package.json"
+            },
+            "configurations": {
+                "production": {
+                    "tsConfig": "packages/shared-components/tsconfig.lib.prod.json"
+                },
+                "development": {
+                    "tsConfig": "packages/shared-components/tsconfig.lib.json"
+                }
+            },
+            "defaultConfiguration": "production"
+        },
+        "lint": {
+            "executor": "@nx/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["packages/shared-components/**/*.ts", "packages/shared-components/**/*.html"]
+            }
+        }
+    }
+}
