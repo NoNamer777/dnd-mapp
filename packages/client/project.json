@@ -76,7 +76,8 @@
                 "polyfills": ["zone.js", "zone.js/testing"],
                 "scripts": [],
                 "styles": ["packages/client/src/styles.scss"],
-                "tsConfig": "packages/client/tsconfig.spec.json"
+                "tsConfig": "packages/client/tsconfig.spec.json",
+                "watch": false
             },
             "configurations": {
                 "dev": {
@@ -85,7 +86,6 @@
                     "watch": true
                 },
                 "ci": {
-                    "watch": false,
                     "progress": false,
                     "sourceMap": false
                 }
