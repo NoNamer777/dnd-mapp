@@ -22,20 +22,16 @@
             },
             "defaultConfiguration": "production"
         },
-        "lint": {
-            "executor": "@nx/linter:eslint",
-            "outputs": ["{options.outputFile}"],
+        "build-storybook": {
+            "executor": "@storybook/angular:build-storybook",
+            "outputs": ["{options.outputDir}"],
             "options": {
-                "lintFilePatterns": ["packages/shared-components/**/*.ts", "packages/shared-components/**/*.html"]
-            }
-        },
-        "storybook": {
-            "executor": "@storybook/angular:start-storybook",
-            "options": {
-                "port": 4400,
-                "configDir": "packages/shared-components/.storybook",
+                "assets": [],
                 "browserTarget": "shared-components:build-storybook",
-                "compodoc": false
+                "compodoc": false,
+                "configDir": "packages/shared-components/.storybook",
+                "outputDir": "dist/storybook/shared-components",
+                "styles": []
             },
             "configurations": {
                 "ci": {
@@ -43,14 +39,15 @@
                 }
             }
         },
-        "build-storybook": {
-            "executor": "@storybook/angular:build-storybook",
-            "outputs": ["{options.outputDir}"],
+        "storybook": {
+            "executor": "@storybook/angular:start-storybook",
             "options": {
-                "outputDir": "dist/storybook/shared-components",
-                "configDir": "packages/shared-components/.storybook",
                 "browserTarget": "shared-components:build-storybook",
-                "compodoc": false
+                "compodoc": false,
+                "configDir": "packages/shared-components/.storybook",
+                "host": "0.0.0.0",
+                "open": false,
+                "port": 4300
             },
             "configurations": {
                 "ci": {
@@ -61,13 +58,24 @@
         "static-storybook": {
             "executor": "@nx/web:file-server",
             "options": {
+                "brotli": true,
                 "buildTarget": "shared-components:build-storybook",
+                "host": "0.0.0.0",
+                "port": 4301,
+                "spa": true,
                 "staticFilePath": "dist/storybook/shared-components"
             },
             "configurations": {
                 "ci": {
                     "buildTarget": "shared-components:build-storybook:ci"
                 }
+            }
+        },
+        "lint": {
+            "executor": "@nx/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["packages/shared-components/**/*.ts", "packages/shared-components/**/*.html"]
             }
         }
     }
