@@ -2,11 +2,12 @@ import { DeepPartial, FindOptionsWhere, Repository } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
+export type SaveOrUpdateOperation = 'create' | 'update';
 
 export abstract class BaseEntityCrudService<T extends BaseEntity = BaseEntity> {
     protected constructor(private repository: Repository<T>, private entityName: string) {}
 
-    abstract checkUniqueAttributes(entity: T): Promise<void>;
+    abstract checkUniqueAttributes(entity: T | Omit<T, 'id'>, operation: SaveOrUpdateOperation): Promise<void>;
 
     async findAll(): Promise<T[]> {
         return this.repository.find();
@@ -29,11 +30,11 @@ export abstract class BaseEntityCrudService<T extends BaseEntity = BaseEntity> {
                 `Cannot update ${this.entityName} with ID: '${entity.id}' because it does not exist.`
             );
         }
-        return await this.updateOrSave(entity);
+        return await this.updateOrSave(entity, 'update');
     }
 
     async create(entity: Omit<T, 'id'>): Promise<T> {
-        return await this.updateOrSave(entity);
+        return await this.updateOrSave(entity, 'create');
     }
 
     async deleteById(id: number): Promise<void> {
@@ -47,8 +48,8 @@ export abstract class BaseEntityCrudService<T extends BaseEntity = BaseEntity> {
         await this.repository.delete({ id: id } as FindOptionsWhere<T>);
     }
 
-    private async updateOrSave(entity): Promise<T> {
-        await this.checkUniqueAttributes(entity);
+    private async updateOrSave(entity: T | Omit<T, 'id'>, operation: SaveOrUpdateOperation): Promise<T> {
+        await this.checkUniqueAttributes(entity, operation);
 
         return await this.repository.save(entity as DeepPartial<T>);
     }
