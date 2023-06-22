@@ -18,21 +18,21 @@ describe('RaceService', () => {
     it('should get all Races', async () => {
         const { service } = await setupTestEnvironment();
 
-        expect(await service.getAll()).toHaveLength(1);
-        expect(await service.getAll()).toEqual(expect.arrayContaining([expect.objectContaining(defaultRace)]));
+        expect(await service.findAll()).toHaveLength(1);
+        expect(await service.findAll()).toEqual(expect.arrayContaining([expect.objectContaining(defaultRace)]));
     });
 
     describe('get by id', () => {
         it('should get Race by ID', async () => {
             const { service } = await setupTestEnvironment();
 
-            expect(await service.getById(1)).toEqual(defaultRace);
+            expect(await service.findById(1)).toEqual(defaultRace);
         });
 
         it('should throw 404', async () => {
             const { service } = await setupTestEnvironment();
 
-            await expect(service.getById(2)).rejects.toThrowError(
+            await expect(service.findById(2)).rejects.toThrowError(
                 new NotFoundException(`Race with ID: '2' is not found.`)
             );
         });
@@ -42,13 +42,13 @@ describe('RaceService', () => {
         it('should get Race by name', async () => {
             const { service } = await setupTestEnvironment();
 
-            expect(await service.getByName('Test Race')).toEqual(defaultRace);
+            expect(await service.findByName('Test Race')).toEqual(defaultRace);
         });
 
         it('should throw 404', async () => {
             const { service } = await setupTestEnvironment();
 
-            await expect(service.getByName('Race Test')).rejects.toThrowError(
+            await expect(service.findByName('Race Test')).rejects.toThrowError(
                 new NotFoundException(`Race with name: 'Race Test' is not found.`)
             );
         });
