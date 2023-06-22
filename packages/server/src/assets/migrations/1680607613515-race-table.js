@@ -1,7 +1,10 @@
 const { Table } = require('typeorm');
 
 module.exports = class raceTable1680607613515 {
-    /** @param {QueryRunner} queryRunner */
+    /**
+     * @param queryRunner {import('typeorm').QueryRunner}
+     * @return {Promise<void>}
+     */
     async up(queryRunner) {
         await queryRunner.createTable(
             new Table({
@@ -28,7 +31,10 @@ module.exports = class raceTable1680607613515 {
         await queryRunner.query(`INSERT INTO "race" ("name") VALUES ('Dwarf'), ('Elf');`);
     }
 
-    /** @param {QueryRunner} queryRunner */
+    /**
+     * @param queryRunner {import('typeorm').QueryRunner}
+     * @return {Promise<void>}
+     */
     async down(queryRunner) {
         await queryRunner.dropTable('race');
     }
