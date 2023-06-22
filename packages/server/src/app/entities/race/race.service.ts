@@ -8,7 +8,7 @@ import { BaseEntityCrudService } from '../../common';
 @Injectable()
 export class RaceService extends BaseEntityCrudService<Race> {
     constructor(@InjectRepository(RaceEntity) private raceRepository: Repository<RaceEntity>) {
-        super(raceRepository);
+        super(raceRepository, 'Race');
     }
 
     override async checkUniqueAttributes(raceData: Race): Promise<void> {

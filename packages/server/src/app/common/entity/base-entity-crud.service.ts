@@ -2,13 +2,9 @@ import { DeepPartial, FindOptionsWhere, Repository } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-@Injectable()
-export abstract class BaseEntityCrudService<T extends BaseEntity = BaseEntity> {
-    private repository: Repository<T>;
 
-    protected constructor(repository: Repository<T>) {
-        this.repository = repository;
-    }
+export abstract class BaseEntityCrudService<T extends BaseEntity = BaseEntity> {
+    protected constructor(private repository: Repository<T>, private entityName: string) {}
 
     abstract checkUniqueAttributes(entity: T): Promise<void>;
 
@@ -20,7 +16,7 @@ export abstract class BaseEntityCrudService<T extends BaseEntity = BaseEntity> {
         const byId = await this.repository.findOneBy({ id: id } as FindOptionsWhere<T>);
 
         if (!byId && throwsError) {
-            throw new NotFoundException();
+            throw new NotFoundException(`${this.entityName} with ID: '${id}' is not found.`);
         }
         return byId;
     }
@@ -29,7 +25,9 @@ export abstract class BaseEntityCrudService<T extends BaseEntity = BaseEntity> {
         const byId = await this.findById(entity.id, false);
 
         if (!byId) {
-            throw new NotFoundException();
+            throw new NotFoundException(
+                `Cannot update ${this.entityName} with ID: '${entity.id}' because it does not exist.`
+            );
         }
         return await this.updateOrSave(entity);
     }
@@ -42,7 +40,9 @@ export abstract class BaseEntityCrudService<T extends BaseEntity = BaseEntity> {
         const byId = await this.findById(id, false);
 
         if (!byId) {
-            throw new NotFoundException();
+            throw new NotFoundException(
+                `Could not remove ${this.entityName} with ID: '${id}' because it does not exist.`
+            );
         }
         await this.repository.delete({ id: id } as FindOptionsWhere<T>);
     }
