@@ -57,7 +57,7 @@ describe('RaceService', () => {
     describe('update', () => {
         it('should update', async () => {
             const { service } = await setupTestEnvironment();
-            const newRaceData = { id: 1, name: 'Race Test Test', traits: [] };
+            const newRaceData = { id: 1, name: 'Race Test Test' };
 
             expect(await service.update(newRaceData)).toEqual(newRaceData);
             expect(mockRaceDb.findOneBy({ id: 1 })).toEqual(expect.objectContaining(newRaceData));
@@ -65,7 +65,7 @@ describe('RaceService', () => {
 
         it('should throw 404 when using ID of non existing Race', async () => {
             const { service } = await setupTestEnvironment();
-            const newRaceData = { id: 2, name: 'Race Test Test', traits: [] };
+            const newRaceData = { id: 2, name: 'Race Test Test' };
 
             await expect(service.update(newRaceData)).rejects.toThrowError(
                 new NotFoundException(`Cannot update Race with ID: '2' because it does not exist.`)
@@ -73,10 +73,10 @@ describe('RaceService', () => {
         });
 
         it('should throw 400 when using non unique name', async () => {
-            mockRaceDb.insert({ name: 'Race Test Test', traits: [] });
+            mockRaceDb.insert({ name: 'Race Test Test' });
 
             const { service } = await setupTestEnvironment();
-            const newRaceData = { id: 1, name: 'Race Test Test', traits: [] };
+            const newRaceData = { id: 1, name: 'Race Test Test' };
 
             await expect(service.update(newRaceData)).rejects.toThrowError(
                 new NotFoundException(
@@ -90,7 +90,7 @@ describe('RaceService', () => {
     describe('create', () => {
         it('should create', async () => {
             const { service } = await setupTestEnvironment();
-            const newRaceData = { name: 'New Race Test', traits: [] };
+            const newRaceData = { name: 'New Race Test' };
 
             expect((await service.create(newRaceData)).id).toBeDefined();
             expect(mockRaceDb.findOneBy({ name: 'New Race Test' })).toEqual(expect.objectContaining(newRaceData));
@@ -98,7 +98,7 @@ describe('RaceService', () => {
 
         it('should throw 400 when using non unique name', async () => {
             const { service } = await setupTestEnvironment();
-            const newRaceData = { name: 'Test Race', traits: [] };
+            const newRaceData = { name: 'Test Race' };
 
             await expect(service.create(newRaceData)).rejects.toThrowError(
                 new NotFoundException(
