@@ -1,4 +1,4 @@
-import { Race } from '@dnd-mapp/data';
+import { Race, RaceTrait } from '@dnd-mapp/data';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('race')
@@ -13,4 +13,6 @@ export class RaceEntity implements Race {
         unique: true,
     })
     name: string;
+
+    traits: RaceTrait[] = [];
 }
