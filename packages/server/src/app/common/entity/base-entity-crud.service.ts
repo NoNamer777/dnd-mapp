@@ -1,6 +1,6 @@
 import { DeepPartial, FindOptionsWhere, Repository } from 'typeorm';
 import { BaseEntity } from './base.entity';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { NotFoundException } from '@nestjs/common';
 
 export type SaveOrUpdateOperation = 'create' | 'update';
 
