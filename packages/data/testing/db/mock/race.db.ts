@@ -26,6 +26,10 @@ class MockRaceDb {
         return null;
     }
 
+    save(raceData: Race): Race {
+        return raceData.id ? this.update({ id: raceData.id }, raceData) : this.insert(raceData);
+    }
+
     update(params: { id: number }, raceData: Race): Race {
         if (!this.db[params.id]) {
             throw new Error(`Could not update Race with ID: '${params.id}' because it does not exist.`);

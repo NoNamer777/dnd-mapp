@@ -5,7 +5,6 @@ import {
     Controller,
     Delete,
     Get,
-    NotFoundException,
     Param,
     ParseIntPipe,
     Post,
@@ -21,7 +20,7 @@ export class RaceController {
 
     @Get()
     async getAll(): Promise<Race[]> {
-        return await this.raceService.getAll();
+        return await this.raceService.findAll();
     }
 
     @Post()
@@ -31,7 +30,7 @@ export class RaceController {
 
     @Get(':id')
     async getById(@Param('id', ParseIntPipe) raceId: number): Promise<Race> {
-        return await this.raceService.getById(raceId);
+        return await this.raceService.findById(raceId);
     }
 
     @Delete(':id')
@@ -47,15 +46,6 @@ export class RaceController {
     ): Promise<Race> {
         const requestPath = request.url;
 
-        try {
-            await this.raceService.getById(raceId);
-        } catch (error) {
-            if (error instanceof NotFoundException) {
-                throw new NotFoundException(
-                    `Could not update Race on path: '${requestPath}', because it does not exist.`
-                );
-            }
-        }
         if (raceId !== requestBody.id) {
             throw new BadRequestException(
                 `'Could not update Race on path: '${requestPath}' with data from Race with ID: '${requestBody.id}'.`
