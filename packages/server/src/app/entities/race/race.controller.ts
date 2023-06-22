@@ -5,7 +5,6 @@ import {
     Controller,
     Delete,
     Get,
-    NotFoundException,
     Param,
     ParseIntPipe,
     Post,
