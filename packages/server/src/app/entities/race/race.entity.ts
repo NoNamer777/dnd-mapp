@@ -1,11 +1,9 @@
 import { Race, RaceTrait } from '@dnd-mapp/data';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity } from 'typeorm';
+import { BaseEntity } from '../../common';
 
 @Entity('race')
-export class RaceEntity implements Race {
-    @PrimaryGeneratedColumn('increment')
-    id: number;
-
+export class RaceEntity extends BaseEntity implements Race {
     @Column({
         name: 'name',
         type: 'varchar',
