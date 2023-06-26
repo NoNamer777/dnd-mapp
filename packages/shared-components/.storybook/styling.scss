@@ -1,0 +1,27 @@
+@use '../src/lib/styling/theme-variabels' as *;
+
+html,
+body {
+    font-family: $font-family;
+    font-size: $font-size;
+    font-weight: $font-weight;
+    height: 100%;
+}
+
+main,
+section {
+    padding: 1em;
+    height: auto;
+}
+
+main {
+    background-color: #fafafa;
+
+    section {
+        background-color: #f1f1f1;
+    }
+}
+
+* {
+    margin: 0;
+}

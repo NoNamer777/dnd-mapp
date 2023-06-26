@@ -31,7 +31,7 @@
                 "compodoc": false,
                 "configDir": "packages/shared-components/.storybook",
                 "outputDir": "dist/storybook/shared-components",
-                "styles": []
+                "styles": ["packages/shared-components/.storybook/styling.scss"]
             },
             "configurations": {
                 "ci": {
