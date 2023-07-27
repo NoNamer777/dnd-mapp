@@ -11,7 +11,10 @@ export class AbilityService extends BaseEntityCrudService<Ability> {
         super(abilityRepository, 'Ability');
     }
 
-    override async checkUniqueAttributes(ability: Ability, operation: SaveOrUpdateOperation): Promise<void> {
+    protected override async checkUniqueAttributes(
+        ability: AbilityEntity,
+        operation: SaveOrUpdateOperation
+    ): Promise<void> {
         const byName = await this.findByName(ability.name, false);
 
         if (byName || (byName && ability.id && byName.id !== ability.id)) {
