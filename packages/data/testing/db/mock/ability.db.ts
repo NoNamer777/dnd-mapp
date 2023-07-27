@@ -64,6 +64,7 @@ class MockAbilityDb {
 export const defaultAbility: Ability = {
     id: 1,
     name: 'Test Ability',
+    skills: [],
 };
 
 export const mockAbilityDb = new MockAbilityDb();
