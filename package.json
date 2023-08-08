@@ -6,6 +6,7 @@
     "scripts": {
         "nx": "nx",
         "typeorm": "typeorm-ts-node-commonjs",
+        "preserver:start": "npm run typeorm migration:run -- -d packages/server/typeorm/config.dev.ts",
         "server:start": "nx serve server"
     },
     "workspaces": [

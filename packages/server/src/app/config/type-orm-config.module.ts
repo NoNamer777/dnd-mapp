@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmModule, TypeOrmModuleAsyncOptions } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
-const typeOrmConfig = {
+const typeOrmConfig: TypeOrmModuleAsyncOptions = {
     imports: [ConfigModule],
     inject: [ConfigService],
     useFactory: (configService: ConfigService) => ({
@@ -10,7 +10,7 @@ const typeOrmConfig = {
         entities: [],
         autoLoadEntities: true,
         synchronize: false,
-        migrationsRun: true,
+        migrationsRun: false,
     }),
 };
 

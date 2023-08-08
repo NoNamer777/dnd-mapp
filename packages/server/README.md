@@ -37,11 +37,6 @@ database:
     # use an in-memory database.
     database: 'mydb'
 
-    # The locations to look for code to handle database migrations which incrementally build up the database and its data
-    migrations:
-        - './migrations/*'
-        - './different-path/migrations.js'
-
     # Which database logs will be included in the log output. By default, it will include the 'info', 'error', and 'warn' logs
     logging:
         - 'query'
@@ -80,11 +75,36 @@ configuration file.
 
 ## Database migrations
 
-When setting up a database, the server is configured to use migrations to build up the database and it's data iteratively
-so that no data is lost on restart of the server application. For more information on how to use, or create these migration
+When setting up a database, the server is configured to use migrations to build up the database iteratively so that no
+data is lost on restart of the server application. For more information on how to use, or create these migration
 files, please refer to [the official documentation of TypeORM](https://typeorm.io/migrations).
 
-Please note, that this server currently only support migration files in JavaScript format.
+In order to run the database migrations you'll need to provide your datasource configuration so the TypeORM is aware of
+what type of database is used and where it can find the migrations files. Your configuration should look like the following:
+
+```typescript
+import { DataSource } from 'typeorm';
+
+// Example of a MySQL database configuration
+const MysqlConfig = new DataSource({
+    type: 'mysql',
+    host: 'localhost',
+    port: 3306,
+    database: 'database',
+    username: 'username',
+    password: 'password',
+    migrations: ['path/to/migration/files/*.ts'],
+});
+
+// Example of a Sqlite database configuration
+const SqliteConfig = new DataSource({
+    type: 'sqlite',
+    database: 'mydatabase.db',
+    migrations: ['path/to/migration/files/*.ts'],
+});
+
+export default MysqlConfig;
+```
 
 ## Commands
 
