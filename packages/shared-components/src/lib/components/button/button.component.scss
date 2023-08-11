@@ -1,17 +1,25 @@
+@use '../../styling/theme-variabels' as *;
+
 :host {
-    border: 1px solid #fafafa;
-    background-color: #fafafa;
-    color: #121212;
+    border: 1px solid $surface;
+    border-radius: 0.5em;
+    background-color: $surface;
+    color: $on-surface;
+    padding: 0.5em 1.25em;
+    font-size: 1em;
+    font-family: inherit;
 
     &:hover {
         cursor: pointer;
-        background-color: #f1f1f1;
-        color: #191919;
+        background-color: $surface;
+        border-color: $surface;
+        color: $on-surface;
     }
 
     &:disabled {
         cursor: default;
-        background-color: #eeeeee;
-        color: #333333;
+        background-color: $disabled;
+        border-color: $disabled;
+        color: $on-disabled;
     }
 }
