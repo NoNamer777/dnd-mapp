@@ -12,6 +12,6 @@ export const Primary: StoryObj<ButtonComponent> = {
         template: `<button dma-button [disabled]="disabled">Button</button>`,
     }),
     args: {
-        disabled: true,
+        disabled: false,
     },
 };

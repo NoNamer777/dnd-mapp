@@ -1,15 +1,16 @@
 import type { StorybookConfig } from '@storybook/angular';
 
-const config: StorybookConfig = {
-    stories: ['../**/*.stories.@(js|jsx|ts|tsx|mdx)'],
-    addons: ['@storybook/addon-essentials'],
+export default {
+    addons: ['@storybook/addon-styling'],
+    core: {
+        disableTelemetry: true,
+    },
     framework: {
         name: '@storybook/angular',
         options: {},
     },
-};
-
-export default config;
+    stories: ['../**/*.stories.@(ts|tsx|mdx)'],
+} as StorybookConfig;
 
 // To customize your webpack configuration you can use the webpackFinal field.
 // Check https://storybook.js.org/docs/react/builders/webpack#extending-storybooks-webpack-config

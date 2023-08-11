@@ -1,0 +1,37 @@
+@use '../src/lib/styling/theme-variabels' as *;
+
+html,
+body {
+    font-family: $font-family;
+    font-size: $font-size;
+    font-weight: $font-weight;
+    height: 100%;
+}
+
+body {
+    display: flex !important;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 0 !important;
+}
+
+main,
+section {
+    padding: 1em;
+    height: auto;
+}
+
+main {
+    background-color: $background;
+    color: $on-background;
+    flex-grow: 1;
+
+    section {
+        background-color: $surface;
+        color: $on-surface;
+    }
+}
+
+* {
+    margin: 0;
+}
