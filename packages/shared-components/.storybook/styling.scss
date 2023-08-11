@@ -8,6 +8,13 @@ body {
     height: 100%;
 }
 
+body {
+    display: flex !important;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 0 !important;
+}
+
 main,
 section {
     padding: 1em;
@@ -15,10 +22,13 @@ section {
 }
 
 main {
-    background-color: #fafafa;
+    background-color: $background;
+    color: $on-background;
+    flex-grow: 1;
 
     section {
-        background-color: #f1f1f1;
+        background-color: $surface;
+        color: $on-surface;
     }
 }
 
