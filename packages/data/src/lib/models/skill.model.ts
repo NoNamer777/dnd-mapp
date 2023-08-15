@@ -5,3 +5,5 @@ export interface Skill {
     name: string;
     ability: Ability;
 }
+
+export type CreateSkillData = Omit<Skill, 'id'>;

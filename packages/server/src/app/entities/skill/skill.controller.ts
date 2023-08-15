@@ -2,6 +2,7 @@ import {
     BadRequestException,
     Body,
     Controller,
+    Delete,
     Get,
     Param,
     ParseIntPipe,
@@ -42,5 +43,10 @@ export class SkillController {
             );
         }
         return await this.skillService.update(data);
+    }
+
+    @Delete('/:id')
+    async deleteById(@Param('id', ParseIntPipe) id: number): Promise<void> {
+        await this.skillService.deleteById(id);
     }
 }
