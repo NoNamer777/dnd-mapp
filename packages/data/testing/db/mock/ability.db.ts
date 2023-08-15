@@ -1,11 +1,11 @@
 import { Ability, CreateAbilityData } from '@dnd-mapp/data';
 
-interface AbilityDb {
+interface AbilityDB {
     [id: string]: Ability;
 }
 
-class MockAbilityDb {
-    private db: AbilityDb;
+class MockAbilityDB {
+    private db: AbilityDB;
     private nextId: number;
 
     constructor() {
@@ -67,4 +67,4 @@ export const defaultAbility: Ability = {
     skills: [],
 };
 
-export const mockAbilityDb = new MockAbilityDb();
+export const mockAbilityDB = new MockAbilityDB();
