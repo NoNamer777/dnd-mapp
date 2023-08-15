@@ -2,11 +2,10 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { AbilityEntity } from './ability.entity';
 import { Repository } from 'typeorm';
-import { Ability } from '@dnd-mapp/data';
 import { BaseEntityCrudService, SaveOrUpdateOperation } from '../../common';
 
 @Injectable()
-export class AbilityService extends BaseEntityCrudService<Ability> {
+export class AbilityService extends BaseEntityCrudService<AbilityEntity> {
     constructor(@InjectRepository(AbilityEntity) private abilityRepository: Repository<AbilityEntity>) {
         super(abilityRepository, 'Ability');
     }
@@ -27,7 +26,7 @@ export class AbilityService extends BaseEntityCrudService<Ability> {
         }
     }
 
-    async findByName(name: string, throwsError = true): Promise<Ability> {
+    async findByName(name: string, throwsError = true): Promise<AbilityEntity> {
         const byName = await this.abilityRepository.findOneBy({ name: name });
 
         if (!byName && throwsError) {
