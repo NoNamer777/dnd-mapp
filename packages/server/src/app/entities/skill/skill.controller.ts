@@ -2,6 +2,8 @@ import {
     Body,
     Controller,
     Get,
+    Param,
+    ParseIntPipe,
     Post,
 } from '@nestjs/common';
 import { SkillService } from './skill.service';
@@ -19,5 +21,10 @@ export class SkillController {
     @Post()
     async create(@Body() data: CreateSkillData): Promise<Skill> {
         return await this.skillService.create(data);
+    }
+
+    @Get('/:id')
+    async getById(@Param('id', ParseIntPipe) id: number) {
+        return await this.skillService.findById(id);
     }
 }
