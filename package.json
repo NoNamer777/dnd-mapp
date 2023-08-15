@@ -5,7 +5,8 @@
     "private": true,
     "scripts": {
         "nx": "nx",
-        "typeorm": "typeorm-ts-node-commonjs"
+        "typeorm": "typeorm-ts-node-commonjs",
+        "server:start": "packages/server/start.sh"
     },
     "workspaces": [
         "packages/*"

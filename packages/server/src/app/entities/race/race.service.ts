@@ -11,7 +11,7 @@ export class RaceService extends BaseEntityCrudService<Race> {
         super(raceRepository, 'Race');
     }
 
-    override async checkUniqueAttributes(raceData: Race, operation: SaveOrUpdateOperation): Promise<void> {
+    protected override async checkUniqueAttributes(raceData: Race, operation: SaveOrUpdateOperation): Promise<void> {
         const byName = await this.findByName(raceData.name, false);
 
         if (byName || (byName && raceData.id && byName.id !== raceData.id)) {

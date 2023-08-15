@@ -1,4 +1,4 @@
-import { defaultRace, mockRaceDb } from '@dnd-mapp/data/testing';
+import { defaultRace, mockRaceDB } from '@dnd-mapp/data/testing';
 import { NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { RaceRepositoryProvider } from '../../../../testing';
@@ -60,7 +60,7 @@ describe('RaceService', () => {
             const newRaceData = { id: 1, name: 'Race Test Test' };
 
             expect(await service.update(newRaceData)).toEqual(newRaceData);
-            expect(mockRaceDb.findOneBy({ id: 1 })).toEqual(expect.objectContaining(newRaceData));
+            expect(mockRaceDB.findOneBy({ id: 1 })).toEqual(expect.objectContaining(newRaceData));
         });
 
         it('should throw 404 when using ID of non existing Race', async () => {
@@ -73,7 +73,7 @@ describe('RaceService', () => {
         });
 
         it('should throw 400 when using non unique name', async () => {
-            mockRaceDb.insert({ name: 'Race Test Test' });
+            mockRaceDB.insert({ name: 'Race Test Test' });
 
             const { service } = await setupTestEnvironment();
             const newRaceData = { id: 1, name: 'Race Test Test' };
@@ -83,7 +83,7 @@ describe('RaceService', () => {
                     `Cannot update Race with ID: '1' because the name: 'Race Test Test' is already in use by another Race (ID: '2').`
                 )
             );
-            expect(mockRaceDb.findOneBy({ id: 1 })).toEqual(expect.not.objectContaining(newRaceData));
+            expect(mockRaceDB.findOneBy({ id: 1 })).toEqual(expect.not.objectContaining(newRaceData));
         });
     });
 
@@ -93,7 +93,7 @@ describe('RaceService', () => {
             const newRaceData = { name: 'New Race Test' };
 
             expect((await service.create(newRaceData)).id).toBeDefined();
-            expect(mockRaceDb.findOneBy({ name: 'New Race Test' })).toEqual(expect.objectContaining(newRaceData));
+            expect(mockRaceDB.findOneBy({ name: 'New Race Test' })).toEqual(expect.objectContaining(newRaceData));
         });
 
         it('should throw 400 when using non unique name', async () => {
@@ -113,7 +113,7 @@ describe('RaceService', () => {
             const { service } = await setupTestEnvironment();
 
             await service.deleteById(1);
-            expect(mockRaceDb.findOneBy({ id: 1 })).toBeNull();
+            expect(mockRaceDB.findOneBy({ id: 1 })).toBeNull();
         });
 
         it('should throw 404 for deleting non existent Race', async () => {

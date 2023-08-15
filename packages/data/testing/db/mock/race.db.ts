@@ -1,11 +1,11 @@
 import { CreateRaceData, Race } from '@dnd-mapp/data';
 
-interface RaceDb {
+interface RaceDB {
     [raceId: string]: Race;
 }
 
-class MockRaceDb {
-    private db: RaceDb;
+class MockRaceDB {
+    private db: RaceDB;
     private nextId: number;
 
     constructor() {
@@ -66,4 +66,4 @@ export const defaultRace: Race = {
     name: 'Test Race',
 };
 
-export const mockRaceDb = new MockRaceDb();
+export const mockRaceDB = new MockRaceDB();

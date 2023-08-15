@@ -28,6 +28,9 @@ export default () => {
     try {
         config = load(readFileSync(YAML_ENVIRONMENT_PATH, 'utf-8')) as Record<string, unknown>;
     } catch (error) {
+        if (YAML_ENVIRONMENT_PATH) {
+            throw error;
+        }
         config = new ConfigOptions() as Record<string, unknown>;
 
         config.server = new ServerConfigOptions();

@@ -71,12 +71,6 @@ export class DatabaseConfigOptions {
     @Expose()
     @IsArray()
     @IsString({ each: true })
-    @IsOptional()
-    migrations: string[] = [];
-
-    @Expose()
-    @IsArray()
-    @IsString({ each: true })
     @IsIn(['query', 'error', 'schema', 'warn', 'info', 'log'], { each: true })
     @IsOptional()
     logging?: string[] = ['info', 'error', 'warn'];

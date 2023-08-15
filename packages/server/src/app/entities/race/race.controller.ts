@@ -48,7 +48,7 @@ export class RaceController {
 
         if (raceId !== requestBody.id) {
             throw new BadRequestException(
-                `'Could not update Race on path: '${requestPath}' with data from Race with ID: '${requestBody.id}'.`
+                `Could not update Race on path: '${requestPath}' with data from Race with ID: '${requestBody.id}'.`
             );
         }
         return await this.raceService.update(requestBody);

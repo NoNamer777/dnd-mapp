@@ -7,7 +7,10 @@ export type SaveOrUpdateOperation = 'create' | 'update';
 export abstract class BaseEntityCrudService<T extends BaseEntity = BaseEntity> {
     protected constructor(private repository: Repository<T>, private entityName: string) {}
 
-    abstract checkUniqueAttributes(entity: T | Omit<T, 'id'>, operation: SaveOrUpdateOperation): Promise<void>;
+    protected abstract checkUniqueAttributes(
+        entity: T | Omit<T, 'id'>,
+        operation: SaveOrUpdateOperation
+    ): Promise<void>;
 
     async findAll(): Promise<T[]> {
         return this.repository.find();

@@ -1,8 +1,9 @@
 import { Test } from '@nestjs/testing';
 import { abilityRepositoryProvider } from '../../../../testing';
 import { AbilityService } from './ability.service';
-import { defaultAbility, mockAbilityDb } from '@dnd-mapp/data/testing';
+import { defaultAbility, defaultSkill, mockAbilityDB } from '@dnd-mapp/data/testing';
 import { NotFoundException } from '@nestjs/common';
+import { Ability, CreateAbilityData } from '@dnd-mapp/data';
 
 describe('AbilityService', () => {
     async function setupTestEnvironment() {
@@ -34,15 +35,15 @@ describe('AbilityService', () => {
     describe('update', () => {
         it('should update', async () => {
             const { service } = await setupTestEnvironment();
-            const newAbilityData = { id: 1, name: 'Ability Test Test' };
+            const newAbilityData: Ability = { id: 1, name: 'Ability Test Test', skills: [defaultSkill] };
 
             expect(await service.update(newAbilityData)).toEqual(newAbilityData);
-            expect(mockAbilityDb.findOneBy({ id: 1 })).toEqual(expect.objectContaining(newAbilityData));
+            expect(mockAbilityDB.findOneBy({ id: 1 })).toEqual(expect.objectContaining(newAbilityData));
         });
 
         it('should throw 404 when using ID of non existing Ability', async () => {
             const { service } = await setupTestEnvironment();
-            const newAbilityData = { id: 2, name: 'Ability Test Test' };
+            const newAbilityData: Ability = { id: 2, name: 'Ability Test Test', skills: [defaultSkill] };
 
             await expect(service.update(newAbilityData)).rejects.toThrowError(
                 new NotFoundException(`Cannot update Ability with ID: '2' because it does not exist.`)
@@ -50,34 +51,34 @@ describe('AbilityService', () => {
         });
 
         it('should throw 400 when using non unique name', async () => {
-            mockAbilityDb.insert({ name: 'Ability Test Test' });
+            mockAbilityDB.insert({ name: 'Ability Test Test', skills: [defaultSkill] });
 
             const { service } = await setupTestEnvironment();
-            const newAbilityData = { id: 1, name: 'Ability Test Test' };
+            const newAbilityData: Ability = { id: 1, name: 'Ability Test Test', skills: [defaultSkill] };
 
             await expect(service.update(newAbilityData)).rejects.toThrowError(
                 new NotFoundException(
                     `Cannot update Ability with ID: '1' because the name: 'Ability Test Test' is already in use by another Ability (ID: '2').`
                 )
             );
-            expect(mockAbilityDb.findOneBy({ id: 1 })).toEqual(expect.not.objectContaining(newAbilityData));
+            expect(mockAbilityDB.findOneBy({ id: 1 })).toEqual(expect.not.objectContaining(newAbilityData));
         });
     });
 
     describe('create', () => {
         it('should create', async () => {
             const { service } = await setupTestEnvironment();
-            const newAbilityData = { name: 'New Ability Test' };
+            const newAbilityData: CreateAbilityData = { name: 'New Ability Test', skills: [defaultSkill] };
 
             expect((await service.create(newAbilityData)).id).toBeDefined();
-            expect(mockAbilityDb.findOneBy({ name: 'New Ability Test' })).toEqual(
+            expect(mockAbilityDB.findOneBy({ name: 'New Ability Test' })).toEqual(
                 expect.objectContaining(newAbilityData)
             );
         });
 
         it('should throw 400 when using non unique name', async () => {
             const { service } = await setupTestEnvironment();
-            const newAbilityData = { name: 'Test Ability' };
+            const newAbilityData: CreateAbilityData = { name: 'Test Ability', skills: [defaultSkill] };
 
             await expect(service.create(newAbilityData)).rejects.toThrowError(
                 new NotFoundException(

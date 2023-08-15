@@ -1,6 +1,7 @@
-import { mockAbilityDb, mockRaceDb } from '@dnd-mapp/data/testing';
+import { mockSkillDB, mockRaceDB, mockAbilityDB } from '@dnd-mapp/data/testing';
 
 beforeEach(() => {
-    mockRaceDb.reset();
-    mockAbilityDb.reset();
+    mockRaceDB.reset();
+    mockAbilityDB.reset();
+    mockSkillDB.reset();
 });
