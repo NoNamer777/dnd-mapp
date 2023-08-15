@@ -25,4 +25,13 @@ export class SkillService extends BaseEntityCrudService<SkillEntity> {
             throw new BadRequestException(errorMessage);
         }
     }
+
+    async findByName(name: string, throwsError = true): Promise<SkillEntity> {
+        const byName = await this.skillRepository.findOneBy({ name: name });
+
+        if (!byName && throwsError) {
+            throw new NotFoundException(`Skill with name: '${name}' is not found.`);
+        }
+        return byName;
+    }
 }
