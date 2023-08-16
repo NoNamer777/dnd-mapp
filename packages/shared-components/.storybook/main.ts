@@ -1,7 +1,7 @@
 import type { StorybookConfig } from '@storybook/angular';
 
 export default {
-    addons: ['@storybook/addon-styling'],
+    addons: ['@storybook/addon-styling', '@storybook/addon-controls'],
     core: {
         disableTelemetry: true,
     },
@@ -9,7 +9,7 @@ export default {
         name: '@storybook/angular',
         options: {},
     },
-    stories: ['../**/*.stories.@(ts|tsx|mdx)'],
+    stories: ['../**/*.stories.ts'],
 } as StorybookConfig;
 
 // To customize your webpack configuration you can use the webpackFinal field.
