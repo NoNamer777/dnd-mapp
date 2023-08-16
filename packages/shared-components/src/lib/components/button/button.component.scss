@@ -20,10 +20,12 @@
     }
 
     &:focus {
+        // dmaButtonType = text
         background-color: focus(#6750a4);
     }
 
     &:active {
+        // dmaButtonType = text
         background-color: active(#6750a4);
     }
 

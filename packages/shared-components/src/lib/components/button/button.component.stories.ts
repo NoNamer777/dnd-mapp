@@ -15,4 +15,10 @@ export const Primary: StoryObj<ButtonComponent> = {
         disabled: false,
         dmaButtonType: 'text',
     } as Partial<ButtonComponent> & Partial<HTMLButtonElement>,
+    argTypes: {
+        dmaButtonType: {
+            control: 'select',
+            options: ['elevated', 'filled', 'tonal', 'outlined', 'text'],
+        },
+    },
 };
