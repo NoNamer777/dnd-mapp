@@ -1,13 +1,14 @@
 @use '../../styling/theme-variabels' as *;
 
 :host {
-    padding: 0.5em 1.25em;
+    padding: 0.565em 0.75em;
     font-size: 1em;
     font-family: inherit;
+    min-width: 3em;
 
     // dmaButtonType = text
     border: 1px solid transparent;
-    border-radius: 0.5em;
+    border-radius: 1.5em;
     background-color: transparent;
     color: $primary;
 
