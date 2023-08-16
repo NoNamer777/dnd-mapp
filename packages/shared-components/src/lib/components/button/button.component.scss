@@ -1,25 +1,36 @@
 @use '../../styling/theme-variabels' as *;
 
 :host {
-    border: 1px solid $surface;
-    border-radius: 0.5em;
-    background-color: $surface;
-    color: $on-surface;
     padding: 0.5em 1.25em;
     font-size: 1em;
     font-family: inherit;
 
+    // dmaButtonType = text
+    border: 1px solid transparent;
+    border-radius: 0.5em;
+    background-color: transparent;
+    color: $primary;
+
     &:hover {
         cursor: pointer;
-        background-color: $surface;
-        border-color: $surface;
-        color: $on-surface;
+
+        // dmaButtonType = text
+        background-color: hover(#6750a4);
+    }
+
+    &:focus {
+        background-color: focus(#6750a4);
+    }
+
+    &:active {
+        background-color: active(#6750a4);
     }
 
     &:disabled {
         cursor: default;
-        background-color: $disabled;
-        border-color: $disabled;
-        color: $on-disabled;
+
+        // dmaButtonType = text
+        color: $on-surface;
+        opacity: $opacity-disabled;
     }
 }
