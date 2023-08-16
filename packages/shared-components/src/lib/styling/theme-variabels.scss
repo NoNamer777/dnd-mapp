@@ -1,14 +1,29 @@
+@use 'sass:color';
+
 @import './font';
 
 $font-family: var(--font-family, #{'IBM Plex Sans', sans-serif});
 $font-size: var(--font-size, 16px);
 $font-weight: var(--font-weight, 400);
 
-$background: var(--background, #232323);
-$on-background: var(--on-background, #e0e0e0);
+$background: var(--background, #fef7ff);
+$on-background: var(--on-background, #1c1b1f);
 
-$surface: var(--surface, #232323);
-$on-surface: var(--on-surface, #e0e0e0);
+$surface: var(--surface, #fef7ff);
+$on-surface: var(--on-surface, #1c1b1f);
 
-$disabled: var(--disabled, #232323);
-$on-disabled: var(--on-disabled, #e0e0e0);
+$opacity-disabled: 38%;
+
+$primary: var(--primary, #6750a4);
+
+@function hover($color) {
+    @return color.change($color, $alpha: 0.08);
+}
+
+@function focus($color) {
+    @return color.change($color, $alpha: 0.2);
+}
+
+@function active($color) {
+    @return color.change($color, $alpha: 0.32);
+}
