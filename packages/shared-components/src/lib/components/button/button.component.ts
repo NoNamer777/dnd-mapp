@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+
+type DmaButtonType = 'elevated' | 'filled' | 'tonal' | 'outlined' | 'text';
 
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
@@ -7,4 +9,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     styleUrls: ['./button.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ButtonComponent {}
+export class ButtonComponent {
+    @Input('dma-button') dmaButtonType: DmaButtonType = 'text';
+}

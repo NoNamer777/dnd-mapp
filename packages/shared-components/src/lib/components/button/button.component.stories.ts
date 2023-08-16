@@ -13,5 +13,6 @@ export const Primary: StoryObj<ButtonComponent> = {
     }),
     args: {
         disabled: false,
-    },
+        dmaButtonType: 'text',
+    } as Partial<ButtonComponent> & Partial<HTMLButtonElement>,
 };
