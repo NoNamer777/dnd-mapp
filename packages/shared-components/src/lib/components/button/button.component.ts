@@ -3,7 +3,13 @@ import { StateComponent } from '../state';
 
 type DmaButtonType = 'elevated' | 'filled' | 'tonal' | 'outlined' | 'text';
 
-const buttonTypeAttributeName = 'dma-button-type';
+const containerColorsPerButtonType = new Map<DmaButtonType, { baseLayer: string; stateLayer: string }>([
+    ['elevated', { baseLayer: 'var(--surface-container-low)', stateLayer: 'var(--primary)' }],
+    ['filled', { baseLayer: 'var(--primary)', stateLayer: 'var(--on-primary)' }],
+    ['tonal', { baseLayer: 'var(--secondary-container)', stateLayer: 'var(--on-secondary-container)' }],
+    ['outlined', { baseLayer: 'var(--surface)', stateLayer: 'var(--primary)' }],
+    ['text', { baseLayer: 'transparent', stateLayer: 'var(--primary)' }],
+]);
 
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
@@ -27,6 +33,8 @@ export class ButtonComponent extends StateComponent implements OnInit {
     }
 
     private updateRenderedAttribute() {
-        this.renderer.setAttribute(this.elementRef.nativeElement, buttonTypeAttributeName, this.buttonType);
+        /* eslint-disable @typescript-eslint/no-non-null-assertion */
+        this.baseColor = containerColorsPerButtonType.get(this.buttonType)!.baseLayer;
+        this.layerColor = containerColorsPerButtonType.get(this.buttonType)!.stateLayer;
     }
 }
