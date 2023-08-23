@@ -9,7 +9,7 @@ export default {
 export const Primary: StoryObj<ButtonComponent> = {
     render: (args: ButtonComponent) => ({
         props: args,
-        template: `<button dma-button [disabled]="disabled">Button</button>`,
+        template: `<button [dma-button]="dmaButtonType" [disabled]="disabled">Button</button>`,
     }),
     args: {
         disabled: false,
