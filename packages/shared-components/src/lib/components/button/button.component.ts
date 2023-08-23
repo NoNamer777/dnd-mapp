@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit } from '@angular/core';
+import { StateComponent } from '../state';
 
 type DmaButtonType = 'elevated' | 'filled' | 'tonal' | 'outlined' | 'text';
 
@@ -11,7 +12,7 @@ const buttonTypeAttributeName = 'dma-button-type';
     styleUrls: ['./button.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ButtonComponent implements OnInit {
+export class ButtonComponent extends StateComponent implements OnInit {
     @Input('dma-button') set dmaButtonType(buttonType: DmaButtonType) {
         this.buttonType = buttonType;
 
