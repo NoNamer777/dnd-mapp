@@ -19,9 +19,8 @@ export class ButtonComponent extends StateComponent implements OnInit {
         this.updateRenderedAttribute();
     }
 
+    @HostBinding('attr.dma-button-type')
     private buttonType: DmaButtonType = 'text';
-
-    constructor(private renderer: Renderer2, private elementRef: ElementRef) {}
 
     ngOnInit() {
         this.updateRenderedAttribute();
