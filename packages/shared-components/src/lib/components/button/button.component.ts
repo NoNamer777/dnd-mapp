@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit } from '@angular/core';
 import { StateComponent } from '../state';
 
-type DmaButtonType = 'elevated' | 'filled' | 'tonal' | 'outlined' | 'text';
+export type DmaButtonType = 'elevated' | 'filled' | 'tonal' | 'outlined' | 'text';
 
 const containerColorsPerButtonType = new Map<DmaButtonType, { baseLayer: string; stateLayer: string }>([
     ['elevated', { baseLayer: 'var(--surface-container-low)', stateLayer: 'var(--primary)' }],
