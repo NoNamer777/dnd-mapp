@@ -1,28 +1,55 @@
-import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, HostListener } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, HostListener, Input } from '@angular/core';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
+
+type State = 'focussed' | 'hovered' | 'pressed' | 'dragging';
+
+const opacityPerState = new Map<State, number>([
+    ['focussed', 12],
+    ['hovered', 8],
+    ['pressed', 12],
+    ['dragging', 16],
+]);
 
 @Component({
-    selector: 'dma-state',
+    // eslint-disable-next-line @angular-eslint/component-selector
+    selector: '[dma-state]',
     template: '',
     changeDetection: ChangeDetectionStrategy.Default,
 })
 export class StateComponent {
-    @HostBinding('attr.dma-focus')
-    protected isFocussed: string;
+    @Input()
+    set disabled(disabled: string | boolean) {
+        this._disabled = coerceBooleanProperty(disabled);
+    }
+    private _disabled = false;
 
-    @HostBinding('attr.dma-hover')
-    protected isHovered: string;
+    @HostBinding('attr.dma-focussed')
+    get focussed() {
+        return this.isFocussed ? '' : undefined;
+    }
+    protected isFocussed = false;
 
-    @HostBinding('attr.dma-press')
-    protected isPressed: string;
+    @HostBinding('attr.dma-hovered')
+    get hovered() {
+        return this.isHovered ? '' : undefined;
+    }
+    protected isHovered = false;
 
-    @HostBinding('attr.dma-drag')
-    protected isDragged: string;
+    @HostBinding('attr.dma-pressed')
+    get pressed() {
+        return this.isPressed ? '' : undefined;
+    }
+    protected isPressed = false;
+
+    @HostBinding('attr.dma-dragging')
+    get dragging() {
+        return this.isDragging ? '' : undefined;
+    }
+    protected isDragging = false;
 
     protected opacity = 0;
     protected baseColor = '#ffffff';
     protected layerColor = '#ffffff';
-
-    constructor(private elementRef: ElementRef) {}
 
     @HostBinding('style.backgroundColor')
     get backgroundColor() {
@@ -31,74 +58,66 @@ export class StateComponent {
 
     @HostListener('focus')
     onStartFocussing() {
-        if (this.isDisabled()) return;
+        if (this._disabled) return;
 
-        this.opacity += 12;
-        this.isFocussed = '';
+        this.opacity += opacityPerState.get('focussed');
+        this.isFocussed = true;
     }
 
-    @HostListener('window:keypress.escape')
     @HostListener('blur')
     onStopFocussing() {
-        if (!this.isStateActive(this.isFocussed)) return;
+        if (!this.isFocussed) return;
 
-        this.opacity -= 12;
-        this.isFocussed = undefined;
+        this.opacity -= opacityPerState.get('focussed');
+        this.isFocussed = false;
     }
 
     @HostListener('mouseover')
     onStartHovering() {
-        if (this.isDisabled()) return;
+        if (this._disabled) return;
 
-        this.opacity += 8;
-        this.isHovered = '';
+        this.opacity += opacityPerState.get('hovered');
+        this.isHovered = true;
     }
 
     @HostListener('mouseout')
     onStopHovering() {
-        if (!this.isStateActive(this.isHovered)) return;
+        if (!this.isHovered) return;
 
-        this.opacity -= 8;
-        this.isHovered = undefined;
+        this.opacity -= opacityPerState.get('hovered');
+        this.isHovered = false;
     }
 
     @HostListener('mousedown')
     onStartClicking() {
-        if (this.isDisabled()) return;
+        if (this._disabled) return;
 
-        this.opacity += 12;
-        this.isPressed = '';
+        this.opacity += opacityPerState.get('pressed');
+        this.isPressed = true;
     }
 
-    @HostListener('window:mouseup')
+    @HostListener('document:mouseup')
+    @HostListener('mouseup')
     onStopClicking() {
-        if (!this.isStateActive(this.isPressed)) return;
+        if (!this.isPressed) return;
 
-        this.opacity -= 12;
-        this.isPressed = undefined;
+        this.opacity -= opacityPerState.get('pressed');
+        this.isPressed = false;
     }
 
     @HostListener('dragstart')
     onStartDragging() {
-        if (this.isDisabled()) return;
+        if (this._disabled) return;
 
-        this.opacity += 16;
-        this.isDragged = '';
+        this.opacity += opacityPerState.get('dragging');
+        this.isDragging = true;
     }
 
     @HostListener('dragend')
     onStopDragging() {
-        if (!this.isStateActive(this.isDragged)) return;
+        if (!this.isDragging) return;
 
-        this.opacity -= 16;
-        this.isDragged = undefined;
-    }
-
-    private isStateActive(state: string) {
-        return state === '';
-    }
-
-    private isDisabled() {
-        return (this.elementRef.nativeElement as HTMLElement).getAttribute('disabled') === '';
+        this.opacity -= opacityPerState.get('dragging');
+        this.isDragging = false;
     }
 }
