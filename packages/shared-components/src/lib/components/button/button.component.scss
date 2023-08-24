@@ -1,25 +1,67 @@
-@use '../../styling/theme-variabels' as *;
+@use 'sass:color';
+@use '../../styling/theme-variables' as *;
 
 :host {
-    border: 1px solid $surface;
-    border-radius: 0.5em;
-    background-color: $surface;
-    color: $on-surface;
-    padding: 0.5em 1.25em;
-    font-size: 1em;
-    font-family: inherit;
+    display: block;
+    padding: 0.565em 0.75em;
+    font-size: $font-size;
+    font-family: $font-family;
+    font-weight: $fw-bold;
+    min-width: 3em;
+
+    border: 1px solid transparent;
+    border-radius: 1.5em;
+    outline: none;
+
+    color: $primary;
+
+    &:not([dma-button-type='text']) {
+        padding: 0.7em 1.5em;
+    }
+
+    &[dma-button-type='elevated'] {
+        box-shadow: 0 1.5px 1.5px color.change(#000000, $alpha: 0.3);
+
+        &:hover:not(:active) {
+            box-shadow: 0 1.5px 4px color.change(#000000, $alpha: 0.3);
+        }
+
+        &:disabled {
+            box-shadow: none;
+        }
+    }
+
+    &[dma-button-type='filled'] {
+        color: $on-primary;
+
+        &:disabled {
+            background-color: color.change(#1c1b1f, $alpha: 0.12) !important;
+        }
+    }
+
+    &[dma-button-type='tonal'] {
+        color: $on-secondary-container;
+
+        &:disabled {
+            background-color: color.change(#1c1b1f, $alpha: 0.12) !important;
+        }
+    }
+
+    &[dma-button-type='outlined'] {
+        border-color: $outline;
+
+        &:disabled {
+            border-color: color.change(#1c1b1f, $alpha: 0.12);
+        }
+    }
 
     &:hover {
         cursor: pointer;
-        background-color: $surface;
-        border-color: $surface;
-        color: $on-surface;
     }
 
     &:disabled {
         cursor: default;
-        background-color: $disabled;
-        border-color: $disabled;
-        color: $on-disabled;
+        background-color: color.change(#1c1b1f, $alpha: 0.12);
+        color: color.change(#1c1b1f, $alpha: 0.38);
     }
 }

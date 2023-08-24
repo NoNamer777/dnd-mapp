@@ -1,6 +1,6 @@
 {
     "extends": "./tsconfig.json",
-    "files": ["src/test-setup.ts"],
+    "files": [],
     "include": ["**/*.spec.ts", "**/*.d.ts"],
     "compilerOptions": {
         "module": "commonjs",

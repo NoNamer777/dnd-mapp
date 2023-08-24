@@ -9,9 +9,16 @@ export default {
 export const Primary: StoryObj<ButtonComponent> = {
     render: (args: ButtonComponent) => ({
         props: args,
-        template: `<button dma-button [disabled]="disabled">Button</button>`,
+        template: `<button [dma-button]="dmaButtonType" [disabled]="disabled">Button</button>`,
     }),
     args: {
         disabled: false,
+        dmaButtonType: 'text',
+    } as Partial<ButtonComponent> & Partial<HTMLButtonElement>,
+    argTypes: {
+        dmaButtonType: {
+            control: 'select',
+            options: ['elevated', 'filled', 'tonal', 'outlined', 'text'],
+        },
     },
 };

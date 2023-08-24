@@ -22,6 +22,36 @@
             },
             "defaultConfiguration": "production"
         },
+        "test": {
+            "executor": "@angular-devkit/build-angular:karma",
+            "outputs": ["coverage/shared-components"],
+            "options": {
+                "assets": [],
+                "codeCoverage": true,
+                "codeCoverageExclude": ["**/testing/**/*", "**/*.module.ts", "**/index.ts"],
+                "inlineStyleLanguage": "scss",
+                "karmaConfig": "packages/shared-components/karma.conf.js",
+                "polyfills": ["zone.js", "zone.js/testing"],
+                "scripts": [],
+                "styles": [
+                    "packages/shared-components/src/lib/styling/theme-variables.scss",
+                    "packages/shared-components/src/lib/styling/font.scss"
+                ],
+                "tsConfig": "packages/shared-components/tsconfig.spec.json",
+                "watch": false
+            },
+            "configurations": {
+                "dev": {
+                    "progress": true,
+                    "sourceMap": true,
+                    "watch": true
+                },
+                "ci": {
+                    "progress": false,
+                    "sourceMap": false
+                }
+            }
+        },
         "build-storybook": {
             "executor": "@storybook/angular:build-storybook",
             "outputs": ["{options.outputDir}"],
