@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostBinding, HostListener, Input } from '@angular/core';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, HostListener } from '@angular/core';
 
 type State = 'focussed' | 'hovered' | 'pressed' | 'dragging';
 
@@ -17,12 +16,6 @@ const opacityPerState = new Map<State, number>([
     changeDetection: ChangeDetectionStrategy.Default,
 })
 export class StateComponent {
-    @Input()
-    set disabled(disabled: string | boolean) {
-        this._disabled = coerceBooleanProperty(disabled);
-    }
-    private _disabled = false;
-
     @HostBinding('attr.dma-focussed')
     get focussed() {
         return this.isFocussed ? '' : undefined;
@@ -51,6 +44,8 @@ export class StateComponent {
     protected baseColor = '#ffffff';
     protected layerColor = '#ffffff';
 
+    constructor(private elementRef: ElementRef) {}
+
     @HostBinding('style.backgroundColor')
     get backgroundColor() {
         return `color-mix(in srgb, ${this.baseColor}, ${this.layerColor} ${this.opacity}%)`;
@@ -58,7 +53,7 @@ export class StateComponent {
 
     @HostListener('focus')
     onStartFocussing() {
-        if (this._disabled) return;
+        if (this.isDisabled) return;
 
         this.opacity += opacityPerState.get('focussed');
         this.isFocussed = true;
@@ -74,7 +69,7 @@ export class StateComponent {
 
     @HostListener('mouseover')
     onStartHovering() {
-        if (this._disabled) return;
+        if (this.isDisabled) return;
 
         this.opacity += opacityPerState.get('hovered');
         this.isHovered = true;
@@ -90,7 +85,7 @@ export class StateComponent {
 
     @HostListener('mousedown')
     onStartClicking() {
-        if (this._disabled) return;
+        if (this.isDisabled) return;
 
         this.opacity += opacityPerState.get('pressed');
         this.isPressed = true;
@@ -107,7 +102,7 @@ export class StateComponent {
 
     @HostListener('dragstart')
     onStartDragging() {
-        if (this._disabled) return;
+        if (this.isDisabled) return;
 
         this.opacity += opacityPerState.get('dragging');
         this.isDragging = true;
@@ -119,5 +114,9 @@ export class StateComponent {
 
         this.opacity -= opacityPerState.get('dragging');
         this.isDragging = false;
+    }
+
+    private get isDisabled() {
+        return this.elementRef.nativeElement.getAttribute('disabled') === '';
     }
 }

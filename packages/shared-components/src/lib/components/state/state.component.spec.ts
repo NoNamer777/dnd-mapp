@@ -6,10 +6,10 @@ import { StateHarness } from '../../testing';
 
 describe('StateComponent', () => {
     @Component({
-        template: `<div dma-state [disabled]="disabled"></div>`,
+        template: `<button dma-state [disabled]="disabled">Button</button>`,
     })
     class TestComponent {
-        disabled: string;
+        disabled = false;
     }
 
     async function setupTestEnvironment(params?: { disabled?: boolean }) {
@@ -22,7 +22,7 @@ describe('StateComponent', () => {
         const harnessLoader = TestbedHarnessEnvironment.loader(fixture);
 
         if (params?.disabled) {
-            fixture.componentInstance.disabled = '';
+            fixture.componentInstance.disabled = params.disabled;
             fixture.detectChanges();
         }
         return {
