@@ -9,9 +9,6 @@ body {
 }
 
 body {
-    display: flex !important;
-    flex-direction: column;
-    flex-grow: 1;
     padding: 0 !important;
 }
 
@@ -21,14 +18,25 @@ section {
     height: auto;
 }
 
-main {
-    background-color: $background;
-    color: $on-background;
-    flex-grow: 1;
+#storybook-root {
+    height: 100%;
 
-    section {
-        background-color: $surface;
-        color: $on-surface;
+    storybook-root {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+
+        main {
+            background-color: $background;
+            color: $on-background;
+            flex-grow: 1;
+
+            section {
+                background-color: $surface;
+                color: $on-surface;
+                padding: 1em;
+            }
+        }
     }
 }
 
