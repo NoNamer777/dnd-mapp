@@ -6,8 +6,8 @@ import { DmaTheme, isDmaTheme } from '../../models';
     selector: '[dmaTheme]',
     providers: [DmaThemeService],
 })
-    @Input('dmaTheme') set(theme: DmaTheme) {
 export class DmaThemeDirective implements OnInit {
+    @Input() set dmaTheme(theme: DmaTheme) {
         if (!isDmaTheme(theme)) return;
 
         this._theme = theme;
@@ -16,6 +16,7 @@ export class DmaThemeDirective implements OnInit {
     @HostBinding('attr.style')
     styling: string;
 
+    @HostBinding('attr.dmaTheme')
     private _theme: DmaTheme = 'light';
 
     constructor(private dmaThemeService: DmaThemeService) {}
