@@ -1,4 +1,4 @@
-import { AfterViewInit, Directive, HostBinding, Input } from '@angular/core';
+import { Directive, HostBinding, Input, OnInit } from '@angular/core';
 import { DmaThemeService } from '../../services/dma-theme/dma-theme.service';
 import { DmaTheme, isDmaTheme } from '../../models';
 
@@ -6,8 +6,8 @@ import { DmaTheme, isDmaTheme } from '../../models';
     selector: '[dmaTheme]',
     providers: [DmaThemeService],
 })
-export class DmaThemeDirective implements AfterViewInit {
     @Input('dmaTheme') set(theme: DmaTheme) {
+export class DmaThemeDirective implements OnInit {
         if (!isDmaTheme(theme)) return;
 
         this._theme = theme;
@@ -20,7 +20,7 @@ export class DmaThemeDirective implements AfterViewInit {
 
     constructor(private dmaThemeService: DmaThemeService) {}
 
-    ngAfterViewInit() {
+    ngOnInit() {
         this.dmaThemeService.theme = this._theme;
         this.styling = this.dmaThemeService.initializeTheme();
     }
