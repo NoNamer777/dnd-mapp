@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit } from '@angular/core';
-import { StateComponent } from '../state';
+import { DmaStateComponent } from '../state';
 
 export type DmaButtonType = 'elevated' | 'filled' | 'tonal' | 'outlined' | 'text';
 
@@ -15,10 +15,10 @@ const containerColorsPerButtonType = new Map<DmaButtonType, { baseLayer: string;
     // eslint-disable-next-line @angular-eslint/component-selector
     selector: 'button[dma-button]',
     template: `<ng-content />`,
-    styleUrls: ['./button.component.scss'],
+    styleUrls: ['./dma-button.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ButtonComponent extends StateComponent implements OnInit {
+export class DmaButtonComponent extends DmaStateComponent implements OnInit {
     @Input('dma-button') set dmaButtonType(buttonType: DmaButtonType) {
         this.buttonType = buttonType;
 

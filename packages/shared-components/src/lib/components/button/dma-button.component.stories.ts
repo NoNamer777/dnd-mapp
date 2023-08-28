@@ -1,20 +1,20 @@
 import { Meta, StoryObj } from '@storybook/angular';
-import { ButtonComponent } from './button.component';
+import { DmaButtonComponent } from './dma-button.component';
 
 export default {
     title: 'Button',
-    component: ButtonComponent,
-} as Meta<ButtonComponent>;
+    component: DmaButtonComponent,
+} as Meta<DmaButtonComponent>;
 
-export const Primary: StoryObj<ButtonComponent> = {
-    render: (args: ButtonComponent) => ({
+export const Primary: StoryObj<DmaButtonComponent> = {
+    render: (args: DmaButtonComponent) => ({
         props: args,
         template: `<button [dma-button]="dmaButtonType" [disabled]="disabled">Button</button>`,
     }),
     args: {
         disabled: false,
         dmaButtonType: 'text',
-    } as Partial<ButtonComponent> & Partial<HTMLButtonElement>,
+    } as Partial<DmaButtonComponent> & Partial<HTMLButtonElement>,
     argTypes: {
         dmaButtonType: {
             control: 'select',
