@@ -1,16 +1,11 @@
-import { Meta, StoryObj } from '@storybook/angular';
+import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
 import { DmaButtonComponent } from './dma-button.component';
+import { DmaIconsModule } from '../icons';
 
-export default {
-    title: 'Button',
+type Story = StoryObj<DmaButtonComponent>;
+
+const meta: Meta<DmaButtonComponent> = {
     component: DmaButtonComponent,
-} as Meta<DmaButtonComponent>;
-
-export const Primary: StoryObj<DmaButtonComponent> = {
-    render: (args: DmaButtonComponent) => ({
-        props: args,
-        template: `<button [dma-button]="dmaButtonType" [disabled]="disabled">Button</button>`,
-    }),
     args: {
         disabled: false,
         dmaButtonType: 'text',
@@ -21,4 +16,16 @@ export const Primary: StoryObj<DmaButtonComponent> = {
             options: ['elevated', 'filled', 'tonal', 'outlined', 'text'],
         },
     },
+};
+
+export default {
+    title: 'Button',
+    ...meta,
+};
+
+export const Common: Story = {
+    render: (args: DmaButtonComponent) => ({
+        props: args,
+        template: `<button [dma-button]="dmaButtonType" [disabled]="disabled">Button</button>`,
+    }),
 };

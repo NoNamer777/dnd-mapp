@@ -15,11 +15,11 @@
 
     color: $primary;
 
-    &:not([dma-button-type='text']) {
+    &:not([dma-button='text']) {
         padding: 0.7em 1.5em;
     }
 
-    &[dma-button-type='elevated'] {
+    &[dma-button='elevated'] {
         box-shadow: 0 1.5px 1.5px color.change(#000000, $alpha: 0.3);
 
         &:hover:not(:active) {
@@ -31,7 +31,7 @@
         }
     }
 
-    &[dma-button-type='filled'] {
+    &[dma-button='filled'] {
         color: $on-primary;
 
         &:disabled {
@@ -39,7 +39,7 @@
         }
     }
 
-    &[dma-button-type='tonal'] {
+    &[dma-button='tonal'] {
         color: $on-secondary-container;
 
         &:disabled {
@@ -47,7 +47,7 @@
         }
     }
 
-    &[dma-button-type='outlined'] {
+    &[dma-button='outlined'] {
         border-color: $outline;
 
         &:disabled {

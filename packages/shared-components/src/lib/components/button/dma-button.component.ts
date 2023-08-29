@@ -14,7 +14,7 @@ const containerColorsPerButtonType = new Map<DmaButtonType, { baseLayer: string;
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
     selector: 'button[dma-button]',
-    template: `<ng-content />`,
+    templateUrl: './dma-button.component.html',
     styleUrls: ['./dma-button.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -25,7 +25,7 @@ export class DmaButtonComponent extends DmaStateComponent implements OnInit {
         this.updateRenderedAttribute();
     }
 
-    @HostBinding('attr.dma-button-type')
+    @HostBinding('attr.dma-button')
     private buttonType: DmaButtonType = 'text';
 
     ngOnInit() {
