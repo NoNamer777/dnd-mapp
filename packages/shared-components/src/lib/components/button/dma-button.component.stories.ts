@@ -29,3 +29,20 @@ export const Common: Story = {
         template: `<button [dma-button]="dmaButtonType" [disabled]="disabled">Button</button>`,
     }),
 };
+
+export const WithIcon: Story = {
+    ...Common,
+    decorators: [
+        moduleMetadata({
+            imports: [DmaIconsModule],
+        }),
+    ],
+    render: (args: DmaButtonComponent) => ({
+        props: args,
+        template: `
+            <button [dma-button]="dmaButtonType" [disabled]="disabled">
+                <dma-icon dma-plus-icon />
+                Button
+            </button>`,
+    }),
+};

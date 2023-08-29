@@ -2,7 +2,8 @@
 @use '../../styling/theme-variables' as *;
 
 :host {
-    display: block;
+    display: flex;
+    align-items: center;
     padding: 0.565em 0.75em;
     font-size: $font-size;
     font-family: $font-family;
