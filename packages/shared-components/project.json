@@ -13,14 +13,15 @@
                 "project": "packages/shared-components/ng-package.json"
             },
             "configurations": {
-                "production": {
+                "prod": {
                     "tsConfig": "packages/shared-components/tsconfig.lib.prod.json"
                 },
-                "development": {
-                    "tsConfig": "packages/shared-components/tsconfig.lib.json"
+                "dev": {
+                    "tsConfig": "packages/shared-components/tsconfig.lib.json",
+                    "watch": true
                 }
             },
-            "defaultConfiguration": "production"
+            "defaultConfiguration": "prod"
         },
         "test": {
             "executor": "@angular-devkit/build-angular:karma",
