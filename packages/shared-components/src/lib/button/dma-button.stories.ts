@@ -19,7 +19,7 @@ const meta: Meta<DmaButtonComponent> = {
 };
 
 export default {
-    title: 'Button',
+    title: 'Dma-button',
     ...meta,
 };
 
@@ -32,11 +32,7 @@ export const Common: Story = {
 
 export const WithIcon: Story = {
     ...Common,
-    decorators: [
-        moduleMetadata({
-            imports: [DmaIconsModule],
-        }),
-    ],
+    decorators: [moduleMetadata({ imports: [DmaIconsModule] })],
     render: (args: DmaButtonComponent) => ({
         props: args,
         template: `
