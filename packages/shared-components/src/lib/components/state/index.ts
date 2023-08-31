@@ -1,2 +1,2 @@
-export * from './state.component';
-export * from './state.module';
+export * from './dma-state.component';
+export * from './dma-state.module';

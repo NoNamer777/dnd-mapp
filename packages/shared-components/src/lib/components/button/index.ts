@@ -1,2 +1,2 @@
-export * from './button.component';
-export * from './button.module';
+export * from './dma-button.component';
+export * from './dma-button.module';

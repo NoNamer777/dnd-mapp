@@ -15,7 +15,7 @@ const opacityPerState = new Map<State, number>([
     template: '',
     changeDetection: ChangeDetectionStrategy.Default,
 })
-export class StateComponent {
+export class DmaStateComponent {
     @HostBinding('attr.dma-focussed')
     get focussed() {
         return this.isFocussed ? '' : undefined;

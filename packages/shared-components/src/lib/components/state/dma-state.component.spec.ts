@@ -1,10 +1,10 @@
-import { TestBed } from '@angular/core/testing';
-import { Component } from '@angular/core';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { StateModule } from './state.module';
+import { Component } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { DmaStateModule } from './dma-state.module';
 import { StateHarness } from '../../testing';
 
-describe('StateComponent', () => {
+describe('DmaStateComponent', () => {
     @Component({
         template: `<button dma-state [disabled]="disabled">Button</button>`,
     })
@@ -14,7 +14,7 @@ describe('StateComponent', () => {
 
     async function setupTestEnvironment(params?: { disabled?: boolean }) {
         TestBed.configureTestingModule({
-            imports: [StateModule],
+            imports: [DmaStateModule],
             declarations: [TestComponent],
         });
 

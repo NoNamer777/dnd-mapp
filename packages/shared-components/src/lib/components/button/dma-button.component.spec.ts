@@ -1,11 +1,11 @@
-import { TestBed } from '@angular/core/testing';
-import { DmaButtonType } from './button.component';
-import { Component } from '@angular/core';
-import { ButtonModule } from './button.module';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { ButtonHarness } from '../../testing';
+import { Component } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { DmaButtonType } from './dma-button.component';
+import { DmaButtonModule } from './dma-button.module';
+import { DmaButtonHarness } from '../../testing';
 
-describe('ButtonComponent', () => {
+describe('DmaButtonComponent', () => {
     @Component({
         template: '<button [dma-button]="buttonType" [disabled]="disabled" (click)="onClick()">Button</button>',
     })
@@ -22,7 +22,7 @@ describe('ButtonComponent', () => {
 
     async function setupTestEnvironment(params?: { disabled?: boolean }) {
         TestBed.configureTestingModule({
-            imports: [ButtonModule],
+            imports: [DmaButtonModule],
             declarations: [TestComponent],
         });
 
@@ -34,7 +34,7 @@ describe('ButtonComponent', () => {
         }
         return {
             component: fixture.componentInstance,
-            harness: await harnessLoader.getHarness(ButtonHarness),
+            harness: await harnessLoader.getHarness(DmaButtonHarness),
         };
     }
 
