@@ -1,6 +1,6 @@
 import { ComponentHarness } from '@angular/cdk/testing';
 
-export class ButtonHarness extends ComponentHarness {
+export class DmaButtonHarness extends ComponentHarness {
     static hostSelector = 'button[dma-button]';
 
     async getButtonType() {
