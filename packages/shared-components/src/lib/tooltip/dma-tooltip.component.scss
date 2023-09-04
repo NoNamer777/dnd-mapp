@@ -1,2 +1,9 @@
+@use '../styling/theme-variables' as *;
+
 :host {
+    background-color: $inverse-surface;
+    color: $on-inverse-surface;
+    padding: 0.3em 0.5em;
+    margin: 0.5em 0;
+    border-radius: 0.2em;
 }
