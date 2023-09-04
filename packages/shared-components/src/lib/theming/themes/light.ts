@@ -50,7 +50,7 @@ export const dmaLightTheme: DmaThemeMap = {
 
     '--scrim': '#000000;',
 
-    '--font-family': `#{'IBM Plex Sans', sans-serif};`,
+    '--font-family': `'IBM Plex Sans', sans-serif;`,
     '--font-size': '16px;',
     '--fw-regular': '400;',
     '--fw-bold': '500;',
