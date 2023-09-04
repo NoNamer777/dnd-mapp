@@ -10,7 +10,7 @@ import { DmaButtonModule } from '../../button';
     templateUrl: './dma-tooltip.stories.html',
 })
 class PlainDmaTooltipStoryComponent {
-    @Input() tooltipText: string;
+    @Input() text: string;
 }
 
 @NgModule({
@@ -27,10 +27,11 @@ export default {
 
 export const PlainTooltip: StoryObj<PlainDmaTooltipStoryComponent> = {
     args: {
-        tooltipText: 'My Tooltip',
+        text: 'My Tooltip',
     },
     render: (args) => ({
         props: args,
-        template: `<plain-dma-tooltip-story></plain-dma-tooltip-story>`,
+        template: `<plain-dma-tooltip-story [text]="text"></plain-dma-tooltip-story>`,
+        userDefinedTemplate: true,
     }),
 };
