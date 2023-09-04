@@ -1,6 +1,7 @@
 @use 'sass:color';
 
 @import './font';
+@import '@angular/cdk/overlay-prebuilt.css';
 
 $primary: var(--primary, #6750a4);
 $primary-container: var(--primary-container, #eaddff);
