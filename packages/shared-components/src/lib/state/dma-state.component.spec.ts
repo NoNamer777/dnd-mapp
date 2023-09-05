@@ -157,4 +157,13 @@ describe('DmaStateComponent', () => {
         expect(await harness.isDragging()).toBeFalse();
         expect(await harness.getAppliedBackgroundStyle()).toContain('0%');
     });
+
+    it('should not apply pressing states when not using the primary button', async () => {
+        const { element, harness } = await setupTestEnvironment();
+
+        expect(await harness.isPressed()).toBeFalse();
+
+        element.dispatchEvent(new MouseEvent('mousedown', { button: 1 }));
+        expect(await harness.isPressed()).toBeFalse();
+    });
 });
