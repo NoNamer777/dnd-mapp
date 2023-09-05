@@ -1,13 +1,4 @@
-import {
-    Directive,
-    ElementRef,
-    EventEmitter,
-    HostBinding,
-    HostListener,
-    Input,
-    Output,
-    ViewContainerRef,
-} from '@angular/core';
+import { Directive, ElementRef, EventEmitter, HostBinding, HostListener, Input, OnInit, Output } from '@angular/core';
 import { ConnectedPosition, Overlay, OverlayRef, ScrollStrategyOptions } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { DmaTooltipComponent } from './dma-tooltip.component';
@@ -17,7 +8,7 @@ export type DmaTooltipPosition = 'above' | 'below' | 'after' | 'before';
 @Directive({
     selector: '[dmaTooltip]',
 })
-export class DmaTooltipDirective {
+export class DmaTooltipDirective implements OnInit {
     @Input('dmaTooltip')
     @HostBinding('attr.dmaTooltip')
     tooltipText: string;
@@ -45,6 +36,10 @@ export class DmaTooltipDirective {
         private scrollStrategyOptions: ScrollStrategyOptions,
         private viewContainerRef: ViewContainerRef
     ) {}
+
+    ngOnInit() {
+        this.configureOverlay();
+    }
 
     @HostListener('mouseenter')
     onShowTooltip() {
