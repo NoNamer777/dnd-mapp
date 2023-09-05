@@ -59,6 +59,11 @@ $fw-bold: var(--fw-bold, 500);
 
 $opacity-disabled: var(--opacity-disabled, 38%);
 
+.dma-tooltip-overlay {
+    display: flex;
+    justify-content: center;
+}
+
 @function hover($color) {
     @return color.change($color, $alpha: 0.08);
 }
