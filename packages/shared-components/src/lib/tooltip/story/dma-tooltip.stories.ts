@@ -8,6 +8,7 @@ import { DmaButtonModule } from '../../button';
     // eslint-disable-next-line @angular-eslint/component-selector
     selector: 'plain-dma-tooltip-story',
     templateUrl: './dma-tooltip.stories.html',
+    styleUrls: ['./dma-tooltip.stories.scss'],
 })
 class PlainDmaTooltipStoryComponent {
     @Input() text: string;
