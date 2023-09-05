@@ -33,8 +33,7 @@ export class DmaTooltipDirective implements OnInit {
     constructor(
         private overlay: Overlay,
         private elementRef: ElementRef,
-        private scrollStrategyOptions: ScrollStrategyOptions,
-        private viewContainerRef: ViewContainerRef
+        private scrollStrategyOptions: ScrollStrategyOptions
     ) {}
 
     ngOnInit() {
@@ -43,7 +42,7 @@ export class DmaTooltipDirective implements OnInit {
 
     @HostListener('mouseenter')
     onShowTooltip() {
-        const tooltipRef = this.overlayRef.attach(new ComponentPortal(DmaTooltipComponent, this.viewContainerRef));
+        const tooltipRef = this.overlayRef.attach(new ComponentPortal(DmaTooltipComponent));
 
         tooltipRef.instance.text = this.tooltipText;
         tooltipRef.instance.position = this.position;
