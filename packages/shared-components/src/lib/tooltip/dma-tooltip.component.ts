@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core';
+import { DmaTooltipPosition } from './dma-tooltip.directive';
 
 @Component({
     selector: 'dma-tooltip',
@@ -8,4 +9,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 })
 export class DmaTooltipComponent {
     text: string;
+
+    @HostBinding('attr.dma-tooltip-position')
+    position: DmaTooltipPosition = 'above';
 }

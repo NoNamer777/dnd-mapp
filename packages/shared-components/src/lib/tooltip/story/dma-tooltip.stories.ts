@@ -3,6 +3,7 @@ import { Component, Input, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DmaTooltipModule } from '../dma-tooltip.module';
 import { DmaButtonModule } from '../../button';
+import { DmaTooltipPosition } from '../dma-tooltip.directive';
 
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
@@ -11,7 +12,8 @@ import { DmaButtonModule } from '../../button';
     styleUrls: ['./dma-tooltip.stories.scss'],
 })
 class PlainDmaTooltipStoryComponent {
-    @Input() text: string;
+    @Input() tooltipText: string;
+    @Input() tooltipPosition: DmaTooltipPosition;
 }
 
 @NgModule({
@@ -28,11 +30,18 @@ export default {
 
 export const PlainTooltip: StoryObj<PlainDmaTooltipStoryComponent> = {
     args: {
-        text: 'My Tooltip',
+        tooltipText: 'My Tooltip',
+        tooltipPosition: 'above',
+    },
+    argTypes: {
+        tooltipPosition: {
+            control: 'select',
+            options: ['above', 'below', 'before', 'after'],
+        },
     },
     render: (args) => ({
         props: args,
-        template: `<plain-dma-tooltip-story [text]="text"></plain-dma-tooltip-story>`,
+        template: `<plain-dma-tooltip-story [tooltipText]="tooltipText" [tooltipPosition]="tooltipPosition" />`,
         userDefinedTemplate: true,
     }),
 };
