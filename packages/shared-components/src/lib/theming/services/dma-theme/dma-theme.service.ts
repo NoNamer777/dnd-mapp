@@ -5,12 +5,12 @@ import { DmaTheme, dmaThemes } from '../../models';
 export class DmaThemeService {
     theme: DmaTheme;
 
-    initializeTheme(): string {
+    initializeTheme(documentElement: HTMLElement) {
         const themeStyling = dmaThemes.get(this.theme);
         let styling = '';
 
         Object.entries(themeStyling).forEach(([key, value]) => (styling += `${key}: ${value} `));
 
-        return styling;
+        documentElement.setAttribute('style', styling);
     }
 }

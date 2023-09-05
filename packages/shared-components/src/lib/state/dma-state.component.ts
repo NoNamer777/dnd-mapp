@@ -83,9 +83,9 @@ export class DmaStateComponent {
         this.isHovered = false;
     }
 
-    @HostListener('mousedown')
-    onStartClicking() {
-        if (this.isDisabled) return;
+    @HostListener('mousedown', ['$event.button'])
+    onStartClicking(button: number) {
+        if (this.isDisabled || button !== 0) return;
 
         this.opacity += opacityPerState.get('pressed');
         this.isPressed = true;

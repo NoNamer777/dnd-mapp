@@ -2,7 +2,7 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { DmaStateModule } from './dma-state.module';
-import { StateHarness } from '../../testing';
+import { StateHarness } from '../testing';
 
 describe('DmaStateComponent', () => {
     @Component({
@@ -156,5 +156,14 @@ describe('DmaStateComponent', () => {
         element.dispatchEvent(new MouseEvent('dragstart'));
         expect(await harness.isDragging()).toBeFalse();
         expect(await harness.getAppliedBackgroundStyle()).toContain('0%');
+    });
+
+    it('should not apply pressing states when not using the primary button', async () => {
+        const { element, harness } = await setupTestEnvironment();
+
+        expect(await harness.isPressed()).toBeFalse();
+
+        element.dispatchEvent(new MouseEvent('mousedown', { button: 1 }));
+        expect(await harness.isPressed()).toBeFalse();
     });
 });

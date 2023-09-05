@@ -1,6 +1,7 @@
 @use 'sass:color';
 
 @import './font';
+@import '@angular/cdk/overlay-prebuilt.css';
 
 $primary: var(--primary, #6750a4);
 $primary-container: var(--primary-container, #eaddff);
@@ -57,6 +58,11 @@ $fw-regular: var(--fw-regular, 400);
 $fw-bold: var(--fw-bold, 500);
 
 $opacity-disabled: var(--opacity-disabled, 38%);
+
+.dma-tooltip-overlay {
+    display: flex;
+    justify-content: center;
+}
 
 @function hover($color) {
     @return color.change($color, $alpha: 0.08);
