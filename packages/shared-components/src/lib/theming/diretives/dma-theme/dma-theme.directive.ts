@@ -21,8 +21,6 @@ export class DmaThemeDirective implements OnInit {
 
     ngOnInit() {
         this.dmaThemeService.theme = this._theme;
-
-        console.log(this.doc);
         this.dmaThemeService.initializeTheme(this.doc.documentElement);
     }
 }

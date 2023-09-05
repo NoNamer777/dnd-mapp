@@ -53,10 +53,6 @@ export class DmaTooltipDirective implements OnInit {
         this.overlayRef.detach();
     }
 
-    /**
-     * Configures the CDK overlay for the tooltip.
-     * @private
-     */
     private configureOverlay() {
         // Dispose of the previously configured overlay to keep the DOM clean.
         this.overlayRef?.dispose();
@@ -81,10 +77,6 @@ export class DmaTooltipDirective implements OnInit {
         });
     }
 
-    /**
-     * Returns a connected position configuration based on the provided position.
-     * @private
-     */
     private get positions(): ConnectedPosition {
         switch (this.position) {
             case 'after':
