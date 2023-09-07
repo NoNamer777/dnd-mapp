@@ -13,3 +13,7 @@
     height: 1.1em;
     margin-right: 0.5em;
 }
+
+:host-context(button[dma-icon-button]) {
+    height: 1.35em;
+}
