@@ -1,13 +1,43 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { DmaStateComponent } from '../state';
+import { DmaStateComponent, StateColors } from '../state';
 
-export type DmaIconButtonType = 'filled' | 'tonal' | 'outlined';
+export type DmaIconButtonType = 'filled' | 'tonal' | 'outlined' | 'standard';
 
-const containerColorsPerButtonType = new Map<DmaIconButtonType, { baseLayer: string; stateLayer: string }>([
-    ['filled', { baseLayer: 'var(--primary)', stateLayer: 'var(--on-primary)' }],
-    ['tonal', { baseLayer: 'var(--secondary-container)', stateLayer: 'var(--on-secondary-container)' }],
-    ['outlined', { baseLayer: 'var(--surface)', stateLayer: 'var(--primary)' }],
+interface DmaButtonColorPerState {
+    unselected: StateColors;
+    selected: StateColors;
+}
+
+const containerColorsPerButtonType = new Map<DmaIconButtonType, DmaButtonColorPerState>([
+    [
+        'filled',
+        {
+            unselected: { baseLayer: 'transparent', stateLayer: 'transparent' },
+            selected: { baseLayer: 'transparent', stateLayer: 'transparent' },
+        },
+    ],
+    [
+        'tonal',
+        {
+            unselected: { baseLayer: 'transparent', stateLayer: 'transparent' },
+            selected: { baseLayer: 'transparent', stateLayer: 'transparent' },
+        },
+    ],
+    [
+        'outlined',
+        {
+            unselected: { baseLayer: 'transparent', stateLayer: 'transparent' },
+            selected: { baseLayer: 'transparent', stateLayer: 'transparent' },
+        },
+    ],
+    [
+        'standard',
+        {
+            unselected: { baseLayer: 'transparent', stateLayer: 'var(--on-surface-variant)' },
+            selected: { baseLayer: 'transparent', stateLayer: 'var(--primary)' },
+        },
+    ],
 ]);
 
 @Component({
@@ -29,14 +59,16 @@ export class DmaIconButtonComponent extends DmaStateComponent implements OnInit 
     }
     @HostBinding('attr.selected') private _selected = false;
 
-    @Input() set contained(contained: unknown) {
-        this._contained = coerceBooleanProperty(contained);
+    @Output() toggleChange = new EventEmitter<boolean>();
+
+    @Input() set toggle(toggle: unknown) {
+        this._toggle = coerceBooleanProperty(toggle);
+        this.toggleChange.emit(this._toggle);
     }
-    get contained() {
-        return this._contained;
+    get toggle() {
+        return this._toggle;
     }
-    @HostBinding('attr.contained')
-    private _contained = false;
+    @HostBinding('attr.toggle') private _toggle = false;
 
     @Input('dma-icon-button') set dmaButtonType(buttonType: DmaIconButtonType) {
         this.buttonType = buttonType;
@@ -45,17 +77,21 @@ export class DmaIconButtonComponent extends DmaStateComponent implements OnInit 
     }
 
     @HostBinding('attr.dma-icon-button')
-    private buttonType: DmaIconButtonType;
+    private buttonType: DmaIconButtonType = 'standard';
 
     ngOnInit() {
         this.updateRenderedAttribute();
     }
 
     private updateRenderedAttribute() {
-        if (!this.contained) return;
-
         /* eslint-disable @typescript-eslint/no-non-null-assertion */
         this.baseColor = containerColorsPerButtonType.get(this.buttonType)!.baseLayer;
         this.layerColor = containerColorsPerButtonType.get(this.buttonType)!.stateLayer;
+    }
+
+    private getLayerColor(layer: 'base' | 'state') {
+        return containerColorsPerButtonType.get(this.buttonType)![this.toggle ? 'selected' : 'unselected'][
+            layer + 'Layer'
+        ] as string;
     }
 }
