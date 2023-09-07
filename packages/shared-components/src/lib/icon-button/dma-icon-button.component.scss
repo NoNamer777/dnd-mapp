@@ -1,1 +1,22 @@
+@use '../styling/theme-variables' as *;
 
+:host {
+    display: block;
+    height: 2.5em;
+    width: 2.5em;
+    outline: none;
+    border: 1px solid transparent;
+    border-radius: 2em;
+
+    &:hover:not(:disabled) {
+        cursor: pointer;
+    }
+
+    &[dma-icon-button='standard'] {
+        color: $on-surface-variant;
+
+        &:disabled {
+            opacity: $opacity-disabled;
+        }
+    }
+}
