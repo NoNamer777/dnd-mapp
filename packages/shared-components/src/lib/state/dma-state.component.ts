@@ -41,8 +41,8 @@ export class DmaStateComponent {
     protected isDragging = false;
 
     protected opacity = 0;
-    protected baseColor = '#ffffff';
-    protected layerColor = '#ffffff';
+    protected baseColor = 'transparent';
+    protected layerColor = 'transparent';
 
     constructor(private elementRef: ElementRef) {}
 
