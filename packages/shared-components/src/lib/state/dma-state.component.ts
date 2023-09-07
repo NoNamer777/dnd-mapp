@@ -2,6 +2,11 @@ import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, HostListen
 
 type State = 'focussed' | 'hovered' | 'pressed' | 'dragging';
 
+export interface StateColors {
+    baseLayer: string;
+    stateLayer: string;
+}
+
 const opacityPerState = new Map<State, number>([
     ['focussed', 12],
     ['hovered', 8],
