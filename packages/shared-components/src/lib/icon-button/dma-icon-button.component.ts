@@ -84,6 +84,16 @@ export class DmaIconButtonComponent extends DmaStateComponent implements OnInit 
         this.updateRenderedAttribute();
     }
 
+    @HostListener('click')
+    onClick() {
+        if (!this.toggle) return;
+
+        this._selected = !this._selected;
+        this.selectedChange.emit(this._selected);
+
+        this.updateRenderedAttribute();
+    }
+
     private updateRenderedAttribute() {
         /* eslint-disable @typescript-eslint/no-non-null-assertion */
         this.baseColor = containerColorsPerButtonType.get(this.buttonType)!.baseLayer;
