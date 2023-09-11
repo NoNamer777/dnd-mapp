@@ -39,7 +39,7 @@ const containerColorsPerButtonType = new Map<DmaIconButtonType, DmaButtonColorPe
     [
         'outlined',
         {
-            default: { baseLayer: 'transparent', stateLayer: 'transparent' },
+            default: { baseLayer: 'transparent', stateLayer: 'var(--inverse-surface)' },
             unselected: { baseLayer: 'transparent', stateLayer: 'var(--on-surface-variant)' },
             selected: { baseLayer: 'var(--inverse-surface)', stateLayer: 'var(--inverse-surface)' },
         },

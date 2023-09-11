@@ -32,6 +32,20 @@
         }
     }
 
+    &[dma-icon-button='outlined'] {
+        border-color: $inverse-surface;
+        color: $inverse-surface;
+
+        &[toggle] {
+            border-color: $outline;
+            color: $on-surface-variant;
+
+            &[selected] {
+                color: $on-inverse-surface;
+            }
+        }
+    }
+
     &[dma-icon-button='standard'] {
         color: $on-surface-variant;
 
