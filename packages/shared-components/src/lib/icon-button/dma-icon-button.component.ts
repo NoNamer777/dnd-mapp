@@ -50,14 +50,11 @@ const containerColorsPerButtonType = new Map<DmaIconButtonType, DmaButtonColorPe
 export class DmaIconButtonComponent extends DmaStateComponent implements OnInit {
     @Output() selectedChange = new EventEmitter<boolean>();
 
-    @Input() set selected(selected: unknown) {
-        this._selected = coerceBooleanProperty(selected);
-        this.selectedChange.emit(this._selected);
-    }
+    @HostBinding('attr.selected')
     get selected() {
-        return this._selected;
+        return this._selected ? '' : undefined;
     }
-    @HostBinding('attr.selected') private _selected = false;
+    protected _selected = false;
 
     @Output() toggleChange = new EventEmitter<boolean>();
 
@@ -68,7 +65,11 @@ export class DmaIconButtonComponent extends DmaStateComponent implements OnInit 
     get toggle() {
         return this._toggle;
     }
-    @HostBinding('attr.toggle') private _toggle = false;
+    private _toggle = false;
+
+    @HostBinding('attr.toggle') get isToggled() {
+        return this.toggle ? '' : undefined;
+    }
 
     @Input('dma-icon-button') set dmaButtonType(buttonType: DmaIconButtonType) {
         this.buttonType = buttonType;
