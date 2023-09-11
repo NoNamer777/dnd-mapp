@@ -1,7 +1,7 @@
 import { moduleMetadata, StoryObj } from '@storybook/angular';
 import { Component, Input, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DmaTooltipModule } from '../dma-tooltip.module';
+import { DmaTooltipModule, TOOLTIP_DIRECTIVE } from '../dma-tooltip.module';
 import { DmaButtonModule } from '../../button';
 import { DmaTooltipPosition } from '../dma-tooltip.directive';
 
@@ -17,7 +17,7 @@ class PlainDmaTooltipStoryComponent {
 }
 
 @NgModule({
-    imports: [CommonModule, DmaTooltipModule, DmaButtonModule],
+    imports: [CommonModule, DmaTooltipModule, DmaButtonModule, ...TOOLTIP_DIRECTIVE],
     declarations: [PlainDmaTooltipStoryComponent],
     exports: [PlainDmaTooltipStoryComponent],
 })
