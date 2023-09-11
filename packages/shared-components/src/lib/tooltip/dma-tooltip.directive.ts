@@ -70,7 +70,7 @@ export class DmaTooltipDirective implements OnInit {
 
         this.overlayRef = this.overlay.create({
             panelClass: 'dma-tooltip-overlay',
-            width: elementWidth,
+            minWidth: elementWidth,
             positionStrategy: overlayPositionStrategy,
             scrollStrategy: this.scrollStrategyOptions.reposition({ autoClose: true, scrollThrottle: 500 }),
             hasBackdrop: false,
