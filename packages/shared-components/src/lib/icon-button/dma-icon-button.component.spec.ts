@@ -5,10 +5,15 @@ import { DmaIconButtonType } from './dma-icon-button.component';
 import { DmaIconButtonModule } from './dma-icon-button.module';
 import { DmaIconsModule } from '../icons';
 import { DmaIconButtonHarness } from '../testing';
+import { DmaTooltipModule, TOOLTIP_DIRECTIVE } from '@dnd-mapp/shared-components';
 
 describe('DmaIconButtonComponent', () => {
     @Component({
-        template: `<button [dma-icon-button]="buttonType" (selectedChange)="onSelect()">
+        template: `<button
+            dmaIconButtonLabel="My icon button label"
+            [dma-icon-button]="buttonType"
+            (selectedChange)="onSelect()"
+        >
             <dma-icon dma-star-so-icon />
         </button>`,
     })
@@ -23,7 +28,13 @@ describe('DmaIconButtonComponent', () => {
     }
 
     @Component({
-        template: ` <button toggle [dma-icon-button]="buttonType" [disabled]="disabled" (selectedChange)="onSelect()">
+        template: ` <button
+            toggle
+            dmaIconButtonLabel="My icon button label"
+            [dma-icon-button]="buttonType"
+            [disabled]="disabled"
+            (selectedChange)="onSelect()"
+        >
             <dma-icon dma-star-re-icon class="dma-icon-button-unselected" />
             <dma-icon dma-star-so-icon class="dma-icon-button-selected" />
         </button>`,
@@ -41,7 +52,7 @@ describe('DmaIconButtonComponent', () => {
 
     async function setupTestEnvironment<T>(params: { component: Type<T> }) {
         TestBed.configureTestingModule({
-            imports: [DmaIconsModule, DmaIconButtonModule],
+            imports: [DmaIconsModule, DmaIconButtonModule, DmaTooltipModule, ...TOOLTIP_DIRECTIVE],
             declarations: [StandardTestComponent, ToggleTestComponent],
         });
 
@@ -67,6 +78,19 @@ describe('DmaIconButtonComponent', () => {
 
         component.buttonType = 'outlined';
         expect(await harness.getButtonType()).toEqual('outlined');
+    });
+
+    it('should show the label on hover', async () => {
+        const { harness } = await setupTestEnvironment({ component: StandardTestComponent });
+
+        expect(await harness.isLabelVisible()).toBeFalse();
+
+        await harness.hover();
+        expect(await harness.isLabelVisible()).toBeTrue();
+        expect(await harness.getLabelText()).toEqual('My icon button label');
+
+        await harness.moveCursorAway();
+        expect(await harness.isLabelVisible()).toBeFalse();
     });
 
     it('should emit selected change', async () => {
