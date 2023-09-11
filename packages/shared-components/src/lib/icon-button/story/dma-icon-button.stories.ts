@@ -8,13 +8,55 @@ const meta: Meta<DmaIconButtonComponent> = {
     component: DmaIconButtonComponent,
     decorators: [moduleMetadata({ imports: [DmaIconsModule] })],
     argTypes: {
+        toggle: {
+            name: 'Toggle',
+            description: 'Whether the icon button toggles between unselected and selected state.',
+            table: {
+                defaultValue: {
+                    summary: false,
+                },
+            },
+        },
+        disabled: {
+            name: 'Disabled',
+            control: 'boolean',
+            description: 'Whether the icon button is disabled.',
+            defaultValue: {
+                summary: false,
+            },
+        },
         dmaButtonType: {
+            name: 'Icon button type',
             control: 'select',
             options: ['filled', 'tonal', 'outlined', 'standard'],
+            description: 'The type of icon button.',
+            type: {
+                name: 'string',
+                required: true,
+            },
+            table: {
+                defaultValue: {
+                    summary: 'standard',
+                },
+            },
+        },
+        dmaIconButtonLabel: {
+            name: 'Label - text',
+            control: 'text',
+            type: {
+                name: 'string',
+                required: true,
+            },
+            description: 'The label of the icon button which should provide context of what the button does.',
         },
         dmaIconButtonLabelPosition: {
+            name: 'Label - position',
             control: 'select',
             options: ['above', 'after', 'below', 'before'],
+            defaultValue: {
+                summary: 'above',
+            },
+            description: 'The placement of the label.',
         },
     } as Partial<ArgTypes<DmaIconButtonComponent>>,
     args: {
