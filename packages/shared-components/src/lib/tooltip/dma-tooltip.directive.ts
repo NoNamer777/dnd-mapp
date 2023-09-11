@@ -7,9 +7,10 @@ export type DmaTooltipPosition = 'above' | 'below' | 'after' | 'before';
 
 @Directive({
     selector: '[dmaTooltip]',
+    standalone: true,
 })
 export class DmaTooltipDirective implements OnInit {
-    @Input('dmaTooltip')
+    @Input({ alias: 'dmaTooltip', required: true })
     @HostBinding('attr.dmaTooltip')
     tooltipText: string;
 
@@ -69,7 +70,7 @@ export class DmaTooltipDirective implements OnInit {
 
         this.overlayRef = this.overlay.create({
             panelClass: 'dma-tooltip-overlay',
-            width: elementWidth,
+            minWidth: elementWidth,
             positionStrategy: overlayPositionStrategy,
             scrollStrategy: this.scrollStrategyOptions.reposition({ autoClose: true, scrollThrottle: 500 }),
             hasBackdrop: false,
@@ -95,17 +96,17 @@ export class DmaTooltipDirective implements OnInit {
                 };
             case 'below':
                 return {
-                    originX: 'start',
+                    originX: 'center',
                     originY: 'bottom',
-                    overlayX: 'start',
+                    overlayX: 'center',
                     overlayY: 'top',
                 };
             case 'above':
             default:
                 return {
-                    originX: 'start',
+                    originX: 'center',
                     originY: 'top',
-                    overlayX: 'start',
+                    overlayX: 'center',
                     overlayY: 'bottom',
                 };
         }

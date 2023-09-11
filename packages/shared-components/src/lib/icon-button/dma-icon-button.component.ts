@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { DmaStateComponent, StateColors } from '../state';
+import { DmaTooltipDirective } from '../tooltip';
 
 export type DmaIconButtonType = 'filled' | 'tonal' | 'outlined' | 'standard';
 
@@ -56,10 +57,16 @@ const containerColorsPerButtonType = new Map<DmaIconButtonType, DmaButtonColorPe
 
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
-    selector: 'button[dma-icon-button]',
+    selector: 'button[dma-icon-button][dmaIconButtonLabel]',
     templateUrl: './dma-icon-button.component.html',
     styleUrls: ['./dma-icon-button.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    hostDirectives: [
+        {
+            directive: DmaTooltipDirective,
+            inputs: ['dmaTooltip: dmaIconButtonLabel', 'dmaTooltipPosition: dmaIconButtonLabelPosition'],
+        },
+    ],
 })
 export class DmaIconButtonComponent extends DmaStateComponent implements OnInit {
     @Output() selectedChange = new EventEmitter<boolean>();
@@ -91,6 +98,10 @@ export class DmaIconButtonComponent extends DmaStateComponent implements OnInit 
 
     @HostBinding('attr.dma-icon-button')
     private buttonType: DmaIconButtonType = 'standard';
+
+    @Input({ required: true })
+    @HostBinding('attr.dmaIconButtonLabel')
+    dmaIconButtonLabel!: string;
 
     ngOnInit() {
         this.updateRenderedAttribute();
