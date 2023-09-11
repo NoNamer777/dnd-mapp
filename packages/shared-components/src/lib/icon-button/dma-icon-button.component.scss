@@ -12,11 +12,23 @@
         cursor: pointer;
     }
 
+    &:disabled {
+        opacity: $opacity-disabled;
+    }
+
+    &[dma-icon-button='filled'] {
+        color: $on-primary;
+
+        &[toggle]:not([selected]) {
+            color: $primary;
+        }
+    }
+
     &[dma-icon-button='standard'] {
         color: $on-surface-variant;
 
-        &:disabled {
-            opacity: $opacity-disabled;
+        &[toggle][selected] {
+            color: $primary;
         }
     }
 }
