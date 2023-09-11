@@ -15,7 +15,6 @@ const meta: Meta<DmaIconButtonComponent> = {
     },
     args: {
         disabled: false,
-        toggle: false,
         dmaButtonType: 'standard',
     } as Partial<DmaIconButtonComponent> & Partial<HTMLButtonElement>,
 };
@@ -28,6 +27,17 @@ export default {
 export const Standard: Story = {
     render: (args: DmaIconButtonComponent) => ({
         props: args,
-        template: `<button [dma-icon-button]="dmaButtonType" [disabled]="disabled" [toggle]="toggle"><dma-icon dma-star-icon /></button>`,
+        template: `<button [dma-icon-button]="dmaButtonType" [disabled]="disabled"><dma-icon dma-star-re-icon /></button>`,
+    }),
+};
+
+export const Toggle: Story = {
+    render: (args: DmaIconButtonComponent) => ({
+        props: args,
+        template: `
+            <button toggle [dma-icon-button]="dmaButtonType" [disabled]="disabled">
+                <dma-icon dma-star-re-icon class="dma-icon-button-unselected" />
+                <dma-icon dma-star-so-icon class="dma-icon-button-selected" />
+            </button>`,
     }),
 };
