@@ -1,2 +1,2 @@
-export * from './plus/dma-so-plus-icon.component';
-export * from './star/dma-so-star-icon.component';
+export * from './plus/dma-plus-so-icon.component';
+export * from './star/dma-star-so-icon.component';

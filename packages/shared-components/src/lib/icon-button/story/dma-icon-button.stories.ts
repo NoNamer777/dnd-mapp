@@ -27,7 +27,7 @@ export default {
 export const Standard: Story = {
     render: (args: DmaIconButtonComponent) => ({
         props: args,
-        template: `<button [dma-icon-button]="dmaButtonType" [disabled]="disabled"><dma-icon dma-star-re-icon /></button>`,
+        template: `<button [dma-icon-button]="dmaButtonType" [disabled]="disabled"><dma-icon dma-plus-so-icon /></button>`,
     }),
 };
 

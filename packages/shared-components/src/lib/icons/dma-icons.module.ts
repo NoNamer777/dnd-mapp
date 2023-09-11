@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { DmaSoStarIconComponent, DmaSoPlusIconComponent } from './solid';
+import { DmaStarSoIconComponent, DmaPlusSoIconComponent } from './solid';
 import { DmaStarReIconComponent } from './regular';
 
-const icons = [DmaSoPlusIconComponent, DmaSoStarIconComponent, DmaStarReIconComponent];
+const icons = [DmaPlusSoIconComponent, DmaStarSoIconComponent, DmaStarReIconComponent];
 
 @NgModule({
     imports: [CommonModule],
