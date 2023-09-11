@@ -7,6 +7,7 @@ export type DmaTooltipPosition = 'above' | 'below' | 'after' | 'before';
 
 @Directive({
     selector: '[dmaTooltip]',
+    standalone: true,
 })
 export class DmaTooltipDirective implements OnInit {
     @Input('dmaTooltip')
