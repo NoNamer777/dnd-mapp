@@ -10,7 +10,7 @@ export type DmaTooltipPosition = 'above' | 'below' | 'after' | 'before';
     standalone: true,
 })
 export class DmaTooltipDirective implements OnInit {
-    @Input('dmaTooltip')
+    @Input({ alias: 'dmaTooltip', required: true })
     @HostBinding('attr.dmaTooltip')
     tooltipText: string;
 
