@@ -96,17 +96,17 @@ export class DmaTooltipDirective implements OnInit {
                 };
             case 'below':
                 return {
-                    originX: 'start',
+                    originX: 'center',
                     originY: 'bottom',
-                    overlayX: 'start',
+                    overlayX: 'center',
                     overlayY: 'top',
                 };
             case 'above':
             default:
                 return {
-                    originX: 'start',
+                    originX: 'center',
                     originY: 'top',
-                    overlayX: 'start',
+                    overlayX: 'center',
                     overlayY: 'bottom',
                 };
         }
