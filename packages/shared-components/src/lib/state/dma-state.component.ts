@@ -18,7 +18,7 @@ const opacityPerState = new Map<State, number>([
     // eslint-disable-next-line @angular-eslint/component-selector
     selector: '[dma-state]',
     template: '',
-    changeDetection: ChangeDetectionStrategy.Default,
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DmaStateComponent {
     @HostBinding('attr.dma-focussed')
@@ -72,15 +72,15 @@ export class DmaStateComponent {
         this.isFocussed = false;
     }
 
-    @HostListener('mouseover')
+    @HostListener('mouseenter')
     onStartHovering() {
-        if (this.isDisabled) return;
+        if (this.isDisabled || this.isHovered) return;
 
         this.opacity += opacityPerState.get('hovered');
         this.isHovered = true;
     }
 
-    @HostListener('mouseout')
+    @HostListener('mouseleave')
     onStopHovering() {
         if (!this.isHovered) return;
 
