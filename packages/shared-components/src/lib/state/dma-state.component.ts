@@ -5,6 +5,8 @@ type State = 'focussed' | 'hovered' | 'pressed' | 'dragging';
 export interface StateColors {
     baseLayer: string;
     stateLayer: string;
+
+    [layer: string]: string;
 }
 
 const opacityPerState = new Map<State, number>([
