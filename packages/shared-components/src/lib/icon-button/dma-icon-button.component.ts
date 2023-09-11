@@ -65,23 +65,21 @@ export class DmaIconButtonComponent extends DmaStateComponent implements OnInit 
     @Output() selectedChange = new EventEmitter<boolean>();
 
     @HostBinding('attr.selected')
-    get selected() {
+    get isSelected() {
         return this._selected ? '' : undefined;
     }
     protected _selected = false;
 
-    @Output() toggleChange = new EventEmitter<boolean>();
-
     @Input() set toggle(toggle: unknown) {
         this._toggle = coerceBooleanProperty(toggle);
-        this.toggleChange.emit(this._toggle);
     }
     get toggle() {
         return this._toggle;
     }
     private _toggle = false;
 
-    @HostBinding('attr.toggle') get isToggled() {
+    @HostBinding('attr.toggle')
+    get isToggled() {
         return this.toggle ? '' : undefined;
     }
 
