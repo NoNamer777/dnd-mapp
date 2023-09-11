@@ -24,6 +24,14 @@
         }
     }
 
+    &[dma-icon-button='tonal'] {
+        color: $on-secondary-container;
+
+        &[toggle]:not([selected]) {
+            color: $on-surface-variant;
+        }
+    }
+
     &[dma-icon-button='standard'] {
         color: $on-surface-variant;
 
