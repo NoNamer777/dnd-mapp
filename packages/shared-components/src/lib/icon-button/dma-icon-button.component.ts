@@ -1,10 +1,20 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    EventEmitter,
+    HostBinding,
+    HostListener,
+    Input,
+    OnInit,
+    Output,
+} from '@angular/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { DmaStateComponent, StateColors } from '../state';
 
 export type DmaIconButtonType = 'filled' | 'tonal' | 'outlined' | 'standard';
 
 interface DmaButtonColorPerState {
+    default: StateColors;
     unselected: StateColors;
     selected: StateColors;
 }
@@ -13,27 +23,31 @@ const containerColorsPerButtonType = new Map<DmaIconButtonType, DmaButtonColorPe
     [
         'filled',
         {
-            unselected: { baseLayer: 'transparent', stateLayer: 'transparent' },
-            selected: { baseLayer: 'transparent', stateLayer: 'transparent' },
+            default: { baseLayer: 'var(--primary)', stateLayer: 'var(--on-primary)' },
+            unselected: { baseLayer: 'var(--surface-container-highest)', stateLayer: 'var(--primary)' },
+            selected: { baseLayer: 'var(--primary)', stateLayer: 'var(--on-primary)' },
         },
     ],
     [
         'tonal',
         {
-            unselected: { baseLayer: 'transparent', stateLayer: 'transparent' },
-            selected: { baseLayer: 'transparent', stateLayer: 'transparent' },
+            default: { baseLayer: 'var(--secondary-container)', stateLayer: 'var(--on-secondary-container)' },
+            unselected: { baseLayer: 'var(--surface-container-highest)', stateLayer: 'var(--on-surface-variant)' },
+            selected: { baseLayer: 'var(--secondary-container)', stateLayer: 'var(--on-secondary-container)' },
         },
     ],
     [
         'outlined',
         {
-            unselected: { baseLayer: 'transparent', stateLayer: 'transparent' },
-            selected: { baseLayer: 'transparent', stateLayer: 'transparent' },
+            default: { baseLayer: 'transparent', stateLayer: 'transparent' },
+            unselected: { baseLayer: 'transparent', stateLayer: 'var(--on-surface-variant)' },
+            selected: { baseLayer: 'var(--inverse-surface)', stateLayer: 'var(--inverse-surface)' },
         },
     ],
     [
         'standard',
         {
+            default: { baseLayer: 'transparent', stateLayer: 'var(--on-surface-variant)' },
             unselected: { baseLayer: 'transparent', stateLayer: 'var(--on-surface-variant)' },
             selected: { baseLayer: 'transparent', stateLayer: 'var(--primary)' },
         },
@@ -96,13 +110,13 @@ export class DmaIconButtonComponent extends DmaStateComponent implements OnInit 
 
     private updateRenderedAttribute() {
         /* eslint-disable @typescript-eslint/no-non-null-assertion */
-        this.baseColor = containerColorsPerButtonType.get(this.buttonType)!.baseLayer;
-        this.layerColor = containerColorsPerButtonType.get(this.buttonType)!.stateLayer;
+        this.baseColor = this.getLayerColor('base');
+        this.layerColor = this.getLayerColor('state');
     }
 
     private getLayerColor(layer: 'base' | 'state') {
-        return containerColorsPerButtonType.get(this.buttonType)![this.toggle ? 'selected' : 'unselected'][
-            layer + 'Layer'
-        ] as string;
+        const toggleState = this.toggle ? (this._selected ? 'selected' : 'unselected') : 'default';
+
+        return containerColorsPerButtonType.get(this.buttonType)[toggleState][layer + 'Layer'];
     }
 }
