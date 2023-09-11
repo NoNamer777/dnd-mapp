@@ -2,6 +2,11 @@ import { componentWrapperDecorator, moduleMetadata, Preview } from '@storybook/a
 import { DmaThemingModule } from '../src/lib/theming';
 
 export default {
+    parameters: {
+        controls: {
+            expanded: true,
+        },
+    },
     decorators: [
         moduleMetadata({
             imports: [DmaThemingModule],
