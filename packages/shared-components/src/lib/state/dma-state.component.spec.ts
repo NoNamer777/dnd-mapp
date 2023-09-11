@@ -41,7 +41,7 @@ describe('DmaStateComponent', () => {
         expect(await harness.getAppliedBackgroundStyle()).toContain('0%');
 
         // Simulate hovering over the element
-        element.dispatchEvent(new MouseEvent('mouseover'));
+        element.dispatchEvent(new MouseEvent('mouseenter'));
 
         expect(await harness.isFocussed()).toBeFalse();
         expect(await harness.isHovered()).toBeTrue();
@@ -66,7 +66,7 @@ describe('DmaStateComponent', () => {
         expect(await harness.getAppliedBackgroundStyle()).toContain('20%');
 
         // Simulate moving the mouse away from the element
-        element.dispatchEvent(new MouseEvent('mouseout'));
+        element.dispatchEvent(new MouseEvent('mouseleave'));
 
         expect(await harness.isFocussed()).toBeTrue();
         expect(await harness.isHovered()).toBeFalse();
@@ -83,7 +83,7 @@ describe('DmaStateComponent', () => {
         expect(await harness.getAppliedBackgroundStyle()).toContain('0%');
 
         // Simulate start dragging
-        element.dispatchEvent(new MouseEvent('mouseover'));
+        element.dispatchEvent(new MouseEvent('mouseenter'));
         element.dispatchEvent(new MouseEvent('mousedown'));
         element.dispatchEvent(new DragEvent('dragstart'));
 
@@ -118,7 +118,7 @@ describe('DmaStateComponent', () => {
         expect(await harness.isFocussed()).toBeFalse();
         expect(await harness.getAppliedBackgroundStyle()).toContain('0%');
 
-        element.dispatchEvent(new MouseEvent('mouseout'));
+        element.dispatchEvent(new MouseEvent('mouseleave'));
         expect(await harness.isHovered()).toBeFalse();
         expect(await harness.getAppliedBackgroundStyle()).toContain('0%');
 
@@ -145,7 +145,7 @@ describe('DmaStateComponent', () => {
         expect(await harness.isFocussed()).toBeFalse();
         expect(await harness.getAppliedBackgroundStyle()).toContain('0%');
 
-        element.dispatchEvent(new MouseEvent('mouseover'));
+        element.dispatchEvent(new MouseEvent('mouseenter'));
         expect(await harness.isHovered()).toBeFalse();
         expect(await harness.getAppliedBackgroundStyle()).toContain('0%');
 

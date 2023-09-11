@@ -1,0 +1,7 @@
+<ng-container *ngIf="toggle">
+    <ng-container *ngIf="_selected; else unselected"
+        ><ng-content select="dma-icon.dma-icon-button-selected"
+    /></ng-container>
+    <ng-template #unselected><ng-content select="dma-icon.dma-icon-button-unselected" /></ng-template>
+</ng-container>
+<ng-content />

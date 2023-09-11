@@ -2,6 +2,13 @@ import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, HostListen
 
 type State = 'focussed' | 'hovered' | 'pressed' | 'dragging';
 
+export interface StateColors {
+    baseLayer: string;
+    stateLayer: string;
+
+    [layer: string]: string;
+}
+
 const opacityPerState = new Map<State, number>([
     ['focussed', 12],
     ['hovered', 8],
@@ -13,7 +20,7 @@ const opacityPerState = new Map<State, number>([
     // eslint-disable-next-line @angular-eslint/component-selector
     selector: '[dma-state]',
     template: '',
-    changeDetection: ChangeDetectionStrategy.Default,
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DmaStateComponent {
     @HostBinding('attr.dma-focussed')
@@ -41,8 +48,8 @@ export class DmaStateComponent {
     protected isDragging = false;
 
     protected opacity = 0;
-    protected baseColor = '#ffffff';
-    protected layerColor = '#ffffff';
+    protected baseColor = 'transparent';
+    protected layerColor = 'transparent';
 
     constructor(private elementRef: ElementRef) {}
 
@@ -67,15 +74,15 @@ export class DmaStateComponent {
         this.isFocussed = false;
     }
 
-    @HostListener('mouseover')
+    @HostListener('mouseenter')
     onStartHovering() {
-        if (this.isDisabled) return;
+        if (this.isDisabled || this.isHovered) return;
 
         this.opacity += opacityPerState.get('hovered');
         this.isHovered = true;
     }
 
-    @HostListener('mouseout')
+    @HostListener('mouseleave')
     onStopHovering() {
         if (!this.isHovered) return;
 
