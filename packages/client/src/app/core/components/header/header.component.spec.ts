@@ -1,8 +1,8 @@
-import { TestBed } from '@angular/core/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { Component } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { HeaderComponentHarness } from '../../../../testing';
 import { HeaderModule } from './header.module';
-import { Component } from '@angular/core';
 
 describe('HeaderComponent', () => {
     @Component({

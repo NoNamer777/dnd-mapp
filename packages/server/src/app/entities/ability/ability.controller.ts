@@ -1,3 +1,4 @@
+import { Ability } from '@dnd-mapp/data';
 import {
     BadRequestException,
     Body,
@@ -10,9 +11,8 @@ import {
     Put,
     Req,
 } from '@nestjs/common';
-import { Ability } from '@dnd-mapp/data';
-import { AbilityService } from './ability.service';
 import { Request } from 'express';
+import { AbilityService } from './ability.service';
 
 @Controller('/api/ability')
 export class AbilityController {

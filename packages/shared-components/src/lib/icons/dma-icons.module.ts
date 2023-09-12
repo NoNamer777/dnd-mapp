@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { DmaStarSoIconComponent, DmaPlusSoIconComponent } from './solid';
 import { DmaStarReIconComponent } from './regular';
+import { DmaPlusSoIconComponent, DmaStarSoIconComponent } from './solid';
 
 const icons = [DmaPlusSoIconComponent, DmaStarSoIconComponent, DmaStarReIconComponent];
 

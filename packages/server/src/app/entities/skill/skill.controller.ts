@@ -1,3 +1,4 @@
+import { CreateSkillData, Skill } from '@dnd-mapp/data';
 import {
     BadRequestException,
     Body,
@@ -10,9 +11,8 @@ import {
     Put,
     Req,
 } from '@nestjs/common';
-import { SkillService } from './skill.service';
-import { CreateSkillData, Skill } from '@dnd-mapp/data';
 import { Request } from 'express';
+import { SkillService } from './skill.service';
 
 @Controller('/api/skill')
 export class SkillController {

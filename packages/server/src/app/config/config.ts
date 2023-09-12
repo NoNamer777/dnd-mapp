@@ -1,8 +1,8 @@
-import { load } from 'js-yaml';
-import { readFileSync } from 'fs';
-import { ConfigOptions, DatabaseConfigOptions, ServerConfigOptions } from './validation/interfaces';
 import { plainToInstance } from 'class-transformer';
 import { validateSync } from 'class-validator';
+import { readFileSync } from 'fs';
+import { load } from 'js-yaml';
+import { ConfigOptions, DatabaseConfigOptions, ServerConfigOptions } from './validation/interfaces';
 
 const YAML_ENVIRONMENT_PATH = process.env.SERVER_CONFIG_PATH;
 

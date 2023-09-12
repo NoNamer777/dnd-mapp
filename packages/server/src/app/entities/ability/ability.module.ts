@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { AbilityController } from './ability.controller';
-import { AbilityService } from './ability.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AbilityController } from './ability.controller';
 import { AbilityEntity } from './ability.entity';
+import { AbilityService } from './ability.service';
 
 @Module({
     imports: [TypeOrmModule.forFeature([AbilityEntity])],

@@ -1,6 +1,6 @@
-import { Directive, ElementRef, EventEmitter, HostBinding, HostListener, Input, OnInit, Output } from '@angular/core';
 import { ConnectedPosition, Overlay, OverlayRef, ScrollStrategyOptions } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
+import { Directive, ElementRef, EventEmitter, HostBinding, HostListener, Input, OnInit, Output } from '@angular/core';
 import { DmaTooltipComponent } from './dma-tooltip.component';
 
 export type DmaTooltipPosition = 'above' | 'below' | 'after' | 'before';

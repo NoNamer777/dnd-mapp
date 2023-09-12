@@ -1,8 +1,8 @@
-import { TestBed } from '@angular/core/testing';
-import { CenterModule } from './center.module';
-import { Component } from '@angular/core';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { Component } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { CenterComponentHarness } from '../../../../testing';
+import { CenterModule } from './center.module';
 
 describe('CenterComponent', () => {
     @Component({

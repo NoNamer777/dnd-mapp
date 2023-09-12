@@ -1,9 +1,9 @@
-import { Test } from '@nestjs/testing';
-import { NotFoundException } from '@nestjs/common';
-import { SkillService } from './skill.service';
-import { skillRepositoryProvider } from '../../../../testing';
-import { defaultAbility, defaultSkill, mockSkillDB } from '@dnd-mapp/data/testing';
 import { CreateSkillData, Skill } from '@dnd-mapp/data';
+import { defaultAbility, defaultSkill, mockSkillDB } from '@dnd-mapp/data/testing';
+import { NotFoundException } from '@nestjs/common';
+import { Test } from '@nestjs/testing';
+import { skillRepositoryProvider } from '../../../../testing';
+import { SkillService } from './skill.service';
 
 describe('SkillService', () => {
     async function setupTestEnvironment() {

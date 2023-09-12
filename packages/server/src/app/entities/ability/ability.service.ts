@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AbilityEntity } from './ability.entity';
 import { Repository } from 'typeorm';
 import { BaseEntityCrudService, SaveOrUpdateOperation } from '../../common';
+import { AbilityEntity } from './ability.entity';
 
 @Injectable()
 export class AbilityService extends BaseEntityCrudService<AbilityEntity> {
