@@ -1,9 +1,9 @@
+import { Ability, CreateAbilityData } from '@dnd-mapp/data';
+import { defaultAbility, defaultSkill, mockAbilityDB } from '@dnd-mapp/data/testing';
+import { NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { abilityRepositoryProvider } from '../../../../testing';
 import { AbilityService } from './ability.service';
-import { defaultAbility, defaultSkill, mockAbilityDB } from '@dnd-mapp/data/testing';
-import { NotFoundException } from '@nestjs/common';
-import { Ability, CreateAbilityData } from '@dnd-mapp/data';
 
 describe('AbilityService', () => {
     async function setupTestEnvironment() {

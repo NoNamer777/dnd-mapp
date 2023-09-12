@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DmaButtonComponent } from './dma-button.component';
+import { NgModule } from '@angular/core';
 import { DmaStateModule } from '../state';
+import { DmaButtonComponent } from './dma-button.component';
 
 @NgModule({
     imports: [CommonModule, DmaStateModule],

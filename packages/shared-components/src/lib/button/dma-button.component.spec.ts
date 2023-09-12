@@ -1,9 +1,9 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { DmaButtonHarness } from '../testing';
 import { DmaButtonType } from './dma-button.component';
 import { DmaButtonModule } from './dma-button.module';
-import { DmaButtonHarness } from '../testing';
 
 describe('DmaButtonComponent', () => {
     @Component({

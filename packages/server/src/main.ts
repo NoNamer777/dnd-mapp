@@ -1,12 +1,12 @@
 import { Logger } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app/app.module';
 import { ConfigService } from '@nestjs/config';
-import * as express from 'express';
-import { createServer as createHttpsServer } from 'https';
-import { createServer as createHttpServer, Server } from 'http';
+import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
+import * as express from 'express';
 import { readFileSync } from 'fs';
+import { createServer as createHttpServer, Server } from 'http';
+import { createServer as createHttpsServer } from 'https';
+import { AppModule } from './app/app.module';
 import { buildServerUrl } from './app/common';
 
 async function bootstrap() {

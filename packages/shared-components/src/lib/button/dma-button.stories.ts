@@ -1,6 +1,6 @@
 import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
-import { DmaButtonComponent } from './dma-button.component';
 import { DmaIconsModule } from '../icons';
+import { DmaButtonComponent } from './dma-button.component';
 
 type Story = StoryObj<DmaButtonComponent>;
 

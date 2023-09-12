@@ -1,8 +1,8 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { DmaStateModule } from './dma-state.module';
 import { StateHarness } from '../testing';
+import { DmaStateModule } from './dma-state.module';
 
 describe('DmaStateComponent', () => {
     @Component({

@@ -1,7 +1,7 @@
-import { Directive, HostBinding, Inject, Input, OnInit } from '@angular/core';
-import { DmaThemeService } from '../../services/dma-theme/dma-theme.service';
-import { DmaTheme, isDmaTheme } from '../../models';
 import { DOCUMENT } from '@angular/common';
+import { Directive, HostBinding, Inject, Input, OnInit } from '@angular/core';
+import { DmaTheme, isDmaTheme } from '../../models';
+import { DmaThemeService } from '../../services/dma-theme/dma-theme.service';
 
 @Directive({
     selector: '[dmaTheme]',

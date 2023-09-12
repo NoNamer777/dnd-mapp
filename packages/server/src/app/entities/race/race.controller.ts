@@ -1,4 +1,4 @@
-import { RaceService } from './race.service';
+import { CreateRaceData, Race } from '@dnd-mapp/data';
 import {
     BadRequestException,
     Body,
@@ -11,8 +11,8 @@ import {
     Put,
     Req,
 } from '@nestjs/common';
-import { CreateRaceData, Race } from '@dnd-mapp/data';
 import { Request } from 'express';
+import { RaceService } from './race.service';
 
 @Controller('api/race')
 export class RaceController {

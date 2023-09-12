@@ -1,10 +1,10 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { appRoutes } from '../../app.routes';
-import { CommonModule } from '@angular/common';
-import { RootComponent } from './root.component';
-import { HeaderModule } from '../header';
 import { CenterModule } from '../center';
+import { HeaderModule } from '../header';
+import { RootComponent } from './root.component';
 
 @NgModule({
     imports: [

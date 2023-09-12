@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { BaseEntityCrudService, SaveOrUpdateOperation } from '../../common';
 import { SkillEntity } from './skill.entity';
-import { Repository } from 'typeorm';
 
 @Injectable()
 export class SkillService extends BaseEntityCrudService<SkillEntity> {

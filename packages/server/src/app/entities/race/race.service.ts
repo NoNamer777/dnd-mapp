@@ -1,9 +1,9 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Race } from '@dnd-mapp/data';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { RaceEntity } from './race.entity';
 import { BaseEntityCrudService, SaveOrUpdateOperation } from '../../common';
+import { RaceEntity } from './race.entity';
 
 @Injectable()
 export class RaceService extends BaseEntityCrudService<Race> {

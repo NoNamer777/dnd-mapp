@@ -1,5 +1,5 @@
-import { Column, Entity, ManyToOne, JoinColumn } from 'typeorm';
 import { Skill } from '@dnd-mapp/data';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from '../../common';
 import { AbilityEntity } from '../ability';
 

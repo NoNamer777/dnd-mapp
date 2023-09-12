@@ -1,9 +1,9 @@
-import { moduleMetadata, StoryObj } from '@storybook/angular';
-import { Component, Input, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DmaTooltipModule, TOOLTIP_DIRECTIVE } from '../dma-tooltip.module';
+import { Component, Input, NgModule } from '@angular/core';
+import { StoryObj, moduleMetadata } from '@storybook/angular';
 import { DmaButtonModule } from '../../button';
 import { DmaTooltipPosition } from '../dma-tooltip.directive';
+import { DmaTooltipModule, TOOLTIP_DIRECTIVE } from '../dma-tooltip.module';
 
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
@@ -41,7 +41,7 @@ export const PlainTooltip: StoryObj<PlainDmaTooltipStoryComponent> = {
     },
     render: (args) => ({
         props: args,
-        template: `<plain-dma-tooltip-story [tooltipText]="tooltipText" [tooltipPosition]="tooltipPosition" />`,
+        template: `<plain-dma-tooltip-story [tooltipText]="tooltipText" [tooltipPosition]="tooltipPosition"></plain-dma-tooltip-story>`,
         userDefinedTemplate: true,
     }),
 };

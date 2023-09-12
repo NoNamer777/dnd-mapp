@@ -1,3 +1,4 @@
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import {
     ChangeDetectionStrategy,
     Component,
@@ -8,7 +9,6 @@ import {
     OnInit,
     Output,
 } from '@angular/core';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { DmaStateComponent, StateColors } from '../state';
 import { DmaTooltipDirective } from '../tooltip';
 

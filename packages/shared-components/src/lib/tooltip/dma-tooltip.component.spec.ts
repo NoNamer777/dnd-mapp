@@ -1,9 +1,9 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { DmaTooltipModule, TOOLTIP_DIRECTIVE } from './dma-tooltip.module';
 import { DmaTooltipHostHarness } from '../testing';
 import { DmaTooltipPosition } from './dma-tooltip.directive';
+import { DmaTooltipModule, TOOLTIP_DIRECTIVE } from './dma-tooltip.module';
 
 describe('DmaTooltipComponent', () => {
     @Component({
