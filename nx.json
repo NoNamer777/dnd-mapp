@@ -12,6 +12,9 @@
             }
         }
     },
+    "workspaceLayout": {
+        "projectNameAndRootFormat": "as-provided"
+    },
     "namedInputs": {
         "default": ["{projectRoot}/**/*", "sharedGlobals"],
         "production": [
