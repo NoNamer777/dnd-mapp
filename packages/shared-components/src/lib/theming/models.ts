@@ -2,7 +2,7 @@ import { dmaLightTheme } from './themes';
 
 const dmaTheme = ['light'];
 
-export type DmaTheme = typeof dmaTheme[number];
+export type DmaTheme = (typeof dmaTheme)[number];
 
 export function isDmaTheme(value: string): value is DmaTheme {
     return dmaTheme.includes(value);
