@@ -13,7 +13,8 @@
         "paths": {
             "@dnd-mapp/data": ["packages/data/src/index.ts"],
             "@dnd-mapp/data/testing": ["packages/data/testing/index.ts"],
-            "@dnd-mapp/shared-components": ["packages/shared-components/src/index.ts"]
+            "@dnd-mapp/shared-components": ["packages/shared-components/src/index.ts"],
+            "@dnd-mapp/shared-components/testing": ["packages/shared-components/src/testing/index.ts"]
         },
         "rootDir": ".",
         "skipLibCheck": true,

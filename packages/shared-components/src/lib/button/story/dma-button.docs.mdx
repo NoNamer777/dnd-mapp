@@ -1,0 +1,51 @@
+import * as DmaButtonStories from './dma-button.stories';
+import { Canvas, Controls, Meta } from '@storybook/addon-docs';
+
+<Meta of={DmaButtonStories} />
+
+# DmaButton
+
+This is a button component with a style implementation following the DnD Mapp style definition.
+
+<Canvas of={DmaButtonStories.Common} />
+
+## Usage
+
+In order to use this component you first need to import its module like so:
+
+```typescript
+import { NgModule } from '@angular/core'; 
+import { DmaButtonModule } from '@dnd-mapp/shared-components';
+
+@NgModule({
+    imports: [DmaButtonModule],
+})
+class MyModule {}
+```
+
+After that, you'll be able to use it in your component's template like so:
+
+```html
+<button dma-button="filled">My Button</button>
+```
+
+## Examples
+
+Below is a live example followed by a list of notable attributes.
+
+<Canvas of={DmaButtonStories.Interactive} />
+<Controls of={DmaButtonStories.Interactive} />
+
+You can also use DmaIcons within this component like so.
+
+```html
+<button dma-button="filled"><dma-icon dma-plus-so-icon></dma-icon>Button</button>
+```
+
+The order of the text and icon within the button does not matter, the button will make sure that the icon is rendered
+before/in front of the text.
+
+Which will result in the following output:
+
+<Canvas of={DmaButtonStories.InteractiveWithIcon} />
+<Controls of={DmaButtonStories.InteractiveWithIcon} />

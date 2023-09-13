@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit } from '@angular/core';
-import { DmaStateComponent } from '../state';
+import { DmaStateComponent, StateColors } from '../state';
 
 export type DmaButtonType = 'elevated' | 'filled' | 'tonal' | 'outlined' | 'text';
 
-const containerColorsPerButtonType = new Map<DmaButtonType, { baseLayer: string; stateLayer: string }>([
+const containerColorsPerButtonType = new Map<DmaButtonType, StateColors>([
     ['elevated', { baseLayer: 'var(--surface-container-low)', stateLayer: 'var(--primary)' }],
     ['filled', { baseLayer: 'var(--primary)', stateLayer: 'var(--on-primary)' }],
     ['tonal', { baseLayer: 'var(--secondary-container)', stateLayer: 'var(--on-secondary-container)' }],
@@ -19,8 +19,11 @@ const containerColorsPerButtonType = new Map<DmaButtonType, { baseLayer: string;
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DmaButtonComponent extends DmaStateComponent implements OnInit {
-    @Input('dma-button') set dmaButtonType(buttonType: DmaButtonType) {
-        this.buttonType = buttonType;
+    @Input('dma-button') set dmaButtonType(buttonType: unknown) {
+        if (buttonType === '') return;
+
+        // TODO - Enforce only DmaButtonType values as valid
+        this.buttonType = buttonType as DmaButtonType;
 
         this.updateRenderedAttribute();
     }
@@ -34,7 +37,11 @@ export class DmaButtonComponent extends DmaStateComponent implements OnInit {
 
     private updateRenderedAttribute() {
         /* eslint-disable @typescript-eslint/no-non-null-assertion */
-        this.baseColor = containerColorsPerButtonType.get(this.buttonType)!.baseLayer;
-        this.layerColor = containerColorsPerButtonType.get(this.buttonType)!.stateLayer;
+        this.baseColor = this.getBackgroundColorsForType(this.buttonType, 'base');
+        this.layerColor = this.getBackgroundColorsForType(this.buttonType, 'state');
+    }
+
+    private getBackgroundColorsForType(type: DmaButtonType, layer: 'base' | 'state') {
+        return containerColorsPerButtonType.get(type)[layer + 'Layer'];
     }
 }
