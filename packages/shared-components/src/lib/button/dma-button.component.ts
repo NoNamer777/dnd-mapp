@@ -42,7 +42,6 @@ export class DmaButtonComponent extends DmaStateComponent implements OnInit {
     }
 
     private getBackgroundColorsForType(type: DmaButtonType, layer: 'base' | 'state') {
-        console.log(type);
         return containerColorsPerButtonType.get(type)[layer + 'Layer'];
     }
 }
