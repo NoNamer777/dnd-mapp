@@ -25,7 +25,7 @@ class MyModule {}
 
 After that, you'll be able to use it in your component's template like so:
 
-```angular2html
+```html
 <button dma-button="filled">My Button</button>
 ```
 
@@ -33,15 +33,19 @@ After that, you'll be able to use it in your component's template like so:
 
 Below is a live example followed by a list of notable attributes.
 
-You can also use DmaIcons within this component like so.
-NOTE: It is important that the button currently only supports icons by using the following format:
+<Canvas of={DmaButtonStories.Interactive} />
+<Controls of={DmaButtonStories.Interactive} />
 
-```angular2html
-<button>
-<dma-icon dma-plus-so-icon></dma-icon>
-text
-</button>
+You can also use DmaIcons within this component like so.
+
+```html
+<button dma-button="filled"><dma-icon dma-plus-so-icon></dma-icon>Button</button>
 ```
 
 The order of the text and icon within the button does not matter, the button will make sure that the icon is rendered
 before/in front of the text.
+
+Which will result in the following output:
+
+<Canvas of={DmaButtonStories.InteractiveWithIcon} />
+<Controls of={DmaButtonStories.InteractiveWithIcon} />

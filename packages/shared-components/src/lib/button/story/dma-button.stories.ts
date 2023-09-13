@@ -38,11 +38,13 @@ export default meta;
 export const Common: Story = {
     render: () => ({
         template: `
-            <button dma-button="filled">Filled</button>
-            <button dma-button="elevated">Elevated</button>
-            <button dma-button="tonal">Tonal</button>
-            <button dma-button="outlined">Outlined</button>
-            <button dma-button>Text (Default)</button>
+            <article class="row">
+                <button dma-button="filled">Filled</button>
+                <button dma-button="elevated">Elevated</button>
+                <button dma-button="tonal">Tonal</button>
+                <button dma-button="outlined">Outlined</button>
+                <button dma-button>Text (Default)</button>
+            </article>
         `,
     }),
 };
