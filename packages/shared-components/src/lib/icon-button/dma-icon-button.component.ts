@@ -90,9 +90,10 @@ export class DmaIconButtonComponent extends DmaStateComponent implements OnInit 
         return this.toggle ? '' : undefined;
     }
 
-    @Input('dma-icon-button') set dmaButtonType(buttonType: DmaIconButtonType) {
-        this.buttonType = buttonType;
+    @Input('dma-icon-button') set dmaButtonType(buttonType: DmaIconButtonType | string) {
+        if (buttonType === '') return;
 
+        this.buttonType = buttonType as DmaIconButtonType;
         this.updateRenderedAttribute();
     }
 
