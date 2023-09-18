@@ -1,8 +1,6 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component, Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { DmaTooltipModule, TOOLTIP_DIRECTIVE } from '@dnd-mapp/shared-components';
-import { DmaIconsModule } from '../icons';
 import { DmaIconButtonHarness } from '../testing';
 import { DmaIconButtonType } from './dma-icon-button.component';
 import { DmaIconButtonModule } from './dma-icon-button.module';
@@ -52,7 +50,7 @@ describe('DmaIconButtonComponent', () => {
 
     async function setupTestEnvironment<T>(params: { component: Type<T> }) {
         TestBed.configureTestingModule({
-            imports: [DmaIconsModule, DmaIconButtonModule, DmaTooltipModule, ...TOOLTIP_DIRECTIVE],
+            imports: [DmaIconButtonModule],
             declarations: [StandardTestComponent, ToggleTestComponent],
         });
 
