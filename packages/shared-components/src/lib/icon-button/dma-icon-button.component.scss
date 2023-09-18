@@ -1,7 +1,9 @@
 @use '../styling/theme-variables' as *;
 
 :host {
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 2.5em;
     width: 2.5em;
     outline: none;
