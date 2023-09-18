@@ -4,4 +4,4 @@
     </ng-container>
     <ng-template #unselected><ng-content select="dma-icon.dma-icon-button-unselected"></ng-content></ng-template>
 </ng-container>
-<ng-content></ng-content>
+<ng-content select="dma-icon:not(.dma-icon-button-unselected):not(.dma-icon-button-selected)"></ng-content>
