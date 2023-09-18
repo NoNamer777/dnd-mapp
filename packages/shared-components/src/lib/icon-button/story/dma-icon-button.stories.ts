@@ -60,16 +60,36 @@ const meta: Meta<DmaIconButtonComponent> = {
 };
 
 export default meta;
+
+export const Common: Story = {
+    render: () => ({
+        template: `
+            <article class="row">
+                <button dma-icon-button="filled" dmaIconButtonLabel="Filled">
+                    <dma-icon dma-plus-so-icon></dma-icon>                
+                </button>
+                <button dma-icon-button="tonal" dmaIconButtonLabel="Tonal">
+                    <dma-icon dma-plus-so-icon></dma-icon>
+                </button>
+                <button dma-icon-button="outlined" dmaIconButtonLabel="Outlined">
+                    <dma-icon dma-plus-so-icon></dma-icon>
+                </button>
+                <button dma-icon-button dmaIconButtonLabel="Standard (Default)">
+                    <dma-icon dma-plus-so-icon></dma-icon>
+                </button>
+            </article>
+        `,
+    }),
 };
 
-export const Standard: Story = {
+export const StandardInteractive: Story = {
     render: (args: DmaIconButtonComponent) => ({
         props: args,
         template: `<button [dmaIconButtonLabel]="dmaIconButtonLabel" [dmaIconButtonLabelPosition]="dmaIconButtonLabelPosition" [dma-icon-button]="dmaButtonType" [disabled]="disabled"><dma-icon dma-plus-so-icon /></button>`,
     }),
 };
 
-export const Toggle: Story = {
+export const ToggleInteractive: Story = {
     render: (args: DmaIconButtonComponent) => ({
         props: args,
         template: `
