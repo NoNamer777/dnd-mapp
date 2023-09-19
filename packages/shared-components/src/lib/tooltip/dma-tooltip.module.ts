@@ -7,7 +7,7 @@ import { DmaTooltipDirective } from './dma-tooltip.directive';
 const TOOLTIP_DIRECTIVE = [DmaTooltipDirective] as const;
 
 @NgModule({
-    imports: [CommonModule, OverlayModule],
+    imports: [CommonModule, OverlayModule, ...TOOLTIP_DIRECTIVE],
     declarations: [DmaTooltipComponent],
     exports: [DmaTooltipComponent, ...TOOLTIP_DIRECTIVE],
 })
