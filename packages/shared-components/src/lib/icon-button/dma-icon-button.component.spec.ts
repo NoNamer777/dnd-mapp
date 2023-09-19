@@ -1,11 +1,19 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component, Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { DmaIconsModule } from '@dnd-mapp/shared-components';
 import { DmaIconButtonHarness } from '../testing';
 import { DmaIconButtonType } from './dma-icon-button.component';
 import { DmaIconButtonModule } from './dma-icon-button.module';
 
 describe('DmaIconButtonComponent', () => {
+    @Component({
+        template: `<button dmaIconButtonLabel="My icon button label" dma-icon-button>
+            <dma-icon dma-star-so-icon />
+        </button>`,
+    })
+    class MinimalTestComponent {}
+
     @Component({
         template: `<button
             dmaIconButtonLabel="My icon button label"
@@ -48,10 +56,12 @@ describe('DmaIconButtonComponent', () => {
         }
     }
 
-    async function setupTestEnvironment<T>(params: { component: Type<T> }) {
+    async function setupTestEnvironment<T = StandardTestComponent>(
+        params: { component: Type<T> } = { component: StandardTestComponent as Type<T> }
+    ) {
         TestBed.configureTestingModule({
-            imports: [DmaIconButtonModule],
-            declarations: [StandardTestComponent, ToggleTestComponent],
+            imports: [DmaIconButtonModule, DmaIconsModule],
+            declarations: [MinimalTestComponent, StandardTestComponent, ToggleTestComponent],
         });
 
         const fixture = TestBed.createComponent(params.component);
@@ -63,8 +73,14 @@ describe('DmaIconButtonComponent', () => {
         };
     }
 
+    it('should not override default button type with minimal setup', async () => {
+        const { harness } = await setupTestEnvironment({ component: MinimalTestComponent });
+
+        expect(await harness.getButtonType()).toEqual('standard');
+    });
+
     it('should render button type', async () => {
-        const { component, harness } = await setupTestEnvironment({ component: StandardTestComponent });
+        const { component, harness } = await setupTestEnvironment();
 
         expect(await harness.getButtonType()).toEqual('standard');
 
@@ -79,7 +95,7 @@ describe('DmaIconButtonComponent', () => {
     });
 
     it('should show the label on hover', async () => {
-        const { harness } = await setupTestEnvironment({ component: StandardTestComponent });
+        const { harness } = await setupTestEnvironment();
 
         expect(await harness.isLabelVisible()).toBeFalse();
 
@@ -118,7 +134,7 @@ describe('DmaIconButtonComponent', () => {
     });
 
     it('should not emit selected change when not in toggle mode', async () => {
-        const { component, harness } = await setupTestEnvironment({ component: StandardTestComponent });
+        const { component, harness } = await setupTestEnvironment();
 
         expect(component.isSelected).toBeFalse();
         expect(await harness.isSelected()).toBeFalse();
