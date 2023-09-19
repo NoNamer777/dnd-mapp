@@ -1,13 +1,14 @@
 import { ArgTypes, Meta, moduleMetadata, StoryObj } from '@storybook/angular';
 import { DmaIconsModule } from '../../icons';
 import { DmaIconButtonComponent } from '../dma-icon-button.component';
+import { DmaIconButtonModule } from '../dma-icon-button.module';
 
 type Story = StoryObj<DmaIconButtonComponent>;
 
 const meta: Meta<DmaIconButtonComponent> = {
     title: 'DmaIconButton',
     component: DmaIconButtonComponent,
-    decorators: [moduleMetadata({ imports: [DmaIconsModule] })],
+    decorators: [moduleMetadata({ imports: [DmaIconButtonModule, DmaIconsModule] })],
     argTypes: {
         toggle: {
             description: 'Whether the icon button toggles between unselected and selected state.',
