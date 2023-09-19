@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { DmaTooltipHostHarness } from '../testing';
 import { DmaTooltipPosition } from './dma-tooltip.directive';
-import { DmaTooltipModule, TOOLTIP_DIRECTIVE } from './dma-tooltip.module';
+import { DmaTooltipModule } from './dma-tooltip.module';
 
 describe('DmaTooltipComponent', () => {
     @Component({
@@ -15,7 +15,7 @@ describe('DmaTooltipComponent', () => {
 
     async function setupTestEnvironment() {
         TestBed.configureTestingModule({
-            imports: [DmaTooltipModule, ...TOOLTIP_DIRECTIVE],
+            imports: [DmaTooltipModule],
             declarations: [TestComponent],
         });
 

@@ -1,24 +1,22 @@
 import { ArgTypes, Meta, moduleMetadata, StoryObj } from '@storybook/angular';
 import { DmaIconsModule } from '../../icons';
 import { DmaIconButtonComponent } from '../dma-icon-button.component';
+import { DmaIconButtonModule } from '../dma-icon-button.module';
 
 type Story = StoryObj<DmaIconButtonComponent>;
 
 const meta: Meta<DmaIconButtonComponent> = {
+    title: 'DmaIconButton',
     component: DmaIconButtonComponent,
-    decorators: [moduleMetadata({ imports: [DmaIconsModule] })],
+    decorators: [moduleMetadata({ imports: [DmaIconButtonModule, DmaIconsModule] })],
     argTypes: {
         toggle: {
-            name: 'Toggle',
             description: 'Whether the icon button toggles between unselected and selected state.',
-            table: {
-                defaultValue: {
-                    summary: false,
-                },
+            defaultValue: {
+                summary: false,
             },
         },
         disabled: {
-            name: 'Disabled',
             control: 'boolean',
             description: 'Whether the icon button is disabled.',
             defaultValue: {
@@ -26,7 +24,6 @@ const meta: Meta<DmaIconButtonComponent> = {
             },
         },
         dmaButtonType: {
-            name: 'Icon button type',
             control: 'select',
             options: ['filled', 'tonal', 'outlined', 'standard'],
             description: 'The type of icon button.',
@@ -34,29 +31,25 @@ const meta: Meta<DmaIconButtonComponent> = {
                 name: 'string',
                 required: true,
             },
-            table: {
-                defaultValue: {
-                    summary: 'standard',
-                },
+            defaultValue: {
+                summary: 'standard',
             },
         },
         dmaIconButtonLabel: {
-            name: 'Label - text',
             control: 'text',
+            description: 'The label of the icon button which should provide context of what the button does.',
             type: {
                 name: 'string',
                 required: true,
             },
-            description: 'The label of the icon button which should provide context of what the button does.',
         },
         dmaIconButtonLabelPosition: {
-            name: 'Label - position',
             control: 'select',
             options: ['above', 'after', 'below', 'before'],
+            description: 'The placement of the label.',
             defaultValue: {
                 summary: 'above',
             },
-            description: 'The placement of the label.',
         },
     } as Partial<ArgTypes<DmaIconButtonComponent>>,
     args: {
@@ -67,19 +60,37 @@ const meta: Meta<DmaIconButtonComponent> = {
     } as Partial<DmaIconButtonComponent> & Partial<HTMLButtonElement>,
 };
 
-export default {
-    title: 'DmaIconButton',
-    ...meta,
+export default meta;
+
+export const Common: Story = {
+    render: () => ({
+        template: `
+            <article class="row">
+                <button dma-icon-button="filled" dmaIconButtonLabel="Filled">
+                    <dma-icon dma-plus-so-icon></dma-icon>                
+                </button>
+                <button dma-icon-button="tonal" dmaIconButtonLabel="Tonal">
+                    <dma-icon dma-plus-so-icon></dma-icon>
+                </button>
+                <button dma-icon-button="outlined" dmaIconButtonLabel="Outlined">
+                    <dma-icon dma-plus-so-icon></dma-icon>
+                </button>
+                <button dma-icon-button dmaIconButtonLabel="Standard (Default)">
+                    <dma-icon dma-plus-so-icon></dma-icon>
+                </button>
+            </article>
+        `,
+    }),
 };
 
-export const Standard: Story = {
+export const StandardInteractive: Story = {
     render: (args: DmaIconButtonComponent) => ({
         props: args,
         template: `<button [dmaIconButtonLabel]="dmaIconButtonLabel" [dmaIconButtonLabelPosition]="dmaIconButtonLabelPosition" [dma-icon-button]="dmaButtonType" [disabled]="disabled"><dma-icon dma-plus-so-icon /></button>`,
     }),
 };
 
-export const Toggle: Story = {
+export const ToggleInteractive: Story = {
     render: (args: DmaIconButtonComponent) => ({
         props: args,
         template: `

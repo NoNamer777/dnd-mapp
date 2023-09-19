@@ -3,7 +3,7 @@ import { Component, Input, NgModule } from '@angular/core';
 import { StoryObj, moduleMetadata } from '@storybook/angular';
 import { DmaButtonModule } from '../../button';
 import { DmaTooltipPosition } from '../dma-tooltip.directive';
-import { DmaTooltipModule, TOOLTIP_DIRECTIVE } from '../dma-tooltip.module';
+import { DmaTooltipModule } from '../dma-tooltip.module';
 
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
@@ -17,7 +17,7 @@ class PlainDmaTooltipStoryComponent {
 }
 
 @NgModule({
-    imports: [CommonModule, DmaTooltipModule, DmaButtonModule, ...TOOLTIP_DIRECTIVE],
+    imports: [CommonModule, DmaTooltipModule, DmaButtonModule],
     declarations: [PlainDmaTooltipStoryComponent],
     exports: [PlainDmaTooltipStoryComponent],
 })

@@ -19,10 +19,9 @@ const containerColorsPerButtonType = new Map<DmaButtonType, StateColors>([
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DmaButtonComponent extends DmaStateComponent implements OnInit {
-    @Input('dma-button') set dmaButtonType(buttonType: unknown) {
+    @Input('dma-button') set dmaButtonType(buttonType: DmaButtonType | string) {
         if (buttonType === '') return;
 
-        // TODO - Enforce only DmaButtonType values as valid
         this.buttonType = buttonType as DmaButtonType;
 
         this.updateRenderedAttribute();
