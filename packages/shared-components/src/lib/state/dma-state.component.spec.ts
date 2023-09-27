@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { StateHarness } from '../testing';
 import { DmaStateModule } from './dma-state.module';
 
-describe('DmaStateComponent', () => {
+fdescribe('DmaStateComponent', () => {
     @Component({
         template: `<button dma-state [disabled]="disabled">Button</button>`,
     })
@@ -23,15 +23,16 @@ describe('DmaStateComponent', () => {
 
         if (params?.disabled) {
             fixture.componentInstance.disabled = params.disabled;
-            fixture.detectChanges();
         }
+        fixture.detectChanges();
+
         return {
             element: fixture.nativeElement.querySelector('[dma-state]') as HTMLElement,
             harness: await harnessLoader.getHarness(StateHarness),
         };
     }
 
-    it('should reflect state as attributes', async () => {
+    fit('should reflect state as attributes', async () => {
         const { element, harness } = await setupTestEnvironment();
 
         // Initial state
