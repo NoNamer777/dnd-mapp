@@ -1,47 +1,47 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, NgModule } from '@angular/core';
 import { StoryObj, moduleMetadata } from '@storybook/angular';
 import { DmaButtonModule } from '../../button';
-import { DmaTooltipPosition } from '../dma-tooltip.directive';
+import { DmaTooltipDirective } from '../dma-tooltip.directive';
 import { DmaTooltipModule } from '../dma-tooltip.module';
 
-@Component({
-    // eslint-disable-next-line @angular-eslint/component-selector
-    selector: 'plain-dma-tooltip-story',
-    templateUrl: './dma-tooltip.stories.html',
-    styleUrls: ['./dma-tooltip.stories.scss'],
-})
-class PlainDmaTooltipStoryComponent {
-    @Input() tooltipText: string;
-    @Input() tooltipPosition: DmaTooltipPosition;
-}
-
-@NgModule({
-    imports: [CommonModule, DmaTooltipModule, DmaButtonModule],
-    declarations: [PlainDmaTooltipStoryComponent],
-    exports: [PlainDmaTooltipStoryComponent],
-})
-class StoryModule {}
-
 export default {
-    title: 'Dma-tooltip',
-    decorators: [moduleMetadata({ imports: [StoryModule] })],
-};
-
-export const PlainTooltip: StoryObj<PlainDmaTooltipStoryComponent> = {
-    args: {
-        tooltipText: 'My Tooltip',
-        tooltipPosition: 'above',
-    },
+    title: 'DmaTooltip',
+    decorators: [moduleMetadata({ imports: [CommonModule, DmaTooltipModule, DmaButtonModule] })],
     argTypes: {
-        tooltipPosition: {
+        tooltipText: {
+            control: 'text',
+            type: {
+                name: 'text',
+                required: true,
+            },
+            description: 'The text that will be rendered inside the tooltip.',
+        },
+        position: {
             control: 'select',
             options: ['above', 'below', 'before', 'after'],
+            defaultValue: {
+                summary: 'above',
+            },
+            description: 'Determines the position of the Tooltip relative to the element to which it is attached.',
         },
+    },
+};
+
+export const Common: StoryObj<DmaTooltipDirective> = {
+    render: () => ({
+        template: `<button dma-button="filled" dmaTooltip="My tooltip" dmaTooltipPosition="above">Button</button>`,
+    }),
+};
+
+export const PlainTooltip: StoryObj<DmaTooltipDirective> = {
+    args: {
+        tooltipText: 'My Tooltip',
+        position: 'above',
     },
     render: (args) => ({
         props: args,
-        template: `<plain-dma-tooltip-story [tooltipText]="tooltipText" [tooltipPosition]="tooltipPosition"></plain-dma-tooltip-story>`,
+        template: `<button dma-button="filled" [dmaTooltip]="tooltipText" [dmaTooltipPosition]="position">Button</button>`,
         userDefinedTemplate: true,
+        styles: ['button { margin: 1em 4em; }'],
     }),
 };
