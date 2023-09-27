@@ -1,15 +1,21 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { DmaStateComponent } from '@dnd-mapp/shared-components';
 import { StateHarness } from '../testing';
 import { DmaStateModule } from './dma-state.module';
 
-fdescribe('DmaStateComponent', () => {
+describe('DmaStateComponent', () => {
     @Component({
         template: `<button dma-state [disabled]="disabled">Button</button>`,
     })
-    class TestComponent {
+    class TestComponent extends DmaStateComponent implements OnInit {
         disabled = false;
+
+        ngOnInit() {
+            this.baseColor = '#ffffff';
+            this.layerColor = '#000000';
+        }
     }
 
     async function setupTestEnvironment(params?: { disabled?: boolean }) {
