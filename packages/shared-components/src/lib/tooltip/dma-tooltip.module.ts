@@ -4,11 +4,9 @@ import { NgModule } from '@angular/core';
 import { DmaTooltipComponent } from './dma-tooltip.component';
 import { DmaTooltipDirective } from './dma-tooltip.directive';
 
-const TOOLTIP_DIRECTIVE = [DmaTooltipDirective] as const;
-
 @NgModule({
-    imports: [CommonModule, OverlayModule, ...TOOLTIP_DIRECTIVE],
+    imports: [CommonModule, OverlayModule, DmaTooltipDirective],
     declarations: [DmaTooltipComponent],
-    exports: [DmaTooltipComponent, ...TOOLTIP_DIRECTIVE],
+    exports: [DmaTooltipComponent, DmaTooltipDirective],
 })
 export class DmaTooltipModule {}
