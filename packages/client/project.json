@@ -4,7 +4,7 @@
     "projectType": "application",
     "sourceRoot": "packages/client/src",
     "tags": ["@dnd-mapp/client"],
-    "implicitDependencies": ["data"],
+    "implicitDependencies": ["data", "shared-components"],
     "prefix": "dma",
     "targets": {
         "build": {
