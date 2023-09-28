@@ -1,9 +1,9 @@
 name: Build and Test
 on:
+    pull_request:
     push:
         branches:
-            - '**'
-            - '!main'
+            - main
 jobs:
     build-and-test:
         concurrency: ci-${{ github.ref }}
