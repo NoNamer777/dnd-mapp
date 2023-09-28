@@ -4,6 +4,7 @@
     "sourceRoot": "packages/shared-components/src",
     "prefix": "dma",
     "tags": ["@dnd-mapp/shared-components"],
+    "implicitDependencies": ["data"],
     "projectType": "library",
     "targets": {
         "build": {
