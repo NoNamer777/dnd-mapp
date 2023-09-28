@@ -55,7 +55,7 @@ export class DmaStateComponent {
 
     @HostBinding('style.backgroundColor')
     get backgroundColor() {
-        return `color-mix(in srgb, ${this.baseColor}, ${this.layerColor} ${this.opacity}%)`;
+        return `color-mix(in srgb, ${this.baseColor} ${100 - this.opacity}%, ${this.layerColor})`;
     }
 
     @HostListener('focus')
