@@ -1,6 +1,7 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { DmaStateComponent } from '@dnd-mapp/shared-components';
 import { StateHarness } from '../testing';
 import { DmaStateModule } from './dma-state.module';
 
@@ -8,8 +9,13 @@ describe('DmaStateComponent', () => {
     @Component({
         template: `<button dma-state [disabled]="disabled">Button</button>`,
     })
-    class TestComponent {
+    class TestComponent extends DmaStateComponent implements OnInit {
         disabled = false;
+
+        ngOnInit() {
+            this.baseColor = '#ffffff';
+            this.layerColor = '#000000';
+        }
     }
 
     async function setupTestEnvironment(params?: { disabled?: boolean }) {
@@ -23,8 +29,9 @@ describe('DmaStateComponent', () => {
 
         if (params?.disabled) {
             fixture.componentInstance.disabled = params.disabled;
-            fixture.detectChanges();
         }
+        fixture.detectChanges();
+
         return {
             element: fixture.nativeElement.querySelector('[dma-state]') as HTMLElement,
             harness: await harnessLoader.getHarness(StateHarness),
@@ -38,7 +45,7 @@ describe('DmaStateComponent', () => {
         expect(await harness.isFocussed()).toBeFalse();
         expect(await harness.isHovered()).toBeFalse();
         expect(await harness.isPressed()).toBeFalse();
-        expect(await harness.getAppliedBackgroundStyle()).toContain('0%');
+        expect(await harness.getAppliedBackgroundStyle()).toContain('100%');
 
         // Simulate hovering over the element
         element.dispatchEvent(new MouseEvent('mouseenter'));
@@ -46,7 +53,7 @@ describe('DmaStateComponent', () => {
         expect(await harness.isFocussed()).toBeFalse();
         expect(await harness.isHovered()).toBeTrue();
         expect(await harness.isPressed()).toBeFalse();
-        expect(await harness.getAppliedBackgroundStyle()).toContain('8%');
+        expect(await harness.getAppliedBackgroundStyle()).toContain('92%');
 
         // Simulate clicking on the element
         element.dispatchEvent(new MouseEvent('mousedown'));
@@ -54,7 +61,7 @@ describe('DmaStateComponent', () => {
         expect(await harness.isFocussed()).toBeFalse();
         expect(await harness.isHovered()).toBeTrue();
         expect(await harness.isPressed()).toBeTrue();
-        expect(await harness.getAppliedBackgroundStyle()).toContain('20%');
+        expect(await harness.getAppliedBackgroundStyle()).toContain('80%');
 
         // Simulate focussing by clicking on the element
         element.dispatchEvent(new MouseEvent('mouseup'));
@@ -63,7 +70,7 @@ describe('DmaStateComponent', () => {
         expect(await harness.isFocussed()).toBeTrue();
         expect(await harness.isHovered()).toBeTrue();
         expect(await harness.isPressed()).toBeFalse();
-        expect(await harness.getAppliedBackgroundStyle()).toContain('20%');
+        expect(await harness.getAppliedBackgroundStyle()).toContain('80%');
 
         // Simulate moving the mouse away from the element
         element.dispatchEvent(new MouseEvent('mouseleave'));
@@ -71,7 +78,7 @@ describe('DmaStateComponent', () => {
         expect(await harness.isFocussed()).toBeTrue();
         expect(await harness.isHovered()).toBeFalse();
         expect(await harness.isPressed()).toBeFalse();
-        expect(await harness.getAppliedBackgroundStyle()).toContain('12%');
+        expect(await harness.getAppliedBackgroundStyle()).toContain('88%');
 
         // Simulate clicking outside the element to lose focus
         document.documentElement.dispatchEvent(new MouseEvent('click'));
@@ -80,7 +87,7 @@ describe('DmaStateComponent', () => {
         expect(await harness.isFocussed()).toBeFalse();
         expect(await harness.isHovered()).toBeFalse();
         expect(await harness.isPressed()).toBeFalse();
-        expect(await harness.getAppliedBackgroundStyle()).toContain('0%');
+        expect(await harness.getAppliedBackgroundStyle()).toContain('100%');
 
         // Simulate start dragging
         element.dispatchEvent(new MouseEvent('mouseenter'));
@@ -90,7 +97,7 @@ describe('DmaStateComponent', () => {
         expect(await harness.isHovered()).toBeTrue();
         expect(await harness.isPressed()).toBeTrue();
         expect(await harness.isDragging()).toBeTrue();
-        expect(await harness.getAppliedBackgroundStyle()).toContain('36%');
+        expect(await harness.getAppliedBackgroundStyle()).toContain('64%');
 
         // simulate stop dragging
         element.dispatchEvent(new DragEvent('dragend'));
@@ -101,7 +108,7 @@ describe('DmaStateComponent', () => {
         expect(await harness.isHovered()).toBeTrue();
         expect(await harness.isPressed()).toBeFalse();
         expect(await harness.isDragging()).toBeFalse();
-        expect(await harness.getAppliedBackgroundStyle()).toContain('20%');
+        expect(await harness.getAppliedBackgroundStyle()).toContain('80%');
     });
 
     it('should not remove states when not applied', async () => {
@@ -112,23 +119,23 @@ describe('DmaStateComponent', () => {
         expect(await harness.isHovered()).toBeFalse();
         expect(await harness.isPressed()).toBeFalse();
         expect(await harness.isDragging()).toBeFalse();
-        expect(await harness.getAppliedBackgroundStyle()).toContain('0%');
+        expect(await harness.getAppliedBackgroundStyle()).toContain('100%');
 
         element.dispatchEvent(new FocusEvent('blur'));
         expect(await harness.isFocussed()).toBeFalse();
-        expect(await harness.getAppliedBackgroundStyle()).toContain('0%');
+        expect(await harness.getAppliedBackgroundStyle()).toContain('100%');
 
         element.dispatchEvent(new MouseEvent('mouseleave'));
         expect(await harness.isHovered()).toBeFalse();
-        expect(await harness.getAppliedBackgroundStyle()).toContain('0%');
+        expect(await harness.getAppliedBackgroundStyle()).toContain('100%');
 
         element.dispatchEvent(new MouseEvent('mouseup'));
         expect(await harness.isPressed()).toBeFalse();
-        expect(await harness.getAppliedBackgroundStyle()).toContain('0%');
+        expect(await harness.getAppliedBackgroundStyle()).toContain('100%');
 
         element.dispatchEvent(new MouseEvent('dragend'));
         expect(await harness.isDragging()).toBeFalse();
-        expect(await harness.getAppliedBackgroundStyle()).toContain('0%');
+        expect(await harness.getAppliedBackgroundStyle()).toContain('100%');
     });
 
     it('should not apply states when disabled', async () => {
@@ -139,23 +146,23 @@ describe('DmaStateComponent', () => {
         expect(await harness.isHovered()).toBeFalse();
         expect(await harness.isPressed()).toBeFalse();
         expect(await harness.isDragging()).toBeFalse();
-        expect(await harness.getAppliedBackgroundStyle()).toContain('0%');
+        expect(await harness.getAppliedBackgroundStyle()).toContain('100%');
 
         element.dispatchEvent(new FocusEvent('focus'));
         expect(await harness.isFocussed()).toBeFalse();
-        expect(await harness.getAppliedBackgroundStyle()).toContain('0%');
+        expect(await harness.getAppliedBackgroundStyle()).toContain('100%');
 
         element.dispatchEvent(new MouseEvent('mouseenter'));
         expect(await harness.isHovered()).toBeFalse();
-        expect(await harness.getAppliedBackgroundStyle()).toContain('0%');
+        expect(await harness.getAppliedBackgroundStyle()).toContain('100%');
 
         element.dispatchEvent(new MouseEvent('mousedown'));
         expect(await harness.isPressed()).toBeFalse();
-        expect(await harness.getAppliedBackgroundStyle()).toContain('0%');
+        expect(await harness.getAppliedBackgroundStyle()).toContain('100%');
 
         element.dispatchEvent(new MouseEvent('dragstart'));
         expect(await harness.isDragging()).toBeFalse();
-        expect(await harness.getAppliedBackgroundStyle()).toContain('0%');
+        expect(await harness.getAppliedBackgroundStyle()).toContain('100%');
     });
 
     it('should not apply pressing states when not using the primary button', async () => {

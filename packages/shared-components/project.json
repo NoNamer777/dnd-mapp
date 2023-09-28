@@ -25,7 +25,7 @@
         },
         "test": {
             "executor": "@angular-devkit/build-angular:karma",
-            "outputs": ["coverage/shared-components"],
+            "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
             "options": {
                 "assets": [],
                 "codeCoverage": true,
