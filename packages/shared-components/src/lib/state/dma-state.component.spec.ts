@@ -38,7 +38,7 @@ describe('DmaStateComponent', () => {
         };
     }
 
-    fit('should reflect state as attributes', async () => {
+    it('should reflect state as attributes', async () => {
         const { element, harness } = await setupTestEnvironment();
 
         // Initial state
