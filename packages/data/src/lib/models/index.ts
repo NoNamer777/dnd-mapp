@@ -1,3 +1,4 @@
+export * from './ability-score.model';
 export * from './ability.model';
 export * from './entity.model';
 export * from './level.model';
