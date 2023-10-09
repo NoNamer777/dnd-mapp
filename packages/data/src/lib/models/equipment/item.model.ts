@@ -6,7 +6,7 @@ export class Item implements BaseEntityModel {
     name: string;
     quantity: number;
 
-    /** The monetary value of the item stored in the following format: `1.0 cp`. */
+    /** The monetary value of the item stored in the following example format: `1 cp`. */
     cost: string;
     weight: number;
 
