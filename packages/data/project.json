@@ -3,6 +3,7 @@
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
     "sourceRoot": "packages/data/src",
     "projectType": "library",
+    "tags": ["@dnd-mapp/data"],
     "targets": {
         "build": {
             "executor": "@nx/js:tsc",
@@ -51,6 +52,5 @@
                 "lintFilePatterns": ["packages/data/**/*.ts"]
             }
         }
-    },
-    "tags": ["@dnd-mapp/data"]
+    }
 }
