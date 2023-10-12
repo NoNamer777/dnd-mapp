@@ -6,26 +6,28 @@ export enum Coinages {
     pp = 10, // Platinum pieces
 }
 
-export enum CoinageTypes {
-    copper = 'cp',
-    silver = 'sp',
-    electrum = 'ep',
-    gold = 'gp',
-    platinum = 'pp',
+export enum CoinageType {
+    COPPER = 'cp',
+    SILVER = 'sp',
+    ELECTRUM = 'ep',
+    GOLD = 'gp',
+    PLATINUM = 'pp',
 }
 
-function findCoinageTypeFromAbbreviation(abbreviation: string) {
-    return Object.entries(CoinageTypes).find(([key, value]) => {
+function findCoinageNameFromAbbreviation(abbreviation: string): CoinageName {
+    const coinageName = Object.entries(CoinageType).find(([key, value]) => {
         if (value === abbreviation) return key;
 
         return;
     })![0];
+
+    return `${coinageName[0]}${coinageName.slice(1).toLowerCase()}` as CoinageName;
 }
 
-export type CoinageType = keyof typeof Coinages;
+export type CoinageName = Capitalize<Lowercase<keyof typeof CoinageType>>;
 
 export class Coinage {
-    static exchange(monetaryValue: string, targetCoinageType: CoinageTypes): string {
+    static exchange(monetaryValue: string, targetCoinageType: CoinageType): string {
         const startingMonetaryValue = monetaryValue.split(' ');
         const amount = Number(startingMonetaryValue[0]);
 
@@ -36,9 +38,9 @@ export class Coinage {
 
         if (!Number.isInteger(newAmount)) {
             throw new Error(
-                `Can't exchange ${amount} of ${findCoinageTypeFromAbbreviation(
+                `Can't exchange ${amount} of ${findCoinageNameFromAbbreviation(
                     startingCoinage.type
-                )} pieces to ${findCoinageTypeFromAbbreviation(targetCoinage.type)} pieces. Will result in rest values.`
+                )} pieces to ${findCoinageNameFromAbbreviation(targetCoinage.type)} pieces. Will result in rest values.`
             );
         }
         return `${newAmount} ${targetCoinage.type}`;
