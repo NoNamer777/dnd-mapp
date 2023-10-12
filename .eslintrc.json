@@ -42,7 +42,6 @@
                                     "axios",
                                     "reflect-metadata",
                                     "js-yaml",
-                                    "@storybook/*",
                                     "@fortawesome/*"
                                 ]
                             },
