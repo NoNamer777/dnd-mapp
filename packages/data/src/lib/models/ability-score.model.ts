@@ -1,4 +1,4 @@
-import { Ability } from '@dnd-mapp/data';
+import { Ability } from './ability.model';
 
 export class AbilityScore {
     ability: Ability;
