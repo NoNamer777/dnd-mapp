@@ -15,15 +15,51 @@
                         "depConstraints": [
                             {
                                 "sourceTag": "@dnd-mapp/client",
-                                "onlyDependOnLibsWithTags": ["@dnd-mapp/client", "@dnd-mapp/data"]
+                                "onlyDependOnLibsWithTags": ["@dnd-mapp/client", "@dnd-mapp/data"],
+                                "bannedExternalImports": [
+                                    "@nestjs/*",
+                                    "typeorm",
+                                    "sqlite3",
+                                    "mysql2",
+                                    "class-validator",
+                                    "class-transformer",
+                                    "axios",
+                                    "reflect-metadata",
+                                    "js-yaml",
+                                    "@storybook/*"
+                                ]
+                            },
+                            {
+                                "sourceTag": "@dnd-mapp/shared-components",
+                                "onlyDependOnLibsWithTags": ["@dnd-mapp/client", "@dnd-mapp/data"],
+                                "bannedExternalImports": [
+                                    "@nestjs/*",
+                                    "typeorm",
+                                    "sqlite3",
+                                    "mysql2",
+                                    "class-validator",
+                                    "class-transformer",
+                                    "axios",
+                                    "reflect-metadata",
+                                    "js-yaml",
+                                    "@storybook/*",
+                                    "@fortawesome/*"
+                                ]
                             },
                             {
                                 "sourceTag": "@dnd-mapp/server",
-                                "onlyDependOnLibsWithTags": ["@dnd-mapp/server", "@dnd-mapp/data"]
+                                "onlyDependOnLibsWithTags": ["@dnd-mapp/server", "@dnd-mapp/data"],
+                                "bannedExternalImports": [
+                                    "@angular/*",
+                                    "zone.js",
+                                    "@fortawesome/*",
+                                    "@storybook/*",
+                                    "@fortawesome/*"
+                                ]
                             },
                             {
                                 "sourceTag": "@dnd-mapp/data",
-                                "onlyDependOnLibsWithTags": ["@dnd-mapp/data"]
+                                "bannedExternalImports": ["*"]
                             }
                         ]
                     }
