@@ -22,6 +22,6 @@ jobs:
             - name: Check linting and formatting
               run: |
                   npx nx format:check
-                  npx nx run-many --target=lint
+                  npx nx run-many -t lint
             - name: Build & Test
-              run: npx nx run-many --targets test,build --configuration ci
+              run: npx nx run-many -t test,build --configuration ci
