@@ -1,11 +1,5 @@
 import { Skill } from './skill.model';
 
-export interface Ability {
-    id: number;
-    name: string;
-    skills: Skill[];
-}
-
 export enum Abilities {
     STRENGTH = 'Strength',
     DEXTERITY = 'Dexterity',
@@ -13,6 +7,14 @@ export enum Abilities {
     INTELLIGENCE = 'Intelligence',
     WISDOM = 'Wisdom',
     CHARISMA = 'Charisma',
+}
+
+export type AbilityName = (typeof Abilities)[keyof typeof Abilities];
+
+export interface Ability {
+    id: number;
+    name: AbilityName;
+    skills: Skill[];
 }
 
 export type CreateAbilityData = Omit<Ability, 'id'>;
