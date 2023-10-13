@@ -1,7 +1,7 @@
 import { ComponentHarness } from '@angular/cdk/testing';
 
-export class CenterComponentHarness extends ComponentHarness {
-    static hostSelector = 'dma-center';
+export class HeaderHarness extends ComponentHarness {
+    static hostSelector = 'dma-header';
 
     async getTextContent(): Promise<string> {
         return await (await this.host()).text();

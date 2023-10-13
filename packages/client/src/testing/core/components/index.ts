@@ -1,2 +1,2 @@
-export * from './center.component.harness';
-export * from './header.component.harness';
+export * from './center.harness';
+export * from './header.harness';
