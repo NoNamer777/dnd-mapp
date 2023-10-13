@@ -32,9 +32,9 @@
                 "outputHashing": "all",
                 "outputPath": "dist/client",
                 "polyfills": ["zone.js"],
-                "scripts": [],
+                "scripts": ["node_modules/bootstrap/dist/js/bootstrap.min.js"],
                 "sourceMap": false,
-                "styles": ["packages/client/src/styles.scss"],
+                "styles": ["packages/client/src/styles.scss", "node_modules/bootstrap/dist/css/bootstrap.min.css"],
                 "tsConfig": "packages/client/tsconfig.app.json",
                 "watch": false
             },
@@ -74,8 +74,8 @@
                 "inlineStyleLanguage": "scss",
                 "karmaConfig": "packages/client/karma.conf.js",
                 "polyfills": ["zone.js", "zone.js/testing"],
-                "scripts": [],
-                "styles": ["packages/client/src/styles.scss"],
+                "scripts": ["node_modules/bootstrap/dist/js/bootstrap.min.js"],
+                "styles": ["packages/client/src/styles.scss", "node_modules/bootstrap/dist/css/bootstrap.min.css"],
                 "tsConfig": "packages/client/tsconfig.spec.json",
                 "watch": false
             },

@@ -42,7 +42,8 @@
                                     "axios",
                                     "reflect-metadata",
                                     "js-yaml",
-                                    "@fortawesome/*"
+                                    "@fortawesome/*",
+                                    "bootstrap"
                                 ]
                             },
                             {
@@ -53,7 +54,8 @@
                                     "zone.js",
                                     "@fortawesome/*",
                                     "@storybook/*",
-                                    "@fortawesome/*"
+                                    "@fortawesome/*",
+                                    "bootstrap"
                                 ]
                             },
                             {
