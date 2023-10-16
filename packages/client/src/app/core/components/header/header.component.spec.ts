@@ -1,7 +1,7 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { HeaderComponentHarness } from '../../../../testing';
+import { HeaderHarness } from '../../../../testing';
 import { HeaderModule } from './header.module';
 
 describe('HeaderComponent', () => {
@@ -19,7 +19,7 @@ describe('HeaderComponent', () => {
         const harnessLoader = TestbedHarnessEnvironment.loader(TestBed.createComponent(TestComponent));
 
         return {
-            harness: await harnessLoader.getHarness(HeaderComponentHarness),
+            harness: await harnessLoader.getHarness(HeaderHarness),
         };
     }
 
