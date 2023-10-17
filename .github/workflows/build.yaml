@@ -1,4 +1,11 @@
 name: Build and Test
+# Needed for the main job to retrieve the appropriate SHAs when running on the main branch
+permissions:
+    actions: read
+    contents: read
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+    cancel-in-progress: true
 on:
     pull_request:
     push:
@@ -9,13 +16,18 @@ jobs:
         name: Nx Cloud - Main Job
         uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.13.1
         with:
+            main-branch-name: main
             node-version: 18
             npm-version: 9
             number-of-agents: 3
+            init-commands: |
+                npx nx-cloud start-ci-run --stop-agents-after "build" --agent-count 3
             parallel-commands: |
                 npx nx-cloud record -- npx nx format:check
             parallel-commands-on-agents: |
-                npx nx affected -t lint & npx nx affected -t test -c ci & npx nx affected -t build
+                npx nx affected -t lint 
+                npx nx affected -t test -c ci 
+                npx nx affected -t build
     agents:
         name: Nx Cloud - Agents
         uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.13.1
