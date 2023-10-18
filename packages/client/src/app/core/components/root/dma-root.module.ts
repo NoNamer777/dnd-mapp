@@ -2,9 +2,10 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { appRoutes } from '../../app.routes';
+import { DmaThemeModule } from '../../theming';
 import { CenterModule } from '../center';
 import { HeaderModule } from '../header';
-import { RootComponent } from './root.component';
+import { DmaRootComponent } from './dma-root.component';
 
 @NgModule({
     imports: [
@@ -12,8 +13,9 @@ import { RootComponent } from './root.component';
         RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
         HeaderModule,
         CenterModule,
+        DmaThemeModule,
     ],
-    declarations: [RootComponent],
-    exports: [RootComponent],
+    declarations: [DmaRootComponent],
+    exports: [DmaRootComponent],
 })
-export class RootModule {}
+export class DmaRootModule {}

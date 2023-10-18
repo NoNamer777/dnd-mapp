@@ -1,2 +1,2 @@
-export * from './root.component';
-export * from './root.module';
+export * from './dma-root.component';
+export * from './dma-root.module';
