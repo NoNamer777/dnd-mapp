@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { appRoutes } from '../../app.routes';
 import { CenterModule } from '../center';
 import { HeaderModule } from '../header';
-import { RootComponent } from './root.component';
+import { DmaRootComponent } from './dma-root.component';
 
 @NgModule({
     imports: [
@@ -13,7 +13,7 @@ import { RootComponent } from './root.component';
         HeaderModule,
         CenterModule,
     ],
-    declarations: [RootComponent],
-    exports: [RootComponent],
+    declarations: [DmaRootComponent],
+    exports: [DmaRootComponent],
 })
-export class RootModule {}
+export class DmaRootModule {}

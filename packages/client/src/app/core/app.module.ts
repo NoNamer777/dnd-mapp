@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RootComponent, RootModule } from './components';
+import { DmaRootComponent, DmaRootModule } from './components';
 
 @NgModule({
-    imports: [BrowserModule, RootModule],
-    bootstrap: [RootComponent],
+    imports: [BrowserModule, DmaRootModule],
+    bootstrap: [DmaRootComponent],
 })
 export class AppModule {}
