@@ -1,2 +1,2 @@
-export * from './header.component';
-export * from './header.module';
+export * from './dma-header.component';
+export * from './dma-header.module';

@@ -1,1 +1,1 @@
-export * from './icons.module';
+export * from './dma-icons.module';

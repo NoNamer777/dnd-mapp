@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { FaConfig, FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { FontAwesomeTestingModule } from '@fortawesome/angular-fontawesome/testing';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 
 @NgModule({
-    imports: [FontAwesomeModule, FontAwesomeTestingModule],
-    exports: [FontAwesomeModule, FontAwesomeTestingModule],
+    imports: [FontAwesomeModule],
+    exports: [FontAwesomeModule],
 })
-export class IconsModule {
+export class DmaIconsModule {
     constructor(library: FaIconLibrary, config: FaConfig) {
         library.addIcons(...icons);
 
@@ -15,4 +15,4 @@ export class IconsModule {
     }
 }
 
-const icons: IconDefinition[] = [];
+const icons: IconDefinition[] = [faCircleUser];

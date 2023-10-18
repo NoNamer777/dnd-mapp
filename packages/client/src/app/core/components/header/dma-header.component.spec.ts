@@ -1,8 +1,9 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { HeaderHarness } from '../../../../testing';
-import { HeaderModule } from './header.module';
+import { RouterTestingModule } from '@angular/router/testing';
+import { DmaHeaderHarness } from '../../../../testing';
+import { DmaHeaderModule } from './dma-header.module';
 
 describe('HeaderComponent', () => {
     @Component({
@@ -12,19 +13,21 @@ describe('HeaderComponent', () => {
 
     async function setupTestEnvironment() {
         TestBed.configureTestingModule({
-            imports: [HeaderModule],
+            imports: [DmaHeaderModule, RouterTestingModule],
             declarations: [TestComponent],
         });
 
         const harnessLoader = TestbedHarnessEnvironment.loader(TestBed.createComponent(TestComponent));
 
         return {
-            harness: await harnessLoader.getHarness(HeaderHarness),
+            harness: await harnessLoader.getHarness(DmaHeaderHarness),
         };
     }
 
-    it('should show the components text content', async () => {
+    it('should show unauthorized links', async () => {
         const { harness } = await setupTestEnvironment();
-        expect(await harness.getTextContent()).toEqual('Header component works!');
+
+        expect(await harness.isNavItemByLabelVisible('Sign up')).toBeTrue();
+        expect(await harness.isNavItemByLabelVisible('Log in')).toBeTrue();
     });
 });

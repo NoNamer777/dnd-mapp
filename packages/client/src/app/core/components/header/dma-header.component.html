@@ -1,0 +1,50 @@
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" routerLink="/">DnD-Mapp</a>
+
+            <button
+                type="button"
+                class="navbar-toggler"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbar-collapsable-content"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div id="navbar-collapsable-content" class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Characters
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a routerLink="/characters/overview" class="dropdown-item">Overview</a></li>
+                            <li><a routerLink="/characters/builder" class="dropdown-item">Builder</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Compendium
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a routerLink="/compendium/rules" class="dropdown-item">Game rules</a></li>
+                            <li><a routerLink="/compendium/spells" class="dropdown-item">Spells</a></li>
+                            <li><a routerLink="/compendium/creatures" class="dropdown-item">Creatures</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <hr class="d-lg-none" />
+                <ul class="navbar-nav mb-2 mb-lg-0 dropstart">
+                    <li class="nav-item dropdown"></li>
+                    <li class="nav-item">
+                        <a routerLink="/signup" class="nav-link">Sign Up</a>
+                    </li>
+                    <li class="nav-item">
+                        <a routerLink="/login" class="nav-link text-success fw-bold">Log In</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>

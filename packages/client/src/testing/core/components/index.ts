@@ -1,2 +1,2 @@
 export * from './center.harness';
-export * from './header.harness';
+export * from './dma-header.harness';
