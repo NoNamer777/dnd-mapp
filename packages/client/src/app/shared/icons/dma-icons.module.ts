@@ -7,7 +7,7 @@ import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
     imports: [FontAwesomeModule, FontAwesomeTestingModule],
     exports: [FontAwesomeModule, FontAwesomeTestingModule],
 })
-export class IconsModule {
+export class DmaIconsModule {
     constructor(library: FaIconLibrary, config: FaConfig) {
         library.addIcons(...icons);
 
