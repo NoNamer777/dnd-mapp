@@ -32,7 +32,10 @@
                 "outputHashing": "all",
                 "outputPath": "dist/client",
                 "polyfills": ["zone.js"],
-                "scripts": ["node_modules/bootstrap/dist/js/bootstrap.min.js"],
+                "scripts": [
+                    "node_modules/@popperjs/core/dist/umd/popper.min.js",
+                    "node_modules/bootstrap/dist/js/bootstrap.min.js"
+                ],
                 "sourceMap": false,
                 "styles": ["packages/client/src/styles.scss", "node_modules/bootstrap/dist/css/bootstrap.min.css"],
                 "tsConfig": "packages/client/tsconfig.app.json",
@@ -74,7 +77,10 @@
                 "inlineStyleLanguage": "scss",
                 "karmaConfig": "packages/client/karma.conf.js",
                 "polyfills": ["zone.js", "zone.js/testing"],
-                "scripts": ["node_modules/bootstrap/dist/js/bootstrap.min.js"],
+                "scripts": [
+                    "node_modules/@popperjs/core/dist/umd/popper.min.js",
+                    "node_modules/bootstrap/dist/js/bootstrap.min.js"
+                ],
                 "styles": ["packages/client/src/styles.scss", "node_modules/bootstrap/dist/css/bootstrap.min.css"],
                 "tsConfig": "packages/client/tsconfig.spec.json",
                 "watch": false
