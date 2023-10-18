@@ -1,6 +1,7 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { DmaHeaderHarness } from '../../../../testing';
 import { DmaHeaderModule } from './dma-header.module';
 
@@ -12,7 +13,7 @@ describe('HeaderComponent', () => {
 
     async function setupTestEnvironment() {
         TestBed.configureTestingModule({
-            imports: [DmaHeaderModule],
+            imports: [DmaHeaderModule, RouterTestingModule],
             declarations: [TestComponent],
         });
 
@@ -23,8 +24,10 @@ describe('HeaderComponent', () => {
         };
     }
 
-    it('should show the components text content', async () => {
+    it('should show unauthorized links', async () => {
         const { harness } = await setupTestEnvironment();
-        expect(await harness.getTextContent()).toEqual('Header component works!');
+
+        expect(await harness.isNavItemByLabelVisible('Sign up')).toBeTrue();
+        expect(await harness.isNavItemByLabelVisible('Log in')).toBeTrue();
     });
 });

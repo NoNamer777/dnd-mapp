@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { FaConfig, FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 
 @NgModule({
     imports: [FontAwesomeModule],
@@ -14,4 +15,4 @@ export class DmaIconsModule {
     }
 }
 
-const icons: IconDefinition[] = [];
+const icons: IconDefinition[] = [faCircleUser];
