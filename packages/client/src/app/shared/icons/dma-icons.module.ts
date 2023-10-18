@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { FaConfig, FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { FontAwesomeTestingModule } from '@fortawesome/angular-fontawesome/testing';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
 @NgModule({
-    imports: [FontAwesomeModule, FontAwesomeTestingModule],
-    exports: [FontAwesomeModule, FontAwesomeTestingModule],
+    imports: [FontAwesomeModule],
+    exports: [FontAwesomeModule],
 })
 export class DmaIconsModule {
     constructor(library: FaIconLibrary, config: FaConfig) {
