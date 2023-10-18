@@ -19,8 +19,16 @@
                             Characters
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a routerLink="/characters/overview" class="dropdown-item">Overview</a></li>
-                            <li><a routerLink="/characters/builder" class="dropdown-item">Builder</a></li>
+                            <li>
+                                <a routerLink="/characters/overview" routerLinkActive="active" class="dropdown-item">
+                                    Overview
+                                </a>
+                            </li>
+                            <li>
+                                <a routerLink="/characters/builder" routerLinkActive="active" class="dropdown-item">
+                                    Builder
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -28,9 +36,21 @@
                             Compendium
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a routerLink="/compendium/rules" class="dropdown-item">Game rules</a></li>
-                            <li><a routerLink="/compendium/spells" class="dropdown-item">Spells</a></li>
-                            <li><a routerLink="/compendium/creatures" class="dropdown-item">Creatures</a></li>
+                            <li>
+                                <a routerLink="/compendium/rules" routerLinkActive="active" class="dropdown-item">
+                                    Game rules
+                                </a>
+                            </li>
+                            <li>
+                                <a routerLink="/compendium/spells" routerLinkActive="active" class="dropdown-item">
+                                    Spells
+                                </a>
+                            </li>
+                            <li>
+                                <a routerLink="/compendium/creatures" routerLinkActive="active" class="dropdown-item">
+                                    Creatures
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
@@ -38,10 +58,10 @@
                 <ul class="navbar-nav mb-2 mb-lg-0 dropstart">
                     <li class="nav-item dropdown"></li>
                     <li class="nav-item">
-                        <a routerLink="/signup" class="nav-link">Sign Up</a>
+                        <a routerLink="/authentication/signup" routerLinkActive="active" class="nav-link">Sign Up</a>
                     </li>
                     <li class="nav-item">
-                        <a routerLink="/login" class="nav-link text-success fw-bold">Log In</a>
+                        <a routerLink="/authentication/login" class="nav-link text-success fw-bold">Log In</a>
                     </li>
                 </ul>
             </div>
