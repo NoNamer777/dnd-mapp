@@ -5,7 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DmaHeaderHarness } from '../../../../testing';
 import { DmaHeaderModule } from './dma-header.module';
 
-describe('HeaderComponent', () => {
+describe('DmaHeaderComponent', () => {
     @Component({
         template: '<dma-header></dma-header>',
     })

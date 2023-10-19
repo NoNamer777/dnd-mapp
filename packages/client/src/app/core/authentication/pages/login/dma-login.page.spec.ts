@@ -5,7 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DmaLoginHarness } from '../../../../../testing';
 import { DmaLoginModule } from './dma-login.module';
 
-describe('LoginComponent', () => {
+describe('DmaLoginComponent', () => {
     @Component({
         template: '<dma-login></dma-login>',
     })
