@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 @Component({
     selector: 'dma-center',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    templateUrl: './center.component.html',
-    styleUrls: ['./center.component.scss'],
+    templateUrl: './dma-center.component.html',
+    styleUrls: ['./dma-center.component.scss'],
 })
-export class CenterComponent {}
+export class DmaCenterComponent {}

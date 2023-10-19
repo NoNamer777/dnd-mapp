@@ -1,0 +1,28 @@
+<article class="d-flex justify-content-center align-items-center container-lg">
+    <form
+        class="col-12 col-sm-10 col-lg-7 border rounded p-3 bg-body-secondary"
+        [formGroup]="form"
+        (ngSubmit)="onSubmit()"
+    >
+        <h3>Login</h3>
+        <hr />
+        <div class="mb-3">
+            <label for="username-input" class="form-label">Username</label>
+            <input
+                type="text"
+                class="form-control"
+                id="username-input"
+                placeholder="TheLegend27"
+                formControlName="username"
+            />
+        </div>
+        <div class="mb-3">
+            <label for="password-input" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password-input" formControlName="password" />
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="isFormInvalid">Log in</button>
+        <hr />
+        <p class="small">New around here? <a routerLink="/authentication/signup">Sign up</a></p>
+        <a routerLink="/authentication/password-recovery" class="small">Forgotten password?</a>
+    </form>
+</article>

@@ -1,2 +1,2 @@
-export * from './center.component';
-export * from './center.module';
+export * from './dma-center.component';
+export * from './dma-center.module';
