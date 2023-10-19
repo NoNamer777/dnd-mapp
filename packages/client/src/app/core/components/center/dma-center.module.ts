@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { CenterComponent } from './center.component';
+import { DmaCenterComponent } from './dma-center.component';
 
 @NgModule({
     imports: [CommonModule, RouterModule],
-    declarations: [CenterComponent],
-    exports: [CenterComponent],
+    declarations: [DmaCenterComponent],
+    exports: [DmaCenterComponent],
 })
-export class CenterModule {}
+export class DmaCenterModule {}

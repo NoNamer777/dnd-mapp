@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { appRoutes } from '../../app.routes';
 import { DmaThemeModule } from '../../theming';
-import { CenterModule } from '../center';
+import { DmaCenterModule } from '../center';
 import { DmaHeaderModule } from '../header';
 import { DmaRootComponent } from './dma-root.component';
 
@@ -12,7 +12,7 @@ import { DmaRootComponent } from './dma-root.component';
         CommonModule,
         RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
         DmaHeaderModule,
-        CenterModule,
+        DmaCenterModule,
         DmaThemeModule,
     ],
     declarations: [DmaRootComponent],
