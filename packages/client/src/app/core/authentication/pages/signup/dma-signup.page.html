@@ -1,0 +1,77 @@
+<article class="d-flex justify-content-center align-items-center container-lg">
+    <form
+        class="col-12 col-sm-10 col-lg-7 border rounded p-3 bg-body-secondary"
+        [formGroup]="form"
+        (ngSubmit)="onSubmit()"
+    >
+        <h3>Sign Up</h3>
+        <hr />
+        <ng-container [ngSwitch]="stage">
+            <ng-container *ngSwitchCase="1">
+                <div class="mb-3">
+                    <label for="username-input" class="form-label">Username</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="username-input"
+                        placeholder="TheLegend27"
+                        formControlName="username"
+                    />
+                </div>
+                <div class="mb-3">
+                    <label for="email-input" class="form-label">Email Address</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="email-input"
+                        placeholder="username@domain.com"
+                        formControlName="email"
+                    />
+                </div>
+                <div class="mb-3">
+                    <label for="email-confirm-input" class="form-label">Confirm Email Address</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="email-confirm-input"
+                        placeholder="username@domain.com"
+                        formControlName="emailConfirm"
+                    />
+                </div>
+            </ng-container>
+            <ng-container *ngSwitchCase="2">
+                <div class="mb-3">
+                    <label for="password-input" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password-input" formControlName="password" />
+                </div>
+                <div class="mb-3">
+                    <label for="password-confirm-input" class="form-label">Confirm Password</label>
+                    <input
+                        type="password"
+                        class="form-control"
+                        id="password-confirm-input"
+                        formControlName="passwordConfirm"
+                    />
+                </div>
+            </ng-container>
+        </ng-container>
+        <div class="d-flex flex-row-reverse justify-content-between" [ngSwitch]="stage">
+            <ng-container *ngSwitchCase="1">
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    [disabled]="!isFirstStageCompleted"
+                    (click)="onGoToNextStage()"
+                >
+                    Next
+                </button>
+            </ng-container>
+            <ng-container *ngSwitchCase="2">
+                <button type="submit" class="btn btn-primary" [disabled]="isFormInvalid">Sign up</button>
+                <button type="button" class="btn btn-secondary" (click)="onGoToPreviousStage()">Previous</button>
+            </ng-container>
+        </div>
+        <hr />
+        <p class="small">Already have an account? <a routerLink="/authentication/login">Log in</a></p>
+    </form>
+</article>
