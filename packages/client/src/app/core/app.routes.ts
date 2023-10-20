@@ -7,6 +7,8 @@ export const appRoutes: Route[] = [
     },
     {
         path: '',
+        redirectTo: 'authentication',
+        pathMatch: 'full',
     },
     {
         path: '**',

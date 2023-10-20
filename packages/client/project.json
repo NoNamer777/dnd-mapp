@@ -39,21 +39,30 @@
                 "sourceMap": false,
                 "styles": ["packages/client/src/styles.scss", "node_modules/bootstrap/dist/css/bootstrap.min.css"],
                 "tsConfig": "packages/client/tsconfig.app.json",
+                "vendorChunk": true,
                 "watch": false
             },
             "configurations": {
                 "dev": {
                     "namedChunks": true,
                     "outputHashing": "none",
-                    "optimization": {
-                        "scripts": true,
-                        "styles": false
-                    },
+                    "optimization": false,
                     "sourceMap": true,
-                    "vendorChunk": true
+                    "fileReplacements": [
+                        {
+                            "replace": "packages/client/src/environments/environment.ts",
+                            "with": "packages/client/src/environments/environment.dev.ts"
+                        }
+                    ]
                 },
                 "ci": {
-                    "outputHashing": "none"
+                    "outputHashing": "none",
+                    "fileReplacements": [
+                        {
+                            "replace": "packages/client/src/environments/environment.ts",
+                            "with": "packages/client/src/environments/environment.ci.ts"
+                        }
+                    ]
                 }
             }
         },
