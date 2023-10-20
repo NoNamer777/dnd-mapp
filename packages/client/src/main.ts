@@ -2,6 +2,10 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { AppModule } from './app/core';
 
-platformBrowserDynamic()
-    .bootstrapModule(AppModule)
-    .catch((err) => console.error(err));
+(async () => {
+    try {
+        await platformBrowserDynamic().bootstrapModule(AppModule);
+    } catch (error) {
+        console.error(error);
+    }
+})();
