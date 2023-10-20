@@ -20,7 +20,18 @@
             <label for="password-input" class="form-label">Password</label>
             <input type="password" class="form-control" id="password-input" formControlName="password" />
         </div>
-        <button type="submit" class="btn btn-primary" [disabled]="isFormInvalid">Log in</button>
+        <div class="d-flex gap-2 align-items-baseline">
+            <button
+                type="submit"
+                class="btn btn-primary d-flex align-items-center"
+                [disabled]="isFormInvalid || (loading$ | async)"
+            >
+                <span class="me-1">Log in</span>
+                <fa-icon *ngIf="loading$ | async" icon="circle-notch" animation="spin"></fa-icon>
+            </button>
+            <p class="text-danger" *ngIf="error$ | async as errorMessage">{{ errorMessage }}</p>
+            <p class="text-success" *ngIf="success$ | async as successMessage">{{ successMessage }}</p>
+        </div>
         <hr />
         <p class="small">New around here? <a routerLink="/authentication/signup">Sign up</a></p>
         <a routerLink="/authentication/password-recovery" class="small">Forgotten password?</a>
