@@ -1,6 +1,7 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DmaSignupHarness } from '../../../../../testing';
 import { DmaSignupModule } from './dma-signup.module';
@@ -13,7 +14,7 @@ describe('DmaSignupPage', () => {
 
     async function initializeTestEnvironment() {
         TestBed.configureTestingModule({
-            imports: [DmaSignupModule, RouterTestingModule],
+            imports: [DmaSignupModule, RouterTestingModule, NoopAnimationsModule],
             declarations: [TestComponent],
         });
 
