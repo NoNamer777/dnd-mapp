@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { swipeInOutAnimation } from '../../animations';
 
 @Component({
     selector: 'dma-signup',
     templateUrl: './dma-signup.page.html',
     styleUrls: ['./dma-signup.page.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    animations: [swipeInOutAnimation],
 })
 export class DmaSignupPage {
     form = new FormGroup({
