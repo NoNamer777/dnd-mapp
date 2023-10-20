@@ -46,10 +46,7 @@
                 "dev": {
                     "namedChunks": true,
                     "outputHashing": "none",
-                    "optimization": {
-                        "scripts": true,
-                        "styles": false
-                    },
+                    "optimization": false,
                     "sourceMap": true,
                     "fileReplacements": [
                         {
