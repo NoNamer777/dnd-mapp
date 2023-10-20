@@ -5,7 +5,6 @@ import { Injectable } from '@angular/core';
     providedIn: 'root',
 })
 export class DmaHttpRequestService {
-    private readonly baseURL = 'http://localhost:8080';
 
     constructor(private httpClient: HttpClient) {}
 
