@@ -39,6 +39,7 @@
                 "sourceMap": false,
                 "styles": ["packages/client/src/styles.scss", "node_modules/bootstrap/dist/css/bootstrap.min.css"],
                 "tsConfig": "packages/client/tsconfig.app.json",
+                "vendorChunk": true,
                 "watch": false
             },
             "configurations": {
@@ -50,7 +51,6 @@
                         "styles": false
                     },
                     "sourceMap": true,
-                    "vendorChunk": true
                     "fileReplacements": [
                         {
                             "replace": "packages/client/src/environments/environment.ts",
