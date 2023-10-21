@@ -5,6 +5,7 @@ import {
     Controller,
     Delete,
     Get,
+    Logger,
     Param,
     ParseIntPipe,
     Post,
@@ -16,21 +17,32 @@ import { AbilityService } from './ability.service';
 
 @Controller('/api/ability')
 export class AbilityController {
+    private readonly logger = new Logger(AbilityController.name);
+
     constructor(private abilityService: AbilityService) {}
 
     @Get()
     async getAll(): Promise<Ability[]> {
+        this.logger.log('Received request for getting all Abilities');
         return await this.abilityService.findAll();
     }
 
     @Post()
     async create(@Body() data: Omit<Ability, 'id'>): Promise<Ability> {
+        this.logger.log('Received request for creating a new Ability');
         return await this.abilityService.create(data);
     }
 
     @Get('/:id')
     async getById(@Param('id', ParseIntPipe) id: number): Promise<Ability> {
+        this.logger.log('Received request for returning a Ability');
         return await this.abilityService.findById(id);
+    }
+
+    @Delete('/:id')
+    async deleteById(@Param('id', ParseIntPipe) id: number): Promise<void> {
+        this.logger.log('Received a request for removing a Ability');
+        await this.abilityService.deleteById(id);
     }
 
     @Put('/:id')
@@ -39,6 +51,7 @@ export class AbilityController {
         @Body() data: Ability,
         @Param('id', ParseIntPipe) id: number
     ): Promise<Ability> {
+        this.logger.log('Received a request for updating a Ability', 'AbilityController');
         const requestPath = request.path;
 
         if (id !== data.id) {
@@ -47,10 +60,5 @@ export class AbilityController {
             );
         }
         return await this.abilityService.update(data);
-    }
-
-    @Delete('/:id')
-    async deleteById(@Param('id', ParseIntPipe) id: number): Promise<void> {
-        await this.abilityService.deleteById(id);
     }
 }
