@@ -1,4 +1,4 @@
-FROM node:18-alpine AS build-step
+FROM --platform=$BUILDPLATFORM node:18-alpine AS build-step
 
 WORKDIR /app
 
@@ -11,6 +11,8 @@ COPY . /app
 RUN npx nx run client:build:ci
 
 
-FROM nginx:1.23-alpine
+FROM nginx:1.25-alpine
+
+EXPOSE 80/tcp
 
 COPY --from=build-step app/dist/client /usr/share/nginx/html

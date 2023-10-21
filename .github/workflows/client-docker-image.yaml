@@ -1,6 +1,11 @@
 name: Dnd-Mapp client Docker image
 on:
     workflow_call:
+        inputs:
+            platforms:
+                description: The platforms the Docker container supports
+                required: true
+                type: string
 env:
     REGISTRY: ghcr.io
     IMAGE_NAME: nonamer777/dnd-mapp-client
@@ -15,8 +20,13 @@ jobs:
               uses: actions/checkout@v3
             - name: Set up QEMU
               uses: docker/setup-qemu-action@v2
+              with:
+                  platforms: arm,arm64
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v2
+              id: docker-buildx
+              with:
+                  platforms: ${{ inputs.platforms }}
             - name: Log in to the Container registry
               uses: docker/login-action@v2
               with:
@@ -42,5 +52,6 @@ jobs:
                   push: true
                   labels: ${{ steps.meta.outputs.labels }}
                   tags: ${{ steps.meta.outputs.tags }}
+                  platforms: ${{ steps.docker-buildx.outputs.platforms }}
                   cache-from: type=gha
                   cache-to: type=gha,mode=max
