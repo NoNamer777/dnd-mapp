@@ -20,13 +20,13 @@ HOST=localhost
 # On which port ro run the server process.
 PORT=8080
 
-# The certificate and key to run the server in ssl (https). 
+# The certificate and key to run the server in ssl (https).
 # By default, the server doesn't come with a certificate and key so that must be provided.
 SSL_CERT_PATH=./certificate.pem
 
 SSL_KEY_PATH=./certificate-key.pem
 
-# The type of database. Supported database types are: MySQL or Sqlite. 
+# The type of database. Supported database types are: MySQL or Sqlite.
 # By default, the server will use an in-memory Sqlite database
 DATABASE_TYPE=mysql | sqlite
 
