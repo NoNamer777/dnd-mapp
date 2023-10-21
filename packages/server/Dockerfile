@@ -30,11 +30,14 @@ WORKDIR /usr/src
 
 COPY --from=build-step server-app/dist/server /usr/src
 
-RUN npm ci --omit dev
+RUN apk update && \
+    apk upgrade && \
+    apk add --virtual build-deps --no-cache python3 && \
+    apk add --no-cache bash && \
+    npm ci --omit dev && \
+    apk del build-deps
 
 COPY --from=build-step server-app/dist/data node_modules/@dnd-mapp/data/
-
-RUN apk update && apk upgrade && apk add --no-cache bash
 
 ENV DATABASE_FILES_PATH=/usr/src/database
 ENV HOST=0.0.0.0
