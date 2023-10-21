@@ -22,11 +22,13 @@ export class ServerEnvironmentVariables {
     @Expose()
     @IsString()
     @Matches(/.*\.pem$/gi)
+    @IsOptional()
     SSL_CERT_PATH: string;
 
     @Expose()
     @IsString()
     @Matches(/.*\.pem$/gi)
+    @IsOptional()
     SSL_KEY_PATH: string;
 
     @Expose()
