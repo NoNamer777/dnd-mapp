@@ -1,5 +1,7 @@
 FROM --platform=$BUILDPLATFORM node:18-alpine AS build-step
 
+RUN apk --no-cache --virtual build-dependencies add python3 make g++
+
 RUN mkdir /server-app
 
 WORKDIR /server-app
