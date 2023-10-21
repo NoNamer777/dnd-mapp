@@ -56,6 +56,11 @@ export class ServerEnvironmentVariables {
     @Expose()
     @IsString()
     @IsOptional()
+    DATABASE_FILES_PATH?: string;
+
+    @Expose()
+    @IsString()
+    @IsOptional()
     @ValidateIf((obj) => obj.DATABASE_TYPE === 'mysql')
     MYSQL_HOST?: string;
 

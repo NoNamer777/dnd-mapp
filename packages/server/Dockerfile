@@ -20,3 +20,4 @@ RUN npm ci
 COPY --from=build-step server-app/dist/data node_modules/@dnd-mapp/data/
 
 CMD ["node", "/usr/src/app/main"]
+ENV DATABASE_FILES_PATH=/usr/src/database

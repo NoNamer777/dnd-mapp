@@ -2,7 +2,7 @@
 
 printf "Running migrations"
 
-npx typeorm-ts-node-esm migration:run -d packages/server/typeorm/config.dev.ts
+npx typeorm-ts-node-esm migration:run -d "$DATABASE_FILES_PATH/config.dev.ts"
 
 
 printf "\n\nStarting server"
