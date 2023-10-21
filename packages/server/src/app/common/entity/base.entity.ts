@@ -1,7 +1,8 @@
 import { BaseEntityModel } from '@dnd-mapp/data';
-import { PrimaryGeneratedColumn } from 'typeorm';
+import { PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 
 export class BaseEntity implements BaseEntityModel {
     @PrimaryGeneratedColumn('increment')
+    @PrimaryColumn()
     id: number;
 }

@@ -19,9 +19,9 @@ async function bootstrap() {
     const { host, port, secured, sslCert, sslKey } = {
         host: configService.get('server.host'),
         port: configService.get('server.port'),
-        secured: !!configService.get('server.ssl'),
-        sslCert: configService.get('server.ssl.cert'),
-        sslKey: configService.get('server.ssl.key'),
+        secured: Boolean(configService.get('server.ssl')),
+        sslCert: configService.get('server.ssl.certPath'),
+        sslKey: configService.get('server.ssl.keyPath'),
     };
 
     if (secured) {
@@ -36,4 +36,4 @@ async function bootstrap() {
     buildServerUrl(configService).forEach((url) => Logger.log(`Application is running on: ${url}`));
 }
 
-bootstrap();
+(async () => await bootstrap())();
