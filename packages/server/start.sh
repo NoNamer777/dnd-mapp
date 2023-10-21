@@ -1,10 +1,10 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 printf "Running migrations"
 
-typeorm-ts-node-commonjs migration:run -d packages/server/typeorm/config.dev.ts
+npx typeorm-ts-node-esm migration:run -d "$DATABASE_FILES_PATH/config.dev.ts"
 
 
 printf "\n\nStarting server"
 
-nx serve server
+node app/main.js

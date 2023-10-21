@@ -8,7 +8,7 @@ export class SkillEntity1690464526450 implements MigrationInterface {
                 columns: [
                     {
                         name: 'id',
-                        type: 'int',
+                        type: 'integer',
                         isPrimary: true,
                         isGenerated: true,
                         generationStrategy: 'increment',
@@ -21,7 +21,7 @@ export class SkillEntity1690464526450 implements MigrationInterface {
                     },
                     {
                         name: 'ability_id',
-                        type: 'int',
+                        type: 'integer',
                         isNullable: false,
                     },
                 ],

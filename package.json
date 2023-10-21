@@ -5,8 +5,9 @@
     "private": true,
     "scripts": {
         "nx": "nx",
-        "typeorm": "typeorm-ts-node-commonjs",
-        "server:start": "packages/server/start.sh"
+        "typeorm": "typeorm-ts-node-esm",
+        "preserver:start": "npx typeorm-ts-node-esm migration:run -d packages/server/typeorm/config.dev.ts",
+        "server:start": "npx nx serve server"
     },
     "workspaces": [
         "packages/*"
@@ -34,7 +35,6 @@
         "bootstrap": "~5.3.0",
         "class-transformer": "~0.5.0",
         "class-validator": "~0.14.0",
-        "js-yaml": "~4.1.0",
         "mysql2": "~3.6.0",
         "reflect-metadata": "~0.1.0",
         "rxjs": "~7.8.0",
@@ -75,7 +75,6 @@
         "@storybook/core-server": "~7.4.0",
         "@types/jasmine": "~4.3.0",
         "@types/jest": "~29.5.0",
-        "@types/js-yaml": "~4.0.0",
         "@types/node": "~18.17.0",
         "@typescript-eslint/eslint-plugin": "~5.62.0",
         "@typescript-eslint/parser": "~5.62.0",

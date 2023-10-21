@@ -1,122 +1,88 @@
 import { Expose } from 'class-transformer';
-import {
-    IsArray,
-    IsBoolean,
-    IsIn,
-    IsInt,
-    IsOptional,
-    IsString,
-    Matches,
-    Max,
-    Min,
-    ValidateIf,
-    ValidateNested,
-} from 'class-validator';
+import { IsArray, IsBoolean, IsIn, IsInt, IsOptional, IsString, Matches, Max, Min, ValidateIf } from 'class-validator';
 
 export class ServerEnvironmentVariables {
     @Expose()
-    @IsString()
-    @IsOptional()
-    @Matches(/.*\.(yaml|yml)$/gi)
-    SERVER_CONFIG_PATH: string;
-}
-
-export class ServerSSLConfigOptions {
-    @Expose()
-    @IsString()
-    @Matches(/.*\.pem$/gi)
-    cert: string;
-
-    @Expose()
-    @IsString()
-    @Matches(/.*\.pem$/gi)
-    key: string;
-}
-
-export class ServerConfigOptions {
-    @Expose()
     @IsBoolean()
     @IsOptional()
-    production?: boolean = false;
+    PRODUCTION?: boolean;
 
     @Expose()
     @IsString()
     @IsOptional()
-    host?: string = '0.0.0.0';
+    HOST?: string;
 
     @Expose()
     @IsInt()
     @Min(0)
     @Max(65535)
     @IsOptional()
-    port?: number = 8080;
+    PORT?: number;
 
     @Expose()
+    @IsString()
+    @Matches(/.*\.pem$/gi)
     @IsOptional()
-    ssl?: ServerSSLConfigOptions;
-}
+    SSL_CERT_PATH: string;
 
-export class DatabaseConfigOptions {
+    @Expose()
+    @IsString()
+    @Matches(/.*\.pem$/gi)
+    @IsOptional()
+    SSL_KEY_PATH: string;
+
     @Expose()
     @IsString()
     @IsIn(['mysql', 'sqlite'])
     @IsOptional()
-    type = 'sqlite';
+    DATABASE_TYPE: string;
 
     @Expose()
     @IsString()
     @IsOptional()
-    database = ':memory:';
+    DATABASE_LOCATION: string;
 
     @Expose()
     @IsArray()
     @IsString({ each: true })
     @IsIn(['query', 'error', 'schema', 'warn', 'info', 'log'], { each: true })
     @IsOptional()
-    logging?: string[] = ['info', 'error', 'warn'];
+    DATABASE_LOG_LEVEL?: string[];
 
     @Expose()
     @IsString()
     @IsIn(['advanced-console', 'simple-console', 'file', 'debug'])
     @IsOptional()
-    logger?: string;
+    DATABASE_LOG_TYPE?: string;
 
-    // Config options specifically for a MySQL database
     @Expose()
     @IsString()
     @IsOptional()
-    @ValidateIf((obj) => obj.type === 'mysql')
-    host?: string;
+    DATABASE_FILES_PATH?: string;
+
+    @Expose()
+    @IsString()
+    @IsOptional()
+    @ValidateIf((obj) => obj.DATABASE_TYPE === 'mysql')
+    MYSQL_HOST?: string;
 
     @Expose()
     @IsInt()
     @Min(0)
     @Max(65535)
     @IsOptional()
-    @ValidateIf((obj) => obj.type === 'mysql')
-    port?: number;
+    @ValidateIf((obj) => obj.DATABASE_TYPE === 'mysql')
+    MYSQL_PORT?: number;
 
     @Expose()
     @IsString()
     @IsOptional()
-    @ValidateIf((obj) => obj.type === 'mysql')
-    username?: string;
+    @ValidateIf((obj) => obj.DATABASE_TYPE === 'mysql')
+    MYSQL_USERNAME?: string;
 
     @Expose()
     @IsString()
     @IsOptional()
-    @ValidateIf((obj) => obj.type === 'mysql')
-    password?: string;
-}
-
-export class ConfigOptions {
-    @Expose()
-    @IsOptional()
-    @ValidateNested()
-    server?: ServerConfigOptions;
-
-    @Expose()
-    @IsOptional()
-    @ValidateNested()
-    database?: DatabaseConfigOptions;
+    @ValidateIf((obj) => obj.DATABASE_TYPE === 'mysql')
+    MYSQL_PASSWORD?: string;
 }

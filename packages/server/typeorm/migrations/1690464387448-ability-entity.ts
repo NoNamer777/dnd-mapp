@@ -8,7 +8,7 @@ export class AbilityEntity1690464387448 implements MigrationInterface {
                 columns: [
                     {
                         name: 'id',
-                        type: 'int',
+                        type: 'integer',
                         isPrimary: true,
                         isGenerated: true,
                         generationStrategy: 'increment',

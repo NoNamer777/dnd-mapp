@@ -6,17 +6,37 @@ WORKDIR /server-app
 
 COPY . /server-app
 
-RUN npm ci && npx nx run server:build:ci && npx nx run server:test:ci
+RUN npm ci
+
+RUN npx nx build server -c ci
+
+RUN mkdir dist/server-1
+RUN cp -RT dist/server dist/server-1
+RUN rm -rf dist/server/*
+RUN mkdir dist/server/app
+RUN mv dist/server-1/* dist/server/app
+RUN mv dist/server/app/package*.json dist/server
+
+RUN mkdir dist/server/database
+COPY packages/server/typeorm dist/server/database
+COPY packages/server/start.sh dist/server
 
 
 FROM node:18-alpine
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src
 
-COPY --from=build-step server-app/dist/server /usr/src/app/
+COPY --from=build-step server-app/dist/server /usr/src
 
-RUN npm ci
+RUN npm ci --omit dev
 
 COPY --from=build-step server-app/dist/data node_modules/@dnd-mapp/data/
 
-CMD ["node", "/usr/src/app/main"]
+RUN apk update && apk upgrade && apk add --no-cache bash
+
+ENV DATABASE_FILES_PATH=/usr/src/database
+ENV HOST=0.0.0.0
+
+EXPOSE 8080
+
+CMD /usr/src/start.sh
