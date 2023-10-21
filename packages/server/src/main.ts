@@ -14,6 +14,7 @@ async function bootstrap() {
 
     const nestApp = await NestFactory.create(AppModule, new ExpressAdapter(expressServer));
     const configService = nestApp.get(ConfigService);
+    const logger = new Logger('NestApplication');
 
     const { host, port, secured, ssl } = {
         host: configService.get('server.host'),
@@ -30,7 +31,7 @@ async function bootstrap() {
 
     server.listen(port, host);
 
-    buildServerUrl(configService).forEach((url) => Logger.log(`Application is running on: ${url}`));
+    logger.log(`Nest application is running on: ${buildServerUrl(configService).join(', ')}`);
 }
 
 (async () => await bootstrap())();
