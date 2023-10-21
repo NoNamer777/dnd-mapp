@@ -32,7 +32,7 @@ COPY --from=build-step server-app/dist/server /usr/src
 
 RUN apk update && \
     apk upgrade && \
-    apk add --virtual build-deps --no-cache python3 make && \
+    apk add --virtual build-deps --no-cache python3 make g++ && \
     apk add --no-cache bash && \
     npm ci --omit dev && \
     apk del build-deps
