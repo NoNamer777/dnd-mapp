@@ -11,6 +11,6 @@ COPY . /app
 RUN npx nx run client:build:ci
 
 
-FROM nginx:1.23-alpine
+FROM nginx:1.25-alpine
 
 COPY --from=build-step app/dist/client /usr/share/nginx/html
