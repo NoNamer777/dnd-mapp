@@ -1,4 +1,4 @@
-FROM node:18-alpine AS build-step
+FROM --platform=$BUILDPLATFORM node:18-alpine AS build-step
 
 RUN mkdir /server-app
 
