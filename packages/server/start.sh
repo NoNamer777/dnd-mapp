@@ -7,4 +7,4 @@ npx typeorm-ts-node-esm migration:run -d "$DATABASE_FILES_PATH/config.dev.ts"
 
 printf "\n\nStarting server"
 
-nx serve server
+node app/main.js
