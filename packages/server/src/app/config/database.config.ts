@@ -7,6 +7,6 @@ export default registerAs('database', () => ({
     logger: process.env.DATABASE_LOG_TYPE || 'advanced-console',
     host: process.env.MYSQL_HOST,
     port: Number(process.env.MYSQL_PORT),
-    user: process.env.MYSQL_USER,
+    username: process.env.MYSQL_USERNAME,
     password: process.env.MYSQL_PASSWORD,
 }));

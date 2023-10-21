@@ -45,16 +45,16 @@ DATABASE_LOG_TYPE=simple-console
 
 # Properties below are only required for MySQL databases
 # The IP address of the database.
-DATABASE_HOST=localhost
+MYSQL_HOST=localhost
 
 # The port on which the database is accessible.
-DATABASE_PORT=3306
+MYSQL_PORT=3306
 
 # The name of the user to connect to the database.
-DATABASE_USER=username
+MYSQL_USERNAME=username
 
 # The password to authenticate the database user.
-DATABASE_PASSWORD=password
+MYSQL_PASSWORD=password
 ```
 
 ## Developing with SSL

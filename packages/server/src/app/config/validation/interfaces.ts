@@ -71,7 +71,7 @@ export class ServerEnvironmentVariables {
     @IsString()
     @IsOptional()
     @ValidateIf((obj) => obj.DATABASE_TYPE === 'mysql')
-    MYSQL_USER?: string;
+    MYSQL_USERNAME?: string;
 
     @Expose()
     @IsString()
