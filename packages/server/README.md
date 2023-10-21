@@ -2,85 +2,70 @@
 
 This project contains the back-end application for the DnD Mapp project.
 
-This project is written in the [Nest.js](https://nestjs.com) framework, v9.0.0.
-It uses [TypeOrm](https://typeorm.io/) (v0.3.12) for handling database connections and interactions, which currently
-only supports MySQL or Sqlite databases.
+This project is written in the [Nest.js](https://nestjs.com) framework, `~v10.2.0`. It uses [TypeOrm](https://typeorm.io/) `~v0.3.0` for handling database connections and interactions, which currently only supports MySQL or Sqlite databases.
 
 ## Configuration
 
-To configure this server application you can create a yaml or yml file within this repository and pass its location to
-the server's process via an environment variable. The format of the configuration file is as follows:
+To configure this server application you can create a `.env` file within the root of the server project and pass its location to the server's process via an environment variable. The format of the configuration file is as follows:
 
-```yaml
-# ./server-config.yaml
+```.env
+# ./packages/server/.env
 
-server:
-    # Whether to run the server in production mode
-    production: true
+# Whether to run the server in production mode.
+PRODUCTION=true | false
 
-    # On which IP address to run the server process
-    host: 'localhost'
+# On which IP address to run the server process.
+HOST=localhost
 
-    # On which port ro run the server process
-    port: 8080
+# On which port ro run the server process.
+PORT=8080
 
-    # The certificate and key to run the server in ssl (https). By default, the server doesn't come with a certificate and
-    # key so that must be provided
-    ssl:
-        cert: './certificate.pem'
-        key: './certificate-key.pem'
-database:
-    # The type of database. Supported database types are: MySQL or Sqlite. By default, the server will use an in-memory Sqlite database
-    type: 'mysql'
+# The certificate and key to run the server in ssl (https). 
+# By default, the server doesn't come with a certificate and key so that must be provided.
+SSL_CERT_PATH=./certificate.pem
 
-    # The name of the database. For Sqlite this can also point to a database file (eg. "mydb.db") or use ":memory:" to run
-    # use an in-memory database.
-    database: 'mydb'
+SSL_KEY_PATH=./certificate-key.pem
 
-    # Which database logs will be included in the log output. By default, it will include the 'info', 'error', and 'warn' logs
-    logging:
-        - 'query'
-        - 'error'
-        - 'schema'
-        - 'warn'
-        - 'info'
-        - 'log'
+# The type of database. Supported database types are: MySQL or Sqlite. 
+# By default, the server will use an in-memory Sqlite database
+DATABASE_TYPE=mysql | sqlite
 
-    # How to handle the database logs. By default, this will fall back to the default set by TypeOrm, which is 'advanced-console'
-    # Other options include: 'advanced-console', 'simple-console', 'file', or 'debug'
-    logger: 'simple-console'
+# The name of the database.
+# For Sqlite this can also point to a database file (e.g. "mydb.db") or use ":memory:" to run use an in-memory database.
+DATABASE_LOCATION=mydb.db | :memory: | <mysql-database-name>
 
-    # Properties below are only required for MySQL databases
-    # The IP address of the database
-    host: 'localhost'
+# Which database logs will be included in the log output.
+# Use a comma seperated list to definve the various levels of logs to be included.
+# By default, it will include the ['info', 'warn', 'error'] logs.
+DATABASE_LOG_LEVEL=info,error,warn(,query,schema,log)
 
-    # The port on which the database is accessible
-    port: 3306
+# How to handle the database logs. By default, this will fall back to the default set by TypeOrm, which is
+# 'advanced-console' Other options include: 'advanced-console', 'simple-console', 'file', or 'debug'.
+DATABASE_LOG_TYPE=simple-console
 
-    # The name of the user to connect to the database
-    username: 'username'
+# Properties below are only required for MySQL databases
+# The IP address of the database.
+DATABASE_HOST=localhost
 
-    # The password to authenticate the database user
-    password: 'password'
+# The port on which the database is accessible.
+DATABASE_PORT=3306
+
+# The name of the user to connect to the database.
+DATABASE_USER=username
+
+# The password to authenticate the database user.
+DATABASE_PASSWORD=password
 ```
-
-To apply this configuration, you'll need to pass its path location via the environment variable `SERVER_CONFIG_PATH`.
-This can be done via the commandline or via an `.env` file in the root of the project (NOT the repository)
 
 ## Developing with SSL
 
-Assuming you've followed the instructions in the README in the root of this repository, you can enable ssl for your local
-dev environment. This you can accomplish by, passing the paths to the generated certificate and its key via the server
-configuration file.
+Assuming you've followed the instructions in the README in the root of this repository, you can enable ssl for your local dev environment. This you can accomplish by, passing the paths to the generated certificate and its key via the server configuration file.
 
 ## Database migrations
 
-When setting up a database, the server is configured to use migrations to build up the database iteratively so that no
-data is lost on restart of the server application. For more information on how to use, or create these migration
-files, please refer to [the official documentation of TypeORM](https://typeorm.io/migrations).
+When setting up a database, the server is configured to use migrations to build up the database iteratively so that no data is lost on restart of the server application. For more information on how to use, or create these migration files, please refer to [the official documentation of TypeORM](https://typeorm.io/migrations).
 
-In order to run the database migrations you'll need to provide your datasource configuration so the TypeORM is aware of
-what type of database is used and where it can find the migrations files. Your configuration should look like the following:
+In order to run the database migrations you'll need to provide your datasource configuration so that TypeORM is aware of what type of database is used and where it can find the migrations files. Your configuration should look like the following:
 
 ```typescript
 import { DataSource } from 'typeorm';
@@ -122,11 +107,13 @@ To build it in development (watch) mode:
 nx run server:build:dev
 ```
 
--   **To serve the development application**
+-   **To start the development application**
 
 ```shell
-nx run server:serve
+npm run server:start
 ```
+
+This will make sure your development database, which you should have configured by now, will be migrated at least once, before the server will start.
 
 -   **To run the tests**
 
@@ -143,8 +130,7 @@ nx run server:test:dev
 
 ## Docker
 
-A Docker image can be made locally of this project by running the following command in a terminal in the root of this
-repository:
+A Docker image can be made locally of this project by running the following command in a terminal in the root of this repository:
 
 ```shell
 nx run server:docker-build
@@ -177,8 +163,8 @@ services:
             # Passing along the server configuration
             - './server-config.yaml:/usr/src/app/server-config.yaml'
 
-            # When using a Sqlite database and it has been set to persist the data to a file. You must create a database file,
-            # and pass that along to the container
+            # When using a Sqlite database, and it has been set to persist the data to a file, You must create a database file,
+            # and pass that along to the container for persistance.
             - './dnd-mapp.db:/usr/src/app/dnd-mapp.db'
 
             # Passing along the certificate and key to enable ssl
