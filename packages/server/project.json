@@ -14,16 +14,12 @@
                 "baseHref": "/",
                 "compiler": "tsc",
                 "extractLicenses": true,
-                "generatePackageJson": true,
                 "inspect": false,
                 "isolatedConfig": true,
                 "main": "packages/server/src/main.ts",
                 "memoryLimit": 2048,
-                "namedChunks": false,
-                "optimization": true,
                 "outputPath": "dist/server",
                 "scripts": [],
-                "sourceMap": true,
                 "styles": [],
                 "target": "node",
                 "tsConfig": "packages/server/tsconfig.app.json",
@@ -33,9 +29,14 @@
             "configurations": {
                 "ci": {
                     "memoryLimit": 1024,
+                    "namedChunks": false,
+                    "optimization": true,
                     "sourceMap": false
                 },
                 "dev": {
+                    "namedChunks": true,
+                    "optimization": false,
+                    "sourceMap": true,
                     "watch": true
                 }
             }

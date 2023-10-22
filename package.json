@@ -5,7 +5,8 @@
     "private": true,
     "scripts": {
         "nx": "nx",
-        "typeorm": "typeorm-ts-node-esm"
+        "typeorm": "typeorm-ts-node-esm",
+        "docker:build": "docker build . -t nonamer777/dnd-mapp"
     },
     "workspaces": [
         "packages/*"
