@@ -42,6 +42,7 @@
                 "vendorChunk": true,
                 "watch": false
             },
+            "defaultConfiguration": "ci",
             "configurations": {
                 "dev": {
                     "namedChunks": true,

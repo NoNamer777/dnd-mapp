@@ -1,4 +1,4 @@
-import { Ability, CreateAbilityData } from '@dnd-mapp/data';
+import { Ability, CreateAbilityData } from '../../../src/lib/models/ability.model';
 import { defaultSkill } from './skill.db';
 
 interface AbilityDB {

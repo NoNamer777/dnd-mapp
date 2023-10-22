@@ -17,7 +17,10 @@ export class DmaThemeDirective implements OnInit {
     @HostBinding('attr.dmaTheme')
     private _theme: DmaTheme = 'light';
 
-    constructor(private dmaThemeService: DmaThemeService, @Inject(DOCUMENT) private doc: Document) {}
+    constructor(
+        private dmaThemeService: DmaThemeService,
+        @Inject(DOCUMENT) private doc: Document
+    ) {}
 
     ngOnInit() {
         this.dmaThemeService.theme = this._theme;

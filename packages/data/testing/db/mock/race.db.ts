@@ -1,4 +1,4 @@
-import { CreateRaceData, Race } from '@dnd-mapp/data';
+import { CreateRaceData, Race } from '../../../src/lib/models/race.model';
 
 interface RaceDB {
     [raceId: string]: Race;
