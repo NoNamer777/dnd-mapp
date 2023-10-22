@@ -31,3 +31,5 @@ dist/
 tmp/
 
 ## Specific files and directories
+
+/.nx/cache

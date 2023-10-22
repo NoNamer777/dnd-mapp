@@ -1,6 +1,6 @@
 {
-    "$schema": "../../node_modules/nx/schemas/project-schema.json",
     "name": "client",
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
     "projectType": "application",
     "sourceRoot": "packages/client/src",
     "tags": ["@dnd-mapp/client"],
@@ -82,7 +82,7 @@
             "options": {
                 "assets": ["packages/client/src/assets", "packages/client/src/favicon.ico"],
                 "codeCoverage": true,
-                "codeCoverageExclude": ["**/testing/**", "**/*.module.ts"],
+                "codeCoverageExclude": ["**/testing/**", "**/*.module.ts", "**/index.ts"],
                 "inlineStyleLanguage": "scss",
                 "karmaConfig": "packages/client/karma.conf.js",
                 "polyfills": ["zone.js", "zone.js/testing"],
@@ -121,7 +121,7 @@
             }
         },
         "lint": {
-            "executor": "@nx/linter:eslint",
+            "executor": "@nx/eslint:lint",
             "options": {
                 "lintFilePatterns": ["packages/client/**/*.ts", "packages/client/**/*.html"]
             }

@@ -1,6 +1,6 @@
 {
-    "$schema": "../../node_modules/nx/schemas/project-schema.json",
     "name": "server",
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
     "sourceRoot": "packages/server/src",
     "projectType": "application",
     "tags": ["@dnd-mapp/server"],
@@ -95,7 +95,7 @@
             }
         },
         "lint": {
-            "executor": "@nx/linter:eslint",
+            "executor": "@nx/eslint:lint",
             "outputs": ["{options.outputFile}"],
             "options": {
                 "lintFilePatterns": ["packages/server/**/*.ts"]
