@@ -16,6 +16,8 @@ async function bootstrap() {
     const configService = nestApp.get(ConfigService);
     const logger = new Logger('NestApplication');
 
+    nestApp.setGlobalPrefix('/server');
+
     const { host, port, secured, ssl } = {
         host: configService.get('server.host'),
         port: configService.get('server.port'),
