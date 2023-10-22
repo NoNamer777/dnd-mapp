@@ -12,7 +12,7 @@
             "outputs": ["{options.outputPath}"],
             "options": {
                 "assets": ["packages/client/src/favicon.ico", "packages/client/src/assets"],
-                "baseHref": "/",
+                "baseHref": "/app/",
                 "budgets": [
                     {
                         "type": "initial",
