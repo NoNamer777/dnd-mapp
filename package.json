@@ -5,9 +5,7 @@
     "private": true,
     "scripts": {
         "nx": "nx",
-        "typeorm": "typeorm-ts-node-esm",
-        "preserver:start": "npx typeorm-ts-node-esm migration:run -d packages/server/typeorm/config.dev.ts",
-        "server:start": "npx nx serve server"
+        "typeorm": "typeorm-ts-node-esm"
     },
     "workspaces": [
         "packages/*"
