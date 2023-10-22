@@ -29,3 +29,5 @@ Thumbs.db
 .env
 certificate*.pem
 server-config.yaml
+
+.nx/cache
