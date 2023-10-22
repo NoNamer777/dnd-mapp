@@ -5,7 +5,10 @@ import { BaseEntity } from './base.entity';
 export type SaveOrUpdateOperation = 'create' | 'update';
 
 export abstract class BaseEntityCrudService<T extends BaseEntity = BaseEntity> {
-    protected constructor(private repository: Repository<T>, private entityName: string) {}
+    protected constructor(
+        private repository: Repository<T>,
+        private entityName: string
+    ) {}
 
     protected abstract checkUniqueAttributes(
         entity: T | Omit<T, 'id'>,
