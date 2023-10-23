@@ -1,32 +1,23 @@
 import { ConfigService } from '@nestjs/config';
-import { networkInterfaces } from 'os';
+import { networkInterfaces as getNetworkInterfaces, NetworkInterfaceInfo } from 'os';
 
-export function buildServerUrl(configService: ConfigService): string[] {
-    const { secured, host, port } = {
-        secured: !!configService.get('server.ssl'),
+export function buildServerUrl(configService: ConfigService): string {
+    const { secured, address, host, port } = {
+        secured: configService.get<boolean>('server.useSSL'),
+        address: configService.get<string>('server.address'),
         host: configService.get<string>('server.host'),
         port: configService.get<number>('server.port'),
     };
-    return determineIpAddress(host).map((host) => `http${secured ? 's' : ''}://${host}:${port}/`);
+    return address ? address : `http${secured ? 's' : ''}://${determinePrivateIpAddress(host)}:${port}/`;
 }
 
-function determineIpAddress(host: string): string[] {
-    if (host !== '0.0.0.0') return [host];
+function determinePrivateIpAddress(host: string): string {
+    if (host !== '0.0.0.0') return host;
 
-    const nets = networkInterfaces();
-    const results: Record<string, string[]> = {};
+    const networkInterfaces: Record<string, NetworkInterfaceInfo[]> = getNetworkInterfaces();
 
-    for (const name of Object.keys(nets)) {
-        for (const net of nets[name]) {
-            // Skip over non-IPv4 addresses
-            if (net.family !== 'IPv4') {
-                continue;
-            }
-            if (!results[name]) {
-                results[name] = [];
-            }
-            results[name].push(net.address);
-        }
-    }
-    return Object.values(results).flat();
+    return Object.values(networkInterfaces)
+        .flat()
+        .filter((nInterface) => nInterface.family === 'IPv4' && !nInterface.internal)
+        .at(0).address;
 }
