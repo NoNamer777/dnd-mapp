@@ -10,6 +10,11 @@ export class ServerEnvironmentVariables {
     @Expose()
     @IsString()
     @IsOptional()
+    ADDRESS?: string;
+
+    @Expose()
+    @IsString()
+    @IsOptional()
     HOST?: string;
 
     @Expose()
@@ -18,6 +23,11 @@ export class ServerEnvironmentVariables {
     @Max(65535)
     @IsOptional()
     PORT?: number;
+
+    @Expose()
+    @IsBoolean()
+    @IsOptional()
+    USE_SSL?: boolean;
 
     @Expose()
     @IsString()

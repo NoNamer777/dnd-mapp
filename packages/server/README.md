@@ -20,6 +20,12 @@ HOST=localhost
 # On which port ro run the server process.
 PORT=8080
 
+# The domain from which the back-end is available, should the app be containerized for example.
+ADDRESS=example.com
+
+# Whether to use SSL or not (Independant of if the certifcate and key are provided).
+USE_SSL=true
+
 # The certificate and key to run the server in ssl (https).
 # By default, the server doesn't come with a certificate and key so that must be provided.
 SSL_CERT_PATH=./certificate.pem

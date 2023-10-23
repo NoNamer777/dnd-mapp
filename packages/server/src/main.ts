@@ -4,6 +4,7 @@ import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import * as express from 'express';
 import { readFile } from 'fs/promises';
+import helmet from 'helmet';
 import { createServer as createHttpServer } from 'http';
 import { createServer as createHttpsServer } from 'https';
 import { AppModule } from './app/app.module';
@@ -16,7 +17,16 @@ async function bootstrap() {
     const configService = nestApp.get(ConfigService);
     const logger = new Logger('NestApplication');
 
-    nestApp.setGlobalPrefix('/server');
+    nestApp.setGlobalPrefix('/server', { exclude: [''] });
+    nestApp.use(
+        helmet({
+            contentSecurityPolicy: {
+                directives: {
+                    scriptSrcAttr: [`'self'`, `'unsafe-inline'`],
+                },
+            },
+        })
+    );
 
     const { host, port, secured, ssl } = {
         host: configService.get('server.host'),
@@ -33,7 +43,7 @@ async function bootstrap() {
 
     server.listen(port, host);
 
-    logger.log(`Nest application is running on: ${buildServerUrl(configService).join(', ')}`);
+    logger.log(`Nest application is running on: ${buildServerUrl(configService)}`);
 }
 
 (async () => await bootstrap())();
