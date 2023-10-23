@@ -17,7 +17,7 @@ async function bootstrap() {
     const configService = nestApp.get(ConfigService);
     const logger = new Logger('NestApplication');
 
-    nestApp.setGlobalPrefix('/server');
+    nestApp.setGlobalPrefix('/server', { exclude: [''] });
     nestApp.use(
         helmet({
             contentSecurityPolicy: {
@@ -43,7 +43,7 @@ async function bootstrap() {
 
     server.listen(port, host);
 
-    logger.log(`Nest application is running on: ${buildServerUrl(configService).join(', ')}`);
+    logger.log(`Nest application is running on: ${buildServerUrl(configService)}`);
 }
 
 (async () => await bootstrap())();

@@ -15,5 +15,7 @@ export default registerAs('server', () => ({
     production: Boolean(process.env.PRODUCTION) || false,
     host: process.env.HOST || 'localhost',
     port: Number(process.env.PORT) || 8080,
+    useSSL: Boolean(process.env.USE_SSL) || false,
+    address: process.env.ADDRESS,
     ...getSSLConfig(),
 }));

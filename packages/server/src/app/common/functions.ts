@@ -8,7 +8,7 @@ export function buildServerUrl(configService: ConfigService): string {
         host: configService.get<string>('server.host'),
         port: configService.get<number>('server.port'),
     };
-    return address ? address : `http${secured ? 's' : ''}://${determinePrivateIpAddress(host)}:${port}/`;
+    return `http${secured ? 's' : ''}://${address ? address : determinePrivateIpAddress(host)}:${port}/`;
 }
 
 function determinePrivateIpAddress(host: string): string {
