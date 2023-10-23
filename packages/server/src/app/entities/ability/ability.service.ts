@@ -1,7 +1,7 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { BaseEntityCrudService, SaveOrUpdateOperation } from '../../common';
+import { BaseEntityCrudService } from '../../common';
 import { AbilityEntity } from './ability.entity';
 
 @Injectable()
@@ -10,20 +10,13 @@ export class AbilityService extends BaseEntityCrudService<AbilityEntity> {
         super(abilityRepository, 'Ability');
     }
 
-    protected override async checkUniqueAttributes(
-        ability: AbilityEntity,
-        operation: SaveOrUpdateOperation
-    ): Promise<void> {
+    protected override async isEntityUnique(ability: AbilityEntity) {
         const byName = await this.findByName(ability.name, false);
 
-        if (byName || (byName && ability.id && byName.id !== ability.id)) {
-            const errorMessage =
-                operation === 'create'
-                    ? `Cannot create Ability because the name: '${ability.name}' is already in use by another Ability (ID: '${byName.id}').`
-                    : `Cannot update Ability with ID: '${ability.id}' because the name: '${ability.name}' is already in use by another Ability (ID: '${byName.id}').`;
-
-            throw new BadRequestException(errorMessage);
+        if (ability?.id !== byName?.id || byName) {
+            return { error: `The name '${ability.name}' is already used for Ability with ID: '${byName.id}'.` };
         }
+        return null;
     }
 
     async findByName(name: string, throwsError = true): Promise<AbilityEntity> {

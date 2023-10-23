@@ -1,8 +1,6 @@
-import { NotFoundException } from '@nestjs/common';
-import { DeepPartial, FindOptionsWhere, Repository } from 'typeorm';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { BaseEntity } from './base.entity';
-
-export type SaveOrUpdateOperation = 'create' | 'update';
 
 export abstract class BaseEntityCrudService<T extends BaseEntity = BaseEntity> {
     protected constructor(
@@ -10,10 +8,7 @@ export abstract class BaseEntityCrudService<T extends BaseEntity = BaseEntity> {
         private entityName: string
     ) {}
 
-    protected abstract checkUniqueAttributes(
-        entity: T | Omit<T, 'id'>,
-        operation: SaveOrUpdateOperation
-    ): Promise<void>;
+    protected abstract isEntityUnique(entity: T | Omit<T, 'id'>): Promise<{ error: string } | null>;
 
     async findAll(): Promise<T[]> {
         return this.repository.find();
@@ -36,11 +31,21 @@ export abstract class BaseEntityCrudService<T extends BaseEntity = BaseEntity> {
                 `Cannot update ${this.entityName} with ID: '${entity.id}' because it does not exist.`
             );
         }
-        return await this.updateOrSave(entity, 'update');
+        const isUniqueError = await this.isEntityUnique(entity);
+
+        if (isUniqueError) {
+            throw new BadRequestException(`Can't update ${this.entityName}. Reason: ${isUniqueError.error}`);
+        }
+        return await this.repository.save(entity);
     }
 
     async create(entity: Omit<T, 'id'>): Promise<T> {
-        return await this.updateOrSave(entity, 'create');
+        const isUniqueError = await this.isEntityUnique(entity);
+
+        if (isUniqueError) {
+            throw new BadRequestException(`Cannot create ${this.entityName}. Reason: ${isUniqueError.error}`);
+        }
+        return await this.repository.save(entity as T);
     }
 
     async deleteById(id: number): Promise<void> {
@@ -52,11 +57,5 @@ export abstract class BaseEntityCrudService<T extends BaseEntity = BaseEntity> {
             );
         }
         await this.repository.delete({ id: id } as FindOptionsWhere<T>);
-    }
-
-    private async updateOrSave(entity: T | Omit<T, 'id'>, operation: SaveOrUpdateOperation): Promise<T> {
-        await this.checkUniqueAttributes(entity, operation);
-
-        return await this.repository.save(entity as DeepPartial<T>);
     }
 }

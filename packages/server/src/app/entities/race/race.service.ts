@@ -1,8 +1,8 @@
 import { Race } from '@dnd-mapp/data';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { BaseEntityCrudService, SaveOrUpdateOperation } from '../../common';
+import { BaseEntityCrudService } from '../../common';
 import { RaceEntity } from './race.entity';
 
 @Injectable()
@@ -11,17 +11,13 @@ export class RaceService extends BaseEntityCrudService<Race> {
         super(raceRepository, 'Race');
     }
 
-    protected override async checkUniqueAttributes(raceData: Race, operation: SaveOrUpdateOperation): Promise<void> {
+    protected override async isEntityUnique(raceData: Race) {
         const byName = await this.findByName(raceData.name, false);
 
-        if (byName || (byName && raceData.id && byName.id !== raceData.id)) {
-            const errorMessage =
-                operation === 'create'
-                    ? `Cannot create Race because the name: '${raceData.name}' is already in use by another Race (ID: '${byName.id}').`
-                    : `Cannot update Race with ID: '${raceData.id}' because the name: '${raceData.name}' is already in use by another Race (ID: '${byName.id}').`;
-
-            throw new BadRequestException(errorMessage);
+        if (byName?.id !== raceData?.id || byName) {
+            return { error: `The name '${raceData.name}' is already used for Race with ID: '${byName.id}'.` };
         }
+        return null;
     }
 
     async findByName(name: string, throwsError = true): Promise<Race> {

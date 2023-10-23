@@ -1,7 +1,7 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { BaseEntityCrudService, SaveOrUpdateOperation } from '../../common';
+import { BaseEntityCrudService } from '../../common';
 import { SkillEntity } from './skill.entity';
 
 @Injectable()
@@ -10,20 +10,13 @@ export class SkillService extends BaseEntityCrudService<SkillEntity> {
         super(skillRepository, 'Skill');
     }
 
-    protected override async checkUniqueAttributes(
-        skill: SkillEntity,
-        operation: SaveOrUpdateOperation
-    ): Promise<void> {
+    protected override async isEntityUnique(skill: SkillEntity) {
         const byName = await this.findByName(skill.name, false);
 
-        if (byName || (byName && skill.id && byName.id !== skill.id)) {
-            const errorMessage =
-                operation === 'create'
-                    ? `Cannot create Skill because the name: '${skill.name}' is already in use by another Skill (ID: '${byName.id}').`
-                    : `Cannot update Skill with ID: '${skill.id}' because the name: '${skill.name}' is already in use by another Skill (ID: '${byName.id}').`;
-
-            throw new BadRequestException(errorMessage);
+        if (byName?.id !== skill?.id || byName) {
+            return { error: `The name '${skill.name}' is already used for Skill with ID: '${byName.id}'.` };
         }
+        return null;
     }
 
     async findByName(name: string, throwsError = true): Promise<SkillEntity> {
