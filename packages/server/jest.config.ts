@@ -1,7 +1,7 @@
 import type { Config } from 'jest';
 
 const config: Config = {
-    collectCoverageFrom: ['./src/app/**/*.ts', '!**/index.ts', '!**/*.module.ts'],
+    collectCoverageFrom: ['./src/app/**/*.{entity,service}.ts'],
     displayName: 'server',
     moduleFileExtensions: ['ts', 'js', 'html'],
     preset: '../../jest.preset.js',
