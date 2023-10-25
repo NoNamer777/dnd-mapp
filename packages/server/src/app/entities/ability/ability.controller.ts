@@ -43,7 +43,7 @@ export class AbilityController {
     @Delete('/:id')
     async deleteById(@Param('id', ParseIntPipe) id: number): Promise<void> {
         this.logger.log('Received a request for removing a Ability');
-        await this.abilityService.deleteById(id);
+        await this.abilityService.remove(id);
     }
 
     @Put('/:id')

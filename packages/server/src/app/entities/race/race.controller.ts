@@ -43,7 +43,7 @@ export class RaceController {
     @Delete(':id')
     async delete(@Param('id', ParseIntPipe) raceId: number): Promise<void> {
         this.logger.log('Received a request for removing a Race');
-        return await this.raceService.deleteById(raceId);
+        return await this.raceService.remove(raceId);
     }
 
     @Put(':id')

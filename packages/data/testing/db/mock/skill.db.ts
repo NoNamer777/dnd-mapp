@@ -13,33 +13,27 @@ class MockSkillDB {
         this.reset();
     }
 
-    find(): Skill[] {
+    findAll(): Skill[] {
         return Object.values(this.db);
     }
 
-    findOneBy(params: { id?: number; name?: string }): Skill | null {
-        if (params.id) {
-            return Object.values<Skill>(this.db).find((skill) => skill.id === params.id) ?? null;
-        }
-        if (params.name) {
-            return Object.values<Skill>(this.db).find((skill) => skill.name === params.name) ?? null;
-        }
-        return null;
+    findAllByAbility(abilityId: number) {
+        return Object.values(this.db).filter((skill) => skill.ability.id === abilityId);
     }
 
-    save(skillData: Skill): Skill {
-        return skillData.id ? this.update({ id: skillData.id }, skillData) : this.insert(skillData);
+    findOneById(id: number) {
+        return Object.values(this.db).find((skill) => skill.id === id) ?? null;
     }
 
-    update(params: { id: number }, skillData: Skill): Skill {
-        if (!this.db[params.id]) {
-            throw new Error(`Could not update Skill with ID: '${params.id}' because it does not exist.`);
-        }
-        this.db[params.id] = skillData;
-        return skillData;
+    findOneByName(abilityName: string) {
+        return Object.values(this.db).find((skill) => skill.name === abilityName) ?? null;
     }
 
-    insert(skillData: CreateSkillData): Skill {
+    save(skillData: Skill) {
+        return skillData.id ? this.update(skillData) : this.insert(skillData);
+    }
+
+    insert(skillData: CreateSkillData) {
         const newSkill: Skill = {
             id: this.nextId++,
             ...skillData,
@@ -49,11 +43,19 @@ class MockSkillDB {
         return newSkill;
     }
 
-    delete(params: { id: number }): void {
-        if (!this.db[params.id]) {
-            throw new Error(`Cannot delete Skill with ID: '${params.id}' because it does not exist.`);
+    update(skillData: Skill) {
+        if (!this.db[skillData.id]) {
+            throw new Error(`Could not update Skill with ID: '${skillData.id}' because it does not exist.`);
         }
-        delete this.db[params.id];
+        this.db[skillData.id] = skillData;
+        return skillData;
+    }
+
+    deleteById(skillId: number) {
+        if (!this.db[skillId]) {
+            throw new Error(`Cannot delete Skill with ID: '${skillId}' because it does not exist.`);
+        }
+        delete this.db[skillId];
     }
 
     reset(): void {

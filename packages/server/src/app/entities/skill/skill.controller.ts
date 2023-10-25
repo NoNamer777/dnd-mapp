@@ -43,7 +43,7 @@ export class SkillController {
     @Delete('/:id')
     async deleteById(@Param('id', ParseIntPipe) id: number): Promise<void> {
         this.logger.log('Received a request for removing a Skill');
-        await this.skillService.deleteById(id);
+        await this.skillService.remove(id);
     }
 
     @Put(':/id')
