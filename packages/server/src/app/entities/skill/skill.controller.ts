@@ -1,4 +1,4 @@
-import { CreateSkillData, Skill } from '@dnd-mapp/data';
+import { Skill } from '@dnd-mapp/data';
 import {
     BadRequestException,
     Body,
@@ -13,6 +13,7 @@ import {
     Req,
 } from '@nestjs/common';
 import { Request } from 'express';
+import { CreateSkillDto, SkillEntity } from './skill.entity';
 import { SkillService } from './skill.service';
 
 @Controller('/api/skill')
@@ -28,7 +29,7 @@ export class SkillController {
     }
 
     @Post()
-    async create(@Body() data: CreateSkillData): Promise<Skill> {
+    async create(@Body() data: CreateSkillDto): Promise<Skill> {
         this.logger.log('Received request for creating a new Skill');
         return await this.skillService.create(data);
     }
@@ -46,13 +47,17 @@ export class SkillController {
     }
 
     @Put(':/id')
-    async update(@Req() request: Request, @Param('id', ParseIntPipe) id: number, @Body() data: Skill): Promise<Skill> {
+    async update(
+        @Req() request: Request,
+        @Param('id', ParseIntPipe) id: number,
+        @Body() data: SkillEntity
+    ): Promise<Skill> {
         this.logger.log('Received a request for updating a Skill');
         const requestPath = request.path;
 
         if (id !== data.id) {
             throw new BadRequestException(
-                `Could not update Skill on path: '${requestPath}' with data from Skill with ID: '${data.id}'.`
+                `Could not update Skill on path: '${requestPath}' with data from Skill with ID: '${data.id}'`
             );
         }
         return await this.skillService.update(data);

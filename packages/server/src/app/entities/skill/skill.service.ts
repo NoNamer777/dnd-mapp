@@ -13,8 +13,8 @@ export class SkillService extends BaseEntityCrudService<SkillEntity> {
     protected override async isEntityUnique(skill: SkillEntity) {
         const byName = await this.findByName(skill.name, false);
 
-        if (byName?.id !== skill?.id || byName) {
-            return { error: `The name '${skill.name}' is already used for Skill with ID: '${byName.id}'.` };
+        if ((byName && byName.id !== skill?.id) || byName) {
+            return { error: `The name '${skill.name}' is already used for Skill with ID: '${byName.id}'` };
         }
         return null;
     }
@@ -23,7 +23,7 @@ export class SkillService extends BaseEntityCrudService<SkillEntity> {
         const byName = await this.skillRepository.findOneBy({ name: name });
 
         if (!byName && throwsError) {
-            throw new NotFoundException(`Skill with name: '${name}' is not found.`);
+            throw new NotFoundException(`Skill with name: '${name}' is not found`);
         }
         return byName;
     }
