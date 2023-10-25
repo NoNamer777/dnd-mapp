@@ -11,8 +11,6 @@ export class AppController {
     @Get('')
     @Redirect('app', 301)
     getRoot() {
-        const address = this.configService.get<string>('server.address');
-
         return {
             url: `${buildServerUrl(this.configService)}app`,
         };
