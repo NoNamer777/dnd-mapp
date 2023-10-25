@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class RaceEntity1690464017430 implements MigrationInterface {
-    public async up(queryRunner: QueryRunner): Promise<void> {
+    async up(queryRunner: QueryRunner) {
         await queryRunner.createTable(
             new Table({
                 name: 'race',
@@ -24,7 +24,7 @@ export class RaceEntity1690464017430 implements MigrationInterface {
         );
     }
 
-    public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable('race');
+    async down(queryRunner: QueryRunner) {
+        await queryRunner.dropTable('race', true, true, true);
     }
 }

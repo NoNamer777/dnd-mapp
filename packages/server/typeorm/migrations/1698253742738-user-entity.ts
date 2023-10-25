@@ -1,23 +1,35 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class AbilityEntity1690464387448 implements MigrationInterface {
+export class UserEntity1698253742738 implements MigrationInterface {
     async up(queryRunner: QueryRunner) {
         await queryRunner.createTable(
             new Table({
-                name: 'ability',
+                name: 'user',
                 columns: [
                     {
                         name: 'id',
                         type: 'integer',
+                        isNullable: false,
+                        isUnique: true,
                         isPrimary: true,
                         isGenerated: true,
                         generationStrategy: 'increment',
                     },
                     {
-                        name: 'name',
+                        name: 'username',
+                        type: 'varchar',
+                        isUnique: true,
+                        isNullable: false,
+                    },
+                    {
+                        name: 'password',
                         type: 'varchar',
                         isNullable: false,
-                        isUnique: true,
+                    },
+                    {
+                        name: 'email_address',
+                        type: 'varchar',
+                        isNullable: false,
                     },
                 ],
             })
@@ -25,6 +37,6 @@ export class AbilityEntity1690464387448 implements MigrationInterface {
     }
 
     async down(queryRunner: QueryRunner) {
-        await queryRunner.dropTable('ability', true, true, true);
+        await queryRunner.dropTable('user', true, true, true);
     }
 }
