@@ -108,14 +108,14 @@ describe('RaceService', () => {
         it('should delete', async () => {
             const { service } = await setupTestEnvironment();
 
-            await service.deleteById(1);
+            await service.remove(1);
             expect(mockRaceDB.findOneById(1)).toBeNull();
         });
 
         it('should throw 404 for deleting non existent Race', async () => {
             const { service } = await setupTestEnvironment();
 
-            await expect(service.deleteById(2)).rejects.toThrowError(
+            await expect(service.remove(2)).rejects.toThrowError(
                 new NotFoundException(`Could not remove Race with ID: '2' because it does not exist`)
             );
         });
