@@ -20,7 +20,7 @@ class MockUserDB {
         return Object.values(this.db).find((user) => user.id === userId) ?? null;
     }
 
-    findOneByName(username: string) {
+    findOneByUsername(username: string) {
         return Object.values(this.db).find((user) => user.username === username) ?? null;
     }
 
