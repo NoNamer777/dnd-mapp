@@ -29,12 +29,6 @@ jobs:
               uses: docker/metadata-action@v5
               with:
                   images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-                  tags: |
-                      type=schedule,enable=false,pattern=nightly
-                      type=edge,enable=true,branch=$repo.default_branch
-                      type=ref,enable=false,event=branch
-                      type=ref,enable=false,event=pr
-                      type=raw,enable=true,value=dev
             - name: Set up QEMU
               uses: docker/setup-qemu-action@v3
             - name: Set up Docker Buildx
@@ -51,7 +45,6 @@ jobs:
                   context: .
                   file: Dockerfile
                   labels: ${{ steps.meta.outputs.labels }}
-                  tags: ${{ steps.meta.outputs.tags }}
                   platforms: ${{ matrix.platform }}
                   outputs: type=image,name=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }},push-by-digest=true,name-canonical=true,push=true
                   cache-from: type=gha
