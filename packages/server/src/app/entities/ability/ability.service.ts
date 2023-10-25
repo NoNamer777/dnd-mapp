@@ -13,8 +13,8 @@ export class AbilityService extends BaseEntityCrudService<AbilityEntity> {
     protected override async isEntityUnique(ability: AbilityEntity) {
         const byName = await this.findByName(ability.name, false);
 
-        if (ability?.id !== byName?.id || byName) {
-            return { error: `The name '${ability.name}' is already used for Ability with ID: '${byName.id}'.` };
+        if ((byName && ability?.id !== byName.id) || byName) {
+            return { error: `The name '${ability.name}' is already used for Ability with ID: '${byName.id}'` };
         }
         return null;
     }
@@ -23,7 +23,7 @@ export class AbilityService extends BaseEntityCrudService<AbilityEntity> {
         const byName = await this.abilityRepository.findOneBy({ name: name });
 
         if (!byName && throwsError) {
-            throw new NotFoundException(`Ability with name: '${name}' is not found.`);
+            throw new NotFoundException(`Ability with name: '${name}' is not found`);
         }
         return byName;
     }
