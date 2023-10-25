@@ -13,6 +13,7 @@ import {
     Req,
 } from '@nestjs/common';
 import { Request } from 'express';
+import { AbilityEntity, CreateAbilityDto } from './ability.entity';
 import { AbilityService } from './ability.service';
 
 @Controller('/api/ability')
@@ -28,7 +29,7 @@ export class AbilityController {
     }
 
     @Post()
-    async create(@Body() data: Omit<Ability, 'id'>): Promise<Ability> {
+    async create(@Body() data: CreateAbilityDto): Promise<Ability> {
         this.logger.log('Received request for creating a new Ability');
         return await this.abilityService.create(data);
     }
@@ -42,13 +43,13 @@ export class AbilityController {
     @Delete('/:id')
     async deleteById(@Param('id', ParseIntPipe) id: number): Promise<void> {
         this.logger.log('Received a request for removing a Ability');
-        await this.abilityService.deleteById(id);
+        await this.abilityService.remove(id);
     }
 
     @Put('/:id')
     async update(
         @Req() request: Request,
-        @Body() data: Ability,
+        @Body() data: AbilityEntity,
         @Param('id', ParseIntPipe) id: number
     ): Promise<Ability> {
         this.logger.log('Received a request for updating a Ability', 'AbilityController');
@@ -56,7 +57,7 @@ export class AbilityController {
 
         if (id !== data.id) {
             throw new BadRequestException(
-                `Could not update Ability on path: '${requestPath}' with data from Ability with ID: '${data.id}'.`
+                `Could not update Ability on path: '${requestPath}' with data from Ability with ID: '${data.id}'`
             );
         }
         return await this.abilityService.update(data);

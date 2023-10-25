@@ -16,8 +16,13 @@ function determinePrivateIpAddress(host: string): string {
 
     const networkInterfaces: Record<string, NetworkInterfaceInfo[]> = getNetworkInterfaces();
 
-    return Object.values(networkInterfaces)
-        .flat()
-        .filter((nInterface) => nInterface.family === 'IPv4' && !nInterface.internal)
-        .at(0).address;
+    return (
+        Object.entries(networkInterfaces)
+            .filter(([key]) => !key.match(/Loopback|vEthernet/gi))
+            .flat()
+            .filter((entry) => Array.isArray(entry))
+            .flat()
+            .filter((nInterface: NetworkInterfaceInfo) => nInterface.family === 'IPv4' && !nInterface.internal)
+            .at(0) as NetworkInterfaceInfo
+    ).address;
 }

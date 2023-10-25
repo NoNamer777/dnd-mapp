@@ -4,7 +4,7 @@
     "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/test.ts", "typeorm/**/*"],
     "compilerOptions": {
         "emitDecoratorMetadata": true,
-        "module": "ES2022",
+        "module": "commonjs",
         "moduleResolution": "Node",
         "outDir": "../../dist/out-tsc",
         "target": "ES2022",

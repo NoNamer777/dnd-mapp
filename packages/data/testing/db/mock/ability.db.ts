@@ -1,5 +1,4 @@
 import { Ability, CreateAbilityData } from '../../../src/lib/models/ability.model';
-import { defaultSkill } from './skill.db';
 
 interface AbilityDB {
     [id: string]: Ability;
@@ -13,33 +12,23 @@ class MockAbilityDB {
         this.reset();
     }
 
-    find(): Ability[] {
+    findAll() {
         return Object.values(this.db);
     }
 
-    findOneBy(params: { id?: number; name?: string }): Ability | null {
-        if (params.id) {
-            return Object.values<Ability>(this.db).find((ability) => ability.id === params.id) ?? null;
-        }
-        if (params.name) {
-            return Object.values<Ability>(this.db).find((ability) => ability.name === params.name) ?? null;
-        }
-        return null;
+    findOneById(abilityId: number) {
+        return Object.values(this.db).find((ability) => ability.id === abilityId) ?? null;
     }
 
-    save(abilityData: Ability): Ability {
-        return abilityData.id ? this.update({ id: abilityData.id }, abilityData) : this.insert(abilityData);
+    findOneByName(abilityName: string) {
+        return Object.values(this.db).find((ability) => ability.name === abilityName) ?? null;
     }
 
-    update(params: { id: number }, abilityData: Ability): Ability {
-        if (!this.db[params.id]) {
-            throw new Error(`Could not update Ability with ID: '${params.id}' because it does not exist.`);
-        }
-        this.db[params.id] = abilityData;
-        return abilityData;
+    save(abilityData: Ability) {
+        return abilityData.id ? this.update(abilityData) : this.insert(abilityData);
     }
 
-    insert(abilityData: CreateAbilityData): Ability {
+    insert(abilityData: CreateAbilityData) {
         const newAbility: Ability = {
             id: this.nextId++,
             ...abilityData,
@@ -49,14 +38,22 @@ class MockAbilityDB {
         return newAbility;
     }
 
-    delete(params: { id: number }): void {
-        if (!this.db[params.id]) {
-            throw new Error(`Cannot delete Ability with ID: '${params.id}' because it does not exist.`);
+    update(abilityData: Ability) {
+        if (!this.db[abilityData.id]) {
+            throw new Error(`Could not update Ability with ID: '${abilityData.id}' because it does not exist.`);
         }
-        delete this.db[params.id];
+        this.db[abilityData.id] = abilityData;
+        return abilityData;
     }
 
-    reset(): void {
+    deleteById(abilityId: number) {
+        if (!this.db[abilityId]) {
+            throw new Error(`Cannot delete Ability with ID: '${abilityId}' because it does not exist.`);
+        }
+        delete this.db[abilityId];
+    }
+
+    reset() {
         this.db = { [defaultAbility.id]: defaultAbility };
         this.nextId = Object.values(this.db).length + 1;
     }
@@ -65,7 +62,7 @@ class MockAbilityDB {
 export const defaultAbility: Ability = {
     id: 1,
     name: 'Test Ability',
-    skills: [defaultSkill],
+    skills: [],
 };
 
 export const mockAbilityDB = new MockAbilityDB();

@@ -33,7 +33,7 @@ describe('RaceService', () => {
             const { service } = await setupTestEnvironment();
 
             await expect(service.findById(2)).rejects.toThrowError(
-                new NotFoundException(`Race with ID: '2' is not found.`)
+                new NotFoundException(`Race with ID: '2' is not found`)
             );
         });
     });
@@ -49,7 +49,7 @@ describe('RaceService', () => {
             const { service } = await setupTestEnvironment();
 
             await expect(service.findByName('Race Test')).rejects.toThrowError(
-                new NotFoundException(`Race with name: 'Race Test' is not found.`)
+                new NotFoundException(`Race with name: 'Race Test' is not found`)
             );
         });
     });
@@ -60,7 +60,7 @@ describe('RaceService', () => {
             const newRaceData = { id: 1, name: 'Race Test Test' };
 
             expect(await service.update(newRaceData)).toEqual(newRaceData);
-            expect(mockRaceDB.findOneBy({ id: 1 })).toEqual(expect.objectContaining(newRaceData));
+            expect(mockRaceDB.findOneById(1)).toEqual(expect.objectContaining(newRaceData));
         });
 
         it('should throw 404 when using ID of non existing Race', async () => {
@@ -68,7 +68,7 @@ describe('RaceService', () => {
             const newRaceData = { id: 2, name: 'Race Test Test' };
 
             await expect(service.update(newRaceData)).rejects.toThrowError(
-                new NotFoundException(`Cannot update Race with ID: '2' because it does not exist.`)
+                new NotFoundException(`Cannot update Race with ID: '2' because it does not exist`)
             );
         });
 
@@ -79,11 +79,9 @@ describe('RaceService', () => {
             const newRaceData = { id: 1, name: 'Race Test Test' };
 
             await expect(service.update(newRaceData)).rejects.toThrowError(
-                new NotFoundException(
-                    `Cannot update Race with ID: '1' because the name: 'Race Test Test' is already in use by another Race (ID: '2').`
-                )
+                new NotFoundException(`Cannot update Race because the name 'Race Test Test' is already used`)
             );
-            expect(mockRaceDB.findOneBy({ id: 1 })).toEqual(expect.not.objectContaining(newRaceData));
+            expect(mockRaceDB.findOneById(1)).toEqual(expect.not.objectContaining(newRaceData));
         });
     });
 
@@ -93,7 +91,7 @@ describe('RaceService', () => {
             const newRaceData = { name: 'New Race Test' };
 
             expect((await service.create(newRaceData)).id).toBeDefined();
-            expect(mockRaceDB.findOneBy({ name: 'New Race Test' })).toEqual(expect.objectContaining(newRaceData));
+            expect(mockRaceDB.findOneByName('New Race Test')).toEqual(expect.objectContaining(newRaceData));
         });
 
         it('should throw 400 when using non unique name', async () => {
@@ -101,9 +99,7 @@ describe('RaceService', () => {
             const newRaceData = { name: 'Test Race' };
 
             await expect(service.create(newRaceData)).rejects.toThrowError(
-                new NotFoundException(
-                    `Cannot create Race because the name: 'Test Race' is already in use by another Race (ID: '1').`
-                )
+                new NotFoundException(`Cannot create Race because the name 'Test Race' is already used`)
             );
         });
     });
@@ -112,15 +108,15 @@ describe('RaceService', () => {
         it('should delete', async () => {
             const { service } = await setupTestEnvironment();
 
-            await service.deleteById(1);
-            expect(mockRaceDB.findOneBy({ id: 1 })).toBeNull();
+            await service.remove(1);
+            expect(mockRaceDB.findOneById(1)).toBeNull();
         });
 
         it('should throw 404 for deleting non existent Race', async () => {
             const { service } = await setupTestEnvironment();
 
-            await expect(service.deleteById(2)).rejects.toThrowError(
-                new NotFoundException(`Could not remove Race with ID: '2' because it does not exist.`)
+            await expect(service.remove(2)).rejects.toThrowError(
+                new NotFoundException(`Could not remove Race with ID: '2' because it does not exist`)
             );
         });
     });
