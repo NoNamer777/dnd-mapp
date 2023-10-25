@@ -28,7 +28,7 @@ class MockRaceDB {
         return raceData.id ? this.update(raceData) : this.insert(raceData);
     }
 
-    insert(raceData: CreateRaceData): Race {
+    insert(raceData: CreateRaceData) {
         const newRace: Race = {
             id: this.nextId++,
             ...raceData,
@@ -46,14 +46,14 @@ class MockRaceDB {
         return raceData;
     }
 
-    deleteById(raceId: number): void {
+    deleteById(raceId: number) {
         if (!this.db[raceId]) {
             throw new Error(`Cannot delete Race with ID: '${raceId}' because it does not exist.`);
         }
         delete this.db[raceId];
     }
 
-    reset(): void {
+    reset() {
         this.db = { [defaultRace.id]: defaultRace };
         this.nextId = Object.values(this.db).length + 1;
     }

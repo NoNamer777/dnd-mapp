@@ -13,7 +13,7 @@ class MockSkillDB {
         this.reset();
     }
 
-    findAll(): Skill[] {
+    findAll() {
         return Object.values(this.db);
     }
 
@@ -58,7 +58,7 @@ class MockSkillDB {
         delete this.db[skillId];
     }
 
-    reset(): void {
+    reset() {
         this.db = { [defaultSkill.id]: defaultSkill };
         this.nextId = Object.values(this.db).length + 1;
     }

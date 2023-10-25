@@ -28,7 +28,7 @@ class MockAbilityDB {
         return abilityData.id ? this.update(abilityData) : this.insert(abilityData);
     }
 
-    insert(abilityData: CreateAbilityData): Ability {
+    insert(abilityData: CreateAbilityData) {
         const newAbility: Ability = {
             id: this.nextId++,
             ...abilityData,
@@ -38,7 +38,7 @@ class MockAbilityDB {
         return newAbility;
     }
 
-    update(abilityData: Ability): Ability {
+    update(abilityData: Ability) {
         if (!this.db[abilityData.id]) {
             throw new Error(`Could not update Ability with ID: '${abilityData.id}' because it does not exist.`);
         }
@@ -46,14 +46,14 @@ class MockAbilityDB {
         return abilityData;
     }
 
-    deleteById(abilityId: number): void {
+    deleteById(abilityId: number) {
         if (!this.db[abilityId]) {
             throw new Error(`Cannot delete Ability with ID: '${abilityId}' because it does not exist.`);
         }
         delete this.db[abilityId];
     }
 
-    reset(): void {
+    reset() {
         this.db = { [defaultAbility.id]: defaultAbility };
         this.nextId = Object.values(this.db).length + 1;
     }

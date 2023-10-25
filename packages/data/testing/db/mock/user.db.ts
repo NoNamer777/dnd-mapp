@@ -28,7 +28,7 @@ class MockUserDB {
         return userData.id ? this.update(userData) : this.insert(userData);
     }
 
-    insert(userData: CreateUserData): User {
+    insert(userData: CreateUserData) {
         const newUser: User = {
             id: this.nextId++,
             ...userData,
@@ -46,14 +46,14 @@ class MockUserDB {
         return userData;
     }
 
-    deleteById(userId: number): void {
+    deleteById(userId: number) {
         if (!this.db[userId]) {
             throw new Error(`Cannot delete User with ID: '${userId}' because it does not exist.`);
         }
         delete this.db[userId];
     }
 
-    reset(): void {
+    reset() {
         this.db = { [defaultUser.id]: defaultUser };
         this.nextId = Object.values(this.db).length + 1;
     }
