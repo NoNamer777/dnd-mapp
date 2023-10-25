@@ -31,7 +31,7 @@ RUN npx nx build server &&  \
 COPY --from=build-client /client/dist/client dist/client
 
 
-FROM node:18-alpine
+FROM --platform=$BUILDPLATFORM node:18-alpine
 
 WORKDIR /usr/src/app
 
