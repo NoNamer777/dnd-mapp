@@ -16,7 +16,6 @@ const validationOptions: ValidationPipeOptions = {
     stopAtFirstError: true,
     transform: true,
     transformOptions: {
-        excludeExtraneousValues: true,
         enableCircularCheck: true,
         enableImplicitConversion: true,
     },
@@ -40,7 +39,7 @@ async function bootstrap() {
             },
         })
     );
-    nestApp.use(new ValidationPipe(validationOptions));
+    nestApp.useGlobalPipes(new ValidationPipe(validationOptions));
 
     const { host, port, secured, ssl } = {
         host: configService.get('server.host'),
