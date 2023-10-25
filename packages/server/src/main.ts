@@ -2,7 +2,7 @@ import { HttpStatus, Logger, ValidationPipe, ValidationPipeOptions } from '@nest
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
-import * as express from 'express';
+import express from 'express';
 import { readFile } from 'fs/promises';
 import helmet from 'helmet';
 import { createServer as createHttpServer } from 'http';
