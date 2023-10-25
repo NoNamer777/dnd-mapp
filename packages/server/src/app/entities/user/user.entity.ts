@@ -32,7 +32,7 @@ export class UserEntity implements User {
     password: string;
 
     @Column({
-        name: 'emailAddress',
+        name: 'email_address',
         type: 'varchar',
         nullable: false,
         unique: true,
