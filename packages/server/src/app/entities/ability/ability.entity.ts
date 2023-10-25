@@ -1,12 +1,17 @@
 import { Ability } from '@dnd-mapp/data';
 import { OmitType } from '@nestjs/mapped-types';
-import { ArrayMinSize, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
-import { Column, Entity } from 'typeorm';
-import { BaseEntity } from '../../common';
+import { ArrayMinSize, IsInt, IsNotEmpty, IsString, Min, ValidateNested } from 'class-validator';
+import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { SkillEntity } from '../skill/skill.entity';
 
 @Entity('ability')
-export class AbilityEntity extends BaseEntity implements Ability {
+export class AbilityEntity implements Ability {
+    @PrimaryGeneratedColumn('increment')
+    @PrimaryColumn()
+    @IsInt()
+    @Min(1)
+    id: number;
+
     @Column({
         name: 'name',
         type: 'varchar',

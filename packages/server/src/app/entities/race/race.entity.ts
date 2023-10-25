@@ -1,11 +1,16 @@
 import { Race } from '@dnd-mapp/data';
 import { OmitType } from '@nestjs/mapped-types';
-import { IsNotEmpty, IsString } from 'class-validator';
-import { Column, Entity } from 'typeorm';
-import { BaseEntity } from '../../common';
+import { IsInt, IsNotEmpty, IsString, Min } from 'class-validator';
+import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('race')
-export class RaceEntity extends BaseEntity implements Race {
+export class RaceEntity implements Race {
+    @PrimaryGeneratedColumn('increment')
+    @PrimaryColumn()
+    @IsInt()
+    @Min(1)
+    id: number;
+
     @Column({
         name: 'name',
         type: 'varchar',
