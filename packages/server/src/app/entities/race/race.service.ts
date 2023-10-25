@@ -14,8 +14,8 @@ export class RaceService extends BaseEntityCrudService<Race> {
     protected override async isEntityUnique(raceData: Race) {
         const byName = await this.findByName(raceData.name, false);
 
-        if (byName?.id !== raceData?.id || byName) {
-            return { error: `The name '${raceData.name}' is already used for Race with ID: '${byName.id}'.` };
+        if ((byName && byName.id !== raceData?.id) || byName) {
+            return { error: `The name '${raceData.name}' is already used for Race with ID: '${byName.id}'` };
         }
         return null;
     }
@@ -24,7 +24,7 @@ export class RaceService extends BaseEntityCrudService<Race> {
         const byName = await this.raceRepository.findOneBy({ name: name });
 
         if (throwsError && !byName) {
-            throw new NotFoundException(`Race with name: '${name}' is not found.`);
+            throw new NotFoundException(`Race with name: '${name}' is not found`);
         }
         return byName;
     }
