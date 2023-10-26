@@ -16,6 +16,8 @@ import { Request } from 'express';
 import { CreateUserDto, UserEntity } from './user.entity';
 import { UserService } from './user.service';
 
+// TODO: Secure routes for Administrators or the User itself only
+
 @Controller('api/user')
 export class UserController {
     private readonly logger = new Logger(UserController.name);
