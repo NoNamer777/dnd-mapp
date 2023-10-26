@@ -42,13 +42,13 @@ describe('UserService', () => {
         it('should get User by name', async () => {
             const { service } = await setupTestEnvironment();
 
-            expect(await service.findByName('User1')).toEqual(defaultUser);
+            expect(await service.findByUsername('User1')).toEqual(defaultUser);
         });
 
         it('should throw 404', async () => {
             const { service } = await setupTestEnvironment();
 
-            await expect(service.findByName('User Test')).rejects.toThrowError(
+            await expect(service.findByUsername('User Test')).rejects.toThrowError(
                 new NotFoundException(`User with name: 'User Test' is not found`)
             );
         });

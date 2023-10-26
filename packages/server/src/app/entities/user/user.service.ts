@@ -21,33 +21,37 @@ export class UserService {
         return byId;
     }
 
-    async findByName(username: string, throwsError = true): Promise<User> {
-        const byName = await this.userRepository.findOneByUsername(username);
+    async findByUsername(username: string, throwsError = true): Promise<User> {
+        const byUsername = await this.userRepository.findOneByUsername(username);
 
-        if (!byName && throwsError) {
+        if (!byUsername && throwsError) {
             throw new NotFoundException(`User with name: '${username}' is not found`);
         }
-        return byName;
+        return byUsername;
     }
 
     async update(user: User): Promise<User> {
         const byId = await this.findById(user.id, false);
-        const byName = await this.findByName(user.username, false);
+        const byUsername = await this.findByUsername(user.username, false);
 
         if (!byId) {
             throw new NotFoundException(`Cannot update User with ID: '${user.id}' because it does not exist`);
         }
-        if (byName && byName.id !== user.id) {
-            throw new BadRequestException(`Cannot update User because the name '${byName.username}' is already used`);
+        if (byUsername && byUsername.id !== user.id) {
+            throw new BadRequestException(
+                `Cannot update User because the name '${byUsername.username}' is already used`
+            );
         }
         return await this.userRepository.save(user);
     }
 
     async create(user: CreateUserDto): Promise<User> {
-        const byName = await this.findByName(user.username, false);
+        const byUsername = await this.findByUsername(user.username, false);
 
-        if (byName) {
-            throw new BadRequestException(`Cannot create User because the name '${byName.username}' is already used`);
+        if (byUsername) {
+            throw new BadRequestException(
+                `Cannot create User because the name '${byUsername.username}' is already used`
+            );
         }
         return await this.userRepository.save(user);
     }
