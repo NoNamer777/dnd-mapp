@@ -13,7 +13,7 @@ function getMigrationsPath() {
 }
 
 // Defaults to a Sqlite database which will persist its data in memory.
-const config = new DataSource({
+const datasource = new DataSource({
     type: (process.env.DATABASE_TYPE as DataSourceTypeValue) || 'sqlite',
     database: process.env.DATABASE_LOCATION || './dnd_mapp_db.db',
     migrations: getMigrationsPath(),
@@ -23,4 +23,4 @@ const config = new DataSource({
     password: process.env.MYSQL_PASSWORD,
 });
 
-export default config;
+export default datasource;
