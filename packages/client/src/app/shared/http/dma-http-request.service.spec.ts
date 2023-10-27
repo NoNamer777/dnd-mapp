@@ -25,7 +25,7 @@ describe('DmaHttpRequestService', () => {
 
         const response = firstValueFrom(service.get('/example'));
 
-        const request = testingController.expectOne('http://localhost:8080/example');
+        const request = testingController.expectOne('http://localhost:8080/server/example');
         request.flush({ example: 'hi' });
 
         expect(await response).toEqual({ example: 'hi' });
@@ -37,7 +37,7 @@ describe('DmaHttpRequestService', () => {
 
         const response = firstValueFrom(service.post('/example', { name: 'user' }));
 
-        const request = testingController.expectOne('http://localhost:8080/example');
+        const request = testingController.expectOne('http://localhost:8080/server/example');
         request.flush({ name: 'user1' });
 
         expect(await response).toEqual({ name: 'user1' });
@@ -50,7 +50,7 @@ describe('DmaHttpRequestService', () => {
 
         const response = firstValueFrom(service.delete('/example'));
 
-        const request = testingController.expectOne('http://localhost:8080/example');
+        const request = testingController.expectOne('http://localhost:8080/server/example');
         request.flush(null);
 
         await response;
@@ -63,7 +63,7 @@ describe('DmaHttpRequestService', () => {
 
         const response = firstValueFrom(service.put('/example', { name: 'user1' }));
 
-        const request = testingController.expectOne('http://localhost:8080/example');
+        const request = testingController.expectOne('http://localhost:8080/server/example');
         request.flush({ name: 'user1' });
 
         expect(await response).toEqual({ name: 'user1' });
