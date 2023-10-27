@@ -1,7 +1,8 @@
-import type { User } from '@dnd-mapp/data';
+import type { User, UserRoleName } from '@dnd-mapp/data';
 import { OmitType } from '@nestjs/mapped-types';
 import { IsEmail, IsInt, IsNotEmpty, IsString, IsStrongPassword, Min } from 'class-validator';
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { UserRoleEntity } from '../user-role/user-role.entity';
 
 @Entity('user')
 export class UserEntity implements User {
@@ -41,6 +42,24 @@ export class UserEntity implements User {
     @IsNotEmpty()
     @IsEmail()
     emailAddress: string;
+
+    @ManyToMany(() => UserRoleEntity)
+    @JoinTable({
+        name: 'user_role',
+        joinColumn: {
+            name: 'user_id',
+            referencedColumnName: 'id',
+        },
+        inverseJoinColumn: {
+            name: 'role_id',
+            referencedColumnName: 'id',
+        },
+    })
+    roles: UserRoleEntity[];
+
+    hasRole(role: UserRoleName) {
+        return this.roles.map((userRole) => userRole.name).includes(role);
+    }
 }
 
-export class CreateUserDto extends OmitType(UserEntity, ['id'] as const) {}
+export class CreateUserDto extends OmitType(UserEntity, ['id', 'roles', 'hasRole'] as const) {}
