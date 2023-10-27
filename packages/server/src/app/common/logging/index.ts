@@ -1,2 +1,2 @@
 export * from './dnd-mapp-logger.service';
-export * from './logger.module';
+export * from './logging.module';

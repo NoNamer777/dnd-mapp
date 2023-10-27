@@ -5,7 +5,6 @@ import {
     Controller,
     Delete,
     Get,
-    Logger,
     Param,
     ParseIntPipe,
     Post,
@@ -13,14 +12,18 @@ import {
     Req,
 } from '@nestjs/common';
 import { Request } from 'express';
+import { DndMappLoggerService } from '../../common';
 import { CreateRaceDto, RaceEntity } from './race.entity';
 import { RaceService } from './race.service';
 
 @Controller('api/race')
 export class RaceController {
-    private readonly logger = new Logger(RaceController.name);
-
-    constructor(private raceService: RaceService) {}
+    constructor(
+        private readonly raceService: RaceService,
+        private readonly logger: DndMappLoggerService
+    ) {
+        this.logger.setContext(RaceController.name);
+    }
 
     @Get()
     async getAll(): Promise<Race[]> {

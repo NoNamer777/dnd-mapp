@@ -5,7 +5,6 @@ import {
     Controller,
     Delete,
     Get,
-    Logger,
     Param,
     ParseIntPipe,
     Post,
@@ -13,14 +12,18 @@ import {
     Req,
 } from '@nestjs/common';
 import { Request } from 'express';
+import { DndMappLoggerService } from '../../common';
 import { AbilityEntity, CreateAbilityDto } from './ability.entity';
 import { AbilityService } from './ability.service';
 
 @Controller('/api/ability')
 export class AbilityController {
-    private readonly logger = new Logger(AbilityController.name);
-
-    constructor(private abilityService: AbilityService) {}
+    constructor(
+        private readonly abilityService: AbilityService,
+        private readonly logger: DndMappLoggerService
+    ) {
+        this.logger.setContext(AbilityController.name);
+    }
 
     @Get()
     async getAll(): Promise<Ability[]> {

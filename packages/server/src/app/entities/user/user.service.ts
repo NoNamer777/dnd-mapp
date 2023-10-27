@@ -1,18 +1,26 @@
 import { User } from '@dnd-mapp/data';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { DndMappLoggerService } from '../../common';
 import { CreateUserDto, UserEntity } from './user.entity';
 import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
-    constructor(@InjectRepository(UserEntity) private userRepository: UserRepository) {}
+    constructor(
+        @InjectRepository(UserEntity) private readonly userRepository: UserRepository,
+        private logger: DndMappLoggerService
+    ) {
+        logger.setContext(UserService.name);
+    }
 
     async findAll(): Promise<User[]> {
+        this.logger.log('Finding all Users');
         return this.userRepository.findAll();
     }
 
     async findById(userId: number, throwsError = true): Promise<User> {
+        this.logger.log('Finding a User by ID');
         const byId = await this.userRepository.findOneById(userId);
 
         if (!byId && throwsError) {
@@ -22,6 +30,7 @@ export class UserService {
     }
 
     async findByUsername(username: string, throwsError = true): Promise<User> {
+        this.logger.log('Finding a User by username');
         const byUsername = await this.userRepository.findOneByUsername(username);
 
         if (!byUsername && throwsError) {
@@ -31,6 +40,7 @@ export class UserService {
     }
 
     async update(user: User): Promise<User> {
+        this.logger.log(`Updating a User's data`);
         const byId = await this.findById(user.id, false);
         const byUsername = await this.findByUsername(user.username, false);
 
@@ -46,6 +56,7 @@ export class UserService {
     }
 
     async create(user: CreateUserDto): Promise<User> {
+        this.logger.log('Creating a new User');
         const byUsername = await this.findByUsername(user.username, false);
 
         if (byUsername) {
@@ -57,6 +68,7 @@ export class UserService {
     }
 
     async remove(userId: number): Promise<void> {
+        this.logger.log('Removing a User by ID');
         const byId = await this.findById(userId, false);
 
         if (!byId) {

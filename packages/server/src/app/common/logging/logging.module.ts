@@ -5,4 +5,4 @@ import { DndMappLoggerService } from './dnd-mapp-logger.service';
     providers: [DndMappLoggerService],
     exports: [DndMappLoggerService],
 })
-export class LoggerModule {}
+export class LoggingModule {}

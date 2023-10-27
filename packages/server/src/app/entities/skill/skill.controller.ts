@@ -5,7 +5,6 @@ import {
     Controller,
     Delete,
     Get,
-    Logger,
     Param,
     ParseIntPipe,
     Post,
@@ -13,14 +12,18 @@ import {
     Req,
 } from '@nestjs/common';
 import { Request } from 'express';
+import { DndMappLoggerService } from '../../common';
 import { CreateSkillDto, SkillEntity } from './skill.entity';
 import { SkillService } from './skill.service';
 
 @Controller('/api/skill')
 export class SkillController {
-    private readonly logger = new Logger(SkillController.name);
-
-    constructor(private skillService: SkillService) {}
+    constructor(
+        private readonly skillService: SkillService,
+        private readonly logger: DndMappLoggerService
+    ) {
+        logger.setContext(SkillController.name);
+    }
 
     @Get()
     async getAll(): Promise<Skill[]> {

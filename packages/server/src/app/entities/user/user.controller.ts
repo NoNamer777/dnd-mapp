@@ -5,7 +5,6 @@ import {
     Controller,
     Delete,
     Get,
-    Logger,
     Param,
     ParseIntPipe,
     Post,
@@ -13,6 +12,7 @@ import {
     Req,
 } from '@nestjs/common';
 import { Request } from 'express';
+import { DndMappLoggerService } from '../../common';
 import { CreateUserDto, UserEntity } from './user.entity';
 import { UserService } from './user.service';
 
@@ -20,9 +20,12 @@ import { UserService } from './user.service';
 
 @Controller('api/user')
 export class UserController {
-    private readonly logger = new Logger(UserController.name);
-
-    constructor(private userService: UserService) {}
+    constructor(
+        private readonly userService: UserService,
+        private readonly logger: DndMappLoggerService
+    ) {
+        logger.setContext(UserController.name);
+    }
 
     @Get()
     async getAll() {
