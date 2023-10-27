@@ -1,6 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { firstValueFrom } from 'rxjs';
+import { environment } from '../../../environments';
 import { DmaHttpRequestModule } from './dma-http-request.module';
 import { DmaHttpRequestService } from './dma-http-request.service';
 
@@ -25,7 +26,7 @@ describe('DmaHttpRequestService', () => {
 
         const response = firstValueFrom(service.get('/example'));
 
-        const request = testingController.expectOne('http://localhost:8080/server/example');
+        const request = testingController.expectOne(environment.baseBackEndURL + '/example');
         request.flush({ example: 'hi' });
 
         expect(await response).toEqual({ example: 'hi' });
@@ -37,7 +38,7 @@ describe('DmaHttpRequestService', () => {
 
         const response = firstValueFrom(service.post('/example', { name: 'user' }));
 
-        const request = testingController.expectOne('http://localhost:8080/server/example');
+        const request = testingController.expectOne(environment.baseBackEndURL + '/example');
         request.flush({ name: 'user1' });
 
         expect(await response).toEqual({ name: 'user1' });
@@ -50,7 +51,7 @@ describe('DmaHttpRequestService', () => {
 
         const response = firstValueFrom(service.delete('/example'));
 
-        const request = testingController.expectOne('http://localhost:8080/server/example');
+        const request = testingController.expectOne(environment.baseBackEndURL + '/example');
         request.flush(null);
 
         await response;
@@ -63,7 +64,7 @@ describe('DmaHttpRequestService', () => {
 
         const response = firstValueFrom(service.put('/example', { name: 'user1' }));
 
-        const request = testingController.expectOne('http://localhost:8080/server/example');
+        const request = testingController.expectOne(environment.baseBackEndURL + '/example');
         request.flush({ name: 'user1' });
 
         expect(await response).toEqual({ name: 'user1' });
