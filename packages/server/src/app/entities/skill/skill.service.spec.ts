@@ -2,8 +2,7 @@ import { CreateSkillData, Skill } from '@dnd-mapp/data';
 import { defaultAbility, defaultSkill, mockSkillDB } from '@dnd-mapp/data/testing';
 import { NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { mockSkillRepositoryProvider } from '../../../../testing';
-import { mockLoggingServiceProvider } from '../../../../testing/mock/db/common/mock-logging-service.provider';
+import { mockLoggingServiceProvider, mockSkillRepositoryProvider } from '../../../../testing';
 import { SkillService } from './skill.service';
 
 describe('SkillService', () => {

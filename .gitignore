@@ -26,7 +26,7 @@ Thumbs.db
 .angular
 
 # Configurations, environments and certificates
-.env
+.env*
 certificate*.pem
 server-config.yaml
 

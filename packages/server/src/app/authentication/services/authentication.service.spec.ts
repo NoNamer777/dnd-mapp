@@ -1,8 +1,7 @@
 import { defaultUser } from '@dnd-mapp/data/testing';
 import { Test } from '@nestjs/testing';
-import { mockUserRepositoryProvider } from '../../../testing';
-import { mockLoggingServiceProvider } from '../../../testing/mock/db/common/mock-logging-service.provider';
 import { UserService } from '../entities/user';
+import { mockLoggingServiceProvider, mockUserRepositoryProvider } from '../../../../testing';
 import { AuthenticationService } from './authentication.service';
 
 describe('AuthenticationService', () => {

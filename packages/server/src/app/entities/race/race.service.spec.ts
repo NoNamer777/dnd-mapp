@@ -1,8 +1,7 @@
 import { defaultRace, mockRaceDB } from '@dnd-mapp/data/testing';
 import { NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { MockRaceRepositoryProvider } from '../../../../testing';
-import { mockLoggingServiceProvider } from '../../../../testing/mock/db/common/mock-logging-service.provider';
+import { MockRaceRepositoryProvider, mockLoggingServiceProvider } from '../../../../testing';
 import { RaceService } from './race.service';
 
 describe('RaceService', () => {
