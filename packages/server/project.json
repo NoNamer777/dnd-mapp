@@ -44,7 +44,7 @@
         "run-migrations": {
             "executor": "nx:run-commands",
             "options": {
-                "command": "npx typeorm-ts-node-esm migration:run -d packages/server/typeorm/config.dev.ts"
+                "command": "npx typeorm-ts-node-esm migration:run -d packages/server/typeorm/datasource.ts"
             }
         },
         "serve": {

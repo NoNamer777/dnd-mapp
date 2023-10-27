@@ -1,6 +1,7 @@
 import { HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { firstValueFrom } from 'rxjs';
+import { environment } from '../../../../environments';
 import { DmaHttpRequestTestingModule } from '../../../../testing';
 import { DmaAuthenticationService } from './dma-authentication.service';
 
@@ -24,7 +25,7 @@ describe('DmaAuthenticationService', () => {
         const { authenticationService, testController } = setupTestEnvironment();
 
         const response = firstValueFrom(authenticationService.login('user1', 'secure_password'));
-        const request = testController.expectOne('http://localhost:8080/authentication/login');
+        const request = testController.expectOne(environment.baseBackEndURL + '/authentication/login');
 
         request.flush(null, {
             status: 200,
@@ -41,7 +42,7 @@ describe('DmaAuthenticationService', () => {
         const { authenticationService, testController } = setupTestEnvironment();
 
         const response = firstValueFrom(authenticationService.login('user1', 'secure_password'));
-        const request = testController.expectOne('http://localhost:8080/authentication/login');
+        const request = testController.expectOne(environment.baseBackEndURL + '/authentication/login');
 
         request.flush(null, {
             status: 500,

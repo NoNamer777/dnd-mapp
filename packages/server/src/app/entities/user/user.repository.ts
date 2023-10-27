@@ -1,20 +1,37 @@
-import { Repository } from 'typeorm';
+import { FactoryProvider } from '@nestjs/common';
+import { getDataSourceToken, getRepositoryToken } from '@nestjs/typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { UserEntity } from './user.entity';
 
-export class UserRepository extends Repository<UserEntity> {
-    async findAll() {
-        return await this.find({ order: { id: 'ASC' } });
-    }
+export interface UserRepository extends Repository<UserEntity> {
+    this: Repository<UserEntity>;
 
-    async findOneById(userId: number) {
-        return await this.findOneBy({ id: userId });
-    }
-
-    async findOneByUsername(username: string) {
-        return await this.findOneBy({ username: username });
-    }
-
-    async deleteById(userId: number) {
-        await this.delete({ id: userId });
-    }
+    findAll(): Promise<UserEntity[]>;
+    findOneById(userid: number): Promise<UserEntity | null>;
+    findOneByUsername(username: string): Promise<UserEntity | null>;
+    deleteById(userId: number): Promise<void>;
 }
+
+export const userRepositoryProvider: FactoryProvider<Repository<UserEntity>> = {
+    provide: getRepositoryToken(UserEntity),
+    inject: [getDataSourceToken()],
+    useFactory: (datasource: DataSource) => datasource.getRepository(UserEntity).extend(userRepository),
+};
+
+const userRepository: Pick<UserRepository, 'findAll' | 'findOneById' | 'findOneByUsername' | 'deleteById'> = {
+    async findAll(this: Repository<UserEntity>) {
+        return await this.find({ order: { id: 'ASC' } });
+    },
+
+    async findOneById(this: Repository<UserEntity>, userId: number) {
+        return await this.findOneBy({ id: userId });
+    },
+
+    async findOneByUsername(this: Repository<UserEntity>, username: string) {
+        return await this.findOneBy({ username: username });
+    },
+
+    async deleteById(this: Repository<UserEntity>, userId: number) {
+        await this.delete({ id: userId });
+    },
+};

@@ -1,13 +1,14 @@
 import { defaultRace, mockRaceDB } from '@dnd-mapp/data/testing';
 import { NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { RaceRepositoryProvider } from '../../../../testing';
+import { MockRaceRepositoryProvider } from '../../../../testing';
+import { mockLoggingServiceProvider } from '../../../../testing/mock/db/common/mock-logging-service.provider';
 import { RaceService } from './race.service';
 
 describe('RaceService', () => {
     async function setupTestEnvironment() {
         const module = await Test.createTestingModule({
-            providers: [RaceService, RaceRepositoryProvider],
+            providers: [RaceService, MockRaceRepositoryProvider, mockLoggingServiceProvider],
         }).compile();
 
         return {

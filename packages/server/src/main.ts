@@ -8,7 +8,7 @@ import helmet from 'helmet';
 import { createServer as createHttpServer } from 'http';
 import { createServer as createHttpsServer } from 'https';
 import { AppModule } from './app/app.module';
-import { buildServerUrl } from './app/common';
+import { DndMappLoggerService, buildServerUrl } from './app/common';
 
 const validationOptions: ValidationPipeOptions = {
     errorHttpStatusCode: HttpStatus.BAD_REQUEST,
@@ -25,16 +25,21 @@ const validationOptions: ValidationPipeOptions = {
 async function bootstrap() {
     const expressServer = express();
 
-    const nestApp = await NestFactory.create(AppModule, new ExpressAdapter(expressServer));
+    const nestApp = await NestFactory.create(AppModule, new ExpressAdapter(expressServer), { bufferLogs: true });
     const configService = nestApp.get(ConfigService);
-    const logger = new Logger('NestApplication');
 
+    const logger = await nestApp.resolve(DndMappLoggerService);
+    logger.setContext('NestApplication');
+    Logger.flush();
+
+    nestApp.useLogger(logger);
     nestApp.setGlobalPrefix('/server', { exclude: [''] });
     nestApp.use(
         helmet({
             contentSecurityPolicy: {
                 directives: {
                     scriptSrcAttr: [`'self'`, `'unsafe-inline'`],
+                    connectSrc: [`${buildServerUrl(configService)}`],
                 },
             },
         })

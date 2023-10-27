@@ -2,13 +2,14 @@ import { Ability, CreateAbilityData } from '@dnd-mapp/data';
 import { defaultAbility, mockAbilityDB } from '@dnd-mapp/data/testing';
 import { NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { abilityRepositoryProvider } from '../../../../testing';
+import { mockAbilityRepositoryProvider } from '../../../../testing';
+import { mockLoggingServiceProvider } from '../../../../testing/mock/db/common/mock-logging-service.provider';
 import { AbilityService } from './ability.service';
 
 describe('AbilityService', () => {
     async function setupTestEnvironment() {
         const module = await Test.createTestingModule({
-            providers: [AbilityService, abilityRepositoryProvider],
+            providers: [AbilityService, mockAbilityRepositoryProvider, mockLoggingServiceProvider],
         }).compile();
 
         return {

@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
+import { AuthenticationModule } from './authentication';
+import { LoggingModule } from './common';
 import { ServeClientAppModule, TypeOrmConfigModule } from './config';
 import { NestConfigModule } from './config/nest-config.module';
 import { AbilityModule } from './entities/ability';
@@ -16,6 +18,8 @@ import { UserModule } from './entities/user';
         AbilityModule,
         SkillModule,
         UserModule,
+        LoggingModule,
+        AuthenticationModule,
     ],
     controllers: [AppController],
 })

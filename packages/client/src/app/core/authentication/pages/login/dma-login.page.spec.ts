@@ -3,6 +3,7 @@ import { HttpTestingController } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { environment } from '../../../../../environments';
 import { DmaHttpRequestTestingModule, DmaLoginHarness } from '../../../../../testing';
 import { DmaLoginModule } from './dma-login.module';
 
@@ -44,7 +45,7 @@ describe('DmaLoginComponent', () => {
 
         await harness.clickLoginButton();
 
-        const request = testController.expectOne('http://localhost:8080/authentication/login');
+        const request = testController.expectOne(environment.baseBackEndURL + '/authentication/login');
 
         expect(request.request.body).toEqual({ username: 'user1', password: 'secure_password' });
 
@@ -68,7 +69,7 @@ describe('DmaLoginComponent', () => {
 
         await harness.clickLoginButton();
 
-        const request = testController.expectOne('http://localhost:8080/authentication/login');
+        const request = testController.expectOne(environment.baseBackEndURL + '/authentication/login');
 
         request.flush(null, {
             status: 401,
@@ -87,7 +88,7 @@ describe('DmaLoginComponent', () => {
 
         await harness.clickLoginButton();
 
-        const request = testController.expectOne('http://localhost:8080/authentication/login');
+        const request = testController.expectOne(environment.baseBackEndURL + '/authentication/login');
 
         request.flush(null, {
             status: 500,

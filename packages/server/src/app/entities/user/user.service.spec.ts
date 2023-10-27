@@ -1,13 +1,14 @@
 import { defaultUser, mockUserDB } from '@dnd-mapp/data/testing';
 import { NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { UserRepositoryProvider } from '../../../../testing';
+import { mockUserRepositoryProvider } from '../../../../testing';
+import { mockLoggingServiceProvider } from '../../../../testing/mock/db/common/mock-logging-service.provider';
 import { UserService } from './user.service';
 
 describe('UserService', () => {
     async function setupTestEnvironment() {
         const module = await Test.createTestingModule({
-            providers: [UserService, UserRepositoryProvider],
+            providers: [UserService, mockUserRepositoryProvider, mockLoggingServiceProvider],
         }).compile();
 
         return {
@@ -42,13 +43,13 @@ describe('UserService', () => {
         it('should get User by name', async () => {
             const { service } = await setupTestEnvironment();
 
-            expect(await service.findByName('User1')).toEqual(defaultUser);
+            expect(await service.findByUsername('User1')).toEqual(defaultUser);
         });
 
         it('should throw 404', async () => {
             const { service } = await setupTestEnvironment();
 
-            await expect(service.findByName('User Test')).rejects.toThrowError(
+            await expect(service.findByUsername('User Test')).rejects.toThrowError(
                 new NotFoundException(`User with name: 'User Test' is not found`)
             );
         });
