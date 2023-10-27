@@ -1,8 +1,8 @@
 import { CreateUserData } from '@dnd-mapp/data';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { DndMappLoggerService } from '../common';
-import { UserService } from '../entities/user';
-import { LoginDto } from './models';
+import { DndMappLoggerService } from '../../common';
+import { UserService } from '../../entities/user';
+import { LoginDto } from '../models';
 
 @Injectable()
 export class AuthenticationService {

@@ -2,8 +2,8 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { DndMappLoggerService } from '../common';
 import { AbilityController } from '../entities/ability/ability.controller';
 import { CreateUserDto } from '../entities/user';
-import { AuthenticationService } from './authentication.service';
 import { LoginDto } from './models';
+import { AuthenticationService } from './services/authentication.service';
 
 @Controller({
     path: '/authentication',
