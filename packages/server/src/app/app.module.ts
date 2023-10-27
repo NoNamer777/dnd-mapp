@@ -7,6 +7,7 @@ import { AbilityModule } from './entities/ability';
 import { RaceModule } from './entities/race';
 import { SkillModule } from './entities/skill';
 import { UserModule } from './entities/user';
+import { UserRoleModule } from './entities/user-role/user-role.module';
 
 @Module({
     imports: [
@@ -19,6 +20,7 @@ import { UserModule } from './entities/user';
         UserModule,
         LoggingModule,
         AuthenticationModule,
+        UserRoleModule,
     ],
     controllers: [AppController],
 })
