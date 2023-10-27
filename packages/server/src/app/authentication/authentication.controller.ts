@@ -1,6 +1,7 @@
-import { DndMappLoggerService } from '../common';
 import { Body, Controller, HttpCode, HttpStatus, Post, Res } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
+import { DndMappLoggerService, buildServerUrl } from '../common';
 import { CreateUserDto } from '../entities/user';
 import { LoginDto } from './models';
 import { AuthenticationService } from './services/authentication.service';
@@ -11,7 +12,8 @@ import { AuthenticationService } from './services/authentication.service';
 export class AuthenticationController {
     constructor(
         private readonly authenticationService: AuthenticationService,
-        private readonly logger: DndMappLoggerService
+        private readonly logger: DndMappLoggerService,
+        private readonly configService: ConfigService
     ) {
         logger.setContext(AuthenticationController.name);
     }
@@ -27,8 +29,15 @@ export class AuthenticationController {
     }
 
     @Post('/sign-up')
-    async signup(@Body() user: CreateUserDto) {
+    @HttpCode(HttpStatus.CREATED)
+    async signup(@Body() userData: CreateUserDto, @Res({ passthrough: true }) response: Response) {
         this.logger.log('Received a request to sign up a User');
-        return await this.authenticationService.signup(user);
+
+        const user = await this.authenticationService.signup(userData);
+
+        response.header('Location', `${buildServerUrl(this.configService)}server/api/user/${user.id}`);
+
+        // TODO: Don't send sensitive User data
+        return user;
     }
 }
