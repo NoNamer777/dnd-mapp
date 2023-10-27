@@ -1,6 +1,7 @@
-import { Body, Controller, Post } from '@nestjs/common';
 import { DndMappLoggerService } from '../common';
 import { AbilityController } from '../entities/ability/ability.controller';
+import { Body, Controller, HttpCode, HttpStatus, Post, Res } from '@nestjs/common';
+import { Response } from 'express';
 import { CreateUserDto } from '../entities/user';
 import { LoginDto } from './models';
 import { AuthenticationService } from './services/authentication.service';
@@ -17,9 +18,13 @@ export class AuthenticationController {
     }
 
     @Post('/login')
-    async login(@Body() user: LoginDto) {
+    @HttpCode(HttpStatus.OK)
+    async login(@Body() user: LoginDto, @Res({ passthrough: true }) response: Response) {
         this.logger.log('Received a request to log in a User');
-        return await this.authenticationService.login(user);
+
+        const token = await this.authenticationService.login(user);
+
+        response.header('Authorization', `Bearer ${token}`);
     }
 
     @Post('/sign-up')

@@ -1,5 +1,6 @@
 import { CreateUserData } from '@dnd-mapp/data';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { DndMappLoggerService } from '../../common';
 import { UserService } from '../../entities/user';
 import { LoginDto } from '../models';
@@ -8,7 +9,8 @@ import { LoginDto } from '../models';
 export class AuthenticationService {
     constructor(
         private readonly userService: UserService,
-        private readonly logger: DndMappLoggerService
+        private readonly logger: DndMappLoggerService,
+        private readonly jwtService: JwtService
     ) {
         logger.setContext(AuthenticationService.name);
     }
@@ -20,7 +22,7 @@ export class AuthenticationService {
         if (!byUsername || byUsername.password !== user.password) {
             throw new UnauthorizedException('Invalid username/password');
         }
-        return { id: byUsername.id, username: byUsername.username };
+        return await this.jwtService.signAsync({ sub: byUsername.id });
     }
 
     async signup(user: CreateUserData) {

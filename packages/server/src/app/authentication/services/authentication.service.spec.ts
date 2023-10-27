@@ -1,28 +1,33 @@
 import { defaultUser } from '@dnd-mapp/data/testing';
+import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
-import { UserService } from '../entities/user';
 import { mockLoggingServiceProvider, mockUserRepositoryProvider } from '../../../../testing';
+import { DndMappJwtModule, NestConfigModule } from '../../config';
+import { UserService } from '../../entities/user';
 import { AuthenticationService } from './authentication.service';
 
 describe('AuthenticationService', () => {
     async function setupTestEnvironment() {
         const module = await Test.createTestingModule({
+            imports: [NestConfigModule, DndMappJwtModule],
             providers: [mockUserRepositoryProvider, AuthenticationService, UserService, mockLoggingServiceProvider],
         }).compile();
 
         return {
             service: module.get(AuthenticationService),
+            jwtService: module.get(JwtService),
         };
     }
 
     describe('login', () => {
         it('should handle login requests', async () => {
-            const { service } = await setupTestEnvironment();
+            const { service, jwtService } = await setupTestEnvironment();
             const { username, password } = defaultUser;
 
-            const user = await service.login({ username, password });
+            const token = await service.login({ username, password });
+            const decodedToken = await jwtService.verifyAsync(token);
 
-            expect(user).toEqual({ id: defaultUser.id, username: defaultUser.username });
+            expect(decodedToken.sub).toEqual(defaultUser.id);
         });
 
         it('should throw an 401 when providing an incorrect password', async () => {
