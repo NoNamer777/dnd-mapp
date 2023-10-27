@@ -17,7 +17,7 @@ export class AuthenticationService {
         this.logger.log('Logging in a User');
         const byUsername = await this.userService.findByUsername(user.username, false);
 
-        if (!byUsername && byUsername?.password !== user.password) {
+        if (!byUsername || byUsername.password !== user.password) {
             throw new UnauthorizedException('Invalid username/password');
         }
         return { id: byUsername.id, username: byUsername.username };
