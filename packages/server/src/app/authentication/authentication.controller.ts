@@ -1,5 +1,4 @@
 import { DndMappLoggerService } from '../common';
-import { AbilityController } from '../entities/ability/ability.controller';
 import { Body, Controller, HttpCode, HttpStatus, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { CreateUserDto } from '../entities/user';
@@ -14,7 +13,7 @@ export class AuthenticationController {
         private readonly authenticationService: AuthenticationService,
         private readonly logger: DndMappLoggerService
     ) {
-        logger.setContext(AbilityController.name);
+        logger.setContext(AuthenticationController.name);
     }
 
     @Post('/login')
