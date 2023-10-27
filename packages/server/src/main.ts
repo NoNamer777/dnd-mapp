@@ -39,6 +39,7 @@ async function bootstrap() {
             contentSecurityPolicy: {
                 directives: {
                     scriptSrcAttr: [`'self'`, `'unsafe-inline'`],
+                    connectSrc: [`${buildServerUrl(configService)}`],
                 },
             },
         })
