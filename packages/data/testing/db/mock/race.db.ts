@@ -1,4 +1,4 @@
-import { CreateRaceData, Race } from '../../../src/lib/models/race.model';
+import { CreateRaceData, Race } from '../../../src';
 
 interface RaceDB {
     [raceId: string]: Race;

@@ -1,4 +1,4 @@
-import { User } from '@dnd-mapp/data';
+import type { User } from '@dnd-mapp/data';
 import { OmitType } from '@nestjs/mapped-types';
 import { IsEmail, IsInt, IsNotEmpty, IsString, IsStrongPassword, Min } from 'class-validator';
 import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';

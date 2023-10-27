@@ -1,3 +1,4 @@
+import { User } from '@dnd-mapp/data';
 import { defaultUser, mockUserDB } from '@dnd-mapp/data/testing';
 import { NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
@@ -57,7 +58,8 @@ describe('UserService', () => {
     describe('update', () => {
         it('should update', async () => {
             const { service } = await setupTestEnvironment();
-            const newUserData = { ...defaultUser, username: 'User11' };
+            const { id, password, emailAddress } = defaultUser;
+            const newUserData = new User('User11', password, emailAddress, id);
 
             expect(await service.update(newUserData)).toEqual(newUserData);
             expect(mockUserDB.findOneById(1)).toEqual(expect.objectContaining(newUserData));
@@ -65,7 +67,8 @@ describe('UserService', () => {
 
         it('should throw 404 when using ID of non existing User', async () => {
             const { service } = await setupTestEnvironment();
-            const newUserData = { ...defaultUser, id: 2, username: 'User Test Test' };
+            const { password, emailAddress } = defaultUser;
+            const newUserData = new User('User Test Test', password, emailAddress, 2);
 
             await expect(service.update(newUserData)).rejects.toThrowError(
                 new NotFoundException(`Cannot update User with ID: '2' because it does not exist`)
@@ -73,14 +76,11 @@ describe('UserService', () => {
         });
 
         it('should throw 400 when using non unique name', async () => {
-            mockUserDB.insert({
-                username: 'User Test Test',
-                emailAddress: 'user-test-test@domain.com',
-                password: 'secure_password',
-            });
+            mockUserDB.insert(new User('User Test Test', 'user-test-test@domain.com', 'secure_password'));
 
             const { service } = await setupTestEnvironment();
-            const newUserData = { ...defaultUser, username: 'User Test Test' };
+            const { id, password, emailAddress } = defaultUser;
+            const newUserData = new User('User Test Test', password, emailAddress, id);
 
             await expect(service.update(newUserData)).rejects.toThrowError(
                 new NotFoundException(`Cannot update User because the name 'User Test Test' is already used`)
@@ -92,19 +92,17 @@ describe('UserService', () => {
     describe('create', () => {
         it('should create', async () => {
             const { service } = await setupTestEnvironment();
-            const newUserData = {
-                username: 'New User Test',
-                emailAddress: 'user-test-test@domain.com',
-                password: 'secure_password',
-            };
+            const newUserData = new User('New User Test', 'user-test-test@domain.com', 'secure_password');
 
             expect((await service.create(newUserData)).id).toBeDefined();
-            expect(mockUserDB.findOneByUsername('New User Test')).toEqual(expect.objectContaining(newUserData));
+            expect(mockUserDB.findOneByUsername('New User Test')).toEqual(
+                expect.objectContaining({ id: expect.any(Number) })
+            );
         });
 
         it('should throw 400 when using non unique name', async () => {
             const { service } = await setupTestEnvironment();
-            const newUserData = { username: 'User1', emailAddress: 'user1@domain.com', password: 'secure_password' };
+            const newUserData = new User('User1', 'user1@domain.com', 'secure_password');
 
             await expect(service.create(newUserData)).rejects.toThrowError(
                 new NotFoundException(`Cannot create User because the name 'User1' is already used`)

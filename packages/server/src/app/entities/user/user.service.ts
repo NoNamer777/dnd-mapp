@@ -1,4 +1,3 @@
-import { User } from '@dnd-mapp/data';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DndMappLoggerService } from '../../common';
@@ -14,12 +13,12 @@ export class UserService {
         logger.setContext(UserService.name);
     }
 
-    async findAll(): Promise<User[]> {
+    async findAll() {
         this.logger.log('Finding all Users');
         return this.userRepository.findAll();
     }
 
-    async findById(userId: number, throwsError = true): Promise<User> {
+    async findById(userId: number, throwsError = true) {
         this.logger.log('Finding a User by ID');
         const byId = await this.userRepository.findOneById(userId);
 
@@ -29,7 +28,7 @@ export class UserService {
         return byId;
     }
 
-    async findByUsername(username: string, throwsError = true): Promise<User> {
+    async findByUsername(username: string, throwsError = true) {
         this.logger.log('Finding a User by username');
         const byUsername = await this.userRepository.findOneByUsername(username);
 
@@ -39,7 +38,7 @@ export class UserService {
         return byUsername;
     }
 
-    async update(user: User): Promise<User> {
+    async update(user: UserEntity) {
         this.logger.log(`Updating a User's data`);
         const byId = await this.findById(user.id, false);
         const byUsername = await this.findByUsername(user.username, false);
@@ -55,7 +54,7 @@ export class UserService {
         return await this.userRepository.save(user);
     }
 
-    async create(user: CreateUserDto): Promise<User> {
+    async create(user: CreateUserDto) {
         this.logger.log('Creating a new User');
         const byUsername = await this.findByUsername(user.username, false);
 
@@ -67,7 +66,7 @@ export class UserService {
         return await this.userRepository.save(user);
     }
 
-    async remove(userId: number): Promise<void> {
+    async remove(userId: number) {
         this.logger.log('Removing a User by ID');
         const byId = await this.findById(userId, false);
 

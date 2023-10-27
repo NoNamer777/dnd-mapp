@@ -1,4 +1,4 @@
-import { CreateUserData, User } from '../../../src/lib/models/user.model';
+import { CreateUserData, User } from '../../../src';
 
 interface UserDB {
     [userId: string]: User;
@@ -29,10 +29,13 @@ class MockUserDB {
     }
 
     insert(userData: CreateUserData) {
-        const newUser: User = {
-            id: this.nextId++,
-            ...userData,
-        };
+        const newUser: User = new User(
+            userData.username,
+            userData.password,
+            userData.emailAddress,
+            this.nextId++
+            // userData.roles
+        );
 
         this.db[newUser.id] = newUser;
         return newUser;
@@ -59,11 +62,6 @@ class MockUserDB {
     }
 }
 
-export const defaultUser: User = {
-    id: 1,
-    username: 'User1',
-    password: 'secure_password',
-    emailAddress: 'user1@domain.com',
-};
+export const defaultUser = new User('User1', 'secure_password', 'user1@domain.com', 1);
 
 export const mockUserDB = new MockUserDB();

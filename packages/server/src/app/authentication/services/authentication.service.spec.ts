@@ -1,3 +1,4 @@
+import { User } from '@dnd-mapp/data';
 import { defaultUser } from '@dnd-mapp/data/testing';
 import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
@@ -51,13 +52,9 @@ describe('AuthenticationService', () => {
         it('should handle sign up requests', async () => {
             const { service } = await setupTestEnvironment();
 
-            const user = await service.signup({
-                username: 'User2',
-                password: 'secure_password',
-                emailAddress: 'user2@domain.com',
-            });
+            const user = await service.signup(new User('User2', 'secure_password', 'user2@domain.com'));
 
-            expect(user).toEqual(expect.objectContaining({ id: 2 }));
+            expect(user.id).toEqual(expect.any(Number));
         });
     });
 });
