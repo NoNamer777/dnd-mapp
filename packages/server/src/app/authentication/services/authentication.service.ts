@@ -1,9 +1,8 @@
-import { CreateUserData } from '@dnd-mapp/data';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { DndMappLoggerService } from '../../common';
 import { UserService } from '../../entities/user';
-import { LoginDto } from '../models';
+import { LoginDto, SignUpDto } from '../models';
 
 @Injectable()
 export class AuthenticationService {
@@ -25,7 +24,7 @@ export class AuthenticationService {
         return await this.jwtService.signAsync({ sub: byUsername.id });
     }
 
-    async signup(user: CreateUserData) {
+    async signup(user: SignUpDto) {
         this.logger.log('Signing up a new User');
         return await this.userService.create(user);
     }

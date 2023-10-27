@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
 import { DndMappLoggerService, buildServerUrl } from '../common';
 import { CreateUserDto } from '../entities/user';
-import { LoginDto } from './models';
+import { LoginDto, SignUpDto } from './models';
 import { AuthenticationService } from './services/authentication.service';
 
 @Controller({
@@ -30,7 +30,7 @@ export class AuthenticationController {
 
     @Post('/sign-up')
     @HttpCode(HttpStatus.CREATED)
-    async signup(@Body() userData: CreateUserDto, @Res({ passthrough: true }) response: Response) {
+    async signup(@Body() userData: SignUpDto, @Res({ passthrough: true }) response: Response) {
         this.logger.log('Received a request to sign up a User');
 
         const user = await this.authenticationService.signup(userData);
