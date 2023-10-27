@@ -1,4 +1,4 @@
-import { DndMappLoggerService } from '../../../../src/app/common';
+import { DndMappLoggerService } from '../../../src/app/common';
 
 class MockLoggingService extends DndMappLoggerService {
     logs: { [context: string]: string[] } = {};
