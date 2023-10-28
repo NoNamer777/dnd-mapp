@@ -43,14 +43,14 @@ describe('UserRoleService', () => {
         it('should get UserRole by name', async () => {
             const { service } = await setupTestEnvironment();
 
-            expect(await service.findByName(UserRoles.ADMIN)).toEqual(defaultUserRole);
+            expect(await service.findByName(UserRoles.PLAYER)).toEqual(defaultUserRole);
         });
 
         it('should throw 404', async () => {
             const { service } = await setupTestEnvironment();
 
-            await expect(service.findByName(UserRoles.PLAYER)).rejects.toThrowError(
-                new NotFoundException(`User Role with name: '${UserRoles.PLAYER}' is not found`)
+            await expect(service.findByName(UserRoles.ADMIN)).rejects.toThrowError(
+                new NotFoundException(`User Role with name: '${UserRoles.ADMIN}' is not found`)
             );
         });
     });
@@ -58,7 +58,7 @@ describe('UserRoleService', () => {
     describe('update', () => {
         it('should update', async () => {
             const { service } = await setupTestEnvironment();
-            const newUserRoleData: UserRole = { id: 1, name: UserRoles.PLAYER };
+            const newUserRoleData: UserRole = { id: 1, name: UserRoles.ADMIN };
 
             expect(await service.update(newUserRoleData)).toEqual(newUserRoleData);
             expect(mockUserRoleDB.findOneById(1)).toEqual(expect.objectContaining(newUserRoleData));
@@ -74,13 +74,13 @@ describe('UserRoleService', () => {
         });
 
         it('should throw 400 when using non unique name', async () => {
-            mockUserRoleDB.insert({ name: UserRoles.PLAYER } as CreateUserRoleData);
+            mockUserRoleDB.insert({ name: UserRoles.ADMIN } as CreateUserRoleData);
 
             const { service } = await setupTestEnvironment();
-            const newUserRoleData: UserRole = { id: 1, name: UserRoles.PLAYER };
+            const newUserRoleData: UserRole = { id: 1, name: UserRoles.ADMIN };
 
             await expect(service.update(newUserRoleData)).rejects.toThrowError(
-                new NotFoundException(`Cannot update User Role because the name '${UserRoles.PLAYER}' is already used`)
+                new NotFoundException(`Cannot update User Role because the name '${UserRoles.ADMIN}' is already used`)
             );
             expect(mockUserRoleDB.findOneById(1)).toEqual(expect.not.objectContaining(newUserRoleData));
         });
@@ -89,18 +89,18 @@ describe('UserRoleService', () => {
     describe('create', () => {
         it('should create', async () => {
             const { service } = await setupTestEnvironment();
-            const newUserRoleData: CreateUserRoleData = { name: UserRoles.PLAYER };
+            const newUserRoleData: CreateUserRoleData = { name: UserRoles.ADMIN };
 
             expect((await service.create(newUserRoleData)).id).toBeDefined();
-            expect(mockUserRoleDB.findOneByName(UserRoles.PLAYER)).toEqual(expect.objectContaining(newUserRoleData));
+            expect(mockUserRoleDB.findOneByName(UserRoles.ADMIN)).toEqual(expect.objectContaining(newUserRoleData));
         });
 
         it('should throw 400 when using non unique name', async () => {
             const { service } = await setupTestEnvironment();
-            const newUserRoleData: CreateUserRoleData = { name: UserRoles.ADMIN };
+            const newUserRoleData: CreateUserRoleData = { name: UserRoles.PLAYER };
 
             await expect(service.create(newUserRoleData)).rejects.toThrowError(
-                new NotFoundException(`Cannot create User Role because the name '${UserRoles.ADMIN}' is already used`)
+                new NotFoundException(`Cannot create User Role because the name '${UserRoles.PLAYER}' is already used`)
             );
         });
     });

@@ -61,7 +61,7 @@ class MockUserRoleDB {
 
 export const defaultUserRole: UserRole = {
     id: 1,
-    name: UserRoles.ADMIN,
+    name: UserRoles.PLAYER,
 };
 
 export const mockUserRoleDB = new MockUserRoleDB();
