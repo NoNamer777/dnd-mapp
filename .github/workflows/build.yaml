@@ -11,6 +11,8 @@ on:
     push:
         branches:
             - main
+env:
+    JWT_SECRET: secret_token
 jobs:
     main:
         name: Nx Cloud - Main Job
@@ -20,6 +22,8 @@ jobs:
             node-version: 18
             npm-version: 9
             number-of-agents: 3
+            environment-variables: |
+                JWT_SECRET=${{ env.JWT_SECRET }}
             init-commands: |
                 npx nx-cloud start-ci-run --stop-agents-after "build" --agent-count 3
             parallel-commands: |
@@ -35,3 +39,5 @@ jobs:
             number-of-agents: 3
             node-version: 18
             npm-version: 9
+            environment-variables: |
+                JWT_SECRET=${{ env.JWT_SECRET }}
