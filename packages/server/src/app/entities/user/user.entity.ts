@@ -1,6 +1,16 @@
 import type { User, UserRoleName } from '@dnd-mapp/data';
 import { OmitType } from '@nestjs/mapped-types';
-import { IsEmail, IsInt, IsNotEmpty, IsString, IsStrongPassword, Min } from 'class-validator';
+import {
+    ArrayMinSize,
+    IsArray,
+    IsEmail,
+    IsInt,
+    IsNotEmpty,
+    IsString,
+    IsStrongPassword,
+    Min,
+    ValidateNested,
+} from 'class-validator';
 import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { UserRoleEntity } from '../user-role/user-role.entity';
 
@@ -43,6 +53,9 @@ export class UserEntity implements User {
     @IsEmail()
     emailAddress: string;
 
+    @IsArray()
+    @ArrayMinSize(1)
+    @ValidateNested({ each: true })
     @ManyToMany(() => UserRoleEntity)
     @JoinTable({
         name: 'user_role',
