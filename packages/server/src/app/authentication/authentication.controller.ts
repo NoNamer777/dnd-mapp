@@ -1,13 +1,20 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Res } from '@nestjs/common';
+import {
+    Body,
+    ClassSerializerInterceptor,
+    Controller,
+    HttpCode,
+    HttpStatus,
+    Post,
+    Res,
+    UseInterceptors,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
 import { DndMappLoggerService, buildServerUrl } from '../common';
 import { LoginDto, SignUpDto } from './models';
 import { AuthenticationService } from './services/authentication.service';
 
-@Controller({
-    path: '/authentication',
-})
+@Controller({ path: '/authentication' })
 export class AuthenticationController {
     constructor(
         private readonly authenticationService: AuthenticationService,
@@ -29,6 +36,7 @@ export class AuthenticationController {
 
     @Post('/sign-up')
     @HttpCode(HttpStatus.CREATED)
+    @UseInterceptors(ClassSerializerInterceptor)
     async signup(@Body() userData: SignUpDto, @Res({ passthrough: true }) response: Response) {
         this.logger.log('Received a request to sign up a User');
 
