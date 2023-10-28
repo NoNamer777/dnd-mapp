@@ -9,14 +9,15 @@ import {
     Post,
     Put,
     Req,
+    UseGuards,
 } from '@nestjs/common';
 import { Request } from 'express';
+import { IsOwnerOrAdminGuard } from '../../authentication/guards';
 import { DndMappLoggerService } from '../../common';
 import { CreateUserDto, UserEntity } from './user.entity';
 import { UserService } from './user.service';
 
-// TODO: Secure routes for Administrators
-
+@UseGuards(IsOwnerOrAdminGuard)
 @Controller('api/user')
 export class UserController {
     constructor(

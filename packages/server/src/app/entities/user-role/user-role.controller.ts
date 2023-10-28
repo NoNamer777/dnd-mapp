@@ -10,12 +10,15 @@ import {
     Post,
     Put,
     Req,
+    UseGuards,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { DndMappLoggerService } from '../../common/logging/dnd-mapp-logger.service';
+import { IsAdminGuard } from '../../authentication/guards';
+import { DndMappLoggerService } from '../../common';
 import { CreateUserRoleDto, UserRoleEntity } from './user-role.entity';
 import { UserRoleService } from './user-role.service';
 
+@UseGuards(IsAdminGuard)
 @Controller('/api/user-role')
 export class UserRoleController {
     constructor(
