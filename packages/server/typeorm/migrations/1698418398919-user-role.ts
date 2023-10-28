@@ -27,6 +27,10 @@ export class UserRole1698418398919 implements MigrationInterface {
             })
         );
 
+        await queryRunner.query("INSERT INTO role (name) VALUES ('Player');");
+        await queryRunner.query(`INSERT INTO role (name) VALUES ('Admin');`);
+        await queryRunner.query(`INSERT INTO role (name) VALUES ('Dungeon Master');`);
+
         await queryRunner.createTable(
             new Table({
                 name: 'user_role',
@@ -51,11 +55,14 @@ export class UserRole1698418398919 implements MigrationInterface {
                         columnNames: ['user_id'],
                         referencedTableName: 'user',
                         referencedColumnNames: ['id'],
+                        onDelete: 'CASCADE',
+                        onUpdate: 'CASCADE',
                     },
                     {
                         columnNames: ['role_id'],
                         referencedTableName: 'role',
                         referencedColumnNames: ['id'],
+                        onDelete: 'RESTRICT',
                     },
                 ],
             })
