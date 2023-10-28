@@ -1,7 +1,8 @@
-import { User } from '@dnd-mapp/data';
+import { UserRoles } from '@dnd-mapp/data';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DndMappLoggerService } from '../../common';
+import { UserRoleService } from '../user-role';
 import { CreateUserDto, UserEntity } from './user.entity';
 import { UserRepository } from './user.repository';
 
@@ -9,17 +10,18 @@ import { UserRepository } from './user.repository';
 export class UserService {
     constructor(
         @InjectRepository(UserEntity) private readonly userRepository: UserRepository,
-        private logger: DndMappLoggerService
+        private readonly userRoleService: UserRoleService,
+        private readonly logger: DndMappLoggerService
     ) {
         logger.setContext(UserService.name);
     }
 
-    async findAll(): Promise<User[]> {
+    async findAll() {
         this.logger.log('Finding all Users');
         return this.userRepository.findAll();
     }
 
-    async findById(userId: number, throwsError = true): Promise<User> {
+    async findById(userId: number, throwsError = true) {
         this.logger.log('Finding a User by ID');
         const byId = await this.userRepository.findOneById(userId);
 
@@ -29,7 +31,7 @@ export class UserService {
         return byId;
     }
 
-    async findByUsername(username: string, throwsError = true): Promise<User> {
+    async findByUsername(username: string, throwsError = true) {
         this.logger.log('Finding a User by username');
         const byUsername = await this.userRepository.findOneByUsername(username);
 
@@ -39,7 +41,7 @@ export class UserService {
         return byUsername;
     }
 
-    async update(user: User): Promise<User> {
+    async update(user: UserEntity) {
         this.logger.log(`Updating a User's data`);
         const byId = await this.findById(user.id, false);
         const byUsername = await this.findByUsername(user.username, false);
@@ -55,7 +57,7 @@ export class UserService {
         return await this.userRepository.save(user);
     }
 
-    async create(user: CreateUserDto): Promise<User> {
+    async create(user: CreateUserDto) {
         this.logger.log('Creating a new User');
         const byUsername = await this.findByUsername(user.username, false);
 
@@ -64,10 +66,12 @@ export class UserService {
                 `Cannot create User because the name '${byUsername.username}' is already used`
             );
         }
+        (user as UserEntity).roles = [await this.userRoleService.findByName(UserRoles.PLAYER)];
+
         return await this.userRepository.save(user);
     }
 
-    async remove(userId: number): Promise<void> {
+    async remove(userId: number) {
         this.logger.log('Removing a User by ID');
         const byId = await this.findById(userId, false);
 

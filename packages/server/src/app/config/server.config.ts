@@ -17,5 +17,6 @@ export default registerAs('server', () => ({
     port: Number(process.env.PORT) || 8080,
     useSSL: Boolean(process.env.USE_SSL) || false,
     address: process.env.ADDRESS,
+    jwtSecret: process.env.JWT_SECRET,
     ...getSSLConfig(),
 }));

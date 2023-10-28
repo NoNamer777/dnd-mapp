@@ -1,4 +1,4 @@
-import { CreateSkillData, Skill } from '../../../src/lib/models/skill.model';
+import { CreateSkillData, Skill } from '../../../src';
 import { defaultAbility } from './ability.db';
 
 interface SkillDB {

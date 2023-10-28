@@ -25,6 +25,10 @@ export class ServerEnvironmentVariables {
     PORT?: number;
 
     @Expose()
+    @IsString()
+    JWT_SECRET: string;
+
+    @Expose()
     @IsBoolean()
     @IsOptional()
     USE_SSL?: boolean;

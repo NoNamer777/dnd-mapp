@@ -6,7 +6,7 @@ import { validate } from './validation/server-config.validator';
 
 const configOptions: ConfigModuleOptions = {
     load: [databaseConfig, serverConfig],
-    envFilePath: ['.env', '.prod.env', '.dev.env', '.e2e.env'],
+    envFilePath: ['.env', '.env.prod', '.env.dev', '.env.e2e', '.env.test'],
     isGlobal: true,
     validate,
 };

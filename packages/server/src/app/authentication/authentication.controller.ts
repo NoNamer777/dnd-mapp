@@ -1,9 +1,9 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { DndMappLoggerService } from '../common';
-import { AbilityController } from '../entities/ability/ability.controller';
-import { CreateUserDto } from '../entities/user';
-import { AuthenticationService } from './authentication.service';
-import { LoginDto } from './models';
+import { Body, Controller, HttpCode, HttpStatus, Post, Res } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { Response } from 'express';
+import { DndMappLoggerService, buildServerUrl } from '../common';
+import { LoginDto, SignUpDto } from './models';
+import { AuthenticationService } from './services/authentication.service';
 
 @Controller({
     path: '/authentication',
@@ -11,20 +11,32 @@ import { LoginDto } from './models';
 export class AuthenticationController {
     constructor(
         private readonly authenticationService: AuthenticationService,
-        private readonly logger: DndMappLoggerService
+        private readonly logger: DndMappLoggerService,
+        private readonly configService: ConfigService
     ) {
-        logger.setContext(AbilityController.name);
+        logger.setContext(AuthenticationController.name);
     }
 
     @Post('/login')
-    async login(@Body() user: LoginDto) {
+    @HttpCode(HttpStatus.OK)
+    async login(@Body() user: LoginDto, @Res({ passthrough: true }) response: Response) {
         this.logger.log('Received a request to log in a User');
-        return await this.authenticationService.login(user);
+
+        const token = await this.authenticationService.login(user);
+
+        response.header('Authorization', `Bearer ${token}`);
     }
 
     @Post('/sign-up')
-    async signup(@Body() user: CreateUserDto) {
+    @HttpCode(HttpStatus.CREATED)
+    async signup(@Body() userData: SignUpDto, @Res({ passthrough: true }) response: Response) {
         this.logger.log('Received a request to sign up a User');
-        return await this.authenticationService.signup(user);
+
+        const user = await this.authenticationService.signup(userData);
+
+        response.header('Location', `${buildServerUrl(this.configService)}server/api/user/${user.id}`);
+
+        // TODO: Don't send sensitive User data
+        return user;
     }
 }

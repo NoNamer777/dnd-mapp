@@ -1,4 +1,4 @@
-import { Ability, CreateAbilityData } from '../../../src/lib/models/ability.model';
+import { Ability, CreateAbilityData } from '../../../src';
 
 interface AbilityDB {
     [id: string]: Ability;

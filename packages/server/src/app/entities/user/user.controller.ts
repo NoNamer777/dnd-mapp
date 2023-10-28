@@ -1,4 +1,3 @@
-import { User } from '@dnd-mapp/data';
 import {
     BadRequestException,
     Body,
@@ -10,14 +9,15 @@ import {
     Post,
     Put,
     Req,
+    UseGuards,
 } from '@nestjs/common';
 import { Request } from 'express';
+import { IsOwnerOrAdminGuard } from '../../authentication/guards';
 import { DndMappLoggerService } from '../../common';
 import { CreateUserDto, UserEntity } from './user.entity';
 import { UserService } from './user.service';
 
-// TODO: Secure routes for Administrators or the User itself only
-
+@UseGuards(IsOwnerOrAdminGuard)
 @Controller('api/user')
 export class UserController {
     constructor(
@@ -52,11 +52,7 @@ export class UserController {
     }
 
     @Put(':id')
-    async update(
-        @Param('id', ParseIntPipe) userId: number,
-        @Body() raceData: UserEntity,
-        @Req() request: Request
-    ): Promise<User> {
+    async update(@Param('id', ParseIntPipe) userId: number, @Body() raceData: UserEntity, @Req() request: Request) {
         this.logger.log('Received a request for updating a User');
         const requestPath = request.url;
 

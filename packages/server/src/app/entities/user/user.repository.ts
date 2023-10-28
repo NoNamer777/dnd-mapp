@@ -20,15 +20,15 @@ export const userRepositoryProvider: FactoryProvider<Repository<UserEntity>> = {
 
 const userRepository: Pick<UserRepository, 'findAll' | 'findOneById' | 'findOneByUsername' | 'deleteById'> = {
     async findAll(this: Repository<UserEntity>) {
-        return await this.find({ order: { id: 'ASC' } });
+        return await this.find({ relations: ['roles'], order: { id: 'ASC' } });
     },
 
     async findOneById(this: Repository<UserEntity>, userId: number) {
-        return await this.findOneBy({ id: userId });
+        return await this.findOne({ relations: ['roles'], where: { id: userId } });
     },
 
     async findOneByUsername(this: Repository<UserEntity>, username: string) {
-        return await this.findOneBy({ username: username });
+        return await this.findOne({ relations: ['roles'], where: { username: username } });
     },
 
     async deleteById(this: Repository<UserEntity>, userId: number) {

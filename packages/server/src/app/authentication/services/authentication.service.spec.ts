@@ -1,29 +1,46 @@
+import { User } from '@dnd-mapp/data';
 import { defaultUser } from '@dnd-mapp/data/testing';
+import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
-import { mockUserRepositoryProvider } from '../../../testing';
-import { mockLoggingServiceProvider } from '../../../testing/mock/db/common/mock-logging-service.provider';
-import { UserService } from '../entities/user';
+import {
+    mockLoggingServiceProvider,
+    mockUserRepositoryProvider,
+    mockUserRoleRepositoryProvider,
+} from '../../../../testing';
+import { DndMappJwtModule, NestConfigModule } from '../../config';
+import { UserService } from '../../entities/user';
+import { UserRoleService } from '../../entities/user-role';
 import { AuthenticationService } from './authentication.service';
 
 describe('AuthenticationService', () => {
     async function setupTestEnvironment() {
         const module = await Test.createTestingModule({
-            providers: [mockUserRepositoryProvider, AuthenticationService, UserService, mockLoggingServiceProvider],
+            imports: [NestConfigModule, DndMappJwtModule],
+            providers: [
+                mockUserRepositoryProvider,
+                AuthenticationService,
+                UserService,
+                mockLoggingServiceProvider,
+                UserRoleService,
+                mockUserRoleRepositoryProvider,
+            ],
         }).compile();
 
         return {
             service: module.get(AuthenticationService),
+            jwtService: module.get(JwtService),
         };
     }
 
     describe('login', () => {
         it('should handle login requests', async () => {
-            const { service } = await setupTestEnvironment();
+            const { service, jwtService } = await setupTestEnvironment();
             const { username, password } = defaultUser;
 
-            const user = await service.login({ username, password });
+            const token = await service.login({ username, password });
+            const decodedToken = await jwtService.verifyAsync(token);
 
-            expect(user).toEqual({ id: defaultUser.id, username: defaultUser.username });
+            expect(decodedToken.sub).toEqual(defaultUser.id);
         });
 
         it('should throw an 401 when providing an incorrect password', async () => {
@@ -47,13 +64,9 @@ describe('AuthenticationService', () => {
         it('should handle sign up requests', async () => {
             const { service } = await setupTestEnvironment();
 
-            const user = await service.signup({
-                username: 'User2',
-                password: 'secure_password',
-                emailAddress: 'user2@domain.com',
-            });
+            const user = await service.signup(new User('User2', 'secure_password', 'user2@domain.com'));
 
-            expect(user).toEqual(expect.objectContaining({ id: 2 }));
+            expect(user.id).toEqual(expect.any(Number));
         });
     });
 });

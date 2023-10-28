@@ -2,12 +2,12 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AuthenticationModule } from './authentication';
 import { LoggingModule } from './common';
-import { ServeClientAppModule, TypeOrmConfigModule } from './config';
-import { NestConfigModule } from './config/nest-config.module';
+import { NestConfigModule, ServeClientAppModule, TypeOrmConfigModule } from './config';
 import { AbilityModule } from './entities/ability';
 import { RaceModule } from './entities/race';
 import { SkillModule } from './entities/skill';
 import { UserModule } from './entities/user';
+import { UserRoleModule } from './entities/user-role/user-role.module';
 
 @Module({
     imports: [
@@ -20,6 +20,7 @@ import { UserModule } from './entities/user';
         UserModule,
         LoggingModule,
         AuthenticationModule,
+        UserRoleModule,
     ],
     controllers: [AppController],
 })
