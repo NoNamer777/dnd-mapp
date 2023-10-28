@@ -2,7 +2,6 @@ import { Body, Controller, HttpCode, HttpStatus, Post, Res } from '@nestjs/commo
 import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
 import { DndMappLoggerService, buildServerUrl } from '../common';
-import { CreateUserDto } from '../entities/user';
 import { LoginDto, SignUpDto } from './models';
 import { AuthenticationService } from './services/authentication.service';
 
