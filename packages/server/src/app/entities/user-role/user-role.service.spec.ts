@@ -2,8 +2,7 @@ import { CreateUserRoleData, UserRole, UserRoles } from '@dnd-mapp/data';
 import { defaultUserRole, mockUserRoleDB } from '@dnd-mapp/data/testing';
 import { NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { mockLoggingServiceProvider } from '../../../../testing/mock/common/mock-logging-service.provider';
-import { mockUserRoleRepositoryProvider } from '../../../../testing/mock/db/repositories/mock-user-role-repository.provider';
+import { mockLoggingServiceProvider, mockUserRoleRepositoryProvider } from '../../../../testing';
 import { UserRoleService } from './user-role.service';
 
 describe('UserRoleService', () => {

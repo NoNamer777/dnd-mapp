@@ -1,7 +1,7 @@
 import { UserRole, UserRoleName } from '@dnd-mapp/data';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DndMappLoggerService } from '../../common/logging/dnd-mapp-logger.service';
+import { DndMappLoggerService } from '../../common';
 import { CreateUserRoleDto, UserRoleEntity } from './user-role.entity';
 import { UserRoleRepository } from './user-role.repository';
 

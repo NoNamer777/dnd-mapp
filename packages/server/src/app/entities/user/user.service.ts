@@ -2,7 +2,7 @@ import { UserRoles } from '@dnd-mapp/data';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DndMappLoggerService } from '../../common';
-import { UserRoleService } from '../user-role/user-role.service';
+import { UserRoleService } from '../user-role';
 import { CreateUserDto, UserEntity } from './user.entity';
 import { UserRepository } from './user.repository';
 
