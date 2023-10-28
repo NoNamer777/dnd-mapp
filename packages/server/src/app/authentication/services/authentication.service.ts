@@ -1,5 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { compare } from 'bcrypt';
 import { DndMappLoggerService } from '../../common';
 import { UserService } from '../../entities/user';
 import { LoginDto, SignUpDto } from '../models';
@@ -18,7 +19,7 @@ export class AuthenticationService {
         this.logger.log('Logging in a User');
         const byUsername = await this.userService.findByUsername(user.username, false);
 
-        if (!byUsername || byUsername.password !== user.password) {
+        if (!byUsername || !(await compare(user.password, byUsername.password))) {
             throw new UnauthorizedException('Invalid username/password');
         }
         return await this.jwtService.signAsync({ sub: byUsername.id });

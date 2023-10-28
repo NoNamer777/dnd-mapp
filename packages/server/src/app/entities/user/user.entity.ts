@@ -1,5 +1,6 @@
 import type { User, UserRoleName } from '@dnd-mapp/data';
 import { OmitType } from '@nestjs/mapped-types';
+import { Exclude } from 'class-transformer';
 import {
     ArrayMinSize,
     IsArray,
@@ -40,6 +41,7 @@ export class UserEntity implements User {
     @IsString()
     @IsNotEmpty()
     @IsStrongPassword()
+    @Exclude({ toPlainOnly: true })
     password: string;
 
     @Column({
@@ -51,6 +53,7 @@ export class UserEntity implements User {
     @IsString()
     @IsNotEmpty()
     @IsEmail()
+    @Exclude({ toPlainOnly: true })
     emailAddress: string;
 
     @IsArray()

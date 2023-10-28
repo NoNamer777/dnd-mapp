@@ -1,6 +1,7 @@
 import { UserRoles } from '@dnd-mapp/data';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { compare, genSalt, hash } from 'bcrypt';
 import { DndMappLoggerService } from '../../common';
 import { UserRoleService } from '../user-role';
 import { CreateUserDto, UserEntity } from './user.entity';
@@ -54,7 +55,10 @@ export class UserService {
                 `Cannot update User because the name '${byUsername.username}' is already used`
             );
         }
-        return await this.userRepository.save(user);
+        user.password = await this.resolvePassword(user.password, byId.password);
+        await this.userRepository.save(user);
+
+        return await this.userRepository.findOneById(user.id);
     }
 
     async create(user: CreateUserDto) {
@@ -67,8 +71,11 @@ export class UserService {
             );
         }
         (user as UserEntity).roles = [await this.userRoleService.findByName(UserRoles.PLAYER)];
+        user.password = await this.hashPassword(user.password);
 
-        return await this.userRepository.save(user);
+        await this.userRepository.save(user);
+
+        return await this.userRepository.findOneByUsername(user.username);
     }
 
     async remove(userId: number) {
@@ -79,5 +86,16 @@ export class UserService {
             throw new NotFoundException(`Could not remove User with ID: '${userId}' because it does not exist`);
         }
         await this.userRepository.deleteById(userId);
+    }
+
+    private async hashPassword(plainTextPassword: string) {
+        return hash(plainTextPassword, await genSalt(12));
+    }
+
+    private async resolvePassword(newPassword: string, oldPassword: string) {
+        if (await compare(newPassword, oldPassword)) {
+            return oldPassword;
+        }
+        return await this.hashPassword(newPassword);
     }
 }

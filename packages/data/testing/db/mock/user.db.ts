@@ -62,6 +62,11 @@ class MockUserDB {
     }
 }
 
-export const defaultUser = new User('User1', 'secure_password', 'user1@domain.com', 1);
+export const defaultUser = new User(
+    'User1',
+    '$2b$12$CU2n8T1reHQ24urHR3HFFO.LMmw6zGEHKtfkwuiTyemO1Mz.68Psa',
+    'user1@domain.com',
+    1
+);
 
 export const mockUserDB = new MockUserDB();

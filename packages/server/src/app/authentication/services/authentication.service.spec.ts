@@ -35,9 +35,8 @@ describe('AuthenticationService', () => {
     describe('login', () => {
         it('should handle login requests', async () => {
             const { service, jwtService } = await setupTestEnvironment();
-            const { username, password } = defaultUser;
 
-            const token = await service.login({ username, password });
+            const token = await service.login({ username: defaultUser.username, password: 'secure_password' });
             const decodedToken = await jwtService.verifyAsync(token);
 
             expect(decodedToken.sub).toEqual(defaultUser.id);
