@@ -1,6 +1,8 @@
+import { UserRoles } from '@dnd-mapp/data';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DndMappLoggerService } from '../../common';
+import { UserRoleService } from '../user-role/user-role.service';
 import { CreateUserDto, UserEntity } from './user.entity';
 import { UserRepository } from './user.repository';
 
@@ -8,7 +10,8 @@ import { UserRepository } from './user.repository';
 export class UserService {
     constructor(
         @InjectRepository(UserEntity) private readonly userRepository: UserRepository,
-        private logger: DndMappLoggerService
+        private readonly userRoleService: UserRoleService,
+        private readonly logger: DndMappLoggerService
     ) {
         logger.setContext(UserService.name);
     }
@@ -63,6 +66,8 @@ export class UserService {
                 `Cannot create User because the name '${byUsername.username}' is already used`
             );
         }
+        (user as UserEntity).roles = [await this.userRoleService.findByName(UserRoles.PLAYER)];
+
         return await this.userRepository.save(user);
     }
 
