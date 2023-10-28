@@ -2,13 +2,24 @@ import { User } from '@dnd-mapp/data';
 import { defaultUser, mockUserDB } from '@dnd-mapp/data/testing';
 import { NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { mockLoggingServiceProvider, mockUserRepositoryProvider } from '../../../../testing';
+import {
+    mockLoggingServiceProvider,
+    mockUserRepositoryProvider,
+    mockUserRoleRepositoryProvider,
+} from '../../../../testing';
+import { UserRoleService } from '../user-role';
 import { UserService } from './user.service';
 
 describe('UserService', () => {
     async function setupTestEnvironment() {
         const module = await Test.createTestingModule({
-            providers: [UserService, mockUserRepositoryProvider, mockLoggingServiceProvider],
+            providers: [
+                UserService,
+                UserRoleService,
+                mockUserRepositoryProvider,
+                mockLoggingServiceProvider,
+                mockUserRoleRepositoryProvider,
+            ],
         }).compile();
 
         return {

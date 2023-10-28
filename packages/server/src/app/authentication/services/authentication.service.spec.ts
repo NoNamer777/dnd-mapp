@@ -2,16 +2,28 @@ import { User } from '@dnd-mapp/data';
 import { defaultUser } from '@dnd-mapp/data/testing';
 import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
-import { mockLoggingServiceProvider, mockUserRepositoryProvider } from '../../../../testing';
+import {
+    mockLoggingServiceProvider,
+    mockUserRepositoryProvider,
+    mockUserRoleRepositoryProvider,
+} from '../../../../testing';
 import { DndMappJwtModule, NestConfigModule } from '../../config';
 import { UserService } from '../../entities/user';
+import { UserRoleService } from '../../entities/user-role';
 import { AuthenticationService } from './authentication.service';
 
 describe('AuthenticationService', () => {
     async function setupTestEnvironment() {
         const module = await Test.createTestingModule({
             imports: [NestConfigModule, DndMappJwtModule],
-            providers: [mockUserRepositoryProvider, AuthenticationService, UserService, mockLoggingServiceProvider],
+            providers: [
+                mockUserRepositoryProvider,
+                AuthenticationService,
+                UserService,
+                mockLoggingServiceProvider,
+                UserRoleService,
+                mockUserRoleRepositoryProvider,
+            ],
         }).compile();
 
         return {
