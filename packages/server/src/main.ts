@@ -1,4 +1,5 @@
 import { HttpStatus, Logger, ValidationPipe, ValidationPipeOptions } from '@nestjs/common';
+import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
@@ -21,6 +22,13 @@ const validationOptions: ValidationPipeOptions = {
     },
     whitelist: true,
 };
+
+const corsOptions: (configService: ConfigService) => CorsOptions = (configService) => ({
+    origin: [`${buildServerUrl(configService)}`],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Authorization', 'Content-Type'],
+    exposedHeaders: ['Authorization'],
+});
 
 async function bootstrap() {
     const expressServer = express();
@@ -45,6 +53,7 @@ async function bootstrap() {
         })
     );
     nestApp.useGlobalPipes(new ValidationPipe(validationOptions));
+    nestApp.enableCors(corsOptions(configService));
 
     const { host, port, secured, ssl } = {
         host: configService.get('server.host'),
