@@ -61,7 +61,7 @@ async function bootstrap() {
 
     server.listen(port, host);
 
-    logger.log(`Nest application is running on: ${buildServerUrl(configService)}`);
+    logger.log(`Nest application is running on: ${buildServerUrl(configService)}/`);
 }
 
 (async () => await bootstrap())();

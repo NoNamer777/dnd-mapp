@@ -12,7 +12,7 @@ export class AppController {
     @Redirect('app', 301)
     getRoot() {
         return {
-            url: `${buildServerUrl(this.configService)}app`,
+            url: `${buildServerUrl(this.configService)}/app`,
         };
     }
 }

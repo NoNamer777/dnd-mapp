@@ -42,7 +42,7 @@ export class AuthenticationController {
 
         const user = await this.authenticationService.signup(userData);
 
-        response.header('Location', `${buildServerUrl(this.configService)}server/api/user/${user.id}`);
+        response.header('Location', `${buildServerUrl(this.configService)}/server/api/user/${user.id}`);
 
         // TODO: Don't send sensitive User data
         return user;
