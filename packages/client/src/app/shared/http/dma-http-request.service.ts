@@ -10,19 +10,19 @@ export class DmaHttpRequestService {
 
     constructor(private httpClient: HttpClient) {}
 
-    post<T>(endPoint: string, data: T) {
+    post(endPoint: string, data: unknown) {
         return this.httpClient.post(this.baseURL + endPoint, data);
     }
 
-    get(endPoint: string) {
-        return this.httpClient.get(this.baseURL + endPoint);
+    get<T>(endPoint: string) {
+        return this.httpClient.get<T>(this.baseURL + endPoint);
     }
 
     delete(endPoint: string) {
         return this.httpClient.delete(this.baseURL + endPoint);
     }
 
-    put<T>(endPoint: string, data: T) {
+    put(endPoint: string, data: unknown) {
         return this.httpClient.put(this.baseURL + endPoint, data);
     }
 }
