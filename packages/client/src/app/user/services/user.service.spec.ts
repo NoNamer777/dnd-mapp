@@ -5,7 +5,7 @@ import { environment } from '../../../environments';
 import { DmaHttpRequestTestingModule } from '../../../testing';
 import { UserService } from './user.service';
 
-fdescribe('UserService', () => {
+describe('UserService', () => {
     function setupTestEnvironment() {
         TestBed.configureTestingModule({
             imports: [DmaHttpRequestTestingModule],

@@ -5,7 +5,7 @@ import { DmaHttpRequestModule } from '../shared';
 import { DmaRootComponent, DmaRootModule } from './components';
 
 @NgModule({
-    imports: [BrowserModule, BrowserAnimationsModule, DmaHttpRequestModule, DmaRootModule],
+    imports: [BrowserModule, BrowserAnimationsModule, DmaHttpRequestModule.withInterceptors(), DmaRootModule],
     bootstrap: [DmaRootComponent],
 })
 export class AppModule {}

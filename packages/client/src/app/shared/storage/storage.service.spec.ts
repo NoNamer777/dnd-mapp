@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { withInMemoryStorage } from './constants';
+import { inMemoryStorageProvider } from './constants';
 import { StorageService } from './storage.service';
 
 describe('StorageService', () => {
     function setupTestEnvironment(params?: { initialValue: { [key: string]: string } }) {
         TestBed.configureTestingModule({
-            providers: [StorageService, withInMemoryStorage(params?.initialValue)],
+            providers: [StorageService, inMemoryStorageProvider(params?.initialValue)],
         });
 
         return {

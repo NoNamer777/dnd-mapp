@@ -1,11 +1,19 @@
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { ClassProvider, NgModule } from '@angular/core';
 import { authenticationInterceptorProvider } from './interceptors/authentication-interceptor';
 import { storeAuthenticationInterceptorProvider } from './interceptors/store-authentication.interceptor';
 
+const defaultInterceptors = [storeAuthenticationInterceptorProvider, authenticationInterceptorProvider];
+
 @NgModule({
     imports: [HttpClientModule],
-    providers: [storeAuthenticationInterceptorProvider, authenticationInterceptorProvider],
     exports: [HttpClientModule],
 })
-export class DmaHttpRequestModule {}
+export class DmaHttpRequestModule {
+    static withInterceptors(interceptorProviders?: ClassProvider[]) {
+        return {
+            ngModule: DmaHttpRequestModule,
+            providers: [...(interceptorProviders ?? defaultInterceptors)],
+        };
+    }
+}

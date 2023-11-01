@@ -7,7 +7,7 @@ export const STORAGE = new InjectionToken('storage location', {
     factory: () => localStorage,
 });
 
-export const withInMemoryStorage = (initialValues?: { [key: string]: string }) => ({
+export const inMemoryStorageProvider = (initialValues?: { [key: string]: string }) => ({
     provide: STORAGE,
     useFactory: () => new InMemoryStorage(initialValues),
 });
