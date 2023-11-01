@@ -40,6 +40,13 @@ async function bootstrap() {
     logger.setContext('NestApplication');
     Logger.flush();
 
+    const { host, port, secured, ssl } = {
+        host: configService.get('server.host'),
+        port: configService.get('server.port'),
+        secured: Boolean(configService.get('server.ssl')),
+        ssl: configService.get('server.ssl'),
+    };
+
     nestApp.useLogger(logger);
     nestApp.setGlobalPrefix('/server', { exclude: [''] });
     nestApp.use(
@@ -47,20 +54,13 @@ async function bootstrap() {
             contentSecurityPolicy: {
                 directives: {
                     scriptSrcAttr: [`'self'`, `'unsafe-inline'`],
-                    connectSrc: [`${buildServerUrl(configService)}`],
+                    connectSrc: [`${buildServerUrl(configService)}`, `http${secured ? 's' : ''}://localhost:${port}`],
                 },
             },
         })
     );
     nestApp.useGlobalPipes(new ValidationPipe(validationOptions));
     nestApp.enableCors(corsOptions(configService));
-
-    const { host, port, secured, ssl } = {
-        host: configService.get('server.host'),
-        port: configService.get('server.port'),
-        secured: Boolean(configService.get('server.ssl')),
-        ssl: configService.get('server.ssl'),
-    };
 
     const server = secured
         ? createHttpsServer({ cert: await readFile(ssl.certPath), key: await readFile(ssl.keyPath) }, expressServer)
