@@ -11,10 +11,10 @@ export const authenticationInterceptorProvider: ClassProvider = {
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
-    constructor(private readonly localStorageService: StorageService) {}
+    constructor(private readonly storageService: StorageService) {}
 
     intercept(request: HttpRequest<unknown>, handler: HttpHandler): Observable<HttpEvent<unknown>> {
-        const token = this.localStorageService.getItem(TOKEN_STORAGE_KEY);
+        const token = this.storageService.getItem(TOKEN_STORAGE_KEY);
 
         if (token) {
             return handler.handle(this.addAuthentication(request, token));
