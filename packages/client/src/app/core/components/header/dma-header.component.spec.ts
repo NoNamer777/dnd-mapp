@@ -8,7 +8,7 @@ import { TOKEN_STORAGE_KEY, inMemoryStorageProvider } from '../../../shared';
 import { DmaAuthenticationService } from '../../authentication';
 import { DmaHeaderModule } from './dma-header.module';
 
-fdescribe('DmaHeaderComponent', () => {
+describe('DmaHeaderComponent', () => {
     @Component({
         template: '<dma-header></dma-header>',
     })
@@ -21,7 +21,7 @@ fdescribe('DmaHeaderComponent', () => {
         TestBed.configureTestingModule({
             imports: [DmaHeaderModule, RouterTestingModule, DmaHttpRequestTestingModule],
             providers: [
-                inMemoryStorageProvider(params?.authenticated ? { [TOKEN_STORAGE_KEY]: token } : {}),
+                inMemoryStorageProvider(params?.authenticated ? { [TOKEN_STORAGE_KEY]: token } : undefined),
                 DmaAuthenticationService,
             ],
             declarations: [TestComponent],
