@@ -13,8 +13,8 @@ describe('AuthenticationInterceptor', () => {
             imports: [DmaHttpRequestTestingModule],
             providers: [
                 inMemoryStorageProvider(params?.token ? { [TOKEN_STORAGE_KEY]: params?.token } : undefined),
-                DmaHttpRequestService,
                 authenticationInterceptorProvider,
+                DmaHttpRequestService,
             ],
         });
 
