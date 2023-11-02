@@ -36,17 +36,14 @@ export class StoreAuthenticationInterceptor implements HttpInterceptor {
 
                 if (!header) return;
 
-                this.processAuthorizationHeader(header);
+                this.processAuthorizationHeader(header.replace('Bearer ', '').trim());
             })
         );
     }
 
-    private processAuthorizationHeader(header: string) {
-        const token = header.replace('Bearer ', '').trim();
+    private processAuthorizationHeader(token: string) {
+        if (token.length === 0) return;
 
-        if (token.length === 0) {
-            throw new Error('No token was found in the Authorization header');
-        }
         try {
             // Make sure the token is valid before storing it
             this.jwtHelperService.decodeToken(token);
