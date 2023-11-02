@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { DmaAuthenticationService } from '../../authentication';
 
 @Component({
     selector: 'dma-header',
@@ -6,4 +7,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     styleUrls: ['./dma-header.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DmaHeaderComponent {}
+export class DmaHeaderComponent {
+    authenticatedUser$ = this.authenticationService.authenticatedUser$;
+
+    constructor(private readonly authenticationService: DmaAuthenticationService) {}
+}
