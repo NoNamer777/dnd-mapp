@@ -1,7 +1,9 @@
 import { HTTP_INTERCEPTORS, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { ClassProvider, Injectable, forwardRef } from '@angular/core';
+import { ClassProvider, Inject, Injectable, forwardRef } from '@angular/core';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable } from 'rxjs';
 import { StorageService, TOKEN_STORAGE_KEY } from '../../storage';
+import { JWT_HELPER_SERVICE } from '../../tokens';
 
 export const authenticationInterceptorProvider: ClassProvider = {
     provide: HTTP_INTERCEPTORS,
@@ -11,13 +13,21 @@ export const authenticationInterceptorProvider: ClassProvider = {
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
-    constructor(private readonly storageService: StorageService) {}
+    constructor(
+        private readonly storageService: StorageService,
+        @Inject(JWT_HELPER_SERVICE) private readonly jwtHelperService: JwtHelperService
+    ) {}
 
     intercept(request: HttpRequest<unknown>, handler: HttpHandler): Observable<HttpEvent<unknown>> {
-        const token = this.storageService.getItem(TOKEN_STORAGE_KEY);
+        try {
+            const token = this.storageService.getItem(TOKEN_STORAGE_KEY);
+            const tokenIsValid = Boolean(this.jwtHelperService.decodeToken(token as string));
 
-        if (token) {
-            return handler.handle(this.addAuthentication(request, token));
+            if (token && tokenIsValid) {
+                return handler.handle(this.addAuthentication(request, token));
+            }
+        } catch (error) {
+            // Swallow token decoding errors
         }
         return handler.handle(request);
     }
