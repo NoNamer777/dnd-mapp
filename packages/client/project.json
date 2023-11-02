@@ -93,7 +93,7 @@
             "options": {
                 "assets": ["packages/client/src/assets", "packages/client/src/favicon.ico"],
                 "codeCoverage": true,
-                "codeCoverageExclude": ["**/testing/**", "**/*.module.ts", "**/index.ts"],
+                "codeCoverageExclude": ["**/testing/**", "**/*.module.ts", "**/index.ts", "**/environments/**"],
                 "inlineStyleLanguage": "scss",
                 "karmaConfig": "packages/client/karma.conf.js",
                 "polyfills": ["zone.js", "zone.js/testing"],
