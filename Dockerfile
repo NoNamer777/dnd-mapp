@@ -1,4 +1,6 @@
-FROM --platform=$BUILDPLATFORM node:18-alpine AS build-client
+ARG NODE_VERSION=18.15-alpine
+
+FROM --platform=$BUILDPLATFORM node:${NODE_VERSION} AS build-client
 
 WORKDIR /client
 
@@ -11,7 +13,7 @@ COPY . .
 RUN npx nx build client
 
 
-FROM --platform=$BUILDPLATFORM node:18-alpine AS build-server
+FROM --platform=$BUILDPLATFORM node:${NODE_VERSION} AS build-server
 
 RUN apk --no-cache --virtual build-dependencies add python3 make g++
 
@@ -31,7 +33,7 @@ RUN npx nx build server &&  \
 COPY --from=build-client /client/dist/client dist/client
 
 
-FROM --platform=$BUILDPLATFORM node:18-alpine
+FROM --platform=$BUILDPLATFORM node:${NODE_VERSION}
 
 WORKDIR /usr/src/app
 
