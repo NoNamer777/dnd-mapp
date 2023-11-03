@@ -41,12 +41,6 @@
                 }
             }
         },
-        "run-migrations": {
-            "executor": "nx:run-commands",
-            "options": {
-                "command": "npx typeorm-ts-node-esm migration:run -d packages/server/typeorm/datasource.ts"
-            }
-        },
         "serve": {
             "executor": "@nx/js:node",
             "options": {
@@ -54,14 +48,6 @@
                 "host": "0.0.0.0",
                 "inspect": false,
                 "port": 8080
-            }
-        },
-        "pre-start": {
-            "executor": "nx:run-commands",
-            "options": {
-                "commands": ["npx nx run-migrations server", "npx nx start server"],
-                "envFile": "packages/server/.env",
-                "parallel": false
             }
         },
         "start": {

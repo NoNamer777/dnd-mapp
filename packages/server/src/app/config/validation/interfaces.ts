@@ -72,7 +72,7 @@ export class ServerEnvironmentVariables {
     @Expose()
     @IsString()
     @IsOptional()
-    DATABASE_FILES_PATH?: string;
+    MIGRATION_FILES_PATH?: string;
 
     @Expose()
     @IsString()
