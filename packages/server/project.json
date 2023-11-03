@@ -14,28 +14,8 @@
                 "baseHref": "/",
                 "buildLibsFromSource": false,
                 "compiler": "tsc",
-                "externalDependencies": [
-                    "@dnd-mapp/data",
-                    "@nestjs/common",
-                    "@nestjs/config",
-                    "@nestjs/core",
-                    "@nestjs/jwt",
-                    "@nestjs/mapped-types",
-                    "@nestjs/platform-express",
-                    "@nestjs/serve-static",
-                    "@nestjs/typeorm",
-                    "bcrypt",
-                    "class-transformer",
-                    "class-validator",
-                    "express",
-                    "helmet",
-                    "nanoid",
-                    "reflect-metadata",
-                    "rxjs",
-                    "tslib",
-                    "typeorm"
-                ],
                 "extractLicenses": true,
+                "generatePackageJson": true,
                 "inspect": false,
                 "isolatedConfig": true,
                 "main": "packages/server/src/main.ts",
@@ -47,6 +27,7 @@
                 "vendor": true,
                 "webpackConfig": "packages/server/webpack.config.js"
             },
+            "defaultConfiguration": "ci",
             "configurations": {
                 "ci": {
                     "memoryLimit": 1024,
