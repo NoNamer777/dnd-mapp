@@ -53,8 +53,22 @@
         "start": {
             "executor": "nx:run-commands",
             "options": {
-                "commands": ["npx nx build-dev client", "npx nx serve server"],
-                "envFile": "packages/server/.env"
+                "commands": [
+                    {
+                        "command": "npx nx build client -c dev",
+                        "prefix": "[front-end]:\t"
+                    },
+                    {
+                        "command": "npx nx build data -c dev",
+                        "prefix": "[data]:\t\t"
+                    },
+                    {
+                        "command": "npx nx serve server",
+                        "prefix": "[back-end]:\t"
+                    }
+                ],
+                "envFile": "packages/server/.env",
+                "color": true
             }
         },
         "test": {
