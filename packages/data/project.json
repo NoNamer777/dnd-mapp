@@ -9,11 +9,9 @@
             "outputs": ["{options.outputPath}"],
             "options": {
                 "assets": ["packages/data/*.md"],
-                "generateLockfile": true,
                 "main": "packages/data/src/index.ts",
                 "outputPath": "dist/data",
-                "tsConfig": "packages/data/tsconfig.lib.json",
-                "watch": false
+                "tsConfig": "packages/data/tsconfig.lib.json"
             },
             "configurations": {
                 "dev": {

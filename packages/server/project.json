@@ -12,20 +12,22 @@
             "options": {
                 "assets": ["packages/server/src/assets"],
                 "baseHref": "/",
+                "buildLibsFromSource": false,
                 "compiler": "tsc",
                 "extractLicenses": true,
+                "generatePackageJson": true,
                 "inspect": false,
                 "isolatedConfig": true,
                 "main": "packages/server/src/main.ts",
-                "memoryLimit": 2048,
                 "outputPath": "dist/server",
                 "scripts": [],
                 "styles": [],
                 "target": "node",
                 "tsConfig": "packages/server/tsconfig.app.json",
-                "watch": false,
+                "vendor": true,
                 "webpackConfig": "packages/server/webpack.config.js"
             },
+            "defaultConfiguration": "ci",
             "configurations": {
                 "ci": {
                     "memoryLimit": 1024,
@@ -41,12 +43,6 @@
                 }
             }
         },
-        "run-migrations": {
-            "executor": "nx:run-commands",
-            "options": {
-                "command": "npx typeorm-ts-node-esm migration:run -d packages/server/typeorm/datasource.ts"
-            }
-        },
         "serve": {
             "executor": "@nx/js:node",
             "options": {
@@ -56,19 +52,25 @@
                 "port": 8080
             }
         },
-        "pre-start": {
-            "executor": "nx:run-commands",
-            "options": {
-                "commands": ["npx nx run-migrations server", "npx nx start server"],
-                "envFile": "packages/server/.env",
-                "parallel": false
-            }
-        },
         "start": {
             "executor": "nx:run-commands",
             "options": {
-                "commands": ["npx nx build-dev client", "npx nx serve server"],
-                "envFile": "packages/server/.env"
+                "commands": [
+                    {
+                        "command": "npx nx build client -c dev",
+                        "prefix": "[front-end]:\t"
+                    },
+                    {
+                        "command": "npx nx build data -c dev",
+                        "prefix": "[data]:\t\t"
+                    },
+                    {
+                        "command": "npx nx serve server",
+                        "prefix": "[back-end]:\t"
+                    }
+                ],
+                "envFile": "packages/server/.env",
+                "color": true
             }
         },
         "test": {

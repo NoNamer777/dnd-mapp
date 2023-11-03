@@ -10,7 +10,8 @@ const typeOrmConfig: TypeOrmModuleAsyncOptions = {
         entities: [],
         autoLoadEntities: true,
         synchronize: false,
-        migrationsRun: false,
+        migrationsRun: true,
+        migrations: [configService.get('database').migrationFilesPath],
     }),
 };
 

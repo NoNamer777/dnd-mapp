@@ -13,7 +13,7 @@ import {
     ValidateNested,
 } from 'class-validator';
 import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
-import { UserRoleEntity } from '../user-role/user-role.entity';
+import { UserRoleEntity } from '../user-role';
 
 @Entity('user')
 export class UserEntity implements User {
