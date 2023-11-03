@@ -2,6 +2,15 @@ node_modules
 
 dist
 .angular
+.nx
+temp
+
+.github
 
 .idea
 .vscode
+
+certificate*.pem
+
+.prettier*
+.eslint*
