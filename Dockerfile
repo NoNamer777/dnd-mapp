@@ -28,8 +28,8 @@ COPY . .
 RUN npx nx build server && \
     rm -rf node_modules && \
     npm ci --omit dev && \
-    mv node_modules dist/server/node_modules && \
-    npm rebuild bcrypt --build-from-source
+    npm rebuild bcrypt --build-from-source && \
+    mv node_modules dist/server/node_modules
 
 COPY --from=build-client /client/dist/client dist/client
 
