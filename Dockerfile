@@ -41,7 +41,9 @@ WORKDIR /usr/src/app
 
 COPY --from=build-server server/dist .
 
-RUN npm rebuild bcrypt --build-from-source
+RUN apk --no-cache --virtual build-dependencies add python3 make g++ &&  \
+    npm rebuild bcrypt --build-from-source && \
+    apk del build-dependencies
 
 ENV MIGRATION_FILES_PATH=/usr/src/app/server/db/migrations/*.js
 ENV HOST=0.0.0.0
