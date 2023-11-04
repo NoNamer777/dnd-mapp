@@ -7,16 +7,6 @@
     "implicitDependencies": ["data", "shared-components"],
     "prefix": "dma",
     "targets": {
-        "build-dev": {
-            "executor": "@nx/angular:delegate-build",
-            "outputs": ["{options.outputPath}"],
-            "options": {
-                "buildTarget": "client:build:dev",
-                "outputPath": "dist/client",
-                "tsConfig": "packages/client/tsconfig.app.json",
-                "watch": true
-            }
-        },
         "build": {
             "executor": "@angular-devkit/build-angular:browser",
             "outputs": ["{options.outputPath}"],
