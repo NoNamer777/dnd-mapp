@@ -35,7 +35,7 @@ COPY --from=build-client /client/dist/client dist/client
 COPY --from=build-client /client/dist/data dist/server/node_modules/@dnd-mapp/data
 
 
-FROM --platform=$BUILDPLATFORM node:${NODE_VERSION}
+FROM node:${NODE_VERSION}
 
 WORKDIR /usr/src/app
 
