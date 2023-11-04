@@ -27,7 +27,6 @@ COPY . .
 RUN npx nx build server && \
     rm -rf node_modules && \
     npm ci --omit dev && \
-    npm rebuild bcrypt --build-from-source && \
     mv node_modules dist/server/node_modules
 
 COPY --from=build-client /client/dist/client dist/client
@@ -40,8 +39,6 @@ FROM node:${NODE_VERSION}
 WORKDIR /usr/src/app
 
 COPY --from=build-server server/dist .
-
-RUN apk --no-cache --virtual build-dependencies add python3 build-base
 
 ENV MIGRATION_FILES_PATH=/usr/src/app/server/db/migrations/*.js
 ENV HOST=0.0.0.0
