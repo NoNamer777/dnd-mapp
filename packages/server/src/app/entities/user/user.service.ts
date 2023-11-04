@@ -1,7 +1,7 @@
 import { UserRoles } from '@dnd-mapp/data';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { compare, genSalt, hash } from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { DndMappLoggerService } from '../../common';
 import { UserRoleService } from '../user-role';
 import { CreateUserDto, UserEntity } from './user.entity';
@@ -89,11 +89,11 @@ export class UserService {
     }
 
     private async hashPassword(plainTextPassword: string) {
-        return hash(plainTextPassword, await genSalt(12));
+        return bcrypt.hash(plainTextPassword, await bcrypt.genSalt(12));
     }
 
     private async resolvePassword(newPassword: string, oldPassword: string) {
-        if (await compare(newPassword, oldPassword)) {
+        if (await bcrypt.compare(newPassword, oldPassword)) {
             return oldPassword;
         }
         return await this.hashPassword(newPassword);

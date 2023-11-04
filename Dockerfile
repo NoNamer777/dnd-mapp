@@ -15,13 +15,12 @@ RUN npx nx build client
 
 FROM --platform=$BUILDPLATFORM node:${NODE_VERSION} AS build-server
 
-RUN apk --no-cache --virtual build-dependencies add python3 make g++
-
 WORKDIR /server
 
 COPY package*.json .
 
-RUN npm ci
+RUN apk --no-cache --virtual build-dependencies add python3 build-base && \
+    npm ci
 
 COPY . .
 
@@ -35,7 +34,7 @@ COPY --from=build-client /client/dist/client dist/client
 COPY --from=build-client /client/dist/data dist/server/node_modules/@dnd-mapp/data
 
 
-FROM --platform=$BUILDPLATFORM node:${NODE_VERSION}
+FROM node:${NODE_VERSION}
 
 WORKDIR /usr/src/app
 

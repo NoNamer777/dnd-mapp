@@ -1,16 +1,17 @@
-node_modules
+node_modules/
 
-dist
-.angular
-.nx
-temp
+dist/
+.angular/
+.nx/
+temp/
 
-.github
+.github/
 
-.idea
-.vscode
+.idea/
+.vscode/
 
 certificate*.pem
+.env*
 
 .prettier*
 .eslint*
