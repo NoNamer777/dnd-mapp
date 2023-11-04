@@ -41,6 +41,8 @@ WORKDIR /usr/src/app
 
 COPY --from=build-server server/dist .
 
+RUN npm rebuild bcrypt --build-from-source
+
 ENV MIGRATION_FILES_PATH=/usr/src/app/server/db/migrations/*.js
 ENV HOST=0.0.0.0
 

@@ -11,6 +11,7 @@ temp
 .vscode
 
 certificate*.pem
+.env*
 
 .prettier*
 .eslint*
