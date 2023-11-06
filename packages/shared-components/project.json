@@ -13,6 +13,7 @@
             "options": {
                 "project": "packages/shared-components/ng-package.json"
             },
+            "defaultConfiguration": "prod",
             "configurations": {
                 "prod": {
                     "tsConfig": "packages/shared-components/tsconfig.lib.prod.json"
@@ -21,8 +22,7 @@
                     "tsConfig": "packages/shared-components/tsconfig.lib.json",
                     "watch": true
                 }
-            },
-            "defaultConfiguration": "prod"
+            }
         },
         "test": {
             "executor": "@angular-devkit/build-angular:karma",
@@ -42,6 +42,7 @@
                 "tsConfig": "packages/shared-components/tsconfig.spec.json",
                 "watch": false
             },
+            "defaultConfiguration": "ci",
             "configurations": {
                 "dev": {
                     "progress": true,
@@ -49,7 +50,7 @@
                     "watch": true
                 },
                 "ci": {
-                    "progress": false,
+                    "progress": true,
                     "sourceMap": false
                 }
             }
@@ -64,11 +65,6 @@
                 "configDir": "packages/shared-components/.storybook",
                 "outputDir": "dist/storybook/shared-components",
                 "styles": ["packages/shared-components/.storybook/styling.scss"]
-            },
-            "configurations": {
-                "ci": {
-                    "quiet": true
-                }
             }
         },
         "storybook": {
@@ -80,27 +76,6 @@
                 "host": "0.0.0.0",
                 "open": false,
                 "port": 4300
-            },
-            "configurations": {
-                "ci": {
-                    "quiet": true
-                }
-            }
-        },
-        "static-storybook": {
-            "executor": "@nx/web:file-server",
-            "options": {
-                "brotli": true,
-                "buildTarget": "shared-components:build-storybook",
-                "host": "0.0.0.0",
-                "port": 4301,
-                "spa": true,
-                "staticFilePath": "dist/storybook/shared-components"
-            },
-            "configurations": {
-                "ci": {
-                    "buildTarget": "shared-components:build-storybook:ci"
-                }
             }
         },
         "lint": {
