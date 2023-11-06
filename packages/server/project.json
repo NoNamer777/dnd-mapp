@@ -15,7 +15,6 @@
                 "buildLibsFromSource": false,
                 "compiler": "tsc",
                 "extractLicenses": true,
-                "generatePackageJson": true,
                 "inspect": false,
                 "isolatedConfig": true,
                 "main": "packages/server/src/main.ts",
@@ -27,9 +26,10 @@
                 "vendor": true,
                 "webpackConfig": "packages/server/webpack.config.js"
             },
-            "defaultConfiguration": "ci",
+            "defaultConfiguration": "prod",
             "configurations": {
-                "ci": {
+                "prod": {
+                    "generatePackageJson": true,
                     "memoryLimit": 1024,
                     "namedChunks": false,
                     "optimization": true,
@@ -57,7 +57,7 @@
             "options": {
                 "commands": [
                     {
-                        "command": "npx nx build client -c dev",
+                        "command": "npx nx build-dev client",
                         "prefix": "[front-end]:\t"
                     },
                     {
@@ -88,6 +88,7 @@
                 "watch": false,
                 "watchAll": false
             },
+            "defaultConfiguration": "ci",
             "configurations": {
                 "ci": {
                     "ci": true

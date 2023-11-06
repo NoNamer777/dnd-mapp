@@ -28,16 +28,15 @@
                 "coverageReporters": ["html", "text-summary"],
                 "coverageDirectory": "coverage/data",
                 "jestConfig": "packages/data/jest.config.ts",
-                "onlyChanged": false,
-                "passWithNoTests": true,
-                "watch": false,
-                "watchAll": false
+                "passWithNoTests": true
             },
+            "defaultConfiguration": "ci",
             "configurations": {
                 "ci": {
                     "ci": true
                 },
                 "dev": {
+                    "onlyChanged": false,
                     "watchAll": true
                 }
             }

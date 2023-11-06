@@ -13,58 +13,55 @@
             "options": {
                 "assets": ["packages/client/src/favicon.ico", "packages/client/src/assets"],
                 "baseHref": "/app/",
-                "budgets": [
-                    {
-                        "type": "initial",
-                        "maximumWarning": "5mb",
-                        "maximumError": "10mb"
-                    },
-                    {
-                        "type": "anyComponentStyle",
-                        "maximumWarning": "2kb",
-                        "maximumError": "4kb"
-                    }
-                ],
                 "index": "packages/client/src/index.html",
                 "inlineStyleLanguage": "scss",
                 "main": "packages/client/src/main.ts",
-                "optimization": true,
-                "outputHashing": "all",
                 "outputPath": "dist/client",
                 "polyfills": ["zone.js"],
                 "scripts": [
                     "node_modules/@popperjs/core/dist/umd/popper.min.js",
                     "node_modules/bootstrap/dist/js/bootstrap.min.js"
                 ],
-                "sourceMap": false,
                 "styles": ["packages/client/src/styles.scss", "node_modules/bootstrap/dist/css/bootstrap.min.css"],
                 "tsConfig": "packages/client/tsconfig.app.json",
-                "vendorChunk": true,
-                "watch": false
+                "vendorChunk": true
             },
-            "defaultConfiguration": "ci",
+            "defaultConfiguration": "prod",
             "configurations": {
                 "dev": {
-                    "namedChunks": true,
-                    "outputHashing": "none",
-                    "optimization": false,
-                    "sourceMap": true,
                     "fileReplacements": [
                         {
                             "replace": "packages/client/src/environments/environment.ts",
                             "with": "packages/client/src/environments/environment.dev.ts"
                         }
-                    ]
-                },
-                "ci": {
+                    ],
+                    "namedChunks": true,
                     "outputHashing": "none",
+                    "optimization": false,
+                    "sourceMap": true
+                },
+                "prod": {
+                    "extractLicenses": true,
                     "fileReplacements": [
                         {
                             "replace": "packages/client/src/environments/environment.ts",
                             "with": "packages/client/src/environments/environment.ci.ts"
                         }
-                    ]
+                    ],
+                    "outputHashing": "all",
+                    "progress": false,
+                    "subresourceIntegrity": true
                 }
+            }
+        },
+        "build-dev": {
+            "executor": "@nx/angular:delegate-build",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "buildTarget": "client:build:dev",
+                "outputPath": "dist/client",
+                "tsConfig": "packages/client/tsconfig.app.json",
+                "watch": true
             }
         },
         "serve": {

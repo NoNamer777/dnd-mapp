@@ -28,7 +28,7 @@ jobs:
                 npx nx-cloud record -- npx nx format:check
             parallel-commands-on-agents: |
                 npx nx affected -t lint 
-                npx nx affected -t test -c ci 
+                npx nx affected -t test 
                 npx nx affected -t build
     agents:
         name: Nx Cloud - Agents
