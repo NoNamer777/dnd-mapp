@@ -25,4 +25,4 @@ export class User {
     }
 }
 
-export type CreateUserData = Omit<User, 'id'>;
+export type CreateUserData = Omit<User, 'id' | 'roles' | 'hasRole'>;
