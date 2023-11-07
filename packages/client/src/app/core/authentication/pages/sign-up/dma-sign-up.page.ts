@@ -4,12 +4,12 @@ import { swipeInOutAnimation } from '../../animations';
 
 @Component({
     selector: 'dma-signup',
-    templateUrl: './dma-signup.page.html',
-    styleUrls: ['./dma-signup.page.scss'],
+    templateUrl: './dma-sign-up.page.html',
+    styleUrls: ['./dma-sign-up.page.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [swipeInOutAnimation],
 })
-export class DmaSignupPage {
+export class DmaSignUpPage {
     form = new FormGroup({
         username: new FormControl<string | null>(null, [Validators.required]),
         email: new FormControl<string | null>(null, [Validators.required, Validators.email]),

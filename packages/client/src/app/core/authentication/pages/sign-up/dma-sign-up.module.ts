@@ -2,11 +2,11 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { DmaSignupPage } from './dma-signup.page';
+import { DmaSignUpPage } from './dma-sign-up.page';
 
 @NgModule({
     imports: [CommonModule, RouterModule, ReactiveFormsModule],
-    declarations: [DmaSignupPage],
-    exports: [DmaSignupPage],
+    declarations: [DmaSignUpPage],
+    exports: [DmaSignUpPage],
 })
-export class DmaSignupModule {}
+export class DmaSignUpModule {}
