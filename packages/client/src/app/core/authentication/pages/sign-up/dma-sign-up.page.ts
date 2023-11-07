@@ -4,6 +4,11 @@ import { BehaviorSubject, Subject, finalize, takeUntil } from 'rxjs';
 import { swipeInOutAnimation } from '../../animations';
 import { DmaAuthenticationService } from '../../services';
 
+// TODO
+//  - Go to the next stage on 'enter' press in the confirm email input
+//  - Submit on pressing 'enter' on confirming password
+//  - Check username before allowing to go to the next stage
+
 @Component({
     selector: 'dma-signup',
     templateUrl: './dma-sign-up.page.html',
@@ -20,9 +25,13 @@ export class DmaSignUpPage implements OnDestroy {
         passwordConfirm: new FormControl<string | null>(null, [Validators.required]),
     });
 
+    loading$ = new BehaviorSubject(false);
+
     stage = 1;
 
     private destroy$ = new Subject<void>();
+
+    constructor(private readonly authenticationService: DmaAuthenticationService) {}
 
     get isFormInvalid() {
         return this.form.invalid;
@@ -52,10 +61,13 @@ export class DmaSignUpPage implements OnDestroy {
     onSubmit() {
         const { username, email, password } = this.form.value;
 
+        this.loading$.next(true);
+
         this.authenticationService
             .signUp({ username: username!, password: password!, emailAddress: email! })
             .pipe(
                 takeUntil(this.destroy$),
+                finalize(() => this.loading$.next(false))
             )
             .subscribe({
             });

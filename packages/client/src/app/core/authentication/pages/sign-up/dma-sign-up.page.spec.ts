@@ -70,14 +70,19 @@ describe('DmaSignUpPage', () => {
         await harness.inputFormControlValue('passwordConfirm', 'secure_password');
 
         expect(await harness.isSignupButtonDisabled()).toBeFalse();
+        expect(await harness.isLoadingSpinnerVisible()).toBeFalse();
 
         await harness.clickSignupButton();
+
+        expect(await harness.isLoadingSpinnerVisible()).toBeTrue();
 
         const request = testingController.expectOne(`${environment.baseBackEndURL}/authentication/sign-up`);
 
         expect(request.request.body).toEqual(expectedFormValue);
 
         request.flush({ ...expectedFormValue, id: 1, roles: [{ id: 1, name: 'Player' }] });
+
+        expect(await harness.isLoadingSpinnerVisible()).toBeFalse();
     });
 
     it('should not go to the next stage with empty form', async () => {
