@@ -20,9 +20,8 @@ jobs:
             node-version: 18
             npm-version: 9
             number-of-agents: 3
-            environment-variables: |
-                JWT_SECRET=${{ vars.JWT_SECRET }}
             init-commands: |
+                echo '${{ vars.CLIENT_ENV_VARIABLES_PROD }}' > packages/client/src/environments/environment.prod.ts
                 npx nx-cloud start-ci-run --stop-agents-after "build" --agent-count 3
             parallel-commands: |
                 npx nx-cloud record -- npx nx format:check
