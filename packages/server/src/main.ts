@@ -1,5 +1,4 @@
 import { HttpStatus, Logger, ValidationPipe, ValidationPipeOptions } from '@nestjs/common';
-import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
@@ -23,13 +22,6 @@ const validationOptions: ValidationPipeOptions = {
     whitelist: true,
 };
 
-const corsOptions: (configService: ConfigService) => CorsOptions = (configService) => ({
-    origin: [`${buildServerUrl(configService)}`],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Authorization', 'Content-Type'],
-    exposedHeaders: ['Authorization'],
-});
-
 async function bootstrap() {
     const expressServer = express();
 
@@ -40,12 +32,8 @@ async function bootstrap() {
     logger.setContext('NestApplication');
     Logger.flush();
 
-    const { host, port, secured, ssl } = {
-        host: configService.get('server.host'),
-        port: configService.get('server.port'),
-        secured: Boolean(configService.get('server.ssl')),
-        ssl: configService.get('server.ssl'),
-    };
+    const { host, port, address, useSsl, ssl } = configService.get('server');
+    const backEndUrl = buildServerUrl(host, port, useSsl, address);
 
     nestApp.useLogger(logger);
     nestApp.setGlobalPrefix('/server', { exclude: [''] });
@@ -54,15 +42,20 @@ async function bootstrap() {
             contentSecurityPolicy: {
                 directives: {
                     scriptSrcAttr: [`'self'`, `'unsafe-inline'`],
-                    connectSrc: [`${buildServerUrl(configService)}`, `http${secured ? 's' : ''}://localhost:${port}`],
+                    connectSrc: [backEndUrl],
                 },
             },
         })
     );
     nestApp.useGlobalPipes(new ValidationPipe(validationOptions));
-    nestApp.enableCors(corsOptions(configService));
+    nestApp.enableCors({
+        origin: [backEndUrl],
+        methods: ['GET', 'POST', 'PUT', 'DELETE'],
+        allowedHeaders: ['Authorization', 'Content-Type'],
+        exposedHeaders: ['Authorization'],
+    });
 
-    const server = secured
+    const server = useSsl
         ? createHttpsServer({ cert: await readFile(ssl.certPath), key: await readFile(ssl.keyPath) }, expressServer)
         : createHttpServer(expressServer);
 
@@ -70,7 +63,7 @@ async function bootstrap() {
 
     server.listen(port, host);
 
-    logger.log(`Nest application is running on: ${buildServerUrl(configService)}/`);
+    logger.log(`Nest application is running on: ${backEndUrl}/`);
 }
 
 (async () => await bootstrap())();

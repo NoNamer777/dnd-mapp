@@ -11,8 +11,9 @@ export class AppController {
     @Get('')
     @Redirect('app', 301)
     getRoot() {
+        const { host, port, address, useSsl } = this.configService.get('server');
         return {
-            url: `${buildServerUrl(this.configService)}/app`,
+            url: `${buildServerUrl(host, port, useSsl, address)}/app`,
         };
     }
 }

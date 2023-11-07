@@ -1,14 +1,24 @@
-import { ConfigService } from '@nestjs/config';
 import { networkInterfaces as getNetworkInterfaces, NetworkInterfaceInfo } from 'os';
 
-export function buildServerUrl(configService: ConfigService): string {
-    const { secured, address, host, port } = {
-        secured: configService.get<boolean>('server.useSSL'),
-        address: configService.get<string>('server.address'),
-        host: configService.get<string>('server.host'),
-        port: configService.get<number>('server.port'),
-    };
-    return `http${secured ? 's' : ''}://${address ? address : `${determinePrivateIpAddress(host)}:${port}`}`;
+const hiddenPorts = [80, 443];
+
+export function buildServerUrl(host: string, port: number, useSsl: boolean, address?: string): string {
+    let backEndUrl = 'http';
+
+    if (useSsl) {
+        backEndUrl += 's';
+    }
+    backEndUrl += '://';
+
+    if (address) {
+        backEndUrl += address;
+    } else {
+        backEndUrl += determinePrivateIpAddress(host);
+    }
+    if (!hiddenPorts.includes(port)) {
+        backEndUrl += `:${port}`;
+    }
+    return backEndUrl;
 }
 
 function determinePrivateIpAddress(host: string): string {

@@ -1,3 +1,3 @@
 export const environment = {
-    baseBackEndURL: 'https://localhost:8080/server',
+    baseBackEndURL: 'https://localhost.dndmapp.net/server',
 };
