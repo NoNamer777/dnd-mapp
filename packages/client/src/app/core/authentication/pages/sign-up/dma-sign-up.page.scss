@@ -1,3 +1,6 @@
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+
 :host {
     display: block;
     height: 100%;
@@ -12,6 +15,12 @@
 
         form {
             height: 29.7em;
+
+            &.ng-submitted {
+                .ng-invalid {
+                    border-right: 2px solid $danger;
+                }
+            }
         }
     }
 }
