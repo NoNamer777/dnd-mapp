@@ -28,25 +28,80 @@ Find the README's in the individual projects for more information and instructio
 | Server       | [README](packages/server/README.md) |
 | Data         | [README](packages/data/README.md)   |
 
-## Generating SSL certificate and key
+## Enable SSL on your development environment
 
-It is possible to develop the server and client application with SSL enabled. For this you'll need to do the following:
+It's required to use https while serving the back- and front-end applications.
+To do so you'll need to generate a certificate and an adjoining key and configure your machine a bit to allow this.
 
-1. Install [mkcert](https://github.com/FiloSottile/mkcert) on your local machine
-2. Run the following command to install the root CA (You may need to restart your browsers)
+### Set up localhost routing on your machine
 
-```shell
-mkcert -install
-```
+To prevent cors errors when connecting to servers you first need to add a route to the local host file on your computer.
 
-3. Run the following command to generate a certificate
+#### Edit host file on MacOS or Linux
 
-```shell
-mkcert -cert-file certificate.pem -key-file certificate-key.pem localhost.dndmapp.nl.eu.org localhost
-```
+The hosts file is located at `/etc/hosts`.
 
-Find the sections in the individual projects about developing with SSL enabled to find more information for those projects
-how to use the generated files to develop with SSL.
+1. Open terminal and enter `sudo nano /etc/hosts` and enter password when asked.
+2. Add line:
+
+    ```
+    127.0.0.1 localhost.dndmapp.net
+    ```
+
+3. You can save with Ctrl+O and close the editor with Ctrl+X
+
+#### Edit host file on Windows
+
+The hosts file is located at `c:\Windows\System32\Drivers\etc\hosts`.
+
+1. Right click on Notepad in your start menu and select “Run as > Administrator”. This is crucial to ensure you can make the required changes to the file.
+2. Now click File > Open and browse to: `c:\Windows\System32\Drivers\etc\hosts`.
+3. Add line:
+
+    ```
+    127.0.0.1 localhost.dndmapp.net
+    ```
+
+4. Save and close editor
+
+## Generating the certificate and key in the repository root
+
+1. Install [mkcert](https://github.com/FiloSottile/mkcert) (MacOS: `brew install mkcert`)
+2. Run `mkcert -install` to install the root CA (browser restart is required)
+3. Run `mkcert -cert-file certificate.pem -key-file certificate-key.pem localhost.dndmapp.net localhost` to generate a certificate.
+
+## Trusting the certificate on your machine
+
+### Trusting the certificate on macOS
+
+Double-click the `certificate.pem` file, you'll be prompted to add the certificate to the login keychain app.
+
+Once added to the keychain, you can then select the created certificate from the `Keychain Access` window.
+It can be difficult to find when there are multiple certificates.
+
+Select the created certificate and right-click to select `Get Info` from the context menu. Then expand the `Trust` triangle.
+You should then be able to select to `Always Trust` the certificate for `SSL`.
+
+Close the panel and confirm the changes with password or fingerprint.
+
+Now you should not see https warnings serving the applications with https. Applications already opened in the Chrome browser should be reloaded.
+
+### Trusting the certificate on Windows
+
+To add certificate.pem to the Trusted Root Certification Authorities store on Windows I need to start `Microsoft Management Console`.
+This can be done by pressing `<Windows Key> + R` or searching for the `Run` desktop app. Then running run `mmc`.
+
+Then go to `File > Add/Remove Snap-in…` and select `Certificates` for the current user:
+
+Once that has been added, you should be able to navigate to:
+Console Root \ Certificates - Current User \ Trusted Root Certification Authorities \ Certificates
+
+Right-click on `Certificates` under `Trusted Root Certification Authorities` and select `All Tasks > Import…`.
+Locate your `certificate.pem` file and import it. Once imported, you should be able to find it listed as a trusted certificate.
+
+Close Microsoft Management Console (you do not need to save the console). Then **restart** the Chrome browser.
+
+Now you should not see https warnings when serving the applications with https.
 
 ## Commands
 
