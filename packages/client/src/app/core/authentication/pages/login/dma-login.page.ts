@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { BehaviorSubject, Subject, finalize, take, takeUntil } from 'rxjs';
+import { BehaviorSubject, Subject, finalize, takeUntil } from 'rxjs';
 import { DmaAuthenticationService } from '../../services';
 
 const UNAUTHORIZED_ERROR_STATUS_CODE = 401;
@@ -44,7 +44,6 @@ export class DmaLoginPage implements OnDestroy {
         this.authenticationService
             .login(username!, password!)
             .pipe(
-                take(1),
                 finalize(() => this.loading$.next(false)),
                 takeUntil(this.destroy$)
             )
