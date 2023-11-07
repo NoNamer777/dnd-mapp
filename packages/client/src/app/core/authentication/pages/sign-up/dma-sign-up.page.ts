@@ -57,7 +57,7 @@ export class DmaSignUpPage implements OnDestroy {
     }
 
     onGoToNextStage() {
-        if (this.form.invalid) return;
+        if (!this.isFirstStageCompleted) return;
         this.stage = 2;
     }
 
