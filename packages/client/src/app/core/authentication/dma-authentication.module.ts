@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DmaLoginModule, DmaLoginPage } from './pages/login';
-import { DmaSignupModule, DmaSignupPage } from './pages/signup';
+import { DmaSignUpModule, DmaSignUpPage } from './pages/sign-up';
 
 const authenticationRoutes: Routes = [
     {
@@ -10,7 +10,7 @@ const authenticationRoutes: Routes = [
     },
     {
         path: 'sign-up',
-        component: DmaSignupPage,
+        component: DmaSignUpPage,
     },
     {
         path: '',
@@ -20,6 +20,6 @@ const authenticationRoutes: Routes = [
 ];
 
 @NgModule({
-    imports: [DmaLoginModule, DmaSignupModule, RouterModule.forChild(authenticationRoutes)],
+    imports: [DmaLoginModule, DmaSignUpModule, RouterModule.forChild(authenticationRoutes)],
 })
 export class DmaAuthenticationModule {}

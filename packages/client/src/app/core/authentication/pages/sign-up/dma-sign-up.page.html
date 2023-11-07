@@ -7,7 +7,7 @@
         <h3>Sign Up</h3>
         <hr />
         <section class="flex-grow-1 d-flex flex-column" [@swipe]="stage">
-            <div *ngIf="stage === 1">
+            <div class="stage-1" [ngClass]="{ 'leave': stage !== 1, 'enter': stage === 1 }">
                 <div class="mb-3">
                     <label for="username-input" class="form-label">Username</label>
                     <input
@@ -17,6 +17,9 @@
                         placeholder="TheLegend27"
                         formControlName="username"
                     />
+                    <p class="text-danger" *ngIf="getControlErrors('username') as errors">
+                        <span *ngIf="errors['usernameUnavailable'] as errorMessage"> {{ errorMessage }} </span>
+                    </p>
                 </div>
                 <div class="mb-3">
                     <label for="email-input" class="form-label">Email Address</label>
@@ -36,6 +39,7 @@
                         id="email-confirm-input"
                         placeholder="username@domain.com"
                         formControlName="emailConfirm"
+                        (keyup.enter)="onGoToNextStage()"
                     />
                 </div>
                 <div class="d-flex flex-row-reverse">
@@ -49,12 +53,15 @@
                     </button>
                 </div>
             </div>
-            <div class="flex-grow-1 d-flex flex-column" *ngIf="stage === 2">
+            <div
+                class="flex-grow-1 d-flex flex-column stage-2"
+                [ngClass]="{ 'leave': stage !== 2, 'enter': stage === 2 }"
+            >
                 <div class="mb-3">
                     <label for="password-input" class="form-label">Password</label>
                     <input type="password" class="form-control" id="password-input" formControlName="password" />
                 </div>
-                <div class="mb-3 flex-grow-1">
+                <div class="mb-3">
                     <label for="password-confirm-input" class="form-label">Confirm Password</label>
                     <input
                         type="password"
@@ -63,8 +70,19 @@
                         formControlName="passwordConfirm"
                     />
                 </div>
+                <div class="flex-grow-1">
+                    <p class="text-danger" *ngIf="error$ | async as errorMessage">{{ errorMessage }}</p>
+                    <p class="text-success" *ngIf="success$ | async as successMessage">{{ successMessage }}</p>
+                </div>
                 <div class="d-flex flex-row-reverse justify-content-between">
-                    <button type="submit" class="btn btn-primary" [disabled]="isFormInvalid">Sign up</button>
+                    <button
+                        type="submit"
+                        class="btn btn-primary d-flex align-items-center"
+                        [disabled]="isFormInvalid || (loading$ | async)"
+                    >
+                        <span class="me-1">Sign up</span>
+                        <fa-icon icon="circle-notch" animation="spin" *ngIf="loading$ | async"></fa-icon>
+                    </button>
                     <button type="button" class="btn btn-secondary" (click)="onGoToPreviousStage()">Previous</button>
                 </div>
             </div>
