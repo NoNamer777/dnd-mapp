@@ -7,11 +7,6 @@ import { DmaAuthenticationService } from '../../services';
 
 const STATUS_CODE_BAD_REQUEST = 400;
 
-// TODO
-//  - Go to the next stage on 'enter' press in the confirm email input
-//  - Submit on pressing 'enter' on confirming password
-//  - Check username before allowing to go to the next stage
-
 @Component({
     selector: 'dma-signup',
     templateUrl: './dma-sign-up.page.html',
@@ -62,6 +57,7 @@ export class DmaSignUpPage implements OnDestroy {
     }
 
     onGoToNextStage() {
+        if (this.form.invalid) return;
         this.stage = 2;
     }
 

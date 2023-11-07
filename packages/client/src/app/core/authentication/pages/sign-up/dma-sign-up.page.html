@@ -39,6 +39,7 @@
                         id="email-confirm-input"
                         placeholder="username@domain.com"
                         formControlName="emailConfirm"
+                        (keyup.enter)="onGoToNextStage()"
                     />
                 </div>
                 <div class="d-flex flex-row-reverse">
