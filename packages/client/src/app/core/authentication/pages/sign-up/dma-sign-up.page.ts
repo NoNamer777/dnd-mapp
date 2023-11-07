@@ -1,8 +1,11 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject, Subject, finalize, takeUntil } from 'rxjs';
 import { swipeInOutAnimation } from '../../animations';
 import { DmaAuthenticationService } from '../../services';
+
+const STATUS_CODE_BAD_REQUEST = 400;
 
 // TODO
 //  - Go to the next stage on 'enter' press in the confirm email input
@@ -17,6 +20,8 @@ import { DmaAuthenticationService } from '../../services';
     animations: [swipeInOutAnimation],
 })
 export class DmaSignUpPage implements OnDestroy {
+    error$ = new Subject<string | null>();
+
     form = new FormGroup({
         username: new FormControl<string | null>(null, [Validators.required]),
         email: new FormControl<string | null>(null, [Validators.required, Validators.email]),
@@ -28,6 +33,8 @@ export class DmaSignUpPage implements OnDestroy {
     loading$ = new BehaviorSubject(false);
 
     stage = 1;
+
+    success$ = new Subject<string | null>();
 
     private destroy$ = new Subject<void>();
 
@@ -58,6 +65,22 @@ export class DmaSignUpPage implements OnDestroy {
         this.stage = 1;
     }
 
+    onSignUpError(error: HttpErrorResponse) {
+        const message =
+            error.status === STATUS_CODE_BAD_REQUEST
+                ? 'The username is currently unavailable. Please, use a different one'
+                : 'Something unexpected has happened. Please, try again later';
+        const formError =
+            error.status === STATUS_CODE_BAD_REQUEST ? { usernameUnavailable: true } : { unexpectedError: true };
+
+        this.error$.next(message);
+        (error.status === STATUS_CODE_BAD_REQUEST ? this.form.controls['username'] : this.form).setErrors(formError);
+    }
+
+    onSignUpSuccess() {
+        this.success$.next(`You've successfully registered an account. You can now go on and log in`);
+    }
+
     onSubmit() {
         const { username, email, password } = this.form.value;
 
@@ -70,6 +93,8 @@ export class DmaSignUpPage implements OnDestroy {
                 finalize(() => this.loading$.next(false))
             )
             .subscribe({
+                next: () => this.onSignUpSuccess(),
+                error: (error: HttpErrorResponse) => this.onSignUpError(error),
             });
     }
 

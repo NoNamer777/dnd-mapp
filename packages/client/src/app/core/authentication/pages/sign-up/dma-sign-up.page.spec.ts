@@ -83,6 +83,57 @@ describe('DmaSignUpPage', () => {
         request.flush({ ...expectedFormValue, id: 1, roles: [{ id: 1, name: 'Player' }] });
 
         expect(await harness.isLoadingSpinnerVisible()).toBeFalse();
+        expect(await harness.shouldShowSuccessMessage()).toBeTrue();
+        expect(await harness.shouldShowErrorMessage()).toBeFalse();
+        expect(await harness.getSuccessMessage()).toEqual(
+            `You've successfully registered an account. You can now go on and log in`
+        );
+    });
+
+    it('should show an error message when the username is not available', async () => {
+        const { harness, testingController } = await initializeTestEnvironment();
+
+        await inputFieldsStage1AndContinueToStage2(harness);
+        await harness.inputFormControlValue('password', 'secure_password');
+        await harness.inputFormControlValue('passwordConfirm', 'secure_password');
+
+        expect(await harness.isSignupButtonDisabled()).toBeFalse();
+        expect(await harness.isLoadingSpinnerVisible()).toBeFalse();
+
+        await harness.clickSignupButton();
+
+        expect(await harness.isLoadingSpinnerVisible()).toBeTrue();
+
+        testingController
+            .expectOne(`${environment.baseBackEndURL}/authentication/sign-up`)
+            .flush({}, { status: 400, statusText: 'Bad Request' });
+
+        expect(await harness.isLoadingSpinnerVisible()).toBeFalse();
+        expect(await harness.shouldShowSuccessMessage()).toBeFalse();
+        expect(await harness.shouldShowErrorMessage()).toBeTrue();
+        expect(await harness.getErrorMessage()).toEqual(
+            'The username is currently unavailable. Please, use a different one'
+        );
+    });
+
+    it('should show an error message with a generic server error', async () => {
+        const { harness, testingController } = await initializeTestEnvironment();
+
+        await inputFieldsStage1AndContinueToStage2(harness);
+        await harness.inputFormControlValue('password', 'secure_password');
+        await harness.inputFormControlValue('passwordConfirm', 'secure_password');
+
+        expect(await harness.isSignupButtonDisabled()).toBeFalse();
+
+        await harness.clickSignupButton();
+
+        testingController
+            .expectOne(`${environment.baseBackEndURL}/authentication/sign-up`)
+            .flush({}, { status: 500, statusText: 'Internal Server Error' });
+
+        expect(await harness.shouldShowSuccessMessage()).toBeFalse();
+        expect(await harness.shouldShowErrorMessage()).toBeTrue();
+        expect(await harness.getErrorMessage()).toEqual('Something unexpected has happened. Please, try again later');
     });
 
     it('should not go to the next stage with empty form', async () => {

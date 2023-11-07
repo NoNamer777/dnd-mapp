@@ -11,6 +11,8 @@ export class DmaSignupHarness extends ComponentHarness {
 
     private loadingIconLocator = this.locatorForOptional(`fa-icon[icon='circle-notch']`);
 
+    private successMessageLocator = this.locatorForOptional('p.text-success');
+    private errorMessageLocator = this.locatorForOptional('p.text-danger');
 
     private usernameInputLocator = this.locatorFor(`input[formControlName='username']`);
     private emailInputLocator = this.locatorFor(`input[formControlName='email']`);
@@ -38,8 +40,16 @@ export class DmaSignupHarness extends ComponentHarness {
         await (await this.signupButtonLocator())!.click();
     }
 
+    async getErrorMessage() {
+        return await (await this.errorMessageLocator())!.text();
+    }
+
     async getFormControlValue(formControlName: SignupFormControlName) {
         return await (await this.controls.get(formControlName)!())!.getProperty<string>('value');
+    }
+
+    async getSuccessMessage() {
+        return await (await this.successMessageLocator())!.text();
     }
 
     async inputFormControlValue(formControlName: SignupFormControlName, value: string) {
@@ -72,5 +82,13 @@ export class DmaSignupHarness extends ComponentHarness {
 
     async isFormControlVisible(formControlName: SignupFormControlName) {
         return (await (await this.controls.get(formControlName)!()).getCssValue('visibility')) === 'visible';
+    }
+
+    async shouldShowErrorMessage() {
+        return Boolean(await this.errorMessageLocator());
+    }
+
+    async shouldShowSuccessMessage() {
+        return Boolean(await this.successMessageLocator());
     }
 }
