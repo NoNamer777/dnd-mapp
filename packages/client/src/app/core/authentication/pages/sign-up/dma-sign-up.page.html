@@ -7,7 +7,7 @@
         <h3>Sign Up</h3>
         <hr />
         <section class="flex-grow-1 d-flex flex-column" [@swipe]="stage">
-            <div *ngIf="stage === 1">
+            <div [ngClass]="{ 'leave': stage !== 1, 'enter': stage === 1 }">
                 <div class="mb-3">
                     <label for="username-input" class="form-label">Username</label>
                     <input
@@ -49,7 +49,7 @@
                     </button>
                 </div>
             </div>
-            <div class="flex-grow-1 d-flex flex-column" *ngIf="stage === 2">
+            <div class="flex-grow-1 d-flex flex-column" [ngClass]="{ 'leave': stage !== 2, 'enter': stage === 2 }">
                 <div class="mb-3">
                     <label for="password-input" class="form-label">Password</label>
                     <input type="password" class="form-control" id="password-input" formControlName="password" />
