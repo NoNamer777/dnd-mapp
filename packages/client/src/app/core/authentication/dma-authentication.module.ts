@@ -9,7 +9,7 @@ const authenticationRoutes: Routes = [
         component: DmaLoginPage,
     },
     {
-        path: 'signup',
+        path: 'sign-up',
         component: DmaSignupPage,
     },
     {
