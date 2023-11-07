@@ -12,7 +12,8 @@ export class DmaSignupHarness extends ComponentHarness {
     private loadingIconLocator = this.locatorForOptional(`fa-icon[icon='circle-notch']`);
 
     private successMessageLocator = this.locatorForOptional('p.text-success');
-    private errorMessageLocator = this.locatorForOptional('p.text-danger');
+    private errorMessageLocator = this.locatorForOptional('.stage-2 p.text-danger');
+    private usernameErrorMessageLocator = this.locatorForOptional('#username-input + .text-danger');
 
     private usernameInputLocator = this.locatorFor(`input[formControlName='username']`);
     private emailInputLocator = this.locatorFor(`input[formControlName='email']`);
@@ -52,8 +53,20 @@ export class DmaSignupHarness extends ComponentHarness {
         return await (await this.successMessageLocator())!.text();
     }
 
+    async getUsernameErrorMessage() {
+        return await (await this.usernameErrorMessageLocator())!.text();
+    }
+
     async inputFormControlValue(formControlName: SignupFormControlName, value: string) {
         await (await this.controls.get(formControlName)!())!.sendKeys(value);
+    }
+
+    async isErrorMessageVisible() {
+        return Boolean(await this.errorMessageLocator());
+    }
+
+    async isFormControlVisible(formControlName: SignupFormControlName) {
+        return (await (await this.controls.get(formControlName)!()).getCssValue('visibility')) === 'visible';
     }
 
     async isLoadingSpinnerVisible() {
@@ -80,15 +93,11 @@ export class DmaSignupHarness extends ComponentHarness {
         return (await (await this.signupButtonLocator()).getCssValue('visibility')) === 'visible';
     }
 
-    async isFormControlVisible(formControlName: SignupFormControlName) {
-        return (await (await this.controls.get(formControlName)!()).getCssValue('visibility')) === 'visible';
-    }
-
-    async shouldShowErrorMessage() {
-        return Boolean(await this.errorMessageLocator());
-    }
-
-    async shouldShowSuccessMessage() {
+    async isSuccessMessageVisible() {
         return Boolean(await this.successMessageLocator());
+    }
+
+    async isUsernameErrorVisible() {
+        return Boolean(await this.usernameErrorMessageLocator());
     }
 }

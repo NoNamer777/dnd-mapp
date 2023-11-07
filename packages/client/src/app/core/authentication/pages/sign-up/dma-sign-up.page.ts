@@ -52,6 +52,10 @@ export class DmaSignUpPage implements OnDestroy {
         );
     }
 
+    getControlErrors(controlName: string) {
+        return this.form.get(controlName)!.errors;
+    }
+
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
@@ -66,15 +70,19 @@ export class DmaSignUpPage implements OnDestroy {
     }
 
     onSignUpError(error: HttpErrorResponse) {
-        const message =
-            error.status === STATUS_CODE_BAD_REQUEST
-                ? 'The username is currently unavailable. Please, use a different one'
-                : 'Something unexpected has happened. Please, try again later';
-        const formError =
-            error.status === STATUS_CODE_BAD_REQUEST ? { usernameUnavailable: true } : { unexpectedError: true };
+        let message = 'Something unexpected has happened. Please, try again later';
+        let formError: Record<string, unknown> = { unexpectedError: true };
 
-        this.error$.next(message);
-        (error.status === STATUS_CODE_BAD_REQUEST ? this.form.controls['username'] : this.form).setErrors(formError);
+        if (error.status === STATUS_CODE_BAD_REQUEST) {
+            message = 'The username is currently unavailable. Please, use a different one';
+            formError = { usernameUnavailable: message };
+            this.stage = 1;
+
+            this.form.get('username')!.setErrors(formError);
+        } else {
+            this.error$.next(message);
+            this.form.setErrors(formError);
+        }
     }
 
     onSignUpSuccess() {

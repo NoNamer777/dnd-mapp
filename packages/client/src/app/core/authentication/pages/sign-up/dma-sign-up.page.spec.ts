@@ -83,8 +83,8 @@ describe('DmaSignUpPage', () => {
         request.flush({ ...expectedFormValue, id: 1, roles: [{ id: 1, name: 'Player' }] });
 
         expect(await harness.isLoadingSpinnerVisible()).toBeFalse();
-        expect(await harness.shouldShowSuccessMessage()).toBeTrue();
-        expect(await harness.shouldShowErrorMessage()).toBeFalse();
+        expect(await harness.isSuccessMessageVisible()).toBeTrue();
+        expect(await harness.isErrorMessageVisible()).toBeFalse();
         expect(await harness.getSuccessMessage()).toEqual(
             `You've successfully registered an account. You can now go on and log in`
         );
@@ -109,9 +109,10 @@ describe('DmaSignUpPage', () => {
             .flush({}, { status: 400, statusText: 'Bad Request' });
 
         expect(await harness.isLoadingSpinnerVisible()).toBeFalse();
-        expect(await harness.shouldShowSuccessMessage()).toBeFalse();
-        expect(await harness.shouldShowErrorMessage()).toBeTrue();
-        expect(await harness.getErrorMessage()).toEqual(
+        expect(await harness.isSuccessMessageVisible()).toBeFalse();
+        expect(await harness.isErrorMessageVisible()).toBeFalse();
+        expect(await harness.isUsernameErrorVisible()).toBeTrue();
+        expect(await harness.getUsernameErrorMessage()).toEqual(
             'The username is currently unavailable. Please, use a different one'
         );
     });
@@ -131,8 +132,8 @@ describe('DmaSignUpPage', () => {
             .expectOne(`${environment.baseBackEndURL}/authentication/sign-up`)
             .flush({}, { status: 500, statusText: 'Internal Server Error' });
 
-        expect(await harness.shouldShowSuccessMessage()).toBeFalse();
-        expect(await harness.shouldShowErrorMessage()).toBeTrue();
+        expect(await harness.isSuccessMessageVisible()).toBeFalse();
+        expect(await harness.isErrorMessageVisible()).toBeTrue();
         expect(await harness.getErrorMessage()).toEqual('Something unexpected has happened. Please, try again later');
     });
 
