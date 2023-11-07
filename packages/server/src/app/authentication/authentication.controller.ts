@@ -41,10 +41,10 @@ export class AuthenticationController {
         this.logger.log('Received a request to sign up a User');
 
         const user = await this.authenticationService.signup(userData);
+        const { host, port, address, useSsl } = this.configService.get('server');
 
-        response.header('Location', `${buildServerUrl(this.configService)}/server/api/user/${user.id}`);
+        response.header('Location', `${buildServerUrl(host, port, useSsl, address)}/server/api/user/${user.id}`);
 
-        // TODO: Don't send sensitive User data
         return user;
     }
 }

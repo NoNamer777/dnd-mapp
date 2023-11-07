@@ -6,7 +6,8 @@ WORKDIR /client
 
 COPY package*.json .
 
-RUN npm ci
+RUN apk --no-cache --virtual build-dependencies add python3 build-base && \
+    npm ci
 
 COPY . .
 
