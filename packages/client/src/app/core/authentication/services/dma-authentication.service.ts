@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { User } from '@dnd-mapp/data';
+import { CreateUserData, User } from '@dnd-mapp/data';
 import { BehaviorSubject } from 'rxjs';
 import { DmaHttpRequestService, JWT_HELPER_SERVICE, StorageService, TOKEN_STORAGE_KEY } from '../../../shared';
 import { UserService } from '../../../user';
@@ -22,6 +22,10 @@ export class DmaAuthenticationService {
         const data = { username, password };
 
         return this.httpRequestService.post('/authentication/login', data);
+    }
+
+    signUp(userData: CreateUserData) {
+        return this.httpRequestService.post('/authentication/sign-up', userData);
     }
 
     private initialize() {

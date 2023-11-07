@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { BehaviorSubject, Subject, finalize, takeUntil } from 'rxjs';
 import { swipeInOutAnimation } from '../../animations';
+import { DmaAuthenticationService } from '../../services';
 
 @Component({
     selector: 'dma-signup',
@@ -9,7 +11,7 @@ import { swipeInOutAnimation } from '../../animations';
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [swipeInOutAnimation],
 })
-export class DmaSignUpPage {
+export class DmaSignUpPage implements OnDestroy {
     form = new FormGroup({
         username: new FormControl<string | null>(null, [Validators.required]),
         email: new FormControl<string | null>(null, [Validators.required, Validators.email]),
@@ -19,6 +21,8 @@ export class DmaSignUpPage {
     });
 
     stage = 1;
+
+    private destroy$ = new Subject<void>();
 
     get isFormInvalid() {
         return this.form.invalid;
@@ -32,6 +36,11 @@ export class DmaSignUpPage {
         );
     }
 
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
+
     onGoToNextStage() {
         this.stage = 2;
     }
@@ -41,7 +50,15 @@ export class DmaSignUpPage {
     }
 
     onSubmit() {
-        console.warn('Form submitted', this.form.value);
+        const { username, email, password } = this.form.value;
+
+        this.authenticationService
+            .signUp({ username: username!, password: password!, emailAddress: email! })
+            .pipe(
+                takeUntil(this.destroy$),
+            )
+            .subscribe({
+            });
     }
 
     private getFormControl(controlName: string) {

@@ -1,9 +1,11 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { HttpTestingController } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DmaSignupHarness } from '../../../../../testing';
+import { environment } from '../../../../../environments';
+import { DmaHttpRequestTestingModule, DmaSignupHarness } from '../../../../../testing';
 import { DmaSignUpModule } from './dma-sign-up.module';
 
 describe('DmaSignUpPage', () => {
@@ -14,17 +16,15 @@ describe('DmaSignUpPage', () => {
 
     async function initializeTestEnvironment() {
         TestBed.configureTestingModule({
-            imports: [DmaSignUpModule, RouterTestingModule, NoopAnimationsModule],
+            imports: [DmaSignUpModule, RouterTestingModule, NoopAnimationsModule, DmaHttpRequestTestingModule],
             declarations: [TestComponent],
         });
 
         const harnessLoader = TestbedHarnessEnvironment.loader(TestBed.createComponent(TestComponent));
 
-        // TODO: Remove once proper signup process has been put in place.
-        spyOn(console, 'warn');
-
         return {
             harness: await harnessLoader.getHarness(DmaSignupHarness),
+            testingController: TestBed.inject(HttpTestingController),
         };
     }
 
@@ -35,6 +35,8 @@ describe('DmaSignUpPage', () => {
 
         await harness.clickNextButton();
     }
+
+    afterEach(() => TestBed.inject(HttpTestingController).verify());
 
     it('should have disabled next button with empty form', async () => {
         const { harness } = await initializeTestEnvironment();
@@ -56,13 +58,11 @@ describe('DmaSignUpPage', () => {
     });
 
     it('should be able to submit signup form', async () => {
-        const { harness } = await initializeTestEnvironment();
+        const { harness, testingController } = await initializeTestEnvironment();
         const expectedFormValue = {
             username: 'user1',
-            email: 'user1@domain.com',
-            emailConfirm: 'user1@domain.com',
+            emailAddress: 'user1@domain.com',
             password: 'secure_password',
-            passwordConfirm: 'secure_password',
         };
 
         await inputFieldsStage1AndContinueToStage2(harness);
@@ -73,7 +73,11 @@ describe('DmaSignUpPage', () => {
 
         await harness.clickSignupButton();
 
-        expect(console.warn).toHaveBeenCalledWith('Form submitted', expectedFormValue);
+        const request = testingController.expectOne(`${environment.baseBackEndURL}/authentication/sign-up`);
+
+        expect(request.request.body).toEqual(expectedFormValue);
+
+        request.flush({ ...expectedFormValue, id: 1, roles: [{ id: 1, name: 'Player' }] });
     });
 
     it('should not go to the next stage with empty form', async () => {
