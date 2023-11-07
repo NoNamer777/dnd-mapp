@@ -21,8 +21,8 @@ jobs:
             npm-version: 9
             number-of-agents: 3
             init-commands: |
-                echo "${{ vars.CLIENT_ENV_VARIABLES_PROD }}" > packages/client/src/environments/environment.prod.ts
                 npx nx-cloud start-ci-run --stop-agents-after "build" --agent-count 3
+                npx nx-cloud record -- echo "${{ vars.CLIENT_ENV_VARIABLES_PROD }}" > packages/client/src/environments/environment.prod.ts
             parallel-commands: |
                 npx nx-cloud record -- npx nx format:check
             parallel-commands-on-agents: |
