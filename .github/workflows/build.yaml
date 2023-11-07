@@ -21,13 +21,14 @@ jobs:
             npm-version: 9
             number-of-agents: 3
             init-commands: |
+                echo "${{ vars.CLIENT_ENV_VARIABLES_PROD }}" > packages/client/src/environments/environment.prod.ts
                 npx nx-cloud start-ci-run --stop-agents-after "build" --agent-count 3
             parallel-commands: |
                 npx nx-cloud record -- npx nx format:check
             parallel-commands-on-agents: |
                 npx nx affected -t lint 
                 npx nx affected -t test 
-                echo "${{ vars.CLIENT_ENV_VARIABLES_PROD }}" > packages/client/src/environments/environment.prod.ts && npx nx affected -t build
+                npx nx affected -t build
     agents:
         name: Nx Cloud - Agents
         uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.13.1
