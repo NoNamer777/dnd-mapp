@@ -56,7 +56,7 @@ async function bootstrap() {
         exposedHeaders: ['Authorization'],
     });
 
-    const server = useSsl
+    const server = ssl
         ? createHttpsServer({ cert: await readFile(ssl.certPath), key: await readFile(ssl.keyPath) }, expressServer)
         : createHttpServer(expressServer);
 
