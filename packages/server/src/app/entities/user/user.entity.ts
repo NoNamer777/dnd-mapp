@@ -8,8 +8,8 @@ import {
     IsInt,
     IsNotEmpty,
     IsString,
-    IsStrongPassword,
     Min,
+    MinLength,
     ValidateNested,
 } from 'class-validator';
 import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
@@ -40,7 +40,7 @@ export class UserEntity implements User {
     })
     @IsString()
     @IsNotEmpty()
-    @IsStrongPassword()
+    @MinLength(8)
     @Exclude({ toPlainOnly: true })
     password: string;
 
