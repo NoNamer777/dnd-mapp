@@ -18,13 +18,13 @@ PRODUCTION=true | false
 HOST=localhost
 
 # On which port ro run the server process.
-PORT=8080
+PORT=80
 
 # The domain from which the back-end is available, should the app be containerized for example.
 ADDRESS=example.com
 
 # Whether to use SSL or not (Independant of if the certifcate and key are provided).
-USE_SSL=true
+USE_SSL=true | false
 
 # The certificate and key to run the server in ssl (https).
 # By default, the server doesn't come with a certificate and key so that must be provided.
@@ -63,40 +63,6 @@ MYSQL_USERNAME=username
 MYSQL_PASSWORD=password
 ```
 
-## Developing with SSL
-
-Assuming you've followed the instructions in the README in the root of this repository, you can enable ssl for your local dev environment. This you can accomplish by, passing the paths to the generated certificate and its key via the server configuration file.
-
-## Database migrations
-
-When setting up a database, the server is configured to use migrations to build up the database iteratively so that no data is lost on restart of the server application. For more information on how to use, or create these migration files, please refer to [the official documentation of TypeORM](https://typeorm.io/migrations).
-
-In order to run the database migrations you'll need to provide your datasource configuration so that TypeORM is aware of what type of database is used and where it can find the migrations files. Your configuration should look like the following:
-
-```typescript
-import { DataSource } from 'typeorm';
-
-// Example of a MySQL database configuration
-const MysqlConfig = new DataSource({
-    type: 'mysql',
-    host: 'localhost',
-    port: 3306,
-    database: 'database',
-    username: 'username',
-    password: 'password',
-    migrations: ['path/to/migration/files/*.ts'],
-});
-
-// Example of a Sqlite database configuration
-const SqliteConfig = new DataSource({
-    type: 'sqlite',
-    database: 'mydatabase.db',
-    migrations: ['path/to/migration/files/*.ts'],
-});
-
-export default MysqlConfig;
-```
-
 ## Commands
 
 The available commands are:
@@ -104,79 +70,30 @@ The available commands are:
 -   **To build the application**
 
 ```shell
-nx run server:build
+npx nx build server
 ```
 
 To build it in development (watch) mode:
 
 ```shell
-nx run server:build:dev
+npx nx build server -c dev
 ```
 
 -   **To start the development application**
 
 ```shell
-npm run server:start
+npx nx start server
 ```
-
-This will make sure your development database, which you should have configured by now, will be migrated at least once, before the server will start.
 
 -   **To run the tests**
 
 ```shell
-nx run server:test
+npx nx test server
 ```
 
 To run the test in watch mode:
 
 ```shell
 # This will rerun all the tests after changes are detected.
-nx run server:test:dev
-```
-
-## Docker
-
-A Docker image can be made locally of this project by running the following command in a terminal in the root of this repository:
-
-```shell
-nx run server:docker-build
-```
-
-After that you can create a container by running the following command:
-
-```shell
-docker run -it -d -p 8080:80/tcp --name dnd-mapp-server nonamer777/dnd-mapp-server
-```
-
-### Docker compose
-
-To use the docker images that are build on every push to the main branch you can use the following format:
-
-```yaml
-# ./compose.yaml
-
-version: '3'
-services:
-    server:
-        container_name: 'dnd-mapp-server'
-        image: 'ghcr.io/nonamer777/dnd-mapp-server:dev'
-        # NOTE: Make sure that the exposed container port matches with the port on which the server is configured to run on
-        ports:
-            - '8080:8080'
-        environment:
-            - 'SERVER_CONFIG_PATH=./server-config.yaml'
-        volumes:
-            # Passing along the server configuration
-            - './server-config.yaml:/usr/src/app/server-config.yaml'
-
-            # When using a Sqlite database, and it has been set to persist the data to a file, You must create a database file,
-            # and pass that along to the container for persistance.
-            - './dnd-mapp.db:/usr/src/app/dnd-mapp.db'
-
-            # Passing along the certificate and key to enable ssl
-            - './certificate.pem:/usr/src/app/certificate.pem'
-            - './certificate-key.pem:/usr/src/app/certificate-key.pem'
-
-            # Scripts to iteratively build up the database
-            - './migrations:/usr/src/app/migrations'
+npx nx test server -c dev
 ```

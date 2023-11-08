@@ -124,3 +124,41 @@ Alternatively, you can run the following command to fix the formatting:
 ```shell
 nx format:write
 ```
+
+## Docker
+
+A Docker image can be made locally of this project by running the following command in a terminal in the root of this repository:
+
+```shell
+npm run docker:build
+
+# OR
+docker build -t nonamer777/dnd-mapp .
+```
+
+After that you can create a container by running the following command:
+
+```shell
+docker run -it -d -p 8080:80 --name dnd-mapp ghcr.io/nonamer777/dnd-mapp
+```
+
+### Docker compose
+
+To use the docker images that are build on every push to the main branch you can use the following format:
+
+```yaml
+# ./compose.yaml
+services:
+    server:
+        container_name: dnd-mapp
+        image: ghcr.io/nonamer777/dnd-mapp:dev
+        restart: unless-stopped
+        ports:
+            - '8080:80/tcp'
+        env_file:
+            - .env # Pass the environment variables in a single file
+        volumes:
+            # When using a Sqlite database, and it has been set to persist the data to a file, You must create a database file,
+            # and pass that along to the container for persistence.
+            - './dnd-mapp.db:/usr/src/app/dnd-mapp.db'
+```
