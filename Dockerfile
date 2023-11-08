@@ -44,6 +44,6 @@ COPY --from=build-server server/dist .
 ENV MIGRATION_FILES_PATH=/usr/src/app/server/db/migrations/*.js
 ENV HOST=0.0.0.0
 
-EXPOSE 8080
+EXPOSE 80
 
 CMD ["node", "/usr/src/app/server/main.js"]
