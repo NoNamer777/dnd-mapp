@@ -1,17 +1,18 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleAsyncOptions } from '@nestjs/typeorm';
+import { DatabaseConfig } from './database.config';
 
 const typeOrmConfig: TypeOrmModuleAsyncOptions = {
     imports: [ConfigModule],
     inject: [ConfigService],
     useFactory: (configService: ConfigService) => ({
-        ...configService.get('database'),
+        ...configService.get<DatabaseConfig>('database'),
         entities: [],
         autoLoadEntities: true,
         synchronize: false,
         migrationsRun: true,
-        migrations: [configService.get('database').migrationFilesPath],
+        migrations: [configService.get<DatabaseConfig>('database').migrationFilesPath],
     }),
 };
 

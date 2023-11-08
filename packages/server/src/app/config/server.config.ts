@@ -11,6 +11,21 @@ function getSslConfig() {
     };
 }
 
+interface SslConfig {
+    certPath: string;
+    keyPath: string;
+}
+
+export interface ServerConfig {
+    production: boolean;
+    host: string;
+    port: number;
+    useSsl: boolean;
+    address: string;
+    jwtSecret: string;
+    ssl?: SslConfig | undefined;
+}
+
 export default registerAs('server', () => ({
     production: Boolean(process.env.PRODUCTION) || false,
     host: process.env.HOST || 'localhost.dndmapp.net',

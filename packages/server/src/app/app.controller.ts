@@ -1,6 +1,7 @@
 import { Controller, Get, Redirect } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { buildServerUrl } from './common';
+import { ServerConfig } from './config/server.config';
 
 @Controller({
     path: '',
@@ -11,7 +12,7 @@ export class AppController {
     @Get('')
     @Redirect('app', 301)
     getRoot() {
-        const { host, port, address, useSsl } = this.configService.get('server');
+        const { host, port, address, useSsl } = this.configService.get<ServerConfig>('server');
         return {
             url: `${buildServerUrl(host, port, useSsl, address)}/app`,
         };

@@ -1,4 +1,8 @@
 import { registerAs } from '@nestjs/config';
+import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
+import { SqliteConnectionOptions } from 'typeorm/driver/sqlite/SqliteConnectionOptions';
+
+export type DatabaseConfig = { migrationFilesPath: string } & (MysqlConnectionOptions | SqliteConnectionOptions);
 
 export default registerAs('database', () => ({
     type: process.env.DATABASE_TYPE || 'sqlite',
