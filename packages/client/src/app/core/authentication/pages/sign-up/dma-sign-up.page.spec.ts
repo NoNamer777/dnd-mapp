@@ -5,7 +5,7 @@ import { TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from '../../../../../environments';
-import { DmaHttpRequestTestingModule, DmaSignupHarness } from '../../../../../testing';
+import { DmaHttpRequestTestingModule, DmaSignUpHarness } from '../../../../../testing';
 import { DmaSignUpModule } from './dma-sign-up.module';
 
 describe('DmaSignUpPage', () => {
@@ -23,12 +23,12 @@ describe('DmaSignUpPage', () => {
         const harnessLoader = TestbedHarnessEnvironment.loader(TestBed.createComponent(TestComponent));
 
         return {
-            harness: await harnessLoader.getHarness(DmaSignupHarness),
+            harness: await harnessLoader.getHarness(DmaSignUpHarness),
             testingController: TestBed.inject(HttpTestingController),
         };
     }
 
-    async function inputFieldsStage1AndContinueToStage2(harness: DmaSignupHarness) {
+    async function inputFieldsStage1AndContinueToStage2(harness: DmaSignUpHarness) {
         await harness.inputFormControlValue('username', 'user1');
         await harness.inputFormControlValue('email', 'user1@domain.com');
         await harness.inputFormControlValue('emailConfirm', 'user1@domain.com');

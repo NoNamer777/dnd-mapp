@@ -3,7 +3,7 @@ import { PasswordFromControlHarness } from '../../../shared';
 
 type SignupFormControlName = 'username' | 'email' | 'emailConfirm' | 'password' | 'passwordConfirm';
 
-export class DmaSignupHarness extends ComponentHarness {
+export class DmaSignUpHarness extends ComponentHarness {
     static hostSelector = 'dma-signup';
 
     private nextButtonLocator = this.locatorFor(`button[type='button'].btn-primary`);
