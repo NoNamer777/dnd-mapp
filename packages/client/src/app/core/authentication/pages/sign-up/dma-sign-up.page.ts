@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { BehaviorSubject, Subject, finalize, takeUntil } from 'rxjs';
 import { swipeInOutAnimation } from '../../animations';
 import { DmaAuthenticationService } from '../../services';
@@ -14,7 +14,7 @@ const STATUS_CODE_BAD_REQUEST = 400;
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [swipeInOutAnimation],
 })
-export class DmaSignUpPage implements OnDestroy {
+export class DmaSignUpPage implements AfterViewInit, OnDestroy {
     error$ = new Subject<string | null>();
 
     form = new FormGroup({
@@ -30,6 +30,8 @@ export class DmaSignUpPage implements OnDestroy {
     stage = 1;
 
     success$ = new Subject<string | null>();
+
+    @ViewChild(FormGroupDirective) private formDirective: FormGroupDirective;
 
     private destroy$ = new Subject<void>();
 
@@ -82,6 +84,8 @@ export class DmaSignUpPage implements OnDestroy {
     }
 
     onSignUpSuccess() {
+        this.formDirective.resetForm();
+        this.onGoToPreviousStage();
         this.success$.next(`You've successfully registered an account. You can now go on and log in`);
     }
 
