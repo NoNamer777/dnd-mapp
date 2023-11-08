@@ -13,7 +13,6 @@ on:
             - main
     main:
         name: Nx Cloud - Main Job
-        needs: setup
         uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.13.1
         with:
             main-branch-name: main
@@ -33,7 +32,6 @@ on:
                 npx nx affected -t build
     agents:
         name: Nx Cloud - Agents
-        needs: setup
         uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.13.1
         with:
             number-of-agents: 3
