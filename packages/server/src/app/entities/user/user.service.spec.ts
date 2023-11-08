@@ -94,7 +94,7 @@ describe('UserService', () => {
             const newUserData = new User('User Test Test', password, emailAddress, id);
 
             await expect(service.update(newUserData)).rejects.toThrowError(
-                new NotFoundException(`Cannot update User because the name 'User Test Test' is already used`)
+                new NotFoundException(`Cannot update User because the username 'User Test Test' is already used`)
             );
             expect(mockUserDB.findOneById(1)).toEqual(expect.not.objectContaining(newUserData));
         });
@@ -116,7 +116,7 @@ describe('UserService', () => {
             const newUserData = new User('User1', 'user1@domain.com', 'secure_password');
 
             await expect(service.create(newUserData)).rejects.toThrowError(
-                new NotFoundException(`Cannot create User because the name 'User1' is already used`)
+                new NotFoundException(`Cannot create User because the username 'User1' is already used`)
             );
         });
     });

@@ -1,3 +1,4 @@
+import { TestKey } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HttpTestingController } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
@@ -5,7 +6,7 @@ import { TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from '../../../../../environments';
-import { DmaHttpRequestTestingModule, DmaSignupHarness } from '../../../../../testing';
+import { DmaHttpRequestTestingModule, DmaSignUpHarness } from '../../../../../testing';
 import { DmaSignUpModule } from './dma-sign-up.module';
 
 describe('DmaSignUpPage', () => {
@@ -23,12 +24,12 @@ describe('DmaSignUpPage', () => {
         const harnessLoader = TestbedHarnessEnvironment.loader(TestBed.createComponent(TestComponent));
 
         return {
-            harness: await harnessLoader.getHarness(DmaSignupHarness),
+            harness: await harnessLoader.getHarness(DmaSignUpHarness),
             testingController: TestBed.inject(HttpTestingController),
         };
     }
 
-    async function inputFieldsStage1AndContinueToStage2(harness: DmaSignupHarness) {
+    async function inputFieldsStage1AndContinueToStage2(harness: DmaSignUpHarness) {
         await harness.inputFormControlValue('username', 'user1');
         await harness.inputFormControlValue('email', 'user1@domain.com');
         await harness.inputFormControlValue('emailConfirm', 'user1@domain.com');
@@ -106,7 +107,7 @@ describe('DmaSignUpPage', () => {
 
         testingController
             .expectOne(`${environment.baseBackEndURL}/authentication/sign-up`)
-            .flush({}, { status: 400, statusText: 'Bad Request' });
+            .flush({ message: 'username' }, { status: 400, statusText: 'Bad Request' });
 
         expect(await harness.isLoadingSpinnerVisible()).toBeFalse();
         expect(await harness.isSuccessMessageVisible()).toBeFalse();
@@ -130,7 +131,7 @@ describe('DmaSignUpPage', () => {
 
         testingController
             .expectOne(`${environment.baseBackEndURL}/authentication/sign-up`)
-            .flush({}, { status: 500, statusText: 'Internal Server Error' });
+            .flush({}, { status: 400, statusText: 'Internal Server Error' });
 
         expect(await harness.isSuccessMessageVisible()).toBeFalse();
         expect(await harness.isErrorMessageVisible()).toBeTrue();
@@ -141,6 +142,7 @@ describe('DmaSignUpPage', () => {
         const { harness } = await initializeTestEnvironment();
 
         await harness.clickNextButton();
+        await harness.inputFormControlValue('emailConfirm', TestKey.ENTER);
 
         expect(await harness.isSignupButtonVisible()).toBeFalse();
     });

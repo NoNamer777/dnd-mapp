@@ -1,6 +1,6 @@
 <article class="d-flex justify-content-center align-items-center container-lg">
     <form
-        class="col-12 col-sm-10 col-lg-7 border rounded p-3 bg-body-secondary overflow-hidden d-flex flex-column"
+        class="col-12 col-sm-10 col-lg-7 border rounded p-3 bg-body-secondary d-flex flex-column"
         [formGroup]="form"
         (ngSubmit)="onSubmit()"
     >
@@ -17,8 +17,8 @@
                         placeholder="TheLegend27"
                         formControlName="username"
                     />
-                    <p class="text-danger" *ngIf="getControlErrors('username') as errors">
-                        <span *ngIf="errors['usernameUnavailable'] as errorMessage"> {{ errorMessage }} </span>
+                    <p class="text-danger my-2" *ngIf="doesControlHasErrors('username', 'usernameUnavailable')">
+                        {{ getControlError('username', 'usernameUnavailable') }}
                     </p>
                 </div>
                 <div class="mb-3">
@@ -41,6 +41,9 @@
                         formControlName="emailConfirm"
                         (keyup.enter)="onGoToNextStage()"
                     />
+                    <p class="text-danger my-2" *ngIf="form.getError('emailShouldMatch')">
+                        The 2 provided email addresses are not the same. Please, provide 2 identical email addresses
+                    </p>
                 </div>
                 <div class="d-flex flex-row-reverse">
                     <button
@@ -58,17 +61,21 @@
                 [ngClass]="{ 'leave': stage !== 2, 'enter': stage === 2 }"
             >
                 <div class="mb-3">
-                    <label for="password-input" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password-input" formControlName="password" />
+                    <dma-password-form-control
+                        label="Password"
+                        inputId="password-input"
+                        inputFormControlName="password"
+                    ></dma-password-form-control>
                 </div>
                 <div class="mb-3">
-                    <label for="password-confirm-input" class="form-label">Confirm Password</label>
-                    <input
-                        type="password"
-                        class="form-control"
-                        id="password-confirm-input"
-                        formControlName="passwordConfirm"
-                    />
+                    <dma-password-form-control
+                        label="Confirm Password"
+                        inputId="password-confirm-input"
+                        inputFormControlName="passwordConfirm"
+                    ></dma-password-form-control>
+                    <p class="text-danger mt-1" *ngIf="form.getError('passwordShouldMatch')">
+                        The 2 provided password are not the same. Please, provide 2 identical passwords
+                    </p>
                 </div>
                 <div class="flex-grow-1">
                     <p class="text-danger" *ngIf="error$ | async as errorMessage">{{ errorMessage }}</p>

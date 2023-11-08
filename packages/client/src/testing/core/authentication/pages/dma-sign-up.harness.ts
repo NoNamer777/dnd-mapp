@@ -1,8 +1,9 @@
-import { ComponentHarness } from '@angular/cdk/testing';
+import { ComponentHarness, TestKey } from '@angular/cdk/testing';
+import { PasswordFromControlHarness } from '../../../shared';
 
 type SignupFormControlName = 'username' | 'email' | 'emailConfirm' | 'password' | 'passwordConfirm';
 
-export class DmaSignupHarness extends ComponentHarness {
+export class DmaSignUpHarness extends ComponentHarness {
     static hostSelector = 'dma-signup';
 
     private nextButtonLocator = this.locatorFor(`button[type='button'].btn-primary`);
@@ -18,15 +19,19 @@ export class DmaSignupHarness extends ComponentHarness {
     private usernameInputLocator = this.locatorFor(`input[formControlName='username']`);
     private emailInputLocator = this.locatorFor(`input[formControlName='email']`);
     private emailConfirmInputLocator = this.locatorFor(`input[formControlName='emailConfirm']`);
-    private passwordInputLocator = this.locatorFor(`input[formControlName='password']`);
-    private passwordConfirmInputLocator = this.locatorFor(`input[formControlName='passwordConfirm']`);
+    private passwordInputLocator = async () =>
+        await (await this.locatorFor(PasswordFromControlHarness.with({ controlName: 'password' }))()).getInputField();
+    private passwordConfirmInputLocator = async () =>
+        await (
+            await this.locatorFor(PasswordFromControlHarness.with({ controlName: 'passwordConfirm' }))()
+        ).getInputField();
 
     private controls = new Map([
-        ['username', this.usernameInputLocator],
-        ['email', this.emailInputLocator],
-        ['emailConfirm', this.emailConfirmInputLocator],
-        ['password', this.passwordInputLocator],
-        ['passwordConfirm', this.passwordConfirmInputLocator],
+        ['username', this.usernameInputLocator()],
+        ['email', this.emailInputLocator()],
+        ['emailConfirm', this.emailConfirmInputLocator()],
+        ['password', this.passwordInputLocator()],
+        ['passwordConfirm', this.passwordConfirmInputLocator()],
     ]);
 
     async clickNextButton() {
@@ -46,7 +51,7 @@ export class DmaSignupHarness extends ComponentHarness {
     }
 
     async getFormControlValue(formControlName: SignupFormControlName) {
-        return await (await this.controls.get(formControlName)!())!.getProperty<string>('value');
+        return await (await this.controls.get(formControlName))!.getProperty<string>('value');
     }
 
     async getSuccessMessage() {
@@ -57,8 +62,8 @@ export class DmaSignupHarness extends ComponentHarness {
         return await (await this.usernameErrorMessageLocator())!.text();
     }
 
-    async inputFormControlValue(formControlName: SignupFormControlName, value: string) {
-        await (await this.controls.get(formControlName)!())!.sendKeys(value);
+    async inputFormControlValue(formControlName: SignupFormControlName, value: string | TestKey) {
+        await (await this.controls.get(formControlName))!.sendKeys(value);
     }
 
     async isErrorMessageVisible() {
@@ -66,7 +71,7 @@ export class DmaSignupHarness extends ComponentHarness {
     }
 
     async isFormControlVisible(formControlName: SignupFormControlName) {
-        return (await (await this.controls.get(formControlName)!()).getCssValue('visibility')) === 'visible';
+        return (await (await this.controls.get(formControlName))!.getCssValue('visibility')) === 'visible';
     }
 
     async isLoadingSpinnerVisible() {

@@ -11,6 +11,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
 import { DndMappLoggerService, buildServerUrl } from '../common';
+import { ServerConfig } from '../config/server.config';
 import { LoginDto, SignUpDto } from './models';
 import { AuthenticationService } from './services/authentication.service';
 
@@ -41,7 +42,7 @@ export class AuthenticationController {
         this.logger.log('Received a request to sign up a User');
 
         const user = await this.authenticationService.signup(userData);
-        const { host, port, address, useSsl } = this.configService.get('server');
+        const { host, port, address, useSsl } = this.configService.get<ServerConfig>('server');
 
         response.header('Location', `${buildServerUrl(host, port, useSsl, address)}/server/api/user/${user.id}`);
 

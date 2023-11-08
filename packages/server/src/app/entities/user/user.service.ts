@@ -52,7 +52,7 @@ export class UserService {
         }
         if (byUsername && byUsername.id !== user.id) {
             throw new BadRequestException(
-                `Cannot update User because the name '${byUsername.username}' is already used`
+                `Cannot update User because the username '${byUsername.username}' is already used`
             );
         }
         user.password = await this.resolvePassword(user.password, byId.password);
@@ -67,7 +67,7 @@ export class UserService {
 
         if (byUsername) {
             throw new BadRequestException(
-                `Cannot create User because the name '${byUsername.username}' is already used`
+                `Cannot create User because the username '${byUsername.username}' is already used`
             );
         }
         (user as UserEntity).roles = [await this.userRoleService.findByName(UserRoles.PLAYER)];

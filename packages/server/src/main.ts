@@ -9,6 +9,7 @@ import { createServer as createHttpServer } from 'http';
 import { createServer as createHttpsServer } from 'https';
 import { AppModule } from './app/app.module';
 import { DndMappLoggerService, buildServerUrl } from './app/common';
+import { ServerConfig } from './app/config/server.config';
 
 const validationOptions: ValidationPipeOptions = {
     errorHttpStatusCode: HttpStatus.BAD_REQUEST,
@@ -32,7 +33,7 @@ async function bootstrap() {
     logger.setContext('NestApplication');
     Logger.flush();
 
-    const { host, port, address, useSsl, ssl } = configService.get('server');
+    const { host, port, address, useSsl, ssl } = configService.get<ServerConfig>('server');
     const backEndUrl = buildServerUrl(host, port, useSsl, address);
 
     nestApp.useLogger(logger);
@@ -55,7 +56,7 @@ async function bootstrap() {
         exposedHeaders: ['Authorization'],
     });
 
-    const server = useSsl
+    const server = ssl
         ? createHttpsServer({ cert: await readFile(ssl.certPath), key: await readFile(ssl.keyPath) }, expressServer)
         : createHttpServer(expressServer);
 
