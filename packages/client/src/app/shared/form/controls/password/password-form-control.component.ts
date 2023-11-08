@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, FactoryProvider, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, FactoryProvider, inject, Input, OnInit } from '@angular/core';
 import { ControlContainer, FormControl, FormGroup, Validators } from '@angular/forms';
 
 type PasswordIconProp = 'eye' | 'eye-slash';
@@ -17,7 +17,7 @@ const controlContainerProvider: FactoryProvider = {
     changeDetection: ChangeDetectionStrategy.OnPush,
     viewProviders: [controlContainerProvider],
 })
-export class PasswordFormControlComponent implements OnInit, OnDestroy {
+export class PasswordFormControlComponent implements OnInit {
     @Input() label: string;
     @Input() inputId: string;
     @Input() inputFormControlName: string;
@@ -39,10 +39,6 @@ export class PasswordFormControlComponent implements OnInit, OnDestroy {
             this.inputFormControlName,
             new FormControl<string | null>(null, [Validators.required, Validators.minLength(8)])
         );
-    }
-
-    ngOnDestroy() {
-        this.parentFormGroup.removeControl(this.inputFormControlName);
     }
 
     onTogglePasswordVisibility() {

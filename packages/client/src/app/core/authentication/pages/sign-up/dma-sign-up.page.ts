@@ -17,13 +17,13 @@ const STATUS_CODE_BAD_REQUEST = 400;
 export class DmaSignUpPage implements AfterViewInit, OnDestroy {
     error$ = new Subject<string | null>();
 
-    form = new FormGroup({
-        username: new FormControl<string | null>(null, [Validators.required]),
-        email: new FormControl<string | null>(null, [Validators.required, Validators.email]),
-        emailConfirm: new FormControl<string | null>(null, [Validators.required, Validators.email]),
-        password: new FormControl<string | null>(null, [Validators.required]),
-        passwordConfirm: new FormControl<string | null>(null, [Validators.required]),
-    });
+    form = new FormGroup(
+        {
+            username: new FormControl<string | null>(null, [Validators.required]),
+            email: new FormControl<string | null>(null, [Validators.required, Validators.email]),
+            emailConfirm: new FormControl<string | null>(null, [Validators.required, Validators.email]),
+        },
+    );
 
     loading$ = new BehaviorSubject(false);
 
@@ -90,12 +90,12 @@ export class DmaSignUpPage implements AfterViewInit, OnDestroy {
     }
 
     onSubmit() {
-        const { username, email, password } = this.form.value;
+        const { username, email } = this.form.value;
 
         this.loading$.next(true);
 
         this.authenticationService
-            .signUp({ username: username!, password: password!, emailAddress: email! })
+            .signUp({ username: username!, password: this.form.get('password')!.value, emailAddress: email! })
             .pipe(
                 takeUntil(this.destroy$),
                 finalize(() => this.loading$.next(false))

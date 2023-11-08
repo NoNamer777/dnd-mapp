@@ -58,17 +58,18 @@
                 [ngClass]="{ 'leave': stage !== 2, 'enter': stage === 2 }"
             >
                 <div class="mb-3">
-                    <label for="password-input" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password-input" formControlName="password" />
+                    <dma-password-form-control
+                        label="Password"
+                        inputId="password-input"
+                        inputFormControlName="password"
+                    ></dma-password-form-control>
                 </div>
                 <div class="mb-3">
-                    <label for="password-confirm-input" class="form-label">Confirm Password</label>
-                    <input
-                        type="password"
-                        class="form-control"
-                        id="password-confirm-input"
-                        formControlName="passwordConfirm"
-                    />
+                    <dma-password-form-control
+                        label="Confirm Password"
+                        inputId="password-confirm-input"
+                        inputFormControlName="passwordConfirm"
+                    ></dma-password-form-control>
                 </div>
                 <div class="flex-grow-1">
                     <p class="text-danger" *ngIf="error$ | async as errorMessage">{{ errorMessage }}</p>
