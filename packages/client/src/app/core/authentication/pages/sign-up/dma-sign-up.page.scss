@@ -16,6 +16,10 @@
         form {
             min-height: 27em;
 
+            .ng-invalid.ng-dirty {
+                border-right: 2px solid $danger;
+            }
+
             &.ng-submitted {
                 .ng-invalid {
                     border-right: 2px solid $danger;

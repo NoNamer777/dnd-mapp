@@ -17,8 +17,8 @@
                         placeholder="TheLegend27"
                         formControlName="username"
                     />
-                    <p class="text-danger" *ngIf="getControlErrors('username') as errors">
-                        <span *ngIf="errors['usernameUnavailable'] as errorMessage"> {{ errorMessage }} </span>
+                    <p class="text-danger my-2" *ngIf="doesControlHasErrors('username', 'usernameUnavailable')">
+                        {{ getControlError('username', 'usernameUnavailable') }}
                     </p>
                 </div>
                 <div class="mb-3">
@@ -41,6 +41,9 @@
                         formControlName="emailConfirm"
                         (keyup.enter)="onGoToNextStage()"
                     />
+                    <p class="text-danger my-2" *ngIf="form.getError('emailShouldMatch')">
+                        The 2 provided email addresses are not the same. Please, provide 2 identical email addresses
+                    </p>
                 </div>
                 <div class="d-flex flex-row-reverse">
                     <button
@@ -70,6 +73,9 @@
                         inputId="password-confirm-input"
                         inputFormControlName="passwordConfirm"
                     ></dma-password-form-control>
+                    <p class="text-danger mt-1" *ngIf="form.getError('passwordShouldMatch')">
+                        The 2 provided password are not the same. Please, provide 2 identical passwords
+                    </p>
                 </div>
                 <div class="flex-grow-1">
                     <p class="text-danger" *ngIf="error$ | async as errorMessage">{{ errorMessage }}</p>

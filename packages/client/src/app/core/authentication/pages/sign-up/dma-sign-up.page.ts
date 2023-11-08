@@ -4,6 +4,7 @@ import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular
 import { BehaviorSubject, Subject, finalize, takeUntil } from 'rxjs';
 import { swipeInOutAnimation } from '../../animations';
 import { DmaAuthenticationService } from '../../services';
+import { emailValidator, passwordValidator } from './validators';
 
 const STATUS_CODE_BAD_REQUEST = 400;
 
@@ -23,6 +24,9 @@ export class DmaSignUpPage implements AfterViewInit, OnDestroy {
             email: new FormControl<string | null>(null, [Validators.required, Validators.email]),
             emailConfirm: new FormControl<string | null>(null, [Validators.required, Validators.email]),
         },
+        {
+            validators: [emailValidator],
+        }
     );
 
     loading$ = new BehaviorSubject(false);
@@ -49,13 +53,21 @@ export class DmaSignUpPage implements AfterViewInit, OnDestroy {
         );
     }
 
-    getControlErrors(controlName: string) {
-        return this.form.get(controlName)!.errors;
+    doesControlHasErrors(controlName: string, errorName: string) {
+        return this.form.get(controlName)!.hasError(errorName);
+    }
+
+    getControlError(controlName: string, errorName: string) {
+        return this.form.get(controlName)!.getError(errorName);
     }
 
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
+    }
+
+    ngAfterViewInit() {
+        this.form.addValidators(passwordValidator);
     }
 
     onGoToNextStage() {
@@ -72,15 +84,17 @@ export class DmaSignUpPage implements AfterViewInit, OnDestroy {
         let formError: Record<string, unknown> = { unexpectedError: true };
 
         if (error.status === STATUS_CODE_BAD_REQUEST) {
-            message = 'The username is currently unavailable. Please, use a different one';
-            formError = { usernameUnavailable: message };
-            this.stage = 1;
+            if (typeof error.error.message === 'string' && error.error.message.includes('username')) {
+                message = 'The username is currently unavailable. Please, use a different one';
+                formError = { usernameUnavailable: message };
+                this.onGoToPreviousStage();
 
-            this.form.get('username')!.setErrors(formError);
-        } else {
-            this.error$.next(message);
-            this.form.setErrors(formError);
+                this.form.get('username')!.setErrors(formError);
+                return;
+            }
         }
+        this.error$.next(message);
+        this.form.setErrors(formError);
     }
 
     onSignUpSuccess() {

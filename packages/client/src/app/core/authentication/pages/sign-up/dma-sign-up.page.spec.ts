@@ -1,3 +1,4 @@
+import { TestKey } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HttpTestingController } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
@@ -106,7 +107,7 @@ describe('DmaSignUpPage', () => {
 
         testingController
             .expectOne(`${environment.baseBackEndURL}/authentication/sign-up`)
-            .flush({}, { status: 400, statusText: 'Bad Request' });
+            .flush({ message: 'username' }, { status: 400, statusText: 'Bad Request' });
 
         expect(await harness.isLoadingSpinnerVisible()).toBeFalse();
         expect(await harness.isSuccessMessageVisible()).toBeFalse();
@@ -130,7 +131,7 @@ describe('DmaSignUpPage', () => {
 
         testingController
             .expectOne(`${environment.baseBackEndURL}/authentication/sign-up`)
-            .flush({}, { status: 500, statusText: 'Internal Server Error' });
+            .flush({}, { status: 400, statusText: 'Internal Server Error' });
 
         expect(await harness.isSuccessMessageVisible()).toBeFalse();
         expect(await harness.isErrorMessageVisible()).toBeTrue();
@@ -141,6 +142,7 @@ describe('DmaSignUpPage', () => {
         const { harness } = await initializeTestEnvironment();
 
         await harness.clickNextButton();
+        await harness.inputFormControlValue('emailConfirm', TestKey.ENTER);
 
         expect(await harness.isSignupButtonVisible()).toBeFalse();
     });
