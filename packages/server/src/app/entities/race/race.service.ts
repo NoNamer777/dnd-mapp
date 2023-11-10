@@ -1,6 +1,4 @@
-import { Race } from '@dnd-mapp/data';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { DndMappLoggerService } from '../../common';
 import { CreateRaceDto, RaceEntity } from './race.entity';
 import { RaceRepository } from './race.repository';
@@ -8,18 +6,18 @@ import { RaceRepository } from './race.repository';
 @Injectable()
 export class RaceService {
     constructor(
-        @InjectRepository(RaceEntity) private readonly raceRepository: RaceRepository,
-        private readonly logger: DndMappLoggerService
+        private readonly raceRepository: RaceRepository,
+        private readonly logger: DndMappLoggerService,
     ) {
         this.logger.setContext(RaceService.name);
     }
 
-    async findAll(): Promise<Race[]> {
+    async findAll() {
         this.logger.log('Finding all Races');
         return this.raceRepository.findAll();
     }
 
-    async findById(raceId: number, throwsError = true): Promise<Race> {
+    async findById(raceId: number, throwsError = true) {
         this.logger.log('Finding a Race by ID');
         const byId = await this.raceRepository.findOneById(raceId);
 
@@ -29,7 +27,7 @@ export class RaceService {
         return byId;
     }
 
-    async findByName(raceName: string, throwsError = true): Promise<Race> {
+    async findByName(raceName: string, throwsError = true) {
         this.logger.log('Finding a Race by name');
         const byName = await this.raceRepository.findOneByName(raceName);
 
@@ -39,7 +37,7 @@ export class RaceService {
         return byName;
     }
 
-    async update(race: Race): Promise<Race> {
+    async update(race: RaceEntity) {
         this.logger.log(`Updating a Race's data`);
         const byId = await this.findById(race.id, false);
         const byName = await this.findByName(race.name, false);
@@ -53,7 +51,7 @@ export class RaceService {
         return await this.raceRepository.save(race);
     }
 
-    async create(race: CreateRaceDto): Promise<Race> {
+    async create(race: CreateRaceDto) {
         this.logger.log('Creating a new Race');
         const byName = await this.findByName(race.name, false);
 
@@ -63,7 +61,7 @@ export class RaceService {
         return await this.raceRepository.save(race);
     }
 
-    async remove(raceId: number): Promise<void> {
+    async remove(raceId: number) {
         this.logger.log('Removing a Race by ID');
         const byId = await this.findById(raceId, false);
 

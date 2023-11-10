@@ -3,8 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoggingModule } from '../../common';
 import { RaceController } from './race.controller';
 import { RaceEntity } from './race.entity';
-import { raceRepositoryProvider } from './race.repository';
 import { RaceService } from './race.service';
+import { RaceRepository } from './race.repository';
 
 @Module({
     imports: [TypeOrmModule.forFeature([RaceEntity]), LoggingModule],

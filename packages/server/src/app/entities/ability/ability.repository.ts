@@ -1,37 +1,26 @@
-import { FactoryProvider } from '@nestjs/common';
-import { getDataSourceToken, getRepositoryToken } from '@nestjs/typeorm';
+import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { AbilityEntity } from './ability.entity';
 
-export interface AbilityRepository extends Repository<AbilityEntity> {
-    this: Repository<AbilityEntity>;
+@Injectable()
+export class AbilityRepository extends Repository<AbilityEntity> {
+    constructor(datasource: DataSource) {
+        super(AbilityEntity, datasource.createEntityManager());
+    }
 
-    findAll(): Promise<AbilityEntity[]>;
-    findOneById(abilityId: number): Promise<AbilityEntity | null>;
-    findOneByName(abilityName: string): Promise<AbilityEntity | null>;
-    deleteById(abilityId: number): Promise<void>;
-}
-
-export const abilityRepositoryProvider: FactoryProvider<Repository<AbilityEntity>> = {
-    provide: getRepositoryToken(AbilityEntity),
-    inject: [getDataSourceToken()],
-    useFactory: (datasource: DataSource) => datasource.getRepository(AbilityEntity).extend(abilityRepository),
-};
-
-const abilityRepository: Pick<AbilityRepository, 'findAll' | 'findOneById' | 'findOneByName' | 'deleteById'> = {
     async findAll() {
         return await this.find({ order: { id: 'ASC' } });
-    },
+    }
 
-    async findOneById(abilityId: number) {
-        return await this.findOneBy({ id: abilityId });
-    },
+    async findOneById(id: number) {
+        return await this.findOneBy({ id });
+    }
 
-    async findOneByName(abilityName: string) {
-        return await this.findOneBy({ name: abilityName });
-    },
+    async findOneByName(name: string) {
+        return await this.findOneBy({ name });
+    }
 
-    async deleteById(abilityId: number) {
-        await this.delete({ id: abilityId });
-    },
-};
+    async deleteById(id: number) {
+        await this.delete({ id });
+    }
+}

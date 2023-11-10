@@ -1,6 +1,4 @@
-import { Ability } from '@dnd-mapp/data';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { DndMappLoggerService } from '../../common';
 import { AbilityEntity, CreateAbilityDto } from './ability.entity';
 import { AbilityRepository } from './ability.repository';
@@ -8,18 +6,18 @@ import { AbilityRepository } from './ability.repository';
 @Injectable()
 export class AbilityService {
     constructor(
-        @InjectRepository(AbilityEntity) private readonly abilityRepository: AbilityRepository,
-        private readonly logger: DndMappLoggerService
+        private readonly abilityRepository: AbilityRepository,
+        private readonly logger: DndMappLoggerService,
     ) {
         this.logger.setContext(AbilityService.name);
     }
 
-    async findAll(): Promise<Ability[]> {
+    async findAll() {
         this.logger.log('Finding all Abilities');
         return this.abilityRepository.findAll();
     }
 
-    async findById(id: number, throwsError = true): Promise<Ability> {
+    async findById(id: number, throwsError = true) {
         this.logger.log('Finding an Ability by ID');
         const byId = await this.abilityRepository.findOneById(id);
 
@@ -29,7 +27,7 @@ export class AbilityService {
         return byId;
     }
 
-    async findByName(name: string, throwsError = true): Promise<Ability> {
+    async findByName(name: string, throwsError = true) {
         this.logger.log('Finding an Ability by name');
         const byName = await this.abilityRepository.findOneByName(name);
 
@@ -39,7 +37,7 @@ export class AbilityService {
         return byName;
     }
 
-    async update(ability: Ability): Promise<Ability> {
+    async update(ability: AbilityEntity) {
         this.logger.log(`Updating an Ability's data`);
         const byId = await this.findById(ability.id, false);
 
@@ -54,7 +52,7 @@ export class AbilityService {
         return await this.abilityRepository.save(ability);
     }
 
-    async create(ability: CreateAbilityDto): Promise<Ability> {
+    async create(ability: CreateAbilityDto) {
         this.logger.log('Creating a new Ability');
         const byName = await this.findByName(ability.name, false);
 
@@ -64,7 +62,7 @@ export class AbilityService {
         return await this.abilityRepository.save(ability);
     }
 
-    async remove(id: number): Promise<void> {
+    async remove(id: number) {
         this.logger.log('Removing an Ability by ID');
         const byId = await this.findById(id, false);
 
