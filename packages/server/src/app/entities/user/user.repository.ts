@@ -1,8 +1,8 @@
-import { FactoryProvider } from '@nestjs/common';
-import { getDataSourceToken, getRepositoryToken } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { Repository } from 'typeorm';
 import { UserEntity } from './user.entity';
 
+@Injectable()
 export class UserRepository extends Repository<UserEntity> {
     async findAll() {
         return await this.find({ relations: ['roles'], order: { id: 'ASC' } });
@@ -20,9 +20,3 @@ export class UserRepository extends Repository<UserEntity> {
         await this.delete({ id });
     }
 }
-
-export const userRepositoryProvider: FactoryProvider<Repository<UserEntity>> = {
-    provide: getRepositoryToken(UserEntity),
-    inject: [getDataSourceToken()],
-    useFactory: (datasource: DataSource) => datasource.getRepository(UserEntity).extend(UserRepository),
-};
