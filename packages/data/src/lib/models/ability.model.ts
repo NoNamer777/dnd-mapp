@@ -1,8 +1,7 @@
+import { NameableEntityModel } from './entity.model';
 import { Skill } from './skill.model';
 
-export interface Ability {
-    id: number;
-    name: string;
+export interface Ability extends NameableEntityModel {
     skills: Skill[];
 }
 
