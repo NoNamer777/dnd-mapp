@@ -1,15 +1,24 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { DndMappLoggerService } from '../../common';
+import { EntityService } from '../entity.service';
+import { EntityApiService } from '../models';
 import { AbilityEntity, CreateAbilityDto } from './ability.entity';
 import { AbilityRepository } from './ability.repository';
 
+export const ABILITY_SERVICE_TOKEN = 'ABILITY_TOKEN';
+
 @Injectable()
-export class AbilityService {
+export class AbilityService implements EntityApiService<AbilityEntity>, OnModuleInit {
     constructor(
         private readonly abilityRepository: AbilityRepository,
         private readonly logger: DndMappLoggerService,
+        private readonly entityService: EntityService
     ) {
         this.logger.setContext(AbilityService.name);
+    }
+
+    onModuleInit() {
+        this.entityService.addEntityType<AbilityEntity>({ type: 'Ability', serviceToken: ABILITY_SERVICE_TOKEN });
     }
 
     async findAll() {
@@ -59,7 +68,8 @@ export class AbilityService {
         if (byName) {
             throw new BadRequestException(`Cannot create Ability because the name '${byName.name}' is already used`);
         }
-        return await this.abilityRepository.save(ability);
+        await this.abilityRepository.save(ability);
+        return await this.findByName(ability.name);
     }
 
     async remove(id: number) {
