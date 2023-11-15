@@ -92,9 +92,6 @@ export class UserService {
     }
 
     private async resolvePassword(newPassword: string, oldPassword: string) {
-        if (oldPassword === newPassword) {
-            return oldPassword;
-        }
-        return await this.hashPassword(newPassword);
+        return oldPassword === newPassword ? oldPassword : await this.hashPassword(newPassword);
     }
 }

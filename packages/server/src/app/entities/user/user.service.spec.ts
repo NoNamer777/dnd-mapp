@@ -65,6 +65,15 @@ describe('UserService', () => {
             expect(mockUserDB.findOneById(1)).toEqual(expect.objectContaining(newUserData));
         });
 
+        it('should update the password with a new hashed password', async () => {
+            const { service } = await setupTestEnvironment();
+            const { id, username, emailAddress } = defaultUser;
+            const newUserData = new User(username, 'new_secure_password', emailAddress, id);
+
+            expect(await service.update(newUserData)).toEqual(newUserData);
+            expect(mockUserDB.findOneById(1)).toEqual(expect.objectContaining(newUserData));
+        });
+
         it('should throw 404 when using ID of non existing User', async () => {
             const { service } = await setupTestEnvironment();
             const { password, emailAddress } = defaultUser;
