@@ -1,9 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { UserEntity } from './user.entity';
 
 @Injectable()
 export class UserRepository extends Repository<UserEntity> {
+    constructor(datasource: DataSource) {
+        super(UserEntity, datasource.createEntityManager());
+    }
+
     async findAll() {
         return await this.find({ relations: ['roles'], order: { id: 'ASC' } });
     }
