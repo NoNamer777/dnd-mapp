@@ -4,7 +4,7 @@ import { ModuleRef } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { UserService } from '../../entities/user';
-import { getAuthenticatedUser } from './methods';
+import { getAuthenticatedUser, hasRole } from './methods';
 
 @Injectable()
 export class IsOwnerOrAdminGuard implements CanActivate {
@@ -24,10 +24,10 @@ export class IsOwnerOrAdminGuard implements CanActivate {
         const authenticatedUser = await getAuthenticatedUser(context, this.jwtService, this.userService);
 
         if (!requestPath) {
-            return authenticatedUser.hasRole(UserRoles.ADMIN);
+            return hasRole(authenticatedUser, UserRoles.ADMIN);
         }
         return (
-            authenticatedUser.hasRole(UserRoles.ADMIN) || Number(requestPath[0].substring(1)) === authenticatedUser.id
+            hasRole(authenticatedUser, UserRoles.ADMIN) || Number(requestPath[0].substring(1)) === authenticatedUser.id
         );
     }
 }
