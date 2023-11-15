@@ -1,37 +1,26 @@
-import { FactoryProvider } from '@nestjs/common';
-import { getDataSourceToken, getRepositoryToken } from '@nestjs/typeorm';
+import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { UserEntity } from './user.entity';
 
-export interface UserRepository extends Repository<UserEntity> {
-    this: Repository<UserEntity>;
+@Injectable()
+export class UserRepository extends Repository<UserEntity> {
+    constructor(datasource: DataSource) {
+        super(UserEntity, datasource.createEntityManager());
+    }
 
-    findAll(): Promise<UserEntity[]>;
-    findOneById(userid: number): Promise<UserEntity | null>;
-    findOneByUsername(username: string): Promise<UserEntity | null>;
-    deleteById(userId: number): Promise<void>;
-}
-
-export const userRepositoryProvider: FactoryProvider<Repository<UserEntity>> = {
-    provide: getRepositoryToken(UserEntity),
-    inject: [getDataSourceToken()],
-    useFactory: (datasource: DataSource) => datasource.getRepository(UserEntity).extend(userRepository),
-};
-
-const userRepository: Pick<UserRepository, 'findAll' | 'findOneById' | 'findOneByUsername' | 'deleteById'> = {
-    async findAll(this: Repository<UserEntity>) {
+    async findAll() {
         return await this.find({ relations: ['roles'], order: { id: 'ASC' } });
-    },
+    }
 
-    async findOneById(this: Repository<UserEntity>, userId: number) {
-        return await this.findOne({ relations: ['roles'], where: { id: userId } });
-    },
+    async findOneById(id: number) {
+        return await this.findOne({ relations: ['roles'], where: { id } });
+    }
 
-    async findOneByUsername(this: Repository<UserEntity>, username: string) {
-        return await this.findOne({ relations: ['roles'], where: { username: username } });
-    },
+    async findOneByUsername(username: string) {
+        return await this.findOne({ relations: ['roles'], where: { username } });
+    }
 
-    async deleteById(this: Repository<UserEntity>, userId: number) {
-        await this.delete({ id: userId });
-    },
-};
+    async deleteById(id: number) {
+        await this.delete({ id });
+    }
+}

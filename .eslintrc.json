@@ -55,7 +55,8 @@
                                     "@fortawesome/*",
                                     "@storybook/*",
                                     "@fortawesome/*",
-                                    "bootstrap"
+                                    "bootstrap",
+                                    "react"
                                 ]
                             },
                             {

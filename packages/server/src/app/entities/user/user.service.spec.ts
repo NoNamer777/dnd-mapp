@@ -2,24 +2,13 @@ import { User } from '@dnd-mapp/data';
 import { defaultUser, mockUserDB } from '@dnd-mapp/data/testing';
 import { NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import {
-    mockLoggingServiceProvider,
-    mockUserRepositoryProvider,
-    mockUserRoleRepositoryProvider,
-} from '../../../../testing';
-import { UserRoleService } from '../user-role';
+import { mockLoggingServiceProvider, mockUserModuleProviders, mockUserRoleModuleProviders } from '../../../../testing';
 import { UserService } from './user.service';
 
 describe('UserService', () => {
     async function setupTestEnvironment() {
         const module = await Test.createTestingModule({
-            providers: [
-                UserService,
-                UserRoleService,
-                mockUserRepositoryProvider,
-                mockLoggingServiceProvider,
-                mockUserRoleRepositoryProvider,
-            ],
+            providers: [mockLoggingServiceProvider, ...mockUserModuleProviders, ...mockUserRoleModuleProviders],
         }).compile();
 
         return {
@@ -71,6 +60,15 @@ describe('UserService', () => {
             const { service } = await setupTestEnvironment();
             const { id, password, emailAddress } = defaultUser;
             const newUserData = new User('User11', password, emailAddress, id);
+
+            expect(await service.update(newUserData)).toEqual(newUserData);
+            expect(mockUserDB.findOneById(1)).toEqual(expect.objectContaining(newUserData));
+        });
+
+        it('should update the password with a new hashed password', async () => {
+            const { service } = await setupTestEnvironment();
+            const { id, username, emailAddress } = defaultUser;
+            const newUserData = new User(username, 'new_secure_password', emailAddress, id);
 
             expect(await service.update(newUserData)).toEqual(newUserData);
             expect(mockUserDB.findOneById(1)).toEqual(expect.objectContaining(newUserData));

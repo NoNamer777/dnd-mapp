@@ -5,7 +5,7 @@ import { DndMappJwtModule } from '../../config';
 import { UserModule } from '../user';
 import { UserRoleController } from './user-role.controller';
 import { UserRoleEntity } from './user-role.entity';
-import { userRoleRepositoryProvider } from './user-role.repository';
+import { UserRoleRepository } from './user-role.repository';
 import { UserRoleService } from './user-role.service';
 
 @Module({
@@ -15,7 +15,7 @@ import { UserRoleService } from './user-role.service';
         DndMappJwtModule,
         forwardRef(() => UserModule),
     ],
-    providers: [UserRoleService, userRoleRepositoryProvider],
+    providers: [UserRoleService, UserRoleRepository],
     controllers: [UserRoleController],
     exports: [UserRoleService],
 })

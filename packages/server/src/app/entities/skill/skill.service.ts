@@ -1,30 +1,37 @@
-import { Skill } from '@dnd-mapp/data';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { BadRequestException, Injectable, InjectionToken, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { DndMappLoggerService } from '../../common';
+import { EntityService } from '../entity.service';
+import { EntityApiService } from '../models';
 import { CreateSkillDto, SkillEntity } from './skill.entity';
 import { SkillRepository } from './skill.repository';
 
+export const SKILL_SERVICE_TOKEN: InjectionToken = 'SKILL_SERVICE';
+
 @Injectable()
-export class SkillService {
+export class SkillService implements EntityApiService<SkillEntity>, OnModuleInit {
     constructor(
-        @InjectRepository(SkillEntity) private readonly skillRepository: SkillRepository,
-        private readonly logger: DndMappLoggerService
+        private readonly skillRepository: SkillRepository,
+        private readonly logger: DndMappLoggerService,
+        private readonly entityService: EntityService
     ) {
         this.logger.setContext(SkillService.name);
     }
 
-    async findAll(): Promise<Skill[]> {
+    onModuleInit() {
+        this.entityService.addEntityType<SkillEntity>({ type: 'Skill', serviceToken: SKILL_SERVICE_TOKEN });
+    }
+
+    async findAll() {
         this.logger.log('Finding all Skills');
         return this.skillRepository.findAll();
     }
 
-    async findAllOfAbility(abilityId: number): Promise<Skill[]> {
+    async findAllOfAbility(abilityId: number) {
         this.logger.log('Finding all Skills of an Ability');
         return this.skillRepository.findAllByAbility(abilityId);
     }
 
-    async findById(skillId: number, throwsError = true): Promise<Skill> {
+    async findById(skillId: number, throwsError = true) {
         this.logger.log('Finding a Skill by ID');
         const byId = await this.skillRepository.findOneById(skillId);
 
@@ -34,7 +41,7 @@ export class SkillService {
         return byId;
     }
 
-    async findByName(skillName: string, throwsError = true): Promise<Skill> {
+    async findByName(skillName: string, throwsError = true) {
         this.logger.log('Finding a Skill by name');
         const byName = await this.skillRepository.findOneByName(skillName);
 
@@ -44,7 +51,7 @@ export class SkillService {
         return byName;
     }
 
-    async update(skill: Skill): Promise<Skill> {
+    async update(skill: SkillEntity) {
         this.logger.log(`Updating a Skill's data`);
         const byId = await this.findById(skill.id, false);
 
@@ -59,7 +66,7 @@ export class SkillService {
         return await this.skillRepository.save(skill);
     }
 
-    async create(skill: CreateSkillDto): Promise<Skill> {
+    async create(skill: CreateSkillDto) {
         this.logger.log('Creating a new Skill');
         const byName = await this.findByName(skill.name, false);
 
@@ -69,7 +76,7 @@ export class SkillService {
         return await this.skillRepository.save(skill);
     }
 
-    async remove(skillId: number): Promise<void> {
+    async remove(skillId: number) {
         this.logger.log('Removing a Skill by ID');
         const byId = await this.findById(skillId, false);
 
