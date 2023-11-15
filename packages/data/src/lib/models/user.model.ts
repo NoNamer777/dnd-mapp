@@ -1,6 +1,14 @@
 import { UserRole, UserRoleName } from './user-role.model';
 
-export class User {
+export interface UserModel {
+    id: number;
+    username: string;
+    password: string;
+    emailAddress: string;
+    roles: UserRole[];
+}
+
+export class User implements UserModel {
     id: number;
     username: string;
     password: string;

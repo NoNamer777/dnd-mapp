@@ -1,4 +1,4 @@
-import type { User, UserRoleName } from '@dnd-mapp/data';
+import { UserModel } from '@dnd-mapp/data';
 import { OmitType } from '@nestjs/mapped-types';
 import { Exclude } from 'class-transformer';
 import {
@@ -16,7 +16,7 @@ import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn, PrimaryGeneratedC
 import { UserRoleEntity } from '../user-role';
 
 @Entity('user')
-export class UserEntity implements User {
+export class UserEntity implements UserModel {
     @PrimaryGeneratedColumn('increment')
     @PrimaryColumn()
     @IsInt()
@@ -72,10 +72,6 @@ export class UserEntity implements User {
         },
     })
     roles: UserRoleEntity[];
-
-    hasRole(role: UserRoleName) {
-        return this.roles.map((userRole) => userRole.name).includes(role);
-    }
 }
 
-export class CreateUserDto extends OmitType(UserEntity, ['id', 'roles', 'hasRole'] as const) {}
+export class CreateUserDto extends OmitType(UserEntity, ['id', 'roles'] as const) {}
