@@ -5,12 +5,20 @@ import { Test } from '@nestjs/testing';
 import { mockAbilityModuleProviders, mockLoggingServiceProvider } from '../../../../testing';
 import { EntityService } from '../entity.service';
 import { AbilityService } from './ability.service';
+import { abilityServiceProvider } from './providers';
 
 describe('AbilityService', () => {
     async function setupTestEnvironment() {
         const module = await Test.createTestingModule({
-            providers: [mockLoggingServiceProvider, ...mockAbilityModuleProviders, EntityService],
+            providers: [
+                mockLoggingServiceProvider,
+                ...mockAbilityModuleProviders,
+                abilityServiceProvider,
+                EntityService,
+            ],
         }).compile();
+
+        await module.init();
 
         return {
             service: module.get(AbilityService),

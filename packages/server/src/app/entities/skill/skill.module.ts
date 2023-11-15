@@ -2,15 +2,11 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoggingModule } from '../../common';
 import { EntityModule } from '../entity.module';
+import { skillServiceProvider } from './providers';
 import { SkillController } from './skill.controller';
 import { SkillEntity } from './skill.entity';
 import { SkillRepository } from './skill.repository';
-import { SKILL_SERVICE_TOKEN, SkillService } from './skill.service';
-
-export const skillServiceProvider = {
-    provide: SKILL_SERVICE_TOKEN,
-    useExisting: SkillService,
-};
+import { SkillService } from './skill.service';
 
 @Module({
     imports: [TypeOrmModule.forFeature([SkillEntity]), LoggingModule, EntityModule],

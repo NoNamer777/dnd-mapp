@@ -3,13 +3,16 @@ import { NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { mockLoggingServiceProvider, mockRaceModuleProviders } from '../../../../testing';
 import { EntityService } from '../entity.service';
+import { raceServiceProvider } from './providers';
 import { RaceService } from './race.service';
 
 describe('RaceService', () => {
     async function setupTestEnvironment() {
         const module = await Test.createTestingModule({
-            providers: [mockLoggingServiceProvider, ...mockRaceModuleProviders, EntityService],
+            providers: [mockLoggingServiceProvider, ...mockRaceModuleProviders, raceServiceProvider, EntityService],
         }).compile();
+
+        await module.init();
 
         return {
             service: module.get(RaceService),

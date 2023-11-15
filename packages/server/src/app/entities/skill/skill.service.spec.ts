@@ -4,13 +4,16 @@ import { NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { mockLoggingServiceProvider, mockSkillModuleProviders } from '../../../../testing';
 import { EntityService } from '../entity.service';
+import { skillServiceProvider } from './providers';
 import { SkillService } from './skill.service';
 
 describe('SkillService', () => {
     async function setupTestEnvironment() {
         const module = await Test.createTestingModule({
-            providers: [mockLoggingServiceProvider, ...mockSkillModuleProviders, EntityService],
+            providers: [mockLoggingServiceProvider, ...mockSkillModuleProviders, skillServiceProvider, EntityService],
         }).compile();
+
+        await module.init();
 
         return {
             service: module.get(SkillService),

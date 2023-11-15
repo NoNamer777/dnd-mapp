@@ -5,9 +5,8 @@ import { EntityModule } from '../entity.module';
 import { AbilityController } from './ability.controller';
 import { AbilityEntity } from './ability.entity';
 import { AbilityRepository } from './ability.repository';
-import { ABILITY_SERVICE_TOKEN, AbilityService } from './ability.service';
-
-const abilityServiceProvider = { provide: ABILITY_SERVICE_TOKEN, useExisting: AbilityService };
+import { AbilityService } from './ability.service';
+import { abilityServiceProvider } from './providers';
 
 @Module({
     imports: [TypeOrmModule.forFeature([AbilityEntity]), LoggingModule, EntityModule],

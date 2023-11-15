@@ -2,15 +2,11 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoggingModule } from '../../common';
 import { EntityModule } from '../entity.module';
+import { raceServiceProvider } from './providers';
 import { RaceController } from './race.controller';
 import { RaceEntity } from './race.entity';
 import { RaceRepository } from './race.repository';
-import { RACE_SERVICE_TOKEN, RaceService } from './race.service';
-
-export const raceServiceProvider = {
-    provide: RACE_SERVICE_TOKEN,
-    useExisting: RaceService,
-};
+import { RaceService } from './race.service';
 
 @Module({
     imports: [TypeOrmModule.forFeature([RaceEntity]), LoggingModule, EntityModule],

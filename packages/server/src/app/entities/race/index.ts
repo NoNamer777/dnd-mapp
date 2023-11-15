@@ -1,3 +1,4 @@
+export * from './providers';
 export * from './race.entity';
 export * from './race.module';
 export * from './race.repository';
