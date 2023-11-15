@@ -2,13 +2,14 @@ import { CreateSkillData, Skill } from '@dnd-mapp/data';
 import { defaultAbility, defaultSkill, mockSkillDB } from '@dnd-mapp/data/testing';
 import { NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { mockLoggingServiceProvider, mockSkillRepositoryProvider } from '../../../../testing';
+import { mockLoggingServiceProvider, mockSkillModuleProviders } from '../../../../testing';
+import { EntityService } from '../entity.service';
 import { SkillService } from './skill.service';
 
 describe('SkillService', () => {
     async function setupTestEnvironment() {
         const module = await Test.createTestingModule({
-            providers: [SkillService, mockSkillRepositoryProvider, mockLoggingServiceProvider],
+            providers: [mockLoggingServiceProvider, ...mockSkillModuleProviders, EntityService],
         }).compile();
 
         return {
