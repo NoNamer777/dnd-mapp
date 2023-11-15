@@ -1,7 +1,7 @@
+import { EntityModel } from '../models';
 import { UserRole, UserRoleName } from './user-role.model';
 
-export interface UserModel {
-    id: number;
+export interface UserModel extends EntityModel {
     username: string;
     password: string;
     emailAddress: string;
