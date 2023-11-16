@@ -1,4 +1,4 @@
-import { Ability, CreateAbilityData } from '../../../src';
+import { Ability, CreateAbilityData } from '../../../../src';
 
 interface AbilityDB {
     [id: string]: Ability;

@@ -1,4 +1,4 @@
-import { CreateUserData, User } from '../../../src';
+import { CreateUserData, User } from '../../../../src';
 
 interface UserDB {
     [userId: string]: User;
