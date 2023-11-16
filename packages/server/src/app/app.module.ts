@@ -4,6 +4,7 @@ import { AuthenticationModule } from './authentication';
 import { LoggingModule } from './common';
 import { NestConfigModule, ServeClientAppModule, TypeOrmConfigModule } from './config';
 import { AbilityModule } from './entities/ability';
+import { ClientModule } from './entities/client';
 import { EntityModule } from './entities/entity.module';
 import { RaceModule } from './entities/race';
 import { SkillModule } from './entities/skill';
@@ -23,6 +24,7 @@ import { UserRoleModule } from './entities/user-role';
         AuthenticationModule,
         UserRoleModule,
         EntityModule,
+        ClientModule,
     ],
     controllers: [AppController],
 })
