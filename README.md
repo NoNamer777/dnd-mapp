@@ -66,9 +66,23 @@ The hosts file is located at `c:\Windows\System32\Drivers\etc\hosts`.
 
 ## Generating the certificate and key in the repository root
 
-1. Install [mkcert](https://github.com/FiloSottile/mkcert) (MacOS: `brew install mkcert`)
-2. Run `mkcert -install` to install the root CA (browser restart is required)
-3. Run `mkcert -cert-file certificate.pem -key-file certificate-key.pem localhost.dndmapp.net localhost` to generate a certificate.
+1. Install [mkcert](https://github.com/FiloSottile/mkcert) For macOS, you can simply run the following command:
+
+    ```bash
+    brew install mkcert
+    ```
+
+2. Run the following command to install the root CA, if it isn't installed already (browser restart is required):
+
+    ```bash
+    mkcert install
+    ```
+
+3. Run the following command to generate a certificate in the root of the repository:
+
+    ```bash
+    mkcert -cert-file certificate.pem -key-file certificate-key.pem localhost.dndmapp.net localhost
+    ```
 
 ## Trusting the certificate on your machine
 
