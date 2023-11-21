@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { genSalt, hash } from 'bcryptjs';
 import { randomBytes } from 'crypto';
 import { nanoid } from 'nanoid';
 import { DndMappLoggerService } from '../../common';
@@ -23,7 +24,13 @@ export class ClientService {
         return byId;
     }
 
+    /**
+     * Will create a Client with a new ID and secret.
+     * If an ID is provided, it'll find an existing client and only create a new secret.
+     * @param {string} [id=] - The ID of the client to update
+     */
     async register(id?: string) {
+        const secret = await this.generateClientSecret();
         let client: ClientEntity;
 
         if (id) {
@@ -32,9 +39,11 @@ export class ClientService {
             client = new ClientEntity();
             client.id = nanoid(32);
         }
-        client.secret = this.generateClientPassword();
+        client.secret = secret.hash;
 
         await this.clientRepository.save(client);
+
+        client.secret = secret.plain;
         return client;
     }
 
@@ -45,7 +54,16 @@ export class ClientService {
         await this.clientRepository.deleteById(id);
     }
 
-    private generateClientPassword() {
-        return randomBytes(48).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    /**
+     * Generates a client secret and a hash of it.
+     * @private
+     */
+    private async generateClientSecret() {
+        const secret = randomBytes(48).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+
+        return {
+            plain: secret,
+            hash: await hash(secret, await genSalt(12)),
+        };
     }
 }
