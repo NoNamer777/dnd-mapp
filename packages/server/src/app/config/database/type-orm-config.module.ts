@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleAsyncOptions } from '@nestjs/typeorm';
-import { DatabaseConfig } from './database.config';
+import { DatabaseConfig } from '../environment';
 
 const typeOrmConfig: TypeOrmModuleAsyncOptions = {
     imports: [ConfigModule],

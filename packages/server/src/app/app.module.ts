@@ -1,8 +1,16 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import helmet from 'helmet';
 import { AppController } from './app.controller';
 import { AuthenticationModule } from './authentication';
 import { LoggingModule } from './common';
-import { NestConfigModule, ServeClientAppModule, TypeOrmConfigModule } from './config';
+import {
+    AssetsModule,
+    HashCollectorMiddleware,
+    NestConfigModule,
+    ServeClientAppModule,
+    TypeOrmConfigModule,
+    helmetConfig,
+} from './config';
 import { AbilityModule } from './entities/ability';
 import { EntityModule } from './entities/entity.module';
 import { RaceModule } from './entities/race';
@@ -14,6 +22,7 @@ import { UserRoleModule } from './entities/user-role';
     imports: [
         NestConfigModule,
         TypeOrmConfigModule,
+        AssetsModule,
         ServeClientAppModule,
         RaceModule,
         AbilityModule,
@@ -26,4 +35,8 @@ import { UserRoleModule } from './entities/user-role';
     ],
     controllers: [AppController],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+    configure(consumer: MiddlewareConsumer): void {
+        consumer.apply(HashCollectorMiddleware, helmet(helmetConfig)).forRoutes('/*');
+    }
+}

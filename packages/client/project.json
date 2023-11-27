@@ -58,7 +58,7 @@
             "executor": "@nx/angular:delegate-build",
             "outputs": ["{options.outputPath}"],
             "options": {
-                "buildTarget": "client:build:dev",
+                "buildTarget": "client:build:prod",
                 "outputPath": "dist/client",
                 "tsConfig": "packages/client/tsconfig.app.json",
                 "watch": true
