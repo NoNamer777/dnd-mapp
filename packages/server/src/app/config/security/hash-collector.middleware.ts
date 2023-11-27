@@ -7,12 +7,12 @@ type NextFunction = (error?: unknown) => void;
 
 @Injectable()
 export class HashCollectorMiddleware implements NestMiddleware {
-    resourceHashes = new Set<string>();
+    private resourceHashes = new Set<string>();
 
     use(_: Request, response: Response, next: NextFunction) {
         this.getHashes();
 
-        response.locals.hashes = this.resourceHashes;
+        response.locals.hashes = [...this.resourceHashes];
         next();
     }
 
