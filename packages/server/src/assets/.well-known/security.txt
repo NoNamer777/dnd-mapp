@@ -1,0 +1,22 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Contact: https://github.com/NoNamer777
+
+Expires: 2024-01-07T22:59:00.000Z
+
+Preferred-Languages: en, nl
+
+Canonical: https://dev.dndmapp.nl.eu.org/.well-known/security.txt
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEE6SUBwiE79BOkdKKqiT9ao5ae3ScFAmVk/oEACgkQiT9ao5ae
+3SesewgAhGrVf92IOF4YgQFB4wUrpWq+mMKCYKeu1enCdpEk57cBVOhpYArrDygo
+whnl71Sgo+6x/+4CGtfjBjOHqDB2eZDLYojs/bQ2aXkcaKBX4K7T38Slcs5lA1aw
+462l3mIf6z3TMWo9Ky7M2gTab2pYssB/O8Wny0OL29a81cp8wbPTa4hCvcJRwSHA
+caKTIBTjWaZ9eh19YmmN91lLmkXzFs4OMLVFnu3Kz9n6uI5PvKv47O6o3XOfeFnx
+M9kVCi4pXGJhFbsUnArNXusJ4Ei1LAHjaR2cFXW+/4FtaOh83ktDVaGs/xsuHuE8
+Y5DA2lfB9oKyBBc6kAYaLplba01UtA==
+=WSAP
+-----END PGP SIGNATURE-----
