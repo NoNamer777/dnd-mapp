@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AuthenticationModule } from './authentication';
 import { LoggingModule } from './common';
 import {
+    AssetsModule,
     HashCollectorMiddleware,
     NestConfigModule,
     ServeClientAppModule,
@@ -21,6 +22,7 @@ import { UserRoleModule } from './entities/user-role';
     imports: [
         NestConfigModule,
         TypeOrmConfigModule,
+        AssetsModule,
         ServeClientAppModule,
         RaceModule,
         AbilityModule,
