@@ -37,6 +37,7 @@ async function bootstrap() {
     const backEndUrl = buildServerUrl(host, port, useSsl, address);
 
     nestApp.useLogger(logger);
+
     nestApp.setGlobalPrefix('/server', { exclude: [''] });
     nestApp.use(
         helmet({
@@ -48,13 +49,10 @@ async function bootstrap() {
             },
         })
     );
+
     nestApp.useGlobalPipes(new ValidationPipe(validationOptions));
-    nestApp.enableCors({
-        origin: [backEndUrl],
-        methods: ['GET', 'POST', 'PUT', 'DELETE'],
-        allowedHeaders: ['Authorization', 'Content-Type'],
-        exposedHeaders: ['Authorization'],
-    });
+
+    nestApp.enableCors(corsConfig(backEndUrl));
 
     const server = ssl
         ? createHttpsServer({ cert: await readFile(ssl.certPath), key: await readFile(ssl.keyPath) }, expressServer)
