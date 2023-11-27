@@ -3,7 +3,13 @@ import helmet from 'helmet';
 import { AppController } from './app.controller';
 import { AuthenticationModule } from './authentication';
 import { LoggingModule } from './common';
-import { NestConfigModule, ServeClientAppModule, TypeOrmConfigModule, helmetConfig } from './config';
+import {
+    HashCollectorMiddleware,
+    NestConfigModule,
+    ServeClientAppModule,
+    TypeOrmConfigModule,
+    helmetConfig,
+} from './config';
 import { AbilityModule } from './entities/ability';
 import { EntityModule } from './entities/entity.module';
 import { RaceModule } from './entities/race';
@@ -29,6 +35,6 @@ import { UserRoleModule } from './entities/user-role';
 })
 export class AppModule implements NestModule {
     configure(consumer: MiddlewareConsumer): void {
-        consumer.apply(helmet(helmetConfig)).forRoutes('/*');
+        consumer.apply(HashCollectorMiddleware, helmet(helmetConfig)).forRoutes('/*');
     }
 }
