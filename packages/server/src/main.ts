@@ -9,7 +9,7 @@ import { createServer as createHttpServer } from 'http';
 import { createServer as createHttpsServer } from 'https';
 import { AppModule } from './app/app.module';
 import { DndMappLoggerService, buildServerUrl } from './app/common';
-import { ServerConfig } from './app/config/server.config';
+import { ServerConfig, corsConfig } from './app/config';
 
 const validationOptions: ValidationPipeOptions = {
     errorHttpStatusCode: HttpStatus.BAD_REQUEST,
