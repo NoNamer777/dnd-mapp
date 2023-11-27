@@ -4,7 +4,6 @@ import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import express from 'express';
 import { readFile } from 'fs/promises';
-import helmet from 'helmet';
 import { createServer as createHttpServer } from 'http';
 import { createServer as createHttpsServer } from 'https';
 import { AppModule } from './app/app.module';
@@ -39,16 +38,6 @@ async function bootstrap() {
     nestApp.useLogger(logger);
 
     nestApp.setGlobalPrefix('/server', { exclude: [''] });
-    nestApp.use(
-        helmet({
-            contentSecurityPolicy: {
-                directives: {
-                    scriptSrcAttr: [`'self'`, `'unsafe-inline'`],
-                    connectSrc: [backEndUrl],
-                },
-            },
-        })
-    );
 
     nestApp.useGlobalPipes(new ValidationPipe(validationOptions));
 
