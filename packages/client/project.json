@@ -18,11 +18,8 @@
                 "main": "packages/client/src/main.ts",
                 "outputPath": "dist/client",
                 "polyfills": ["zone.js"],
-                "scripts": [
-                    "node_modules/@popperjs/core/dist/umd/popper.min.js",
-                    "node_modules/bootstrap/dist/js/bootstrap.min.js"
-                ],
-                "styles": ["packages/client/src/styles.scss", "node_modules/bootstrap/dist/css/bootstrap.min.css"],
+                "scripts": [],
+                "styles": ["packages/client/src/styles.scss"],
                 "tsConfig": "packages/client/tsconfig.app.json",
                 "vendorChunk": true
             },
@@ -50,6 +47,16 @@
                     ],
                     "outputHashing": "all",
                     "progress": false,
+                    "optimization": {
+                        "scripts": true,
+                        "styles": {
+                            "inlineCritical": false,
+                            "minify": true
+                        },
+                        "fonts": {
+                            "inline": false
+                        }
+                    },
                     "subresourceIntegrity": true
                 }
             }
