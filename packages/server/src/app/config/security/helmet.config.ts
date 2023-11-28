@@ -4,18 +4,20 @@ import { HelmetOptions } from 'helmet';
 export const helmetConfig: HelmetOptions = {
     contentSecurityPolicy: {
         directives: {
-            'script-src': [
+            'default-src': [
+                `'self'`,
+                (_, response: Response) => response.locals.backEndUrl,
                 `'unsafe-inline'`,
-                `'unsafe-hashes'`,
-                (_, response: Response) => `${response.locals.hashes.join(' ')}`,
+                `'unsafe-eval'`,
             ],
-            'script-src-attr': [`'unsafe-inline'`],
-            'trusted-types': ['angular', 'angular#bundler'],
-            'require-trusted-types-for': [`'script'`],
+            'base-uri': [`'self'`, (_, response: Response) => response.locals.backEndUrl],
+            'frame-ancestors': [`'none'`],
+            'child-src': [`'none'`],
         },
     },
     hsts: {
         maxAge: 31536000,
         includeSubDomains: true,
+        preload: true,
     },
 };
