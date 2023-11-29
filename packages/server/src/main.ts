@@ -4,12 +4,11 @@ import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import express from 'express';
 import { readFile } from 'fs/promises';
-import helmet from 'helmet';
 import { createServer as createHttpServer } from 'http';
 import { createServer as createHttpsServer } from 'https';
 import { AppModule } from './app/app.module';
 import { DndMappLoggerService, buildServerUrl } from './app/common';
-import { ServerConfig } from './app/config/server.config';
+import { ServerConfig, corsConfig } from './app/config';
 
 const validationOptions: ValidationPipeOptions = {
     errorHttpStatusCode: HttpStatus.BAD_REQUEST,
@@ -37,24 +36,12 @@ async function bootstrap() {
     const backEndUrl = buildServerUrl(host, port, useSsl, address);
 
     nestApp.useLogger(logger);
+
     nestApp.setGlobalPrefix('/server', { exclude: [''] });
-    nestApp.use(
-        helmet({
-            contentSecurityPolicy: {
-                directives: {
-                    scriptSrcAttr: [`'self'`, `'unsafe-inline'`],
-                    connectSrc: [backEndUrl],
-                },
-            },
-        })
-    );
+
     nestApp.useGlobalPipes(new ValidationPipe(validationOptions));
-    nestApp.enableCors({
-        origin: [backEndUrl],
-        methods: ['GET', 'POST', 'PUT', 'DELETE'],
-        allowedHeaders: ['Authorization', 'Content-Type'],
-        exposedHeaders: ['Authorization'],
-    });
+
+    nestApp.enableCors(corsConfig(backEndUrl));
 
     const server = ssl
         ? createHttpsServer({ cert: await readFile(ssl.certPath), key: await readFile(ssl.keyPath) }, expressServer)

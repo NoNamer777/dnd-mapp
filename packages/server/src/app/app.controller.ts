@@ -1,7 +1,7 @@
 import { Controller, Get, Redirect } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { buildServerUrl } from './common';
-import { ServerConfig } from './config/server.config';
+import { ServerConfig } from './config';
 
 @Controller({
     path: '',
