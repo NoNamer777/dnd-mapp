@@ -4,18 +4,24 @@ import { HelmetOptions } from 'helmet';
 export const helmetConfig: HelmetOptions = {
     contentSecurityPolicy: {
         directives: {
-            'script-src': [
-                `'unsafe-inline'`,
-                `'unsafe-hashes'`,
-                (_, response: Response) => `${response.locals.hashes.join(' ')}`,
-            ],
-            'script-src-attr': [`'unsafe-inline'`],
-            'trusted-types': ['angular', 'angular#bundler'],
-            'require-trusted-types-for': [`'script'`],
+            'default-src': [`'self'`],
+            'base-uri': [(_, response: Response) => response.locals.backEndUrl],
+            'frame-ancestors': [`'none'`],
+            'child-src': [`'none'`],
+            'script-src': [(_, response: Response) => `${response.locals.hashes.join(' ')}`],
+            'script-src-attr': null,
+            'script-src-elem': null,
+            // TODO: Replace `'unsafe-inline'` with `'nonce-xxx'` once a good way to add nonce values to each request for requested style resources has been established
+            'style-src': [`'self'`, `'unsafe-inline'`],
+            'font-src': [`'self'`],
+            'img-src': [`'self'`],
+            'object-src': [`'none'`],
+            'form-action': [`'none'`],
         },
     },
     hsts: {
         maxAge: 31536000,
         includeSubDomains: true,
+        preload: true,
     },
 };
