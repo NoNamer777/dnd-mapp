@@ -47,9 +47,7 @@
             "executor": "@nx/js:node",
             "options": {
                 "buildTarget": "server:build:dev",
-                "host": "0.0.0.0",
-                "inspect": false,
-                "port": 8080
+                "inspect": false
             }
         },
         "start": {

@@ -1,4 +1,4 @@
-import { CreateUserRoleData, UserRole, UserRoles } from '../../../src';
+import { CreateUserRoleData, UserRole, UserRoles } from '../../../../src';
 
 interface UserRoleDB {
     [id: string]: UserRole;

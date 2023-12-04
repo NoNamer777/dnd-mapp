@@ -1,3 +1,5 @@
+import { EntityModel } from '../models';
+
 export enum UserRoles {
     ADMIN = 'Admin',
     PLAYER = 'Player',
@@ -6,7 +8,7 @@ export enum UserRoles {
 
 export type UserRoleName = (typeof UserRoles)[keyof typeof UserRoles];
 
-export interface UserRole {
+export interface UserRole extends EntityModel {
     id: number;
     name: UserRoleName;
 }

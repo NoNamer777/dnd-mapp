@@ -1,4 +1,4 @@
-import { NameableEntityModel } from './entity.model';
+import { NameableEntityModel } from '../models';
 
 export type Race = NameableEntityModel;
 
