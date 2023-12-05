@@ -25,7 +25,7 @@ export class ConfigService implements OnDestroy {
     }
 
     storeConfig() {
-        if (!this.config!.clientId) return;
+        if (!this.config?.clientId) return;
 
         this.storageService.setItem(CLIENT_ID_STORAGE_KEY, this.config.clientId);
     }
@@ -33,10 +33,9 @@ export class ConfigService implements OnDestroy {
     private initializeConfigFromStorage() {
         const clientId = this.storageService.getItem(CLIENT_ID_STORAGE_KEY);
 
-        this.storageService.removeItem(CLIENT_ID_STORAGE_KEY);
-
         if (clientId) {
             this.config = { clientId };
+            this.storageService.removeItem(CLIENT_ID_STORAGE_KEY);
         }
     }
 
