@@ -14,10 +14,11 @@ export class ClientController {
 
     @Post()
     async register(@Query() queryParams: RegisterQueryParamsDto) {
-        const { id } = queryParams;
+        const { state } = queryParams;
 
         return {
             clientId: (await this.clientService.register()).id,
+            state: state,
         };
     }
 

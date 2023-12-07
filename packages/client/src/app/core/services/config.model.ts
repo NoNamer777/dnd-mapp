@@ -4,4 +4,5 @@ export interface ConfigModel {
 
 export interface ConfigModelResponse {
     clientId: string;
+    state: string;
 }

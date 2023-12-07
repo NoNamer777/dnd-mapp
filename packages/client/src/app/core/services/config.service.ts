@@ -1,4 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
+import { nanoid } from 'nanoid';
 import { Subject, take, takeUntil } from 'rxjs';
 import { CLIENT_ID_STORAGE_KEY, DmaHttpRequestService, StorageService } from '../../shared';
 import { ConfigModel, ConfigModelResponse } from './config.model';
@@ -40,13 +41,17 @@ export class ConfigService implements OnDestroy {
     }
 
     private retrieveConfig() {
-        let endPoint = '/api/client';
+        if (this.config) return;
+
+        const state = nanoid();
+        const endPoint = `/api/client?state=${encodeURIComponent(state)}`;
 
         this.requestService
-            .post<ConfigModelResponse>(endPoint, {})
+            .post<ConfigModelResponse>(endPoint)
             .pipe(takeUntil(this.destroy$), take(1))
             .subscribe({
                 next: (data) => {
+                    if (state !== data.state) throw new Error('State validation error');
                     this.config = { clientId: data.clientId };
                 },
             });
