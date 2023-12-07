@@ -1,14 +1,9 @@
 import { HttpClientModule } from '@angular/common/http';
 import { ClassProvider, NgModule } from '@angular/core';
 import { authenticationInterceptorProvider } from './interceptors/authentication.interceptor';
-import { nonceInterceptorProvider } from './interceptors/nonce.interceptor';
 import { storeAuthenticationInterceptorProvider } from './interceptors/store-authentication.interceptor';
 
-const defaultInterceptors = [
-    nonceInterceptorProvider,
-    storeAuthenticationInterceptorProvider,
-    authenticationInterceptorProvider,
-];
+const defaultInterceptors = [storeAuthenticationInterceptorProvider, authenticationInterceptorProvider];
 
 @NgModule({
     imports: [HttpClientModule],
