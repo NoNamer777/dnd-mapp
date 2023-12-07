@@ -42,12 +42,13 @@ export class ConfigService implements OnDestroy {
     private retrieveConfig() {
         let endPoint = '/api/client';
 
-        if (this.config?.clientId) {
-            endPoint += `?id=${this.config.clientId}`;
-        }
         this.requestService
             .post<ConfigModelResponse>(endPoint, {})
             .pipe(takeUntil(this.destroy$), take(1))
-            .subscribe((data) => (this.config = { clientId: data.id, clientSecret: data.secret }));
+            .subscribe({
+                next: (data) => {
+                    this.config = { clientId: data.clientId };
+                },
+            });
     }
 }

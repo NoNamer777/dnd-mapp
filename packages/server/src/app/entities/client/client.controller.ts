@@ -16,7 +16,9 @@ export class ClientController {
     async register(@Query() queryParams: RegisterQueryParamsDto) {
         const { id } = queryParams;
 
-        return await this.clientService.register(id);
+        return {
+            clientId: (await this.clientService.register()).id,
+        };
     }
 
     @Delete(':id')

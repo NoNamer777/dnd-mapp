@@ -1,5 +1,5 @@
 import { ClientModel } from '@dnd-mapp/data';
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('client')
 export class ClientEntity implements ClientModel {
@@ -11,14 +11,4 @@ export class ClientEntity implements ClientModel {
         unique: true,
     })
     id: string;
-
-    @Column({
-        name: 'secret',
-        type: 'varchar',
-        width: 64,
-        nullable: true,
-        default: null,
-        unique: true,
-    })
-    secret: string;
 }

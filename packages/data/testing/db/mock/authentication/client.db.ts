@@ -41,7 +41,6 @@ class MockClientDB {
 
 export const defaultClient: ClientModel = {
     id: '9mez32qmVA9Tl1QBuwAgqZSRf69i3x3B',
-    secret: '$2a$12$L5zVXPPXErjYnMSJEIYsb.1RPOrdcR/VnXpBnEVY.olKMHir.L3pe',
 };
 
 export const mockClientDB = new MockClientDB();
