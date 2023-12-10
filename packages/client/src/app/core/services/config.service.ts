@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { nanoid } from 'nanoid';
-import { Subject, take, takeUntil } from 'rxjs';
+import { EMPTY, Subject, map, onErrorResumeNext, takeUntil } from 'rxjs';
 import { CLIENT_ID_STORAGE_KEY, DmaHttpRequestService, StorageService } from '../../shared';
 import { ConfigModel, ConfigModelResponse } from './config.model';
 
@@ -16,8 +16,12 @@ export class ConfigService implements OnDestroy {
     ) {}
 
     initialize() {
-        this.initializeConfigFromStorage();
-        this.retrieveConfig();
+        try {
+            this.initializeConfigFromStorage();
+            this.retrieveConfig();
+        } catch (error) {
+            throw new Error('State validation error');
+        }
     }
 
     ngOnDestroy() {
@@ -26,7 +30,7 @@ export class ConfigService implements OnDestroy {
     }
 
     storeConfig() {
-        if (!this.config?.clientId) return;
+        if (!this.config) return;
 
         this.storageService.setItem(CLIENT_ID_STORAGE_KEY, this.config.clientId);
     }
@@ -46,14 +50,19 @@ export class ConfigService implements OnDestroy {
         const state = nanoid();
         const endPoint = `/api/client?state=${encodeURIComponent(state)}`;
 
-        this.requestService
-            .post<ConfigModelResponse>(endPoint)
-            .pipe(takeUntil(this.destroy$), take(1))
-            .subscribe({
-                next: (data) => {
-                    if (state !== data.state) throw new Error('State validation error');
-                    this.config = { clientId: data.clientId };
-                },
-            });
+        onErrorResumeNext(
+            this.requestService.post<ConfigModelResponse>(endPoint).pipe(
+                map((data) => {
+                    if (state !== data.state) throw new Error();
+                    return data.clientId;
+                }),
+                takeUntil(this.destroy$)
+            ),
+            EMPTY
+        ).subscribe({
+            next: (clientId) => {
+                this.config = { clientId };
+            },
+        });
     }
 }
