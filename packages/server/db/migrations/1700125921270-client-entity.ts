@@ -14,14 +14,6 @@ export class ClientEntity1700125921270 implements MigrationInterface {
                         isNullable: false,
                         isUnique: true,
                     },
-                    {
-                        name: 'secret',
-                        type: 'varchar',
-                        width: 64,
-                        isNullable: true,
-                        default: null,
-                        isUnique: true,
-                    },
                 ],
             })
         );

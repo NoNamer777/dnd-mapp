@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener } from '@angular/core';
+import { ConfigService } from '../../services/config.service';
 import { DmaThemeDirective } from '../../theming';
 
 @Component({
@@ -8,4 +9,11 @@ import { DmaThemeDirective } from '../../theming';
     changeDetection: ChangeDetectionStrategy.OnPush,
     hostDirectives: [DmaThemeDirective],
 })
-export class DmaRootComponent {}
+export class DmaRootComponent {
+    constructor(private configService: ConfigService) {}
+
+    @HostListener('window:beforeunload')
+    beforeunloadHandler() {
+        this.configService.storeConfig();
+    }
+}

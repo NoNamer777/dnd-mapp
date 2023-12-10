@@ -1,6 +1,5 @@
 import { defaultClient, mockClientDB } from '@dnd-mapp/data/testing';
 import { Test } from '@nestjs/testing';
-import { compare } from 'bcryptjs';
 import { nanoid } from 'nanoid';
 import { mockClientModuleProviders, mockLoggingServiceProvider } from '../../../../testing';
 import { ClientService } from './client.service';
@@ -48,28 +47,6 @@ describe('ClientService', () => {
 
             expect(mockClientDB.findOneById(client.id)).toBeDefined();
             expect(mockClientDB.findAll()).toHaveLength(2);
-        });
-
-        it('should store a hashed value of the client secret and provide a unhashed secret', async () => {
-            const { service } = await setupTestEnvironment();
-
-            const client = await service.register();
-            const storedClient = mockClientDB.findOneById(client.id);
-
-            expect(client.secret).not.toEqual(storedClient.secret);
-            expect(await compare(client.secret, storedClient.secret)).toEqual(true);
-        });
-
-        it('should override a stored secret of an already registered client', async () => {
-            const { service } = await setupTestEnvironment();
-            const { id, secret } = defaultClient;
-
-            expect(mockClientDB.findOneById(id).secret).toEqual(secret);
-
-            await service.register(id);
-
-            expect(mockClientDB.findAll()).toHaveLength(1);
-            expect(mockClientDB.findOneById(id).secret).not.toEqual(secret);
         });
     });
 
