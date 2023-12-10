@@ -11,7 +11,9 @@ describe('ConfigService', () => {
             imports: [DmaHttpRequestTestingModule],
             providers: [
                 ConfigService,
-                inMemoryStorageProvider(params?.initWithStorage ? { [CLIENT_ID_STORAGE_KEY]: 'client_id' } : undefined),
+                inMemoryStorageProvider(
+                    params?.initWithStorage ? { [CLIENT_ID_STORAGE_KEY]: 'stored_client_id' } : undefined
+                ),
             ],
         });
 
@@ -27,44 +29,53 @@ describe('ConfigService', () => {
 
         configService.initialize();
 
-        const request = testingController.expectOne(environment.baseBackEndURL + '/api/client');
+        const request = testingController.expectOne((request) =>
+            request.url.startsWith(environment.baseBackEndURL + '/api/client?state=')
+        );
 
         expect(request.request.url).not.toContain('?id=');
 
         request.flush({
-            id: 'client_id',
-            secret: 'client_secret',
+            clientId: 'client_id',
+            state: request.request.url.split('=')[1],
         });
 
-        expect(configService.config).toEqual({ clientId: 'client_id', clientSecret: 'client_secret' });
+        expect(configService.config).toEqual({ clientId: 'client_id' });
     });
 
-    it('should retrieve a new secret when a client ID was stored in the storageService', () => {
+    it('should throw an error when the state present in the request', async () => {
+        const { configService, testingController } = setupTestEnvironment();
+        const spy = spyOn(configService, 'initialize').and.callThrough();
+
+        configService.initialize();
+
+        const request = testingController.expectOne((request) =>
+            request.url.startsWith(environment.baseBackEndURL + '/api/client?state=')
+        );
+
+        request.flush({ clientId: 'client_id' });
+
+        expect(spy).toThrowError('State validation error');
+    });
+
+    it('should not request a client ID when one was stored in storage already', () => {
         const { configService, testingController } = setupTestEnvironment({ initWithStorage: true });
 
         configService.initialize();
 
-        const request = testingController.expectOne(environment.baseBackEndURL + '/api/client?id=client_id');
+        testingController.expectNone((request) =>
+            request.url.startsWith(environment.baseBackEndURL + '/api/client?state=')
+        );
 
-        expect(request.request.url).toContain('?id=');
-
-        request.flush({
-            id: 'client_id',
-            secret: 'new_client_secret',
-        });
-
-        expect(configService.config).toEqual({ clientId: 'client_id', clientSecret: 'new_client_secret' });
+        expect(configService.config).toEqual({ clientId: 'stored_client_id' });
     });
 
     it('should remove the stored client ID during initialization', () => {
-        const { configService, storageService, testingController } = setupTestEnvironment({ initWithStorage: true });
+        const { configService, storageService } = setupTestEnvironment({ initWithStorage: true });
 
-        expect(storageService.getItem(CLIENT_ID_STORAGE_KEY)).toEqual('client_id');
+        expect(storageService.getItem(CLIENT_ID_STORAGE_KEY)).toEqual('stored_client_id');
 
         configService.initialize();
-        testingController
-            .expectOne(environment.baseBackEndURL + '/api/client?id=client_id')
-            .flush({ id: 'client_id', secret: 'new_client_secret' });
 
         expect(storageService.getItem(CLIENT_ID_STORAGE_KEY)).toBeNull();
     });
@@ -81,9 +92,14 @@ describe('ConfigService', () => {
         const { configService, storageService, testingController } = setupTestEnvironment();
 
         configService.initialize();
-        testingController
-            .expectOne(environment.baseBackEndURL + '/api/client')
-            .flush({ id: 'client_id', secret: 'client_secret' });
+
+        const request = testingController.expectOne((request) =>
+            request.url.startsWith(environment.baseBackEndURL + '/api/client?state=')
+        );
+        request.flush({
+            clientId: 'client_id',
+            state: request.request.url.split('=')[1],
+        });
 
         configService.storeConfig();
 
