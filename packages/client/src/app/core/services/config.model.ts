@@ -1,5 +1,5 @@
 export interface ConfigModel {
-    clientId?: string;
+    clientId: string;
 }
 
 export interface ConfigModelResponse {
