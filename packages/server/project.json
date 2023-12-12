@@ -81,16 +81,12 @@
                 "coverageDirectory": "coverage/server",
                 "jestConfig": "packages/server/jest.config.ts",
                 "onlyChanged": false,
-                "passWithNoTests": true,
                 "testPathIgnorePatterns": ["./src/test.ts"],
                 "watch": false,
                 "watchAll": false
             },
             "defaultConfiguration": "ci",
             "configurations": {
-                "ci": {
-                    "ci": true
-                },
                 "dev": {
                     "watchAll": true
                 }
@@ -98,10 +94,7 @@
         },
         "lint": {
             "executor": "@nx/eslint:lint",
-            "outputs": ["{options.outputFile}"],
-            "options": {
-                "lintFilePatterns": ["packages/server/**/*.ts"]
-            }
+            "outputs": ["{options.outputFile}"]
         }
     }
 }
