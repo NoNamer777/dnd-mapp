@@ -80,10 +80,7 @@
         },
         "lint": {
             "executor": "@nx/eslint:lint",
-            "outputs": ["{options.outputFile}"],
-            "options": {
-                "lintFilePatterns": ["packages/shared-components/**/*.ts", "packages/shared-components/**/*.html"]
-            }
+            "outputs": ["{options.outputFile}"]
         }
     }
 }

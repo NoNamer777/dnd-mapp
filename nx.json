@@ -42,6 +42,19 @@
         "build-storybook": {
             "inputs": ["default", "^production", "!{projectRoot}/.storybook/**/*"],
             "cache": true
+        },
+        "@nx/jest:jest": {
+            "inputs": ["default", "^default", "{workspaceRoot}/jest.preset.js"],
+            "cache": true,
+            "options": {
+                "passWithNoTests": true
+            },
+            "configurations": {
+                "ci": {
+                    "ci": true,
+                    "codeCoverage": true
+                }
+            }
         }
     },
     "generators": {
