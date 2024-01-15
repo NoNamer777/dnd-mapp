@@ -6,7 +6,7 @@ const glob = require('glob');
 module.exports = composePlugins(withNx(), (config) => {
     config.entry = {
         ...config.entry,
-        ...glob.sync(`packages/server/db/migrations/*.ts`).reduce((entries, filename) => {
+        ...glob.sync(`projects/back-end/db/migrations/*.ts`).reduce((entries, filename) => {
             const migrationName = basename(filename, '.ts');
 
             return Object.assign({}, entries, { [migrationName]: filename });

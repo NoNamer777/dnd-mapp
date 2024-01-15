@@ -1,26 +1,25 @@
 {
-    "name": "client",
+    "name": "front-end",
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
     "projectType": "application",
-    "sourceRoot": "packages/client/src",
-    "tags": ["@dnd-mapp/client"],
-    "implicitDependencies": ["data", "shared-components"],
+    "sourceRoot": "projects/front-end/src",
+    "tags": ["@dnd-mapp/front-end"],
     "prefix": "dma",
     "targets": {
         "build": {
             "executor": "@angular-devkit/build-angular:browser",
             "outputs": ["{options.outputPath}"],
             "options": {
-                "assets": ["packages/client/src/favicon.ico", "packages/client/src/assets"],
+                "assets": ["projects/front-end/src/favicon.ico", "projects/front-end/src/assets"],
                 "baseHref": "/app/",
-                "index": "packages/client/src/index.html",
+                "index": "projects/front-end/src/index.html",
                 "inlineStyleLanguage": "scss",
-                "main": "packages/client/src/main.ts",
-                "outputPath": "dist/client",
+                "main": "projects/front-end/src/main.ts",
+                "outputPath": "dist/front-end",
                 "polyfills": ["zone.js"],
                 "scripts": [],
-                "styles": ["packages/client/src/styles.scss"],
-                "tsConfig": "packages/client/tsconfig.app.json",
+                "styles": ["projects/front-end/src/styles.scss"],
+                "tsConfig": "projects/front-end/tsconfig.app.json",
                 "vendorChunk": true
             },
             "defaultConfiguration": "prod",
@@ -28,8 +27,8 @@
                 "dev": {
                     "fileReplacements": [
                         {
-                            "replace": "packages/client/src/environments/environment.ts",
-                            "with": "packages/client/src/environments/environment.dev.ts"
+                            "replace": "projects/front-end/src/environments/environment.ts",
+                            "with": "projects/front-end/src/environments/environment.dev.ts"
                         }
                     ],
                     "namedChunks": true,
@@ -41,8 +40,8 @@
                     "extractLicenses": true,
                     "fileReplacements": [
                         {
-                            "replace": "packages/client/src/environments/environment.ts",
-                            "with": "packages/client/src/environments/environment.prod.ts"
+                            "replace": "projects/front-end/src/environments/environment.ts",
+                            "with": "projects/front-end/src/environments/environment.prod.ts"
                         }
                     ],
                     "outputHashing": "all",
@@ -65,16 +64,16 @@
             "executor": "@nx/angular:delegate-build",
             "outputs": ["{options.outputPath}"],
             "options": {
-                "buildTarget": "client:build:prod",
-                "outputPath": "dist/client",
-                "tsConfig": "packages/client/tsconfig.app.json",
+                "buildTarget": "front-end:build:prod",
+                "outputPath": "dist/front-end",
+                "tsConfig": "projects/front-end/tsconfig.app.json",
                 "watch": true
             }
         },
         "serve": {
             "executor": "@angular-devkit/build-angular:dev-server",
             "options": {
-                "buildTarget": "client:build:dev",
+                "buildTarget": "front-end:build:dev",
                 "host": "0.0.0.0",
                 "open": false,
                 "port": 4200,
@@ -85,18 +84,18 @@
             "executor": "@angular-devkit/build-angular:karma",
             "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
             "options": {
-                "assets": ["packages/client/src/assets", "packages/client/src/favicon.ico"],
+                "assets": ["projects/front-end/src/assets", "projects/front-end/src/favicon.ico"],
                 "codeCoverage": true,
                 "codeCoverageExclude": ["**/testing/**", "**/*.module.ts", "**/index.ts", "**/environments/**"],
                 "inlineStyleLanguage": "scss",
-                "karmaConfig": "packages/client/karma.conf.js",
+                "karmaConfig": "projects/front-end/karma.conf.js",
                 "polyfills": ["zone.js", "zone.js/testing"],
                 "scripts": [
                     "node_modules/@popperjs/core/dist/umd/popper.min.js",
                     "node_modules/bootstrap/dist/js/bootstrap.min.js"
                 ],
-                "styles": ["packages/client/src/styles.scss", "node_modules/bootstrap/dist/css/bootstrap.min.css"],
-                "tsConfig": "packages/client/tsconfig.spec.json",
+                "styles": ["projects/front-end/src/styles.scss", "node_modules/bootstrap/dist/css/bootstrap.min.css"],
+                "tsConfig": "projects/front-end/tsconfig.spec.json",
                 "watch": false
             },
             "configurations": {
@@ -114,13 +113,13 @@
         "docker-build": {
             "executor": "nx:run-commands",
             "options": {
-                "command": "docker build -f packages/client/Dockerfile . -t nonamer777/dnd-mapp-client"
+                "command": "docker build -f projects/front-end/Dockerfile . -t nonamer777/dnd-mapp-client"
             }
         },
         "extract-i18n": {
             "executor": "@angular-devkit/build-angular:extract-i18n",
             "options": {
-                "buildTarget": "client:build",
+                "buildTarget": "front-end:build",
                 "format": "json",
                 "outputPath": "dist/client/translations"
             }

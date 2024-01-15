@@ -2,7 +2,7 @@ import type { Config } from 'jest';
 
 const config: Config = {
     collectCoverageFrom: ['./src/app/**/*.{entity,service}.ts'],
-    displayName: 'server',
+    displayName: 'back-end',
     moduleFileExtensions: ['ts', 'js', 'html'],
     preset: '../../jest.preset.js',
     setupFilesAfterEnv: ['./src/test.ts'],

@@ -1,30 +1,28 @@
 {
-    "name": "server",
+    "name": "back-end",
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
-    "sourceRoot": "packages/server/src",
+    "sourceRoot": "projects/back-end/src",
     "projectType": "application",
-    "tags": ["@dnd-mapp/server"],
-    "implicitDependencies": ["data"],
+    "tags": ["@dnd-mapp/back-end"],
     "targets": {
         "build": {
             "executor": "@nx/webpack:webpack",
             "outputs": ["{options.outputPath}"],
             "options": {
-                "assets": ["packages/server/src/assets"],
+                "assets": ["projects/back-end/src/assets"],
                 "baseHref": "/",
                 "buildLibsFromSource": false,
                 "compiler": "tsc",
                 "extractLicenses": true,
                 "inspect": false,
-                "isolatedConfig": true,
-                "main": "packages/server/src/main.ts",
-                "outputPath": "dist/server",
+                "main": "projects/back-end/src/main.ts",
+                "outputPath": "dist/back-end",
                 "scripts": [],
                 "styles": [],
                 "target": "node",
-                "tsConfig": "packages/server/tsconfig.app.json",
+                "tsConfig": "projects/back-end/tsconfig.app.json",
                 "vendor": true,
-                "webpackConfig": "packages/server/webpack.config.js"
+                "webpackConfig": "projects/back-end/webpack.config.js"
             },
             "defaultConfiguration": "prod",
             "configurations": {
@@ -46,7 +44,7 @@
         "serve": {
             "executor": "@nx/js:node",
             "options": {
-                "buildTarget": "server:build:dev",
+                "buildTarget": "back-end:build:dev",
                 "inspect": false
             }
         },
@@ -55,7 +53,7 @@
             "options": {
                 "commands": [
                     {
-                        "command": "npx nx build-dev client",
+                        "command": "npx nx build-dev front-end",
                         "prefix": "[front-end]:\t"
                     },
                     {
@@ -63,11 +61,11 @@
                         "prefix": "[data]:\t\t"
                     },
                     {
-                        "command": "npx nx serve server",
+                        "command": "npx nx serve back-end",
                         "prefix": "[back-end]:\t"
                     }
                 ],
-                "envFile": "packages/server/.env",
+                "envFile": "projects/back-end/.env",
                 "color": true
             }
         },
@@ -78,8 +76,8 @@
                 "codeCoverage": true,
                 "colors": true,
                 "coverageReporters": ["html", "text-summary"],
-                "coverageDirectory": "coverage/server",
-                "jestConfig": "packages/server/jest.config.ts",
+                "coverageDirectory": "coverage/back-end",
+                "jestConfig": "projects/back-end/jest.config.ts",
                 "onlyChanged": false,
                 "testPathIgnorePatterns": ["./src/test.ts"],
                 "watch": false,

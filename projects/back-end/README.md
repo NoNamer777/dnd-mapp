@@ -1,8 +1,8 @@
-# DnD-Mapp Server
+# DnD-Mapp Back-end application
 
-This project contains the back-end application for the DnD Mapp project.
+This project contains the back-end application for the DnD Mapp platform.
 
-This project is written in the [Nest.js](https://nestjs.com) framework, `~v10.2.0`. It uses [TypeOrm](https://typeorm.io/) `~v0.3.0` for handling database connections and interactions, which currently only supports MySQL or Sqlite databases.
+This project is written in the [Nest.js](https://nestjs.com) framework, `v10`. It uses [TypeOrm](https://typeorm.io/) `v0.3` for handling database connections and interactions, which currently only supports MySQL or Sqlite databases.
 
 ## Configuration
 

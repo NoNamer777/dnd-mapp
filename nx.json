@@ -1,6 +1,6 @@
 {
     "$schema": "./node_modules/nx/schemas/nx-schema.json",
-    "defaultProject": "client",
+    "defaultProject": "front-end",
     "nxCloudAccessToken": "MjRmZWMzYTQtZjUyMS00YzMwLWI5NjgtZDdhNTE1MjAzN2Y3fHJlYWQtd3JpdGU=",
     "affected": {
         "defaultBase": "origin/main"
