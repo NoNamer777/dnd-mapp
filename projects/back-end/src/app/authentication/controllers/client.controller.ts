@@ -1,7 +1,7 @@
 import { Controller, Delete, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
 import { DndMappLoggerService } from '../../common';
-import { ClientService } from './client.service';
-import { RegisterQueryParamsDto } from './models';
+import { RegisterQueryParamsDto } from '../models';
+import { ClientService } from '../services';
 
 @Controller('api/client')
 export class ClientController {

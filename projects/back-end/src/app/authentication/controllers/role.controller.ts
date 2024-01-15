@@ -13,19 +13,19 @@ import {
     UseGuards,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { IsAdminGuard } from '../../authentication/guards';
 import { DndMappLoggerService } from '../../common';
-import { CreateUserRoleDto, UserRoleEntity } from './user-role.entity';
-import { UserRoleService } from './user-role.service';
+import { CreateRoleDto, RoleEntity } from '../entities';
+import { IsAdminGuard } from '../guards';
+import { RoleService } from '../services';
 
 @UseGuards(IsAdminGuard)
 @Controller('/api/user-role')
-export class UserRoleController {
+export class RoleController {
     constructor(
-        private readonly skillService: UserRoleService,
+        private readonly skillService: RoleService,
         private readonly logger: DndMappLoggerService
     ) {
-        logger.setContext(UserRoleController.name);
+        logger.setContext(RoleController.name);
     }
 
     @Get()
@@ -35,7 +35,7 @@ export class UserRoleController {
     }
 
     @Post()
-    async create(@Body() data: CreateUserRoleDto): Promise<UserRole> {
+    async create(@Body() data: CreateRoleDto): Promise<UserRole> {
         this.logger.log('Received request for creating a new User Role');
         return await this.skillService.create(data);
     }
@@ -56,7 +56,7 @@ export class UserRoleController {
     async update(
         @Req() request: Request,
         @Param('id', ParseIntPipe) id: number,
-        @Body() data: UserRoleEntity
+        @Body() data: RoleEntity
     ): Promise<UserRole> {
         this.logger.log('Received a request for updating a User Role');
         const requestPath = request.path;

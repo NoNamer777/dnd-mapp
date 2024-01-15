@@ -14,10 +14,10 @@ import {
     UseInterceptors,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { IsOwnerOrAdminGuard } from '../../authentication/guards';
 import { DndMappLoggerService } from '../../common';
-import { CreateUserDto, UserEntity } from './user.entity';
-import { UserService } from './user.service';
+import { CreateUserDto, UserEntity } from '../entities';
+import { IsOwnerOrAdminGuard } from '../guards';
+import { UserService } from '../services';
 
 @UseGuards(IsOwnerOrAdminGuard)
 @Controller('api/user')

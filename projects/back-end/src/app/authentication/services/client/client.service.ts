@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { nanoid } from 'nanoid';
-import { DndMappLoggerService } from '../../common';
-import { ClientEntity } from './client.entity';
-import { ClientRepository } from './client.repository';
+import { DndMappLoggerService } from '../../../common';
+import { ClientEntity } from '../../entities';
+import { ClientRepository } from '../../repositories';
 
 @Injectable()
 export class ClientService {

@@ -1,7 +1,7 @@
 import { defaultClient, mockClientDB } from '@dnd-mapp/data/testing';
 import { Test } from '@nestjs/testing';
 import { nanoid } from 'nanoid';
-import { mockClientModuleProviders, mockLoggingServiceProvider } from '../../../../testing';
+import { mockClientModuleProviders, mockLoggingServiceProvider } from '../../../../../testing';
 import { ClientService } from './client.service';
 
 describe('ClientService', () => {

@@ -10,10 +10,10 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
-import { DndMappLoggerService, buildServerUrl } from '../common';
-import { ServerConfig } from '../config';
-import { LoginDto, SignUpDto } from './models';
-import { AuthenticationService } from './services/authentication.service';
+import { DndMappLoggerService, buildServerUrl } from '../../common';
+import { ServerConfig } from '../../config';
+import { LoginDto, SignUpDto } from '../models';
+import { AuthenticationService } from '../services';
 
 @Controller({ path: '/authentication' })
 export class AuthenticationController {

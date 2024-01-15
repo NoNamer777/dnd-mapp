@@ -1,12 +1,12 @@
 import { UserRoleName } from '@dnd-mapp/data';
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
-import { UserRoleEntity } from './user-role.entity';
+import { RoleEntity } from '../entities';
 
 @Injectable()
-export class UserRoleRepository extends Repository<UserRoleEntity> {
+export class RoleRepository extends Repository<RoleEntity> {
     constructor(datasource: DataSource) {
-        super(UserRoleEntity, datasource.createEntityManager());
+        super(RoleEntity, datasource.createEntityManager());
     }
 
     async findAll() {

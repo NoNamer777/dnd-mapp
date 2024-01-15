@@ -1,7 +1,7 @@
 import { UserRoles } from '@dnd-mapp/data';
 import { CanActivate, ExecutionContext, Inject, Injectable, forwardRef } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserService } from '../../entities/user';
+import { UserService } from '../services';
 import { getAuthenticatedUser, hasRole } from './methods';
 
 @Injectable()

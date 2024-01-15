@@ -1,16 +1,16 @@
 import { UserRole, UserRoleName } from '@dnd-mapp/data';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { DndMappLoggerService } from '../../common';
-import { CreateUserRoleDto } from './user-role.entity';
-import { UserRoleRepository } from './user-role.repository';
+import { DndMappLoggerService } from '../../../common';
+import { CreateRoleDto } from '../../entities';
+import { RoleRepository } from '../../repositories';
 
 @Injectable()
-export class UserRoleService {
+export class RoleService {
     constructor(
-        private readonly userRoleRepository: UserRoleRepository,
+        private readonly userRoleRepository: RoleRepository,
         private readonly logger: DndMappLoggerService
     ) {
-        this.logger.setContext(UserRoleService.name);
+        this.logger.setContext(RoleService.name);
     }
 
     async findAll(): Promise<UserRole[]> {
@@ -53,7 +53,7 @@ export class UserRoleService {
         return await this.userRoleRepository.save(role);
     }
 
-    async create(role: CreateUserRoleDto): Promise<UserRole> {
+    async create(role: CreateRoleDto): Promise<UserRole> {
         this.logger.log('Creating a new User Role');
         const byName = await this.findByName(role.name, false);
 

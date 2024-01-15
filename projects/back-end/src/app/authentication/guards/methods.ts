@@ -2,7 +2,8 @@ import { UserRoleName } from '@dnd-mapp/data';
 import { ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import { UserEntity, UserService } from '../../entities/user';
+import { UserEntity } from '../entities/user.entity';
+import { UserService } from '../services';
 
 export async function getAuthenticatedUser(
     context: ExecutionContext,

@@ -1,2 +1,3 @@
 export * from './authentication.module';
-export * from './services/authentication.service';
+export * from './repositories';
+export * from './services';

@@ -13,7 +13,7 @@ import {
     ValidateNested,
 } from 'class-validator';
 import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
-import { UserRoleEntity } from '../user-role';
+import { RoleEntity } from './role.entity';
 
 @Entity('user')
 export class UserEntity implements UserModel {
@@ -59,7 +59,7 @@ export class UserEntity implements UserModel {
     @IsArray()
     @ArrayMinSize(1)
     @ValidateNested({ each: true })
-    @ManyToMany(() => UserRoleEntity)
+    @ManyToMany(() => RoleEntity)
     @JoinTable({
         name: 'user_role',
         joinColumn: {
@@ -71,7 +71,7 @@ export class UserEntity implements UserModel {
             referencedColumnName: 'id',
         },
     })
-    roles: UserRoleEntity[];
+    roles: RoleEntity[];
 }
 
 export class CreateUserDto extends OmitType(UserEntity, ['id', 'roles'] as const) {}

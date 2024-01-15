@@ -4,7 +4,7 @@ import { IsEnum, IsInt, IsNotEmpty, IsString, Min } from 'class-validator';
 import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('role')
-export class UserRoleEntity implements UserRole {
+export class RoleEntity implements UserRole {
     @PrimaryGeneratedColumn('increment')
     @PrimaryColumn()
     @IsInt()
@@ -23,4 +23,4 @@ export class UserRoleEntity implements UserRole {
     name: UserRoleName;
 }
 
-export class CreateUserRoleDto extends OmitType(UserRoleEntity, ['id'] as const) {}
+export class CreateRoleDto extends OmitType(RoleEntity, ['id'] as const) {}

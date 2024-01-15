@@ -3,7 +3,7 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import { UserService } from '../../entities/user';
+import { UserService } from '../services';
 import { getAuthenticatedUser, hasRole } from './methods';
 
 @Injectable()
