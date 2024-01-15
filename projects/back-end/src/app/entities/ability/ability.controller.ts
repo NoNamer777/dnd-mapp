@@ -12,7 +12,7 @@ import {
     Req,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { DndMappLoggerService } from '../../common';
+import { LoggerService } from '../../common';
 import { AbilityEntity, CreateAbilityDto } from './ability.entity';
 import { AbilityService } from './ability.service';
 
@@ -20,7 +20,7 @@ import { AbilityService } from './ability.service';
 export class AbilityController {
     constructor(
         private readonly abilityService: AbilityService,
-        private readonly logger: DndMappLoggerService
+        private readonly logger: LoggerService
     ) {
         this.logger.setContext(AbilityController.name);
     }

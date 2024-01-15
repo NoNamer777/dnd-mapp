@@ -1,7 +1,7 @@
 import { Roles } from '@dnd-mapp/data';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { genSalt, hash } from 'bcryptjs';
-import { DndMappLoggerService } from '../../../common';
+import { LoggerService } from '../../../common';
 import { CreateUserDto, UserEntity } from '../../entities';
 import { UserRepository } from '../../repositories';
 import { RoleService } from '../role';
@@ -11,7 +11,7 @@ export class UserService {
     constructor(
         private readonly userRepository: UserRepository,
         private readonly userRoleService: RoleService,
-        private readonly logger: DndMappLoggerService
+        private readonly logger: LoggerService
     ) {
         logger.setContext(UserService.name);
     }

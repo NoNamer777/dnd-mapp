@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
-import { DndMappLoggerService, buildServerUrl } from '../../common';
+import { LoggerService, buildServerUrl } from '../../common';
 import { ServerConfig } from '../../config';
 import { LoginDto, SignUpDto } from '../models';
 import { AuthenticationService } from '../services';
@@ -19,7 +19,7 @@ import { AuthenticationService } from '../services';
 export class AuthenticationController {
     constructor(
         private readonly authenticationService: AuthenticationService,
-        private readonly logger: DndMappLoggerService,
+        private readonly logger: LoggerService,
         private readonly configService: ConfigService
     ) {
         logger.setContext(AuthenticationController.name);

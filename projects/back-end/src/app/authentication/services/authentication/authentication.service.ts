@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcryptjs';
-import { DndMappLoggerService } from '../../../common';
+import { LoggerService } from '../../../common';
 import { LoginDto, SignUpDto } from '../../models';
 import { UserService } from '../user';
 
@@ -9,7 +9,7 @@ import { UserService } from '../user';
 export class AuthenticationService {
     constructor(
         private readonly userService: UserService,
-        private readonly logger: DndMappLoggerService,
+        private readonly logger: LoggerService,
         private readonly jwtService: JwtService
     ) {
         logger.setContext(AuthenticationService.name);

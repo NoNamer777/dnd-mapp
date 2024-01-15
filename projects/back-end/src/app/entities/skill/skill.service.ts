@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, InjectionToken, NotFoundException, OnModuleInit } from '@nestjs/common';
-import { DndMappLoggerService } from '../../common';
+import { LoggerService } from '../../common';
 import { EntityService } from '../entity.service';
 import { EntityApiService } from '../models';
 import { CreateSkillDto, SkillEntity } from './skill.entity';
@@ -11,7 +11,7 @@ export const SKILL_SERVICE_TOKEN: InjectionToken = 'SKILL_SERVICE';
 export class SkillService implements EntityApiService<SkillEntity>, OnModuleInit {
     constructor(
         private readonly skillRepository: SkillRepository,
-        private readonly logger: DndMappLoggerService,
+        private readonly logger: LoggerService,
         private readonly entityService: EntityService
     ) {
         this.logger.setContext(SkillService.name);

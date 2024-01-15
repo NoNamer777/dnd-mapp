@@ -1,6 +1,6 @@
 import { Role, RoleName } from '@dnd-mapp/data';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { DndMappLoggerService } from '../../../common';
+import { LoggerService } from '../../../common';
 import { CreateRoleDto } from '../../entities';
 import { RoleRepository } from '../../repositories';
 
@@ -8,7 +8,7 @@ import { RoleRepository } from '../../repositories';
 export class RoleService {
     constructor(
         private readonly userRoleRepository: RoleRepository,
-        private readonly logger: DndMappLoggerService
+        private readonly logger: LoggerService
     ) {
         this.logger.setContext(RoleService.name);
     }

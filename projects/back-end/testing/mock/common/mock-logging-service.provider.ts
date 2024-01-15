@@ -1,6 +1,6 @@
-import { DndMappLoggerService } from '../../../src/app/common';
+import { LoggerService } from '../../../src/app/common';
 
-class MockLoggingService extends DndMappLoggerService {
+class MockLoggingService extends LoggerService {
     logs: { [context: string]: string[] } = {};
 
     override log(message: string) {
@@ -12,6 +12,6 @@ class MockLoggingService extends DndMappLoggerService {
 }
 
 export const mockLoggingServiceProvider = {
-    provide: DndMappLoggerService,
+    provide: LoggerService,
     useClass: MockLoggingService,
 };

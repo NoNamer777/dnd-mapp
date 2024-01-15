@@ -13,7 +13,7 @@ import {
     UseGuards,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { DndMappLoggerService } from '../../common';
+import { LoggerService } from '../../common';
 import { CreateRoleDto, RoleEntity } from '../entities';
 import { IsAdminGuard } from '../guards';
 import { RoleService } from '../services';
@@ -23,7 +23,7 @@ import { RoleService } from '../services';
 export class RoleController {
     constructor(
         private readonly skillService: RoleService,
-        private readonly logger: DndMappLoggerService
+        private readonly logger: LoggerService
     ) {
         logger.setContext(RoleController.name);
     }

@@ -1,13 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { nanoid } from 'nanoid';
-import { DndMappLoggerService } from '../../../common';
+import { LoggerService } from '../../../common';
 import { ClientEntity } from '../../entities';
 import { ClientRepository } from '../../repositories';
 
 @Injectable()
 export class ClientService {
     constructor(
-        private readonly logger: DndMappLoggerService,
+        private readonly logger: LoggerService,
         private readonly clientRepository: ClientRepository
     ) {
         this.logger.setContext(ClientService.name);

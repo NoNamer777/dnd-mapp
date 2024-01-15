@@ -1,5 +1,5 @@
 import { Controller, Delete, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
-import { DndMappLoggerService } from '../../common';
+import { LoggerService } from '../../common';
 import { RegisterQueryParamsDto } from '../models';
 import { ClientService } from '../services';
 
@@ -7,7 +7,7 @@ import { ClientService } from '../services';
 export class ClientController {
     constructor(
         private readonly clientService: ClientService,
-        private readonly logger: DndMappLoggerService
+        private readonly logger: LoggerService
     ) {
         this.logger.setContext(ClientController.name);
     }

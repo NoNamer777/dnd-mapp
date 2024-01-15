@@ -7,7 +7,7 @@ import { readFile } from 'fs/promises';
 import { createServer as createHttpServer } from 'http';
 import { createServer as createHttpsServer } from 'https';
 import { AppModule } from './app/app.module';
-import { DndMappLoggerService, buildServerUrl } from './app/common';
+import { LoggerService, buildServerUrl } from './app/common';
 import { ServerConfig, corsConfig } from './app/config';
 
 const validationOptions: ValidationPipeOptions = {
@@ -28,7 +28,7 @@ async function bootstrap() {
     const nestApp = await NestFactory.create(AppModule, new ExpressAdapter(expressServer), { bufferLogs: true });
     const configService = nestApp.get(ConfigService);
 
-    const logger = await nestApp.resolve(DndMappLoggerService);
+    const logger = await nestApp.resolve(LoggerService);
     logger.setContext('NestApplication');
     Logger.flush();
 

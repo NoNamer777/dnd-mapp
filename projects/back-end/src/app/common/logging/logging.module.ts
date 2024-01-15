@@ -1,8 +1,9 @@
-import { Module } from '@nestjs/common';
-import { DndMappLoggerService } from './dnd-mapp-logger.service';
+import { Global, Module } from '@nestjs/common';
+import { LoggerService } from './logger.service';
 
+@Global()
 @Module({
-    providers: [DndMappLoggerService],
-    exports: [DndMappLoggerService],
+    providers: [LoggerService],
+    exports: [LoggerService],
 })
 export class LoggingModule {}

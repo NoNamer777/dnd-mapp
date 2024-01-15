@@ -14,7 +14,7 @@ import {
     UseInterceptors,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { DndMappLoggerService } from '../../common';
+import { LoggerService } from '../../common';
 import { CreateUserDto, UserEntity } from '../entities';
 import { IsOwnerOrAdminGuard } from '../guards';
 import { UserService } from '../services';
@@ -24,7 +24,7 @@ import { UserService } from '../services';
 export class UserController {
     constructor(
         private readonly userService: UserService,
-        private readonly logger: DndMappLoggerService
+        private readonly logger: LoggerService
     ) {
         logger.setContext(UserController.name);
     }
