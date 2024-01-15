@@ -14,8 +14,8 @@
                         "allowCircularSelfDependency": true,
                         "depConstraints": [
                             {
-                                "sourceTag": "@dnd-mapp/client",
-                                "onlyDependOnLibsWithTags": ["@dnd-mapp/client", "@dnd-mapp/data"],
+                                "sourceTag": "@dnd-mapp/front-end",
+                                "onlyDependOnLibsWithTags": ["@dnd-mapp/data"],
                                 "bannedExternalImports": [
                                     "@nestjs/*",
                                     "typeorm",
@@ -31,7 +31,7 @@
                             },
                             {
                                 "sourceTag": "@dnd-mapp/shared-components",
-                                "onlyDependOnLibsWithTags": ["@dnd-mapp/client", "@dnd-mapp/data"],
+                                "onlyDependOnLibsWithTags": ["@dnd-mapp/data"],
                                 "bannedExternalImports": [
                                     "@nestjs/*",
                                     "typeorm",
@@ -47,8 +47,8 @@
                                 ]
                             },
                             {
-                                "sourceTag": "@dnd-mapp/server",
-                                "onlyDependOnLibsWithTags": ["@dnd-mapp/server", "@dnd-mapp/data"],
+                                "sourceTag": "@dnd-mapp/back-end",
+                                "onlyDependOnLibsWithTags": ["@dnd-mapp/data"],
                                 "bannedExternalImports": [
                                     "@angular/*",
                                     "zone.js",

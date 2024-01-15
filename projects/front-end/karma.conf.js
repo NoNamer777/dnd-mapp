@@ -9,7 +9,7 @@ module.exports = (config) => {
             clearContext: false,
         },
         coverageReporter: {
-            dir: '../../coverage/client',
+            dir: '../../coverage/front-end',
             subdir: '.',
             reporters: [{ type: 'html' }, { type: 'text-summary' }],
         },

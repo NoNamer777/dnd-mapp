@@ -1,22 +1,8 @@
 ARG NODE_VERSION=18.15-alpine
 
-FROM --platform=$BUILDPLATFORM node:${NODE_VERSION} AS build-client
+FROM --platform=$BUILDPLATFORM node:${NODE_VERSION} AS build-front-end
 
-WORKDIR /client
-
-COPY package*.json .
-
-RUN apk --no-cache --virtual build-dependencies add python3 build-base && \
-    npm ci
-
-COPY . .
-
-RUN npx nx build client
-
-
-FROM --platform=$BUILDPLATFORM node:${NODE_VERSION} AS build-server
-
-WORKDIR /server
+WORKDIR /front-end
 
 COPY package*.json .
 
@@ -25,25 +11,39 @@ RUN apk --no-cache --virtual build-dependencies add python3 build-base && \
 
 COPY . .
 
-RUN npx nx build server && \
+RUN npx nx build front-end
+
+
+FROM --platform=$BUILDPLATFORM node:${NODE_VERSION} AS build-back-end
+
+WORKDIR /back-end
+
+COPY package*.json .
+
+RUN apk --no-cache --virtual build-dependencies add python3 build-base && \
+    npm ci
+
+COPY . .
+
+RUN npx nx build back-end && \
     rm -rf node_modules && \
     npm ci --omit dev && \
-    mv node_modules dist/server/node_modules
+    mv node_modules dist/back-end/node_modules
 
-COPY --from=build-client /client/dist/client dist/client
+COPY --from=build-front-end /front-end/dist/front-end dist/front-end
 
-COPY --from=build-client /client/dist/data dist/server/node_modules/@dnd-mapp/data
+COPY --from=build-front-end /front-end/dist/data dist/back-end/node_modules/@dnd-mapp/data
 
 
 FROM node:${NODE_VERSION}
 
 WORKDIR /usr/src/app
 
-COPY --from=build-server server/dist .
+COPY --from=build-back-end back-end/dist .
 
-ENV MIGRATION_FILES_PATH=/usr/src/app/server/db/migrations/*.js
+ENV MIGRATION_FILES_PATH=/usr/src/app/back-end/db/migrations/*.js
 ENV HOST=0.0.0.0
 
 EXPOSE 80
 
-CMD ["node", "/usr/src/app/server/main.js"]
+CMD ["node", "/usr/src/app/back-end/main.js"]

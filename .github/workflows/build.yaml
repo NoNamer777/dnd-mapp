@@ -21,7 +21,7 @@ jobs:
             npm-version: 9
             number-of-agents: 3
             install-commands: |
-                echo "${{ vars.CLIENT_ENV_VARIABLES_PROD }}" > packages/client/src/environments/environment.prod.ts
+                echo "${{ vars.CLIENT_ENV_VARIABLES_PROD }}" > projects/front-end/src/environments/environment.prod.ts
                 npm ci
             init-commands: |
                 npx nx-cloud start-ci-run --stop-agents-after "build" --agent-count 3
@@ -39,7 +39,7 @@ jobs:
             node-version: 18
             npm-version: 9
             install-commands: |
-                echo "${{ vars.CLIENT_ENV_VARIABLES_PROD }}" > packages/client/src/environments/environment.prod.ts
+                echo "${{ vars.CLIENT_ENV_VARIABLES_PROD }}" > projects/front-end/src/environments/environment.prod.ts
                 npm ci
             environment-variables: |
                 JWT_SECRET=${{ vars.JWT_SECRET }}

@@ -1,7 +1,7 @@
 {
     "name": "shared-components",
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
-    "sourceRoot": "packages/shared-components/src",
+    "sourceRoot": "projects/shared-components/src",
     "prefix": "dma",
     "tags": ["@dnd-mapp/shared-components"],
     "implicitDependencies": ["data"],
@@ -11,15 +11,15 @@
             "executor": "@nx/angular:ng-packagr-lite",
             "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
             "options": {
-                "project": "packages/shared-components/ng-package.json"
+                "project": "projects/shared-components/ng-package.json"
             },
             "defaultConfiguration": "prod",
             "configurations": {
                 "prod": {
-                    "tsConfig": "packages/shared-components/tsconfig.lib.prod.json"
+                    "tsConfig": "projects/shared-components/tsconfig.lib.prod.json"
                 },
                 "dev": {
-                    "tsConfig": "packages/shared-components/tsconfig.lib.json",
+                    "tsConfig": "projects/shared-components/tsconfig.lib.json",
                     "watch": true
                 }
             }
@@ -32,14 +32,14 @@
                 "codeCoverage": true,
                 "codeCoverageExclude": ["**/testing/**/*", "**/*.module.ts", "**/index.ts"],
                 "inlineStyleLanguage": "scss",
-                "karmaConfig": "packages/shared-components/karma.conf.js",
+                "karmaConfig": "projects/shared-components/karma.conf.js",
                 "polyfills": ["zone.js", "zone.js/testing"],
                 "scripts": [],
                 "styles": [
-                    "packages/shared-components/src/lib/styling/theme-variables.scss",
-                    "packages/shared-components/src/lib/styling/font.scss"
+                    "projects/shared-components/src/lib/styling/theme-variables.scss",
+                    "projects/shared-components/src/lib/styling/font.scss"
                 ],
-                "tsConfig": "packages/shared-components/tsconfig.spec.json",
+                "tsConfig": "projects/shared-components/tsconfig.spec.json",
                 "watch": false
             },
             "defaultConfiguration": "ci",
@@ -62,9 +62,9 @@
                 "assets": [],
                 "browserTarget": "shared-components:build-storybook",
                 "compodoc": false,
-                "configDir": "packages/shared-components/.storybook",
+                "configDir": "projects/shared-components/.storybook",
                 "outputDir": "dist/storybook/shared-components",
-                "styles": ["packages/shared-components/.storybook/styling.scss"]
+                "styles": ["projects/shared-components/.storybook/styling.scss"]
             }
         },
         "storybook": {
@@ -72,7 +72,7 @@
             "options": {
                 "browserTarget": "shared-components:build-storybook",
                 "compodoc": false,
-                "configDir": "packages/shared-components/.storybook",
+                "configDir": "projects/shared-components/.storybook",
                 "host": "0.0.0.0",
                 "open": false,
                 "port": 4300

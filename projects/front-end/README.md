@@ -1,8 +1,8 @@
-# DnD-Mapp Client
+# DnD-Mapp Front-end Client Web Application
 
-This project contains the front-end client application for the DnD Mapp project.
+This project contains the front-end client web application for the DnD Mapp platform.
 
-This project is written in the [Angular](https://angular.io) framework, v15.2.3.
+This project is written in the [Angular](https://angular.dev) framework, v17.
 
 ## Commands
 
