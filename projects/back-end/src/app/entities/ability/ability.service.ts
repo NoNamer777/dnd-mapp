@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
-import { DndMappLoggerService } from '../../common';
+import { LoggerService } from '../../common';
 import { EntityService } from '../entity.service';
 import { EntityApiService } from '../models';
 import { AbilityEntity, CreateAbilityDto } from './ability.entity';
@@ -11,7 +11,7 @@ export const ABILITY_SERVICE_TOKEN = 'ABILITY_TOKEN';
 export class AbilityService implements EntityApiService<AbilityEntity>, OnModuleInit {
     constructor(
         private readonly abilityRepository: AbilityRepository,
-        private readonly logger: DndMappLoggerService,
+        private readonly logger: LoggerService,
         private readonly entityService: EntityService
     ) {
         this.logger.setContext(AbilityService.name);

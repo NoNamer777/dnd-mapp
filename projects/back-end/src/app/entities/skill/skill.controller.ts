@@ -12,7 +12,7 @@ import {
     Req,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { DndMappLoggerService } from '../../common';
+import { LoggerService } from '../../common';
 import { CreateSkillDto, SkillEntity } from './skill.entity';
 import { SkillService } from './skill.service';
 
@@ -20,7 +20,7 @@ import { SkillService } from './skill.service';
 export class SkillController {
     constructor(
         private readonly skillService: SkillService,
-        private readonly logger: DndMappLoggerService
+        private readonly logger: LoggerService
     ) {
         logger.setContext(SkillController.name);
     }

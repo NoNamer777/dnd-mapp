@@ -1,8 +1,9 @@
-import { UserRoleName } from '@dnd-mapp/data';
+import { RoleName } from '@dnd-mapp/data';
 import { ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import { UserEntity, UserService } from '../../entities/user';
+import { UserEntity } from '../entities/user.entity';
+import { UserService } from '../services';
 
 export async function getAuthenticatedUser(
     context: ExecutionContext,
@@ -33,6 +34,6 @@ export async function getAuthenticatedUser(
     return await userService.findById(decodedToken.sub);
 }
 
-export function hasRole(user: UserEntity, role: UserRoleName) {
+export function hasRole(user: UserEntity, role: RoleName) {
     return user.roles.some((userRole) => userRole.name === role);
 }

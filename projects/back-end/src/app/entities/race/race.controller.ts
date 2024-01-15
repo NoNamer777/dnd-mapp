@@ -12,7 +12,7 @@ import {
     Req,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { DndMappLoggerService } from '../../common';
+import { LoggerService } from '../../common';
 import { CreateRaceDto, RaceEntity } from './race.entity';
 import { RaceService } from './race.service';
 
@@ -20,7 +20,7 @@ import { RaceService } from './race.service';
 export class RaceController {
     constructor(
         private readonly raceService: RaceService,
-        private readonly logger: DndMappLoggerService
+        private readonly logger: LoggerService
     ) {
         this.logger.setContext(RaceController.name);
     }

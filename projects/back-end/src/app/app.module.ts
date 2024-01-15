@@ -12,12 +12,9 @@ import {
     helmetConfig,
 } from './config';
 import { AbilityModule } from './entities/ability';
-import { ClientModule } from './entities/client';
 import { EntityModule } from './entities/entity.module';
 import { RaceModule } from './entities/race';
 import { SkillModule } from './entities/skill';
-import { UserModule } from './entities/user';
-import { UserRoleModule } from './entities/user-role';
 
 @Module({
     imports: [
@@ -28,12 +25,9 @@ import { UserRoleModule } from './entities/user-role';
         RaceModule,
         AbilityModule,
         SkillModule,
-        UserModule,
         LoggingModule,
         AuthenticationModule,
-        UserRoleModule,
         EntityModule,
-        ClientModule,
     ],
     controllers: [AppController],
 })

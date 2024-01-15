@@ -1,11 +1,11 @@
 import { EntityModel } from '../models';
-import { UserRole, UserRoleName } from './user-role.model';
+import { Role, RoleName } from './role.model';
 
 export interface UserModel extends EntityModel {
     username: string;
     password: string;
     emailAddress: string;
-    roles: UserRole[];
+    roles: Role[];
 }
 
 export class User implements UserModel {
@@ -13,9 +13,9 @@ export class User implements UserModel {
     username: string;
     password: string;
     emailAddress: string;
-    roles: UserRole[];
+    roles: Role[];
 
-    constructor(username: string, password: string, emailAddress: string, id?: number, roles?: UserRole[]) {
+    constructor(username: string, password: string, emailAddress: string, id?: number, roles?: Role[]) {
         if (!roles) {
             this.roles = [];
         }
@@ -28,7 +28,7 @@ export class User implements UserModel {
         this.roles = roles || [];
     }
 
-    hasRole(role: UserRoleName) {
+    hasRole(role: RoleName) {
         return this.roles.map((userRole) => userRole.name).includes(role);
     }
 }

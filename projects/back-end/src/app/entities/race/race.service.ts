@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, InjectionToken, NotFoundException, OnModuleInit } from '@nestjs/common';
-import { DndMappLoggerService } from '../../common';
+import { LoggerService } from '../../common';
 import { EntityService } from '../entity.service';
 import { EntityApiService } from '../models';
 import { CreateRaceDto, RaceEntity } from './race.entity';
@@ -11,7 +11,7 @@ export const RACE_SERVICE_TOKEN: InjectionToken = 'RACE_SERVICE';
 export class RaceService implements EntityApiService<RaceEntity>, OnModuleInit {
     constructor(
         private readonly raceRepository: RaceRepository,
-        private readonly logger: DndMappLoggerService,
+        private readonly logger: LoggerService,
         private readonly entityService: EntityService
     ) {
         this.logger.setContext(RaceService.name);
