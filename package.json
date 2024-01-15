@@ -9,7 +9,7 @@
         "docker:build": "docker build . -t nonamer777/dnd-mapp"
     },
     "workspaces": [
-        "packages/*"
+        "projects/*"
     ],
     "dependencies": {
         "@angular/animations": "~17.0.0",

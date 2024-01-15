@@ -9,7 +9,7 @@ This project is written in the [Nest.js](https://nestjs.com) framework, `v10`. I
 To configure this server application you can create a `.env` file within the root of the server project and pass its location to the server's process via an environment variable. The format of the configuration file is as follows:
 
 ```.env
-# ./packages/server/.env
+# ./projects/back-end/.env
 
 # Whether to run the server in production mode.
 PRODUCTION=true | false

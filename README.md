@@ -24,9 +24,9 @@ Find the README's in the individual projects for more information and instructio
 
 | Project name |                                     |
 | ------------ | ----------------------------------- |
-| Client       | [README](packages/client/README.md) |
-| Server       | [README](packages/server/README.md) |
-| Data         | [README](packages/data/README.md)   |
+| Client       | [README](projects/client/README.md) |
+| Server       | [README](projects/server/README.md) |
+| Data         | [README](projects/data/README.md)   |
 
 ## Enable SSL on your development environment
 
