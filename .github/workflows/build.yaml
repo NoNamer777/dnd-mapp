@@ -28,9 +28,9 @@ jobs:
             parallel-commands: |
                 npx nx-cloud record -- npx nx format:check
             parallel-commands-on-agents: |
-                npx nx affected -t lint 
-                npx nx affected -t test 
-                npx nx affected -t build
+                npx nx affected -t lint --base ${{ NX_BASE }} --head ${{ NX_HEAD }}
+                npx nx affected -t test --base ${{ NX_BASE }} --head ${{ NX_HEAD }}
+                npx nx affected -t build --base ${{ NX_BASE }} --head ${{ NX_HEAD }}
     agents:
         name: Nx Cloud - Agents
         uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.13.1
