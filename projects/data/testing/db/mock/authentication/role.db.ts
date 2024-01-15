@@ -1,11 +1,11 @@
-import { CreateUserRoleData, UserRole, UserRoles } from '../../../../src';
+import { CreateRoleData, Role, Roles } from '../../../../src';
 
-interface UserRoleDB {
-    [id: string]: UserRole;
+interface RoleDb {
+    [id: string]: Role;
 }
 
-class MockUserRoleDB {
-    private db: UserRoleDB;
+class MockRoleDB {
+    private db: RoleDb;
     private nextId: number;
 
     constructor() {
@@ -24,12 +24,12 @@ class MockUserRoleDB {
         return Object.values(this.db).find((role) => role.name === name) ?? null;
     }
 
-    save(role: UserRole) {
+    save(role: Role) {
         return role.id ? this.update(role) : this.insert(role);
     }
 
-    insert(role: CreateUserRoleData) {
-        const newRole: UserRole = {
+    insert(role: CreateRoleData) {
+        const newRole: Role = {
             id: this.nextId++,
             ...role,
         };
@@ -38,9 +38,9 @@ class MockUserRoleDB {
         return newRole;
     }
 
-    update(role: UserRole) {
+    update(role: Role) {
         if (!this.db[role.id]) {
-            throw new Error(`Could not update User with ID: '${role.id}' because it does not exist.`);
+            throw new Error(`Could not update Role with ID: '${role.id}' because it does not exist.`);
         }
         this.db[role.id] = role;
         return role;
@@ -48,20 +48,20 @@ class MockUserRoleDB {
 
     deleteById(id: number) {
         if (!this.db[id]) {
-            throw new Error(`Cannot delete User with ID: '${id}' because it does not exist.`);
+            throw new Error(`Cannot delete Role with ID: '${id}' because it does not exist.`);
         }
         delete this.db[id];
     }
 
     reset() {
-        this.db = { [defaultUserRole.id]: defaultUserRole };
+        this.db = { [defaultRole.id]: defaultRole };
         this.nextId = Object.values(this.db).length + 1;
     }
 }
 
-export const defaultUserRole: UserRole = {
+export const defaultRole: Role = {
     id: 1,
-    name: UserRoles.PLAYER,
+    name: Roles.PLAYER,
 };
 
-export const mockUserRoleDB = new MockUserRoleDB();
+export const mockRoleDB = new MockRoleDB();

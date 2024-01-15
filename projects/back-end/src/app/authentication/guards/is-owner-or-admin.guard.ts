@@ -1,4 +1,4 @@
-import { UserRoles } from '@dnd-mapp/data';
+import { Roles } from '@dnd-mapp/data';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
@@ -24,10 +24,8 @@ export class IsOwnerOrAdminGuard implements CanActivate {
         const authenticatedUser = await getAuthenticatedUser(context, this.jwtService, this.userService);
 
         if (!requestPath) {
-            return hasRole(authenticatedUser, UserRoles.ADMIN);
+            return hasRole(authenticatedUser, Roles.ADMIN);
         }
-        return (
-            hasRole(authenticatedUser, UserRoles.ADMIN) || Number(requestPath[0].substring(1)) === authenticatedUser.id
-        );
+        return hasRole(authenticatedUser, Roles.ADMIN) || Number(requestPath[0].substring(1)) === authenticatedUser.id;
     }
 }

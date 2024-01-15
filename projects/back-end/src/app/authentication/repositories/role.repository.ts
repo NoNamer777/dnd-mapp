@@ -1,4 +1,4 @@
-import { UserRoleName } from '@dnd-mapp/data';
+import { RoleName } from '@dnd-mapp/data';
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { RoleEntity } from '../entities';
@@ -17,7 +17,7 @@ export class RoleRepository extends Repository<RoleEntity> {
         return await this.findOneBy({ id });
     }
 
-    async findOneByName(name: UserRoleName) {
+    async findOneByName(name: RoleName) {
         return await this.findOneBy({ name });
     }
 

@@ -1,10 +1,10 @@
-import { UserRole, UserRoleName, UserRoles } from '@dnd-mapp/data';
+import { Role, RoleName, Roles } from '@dnd-mapp/data';
 import { OmitType } from '@nestjs/mapped-types';
 import { IsEnum, IsInt, IsNotEmpty, IsString, Min } from 'class-validator';
 import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('role')
-export class RoleEntity implements UserRole {
+export class RoleEntity implements Role {
     @PrimaryGeneratedColumn('increment')
     @PrimaryColumn()
     @IsInt()
@@ -19,8 +19,8 @@ export class RoleEntity implements UserRole {
     })
     @IsString()
     @IsNotEmpty()
-    @IsEnum(UserRoles)
-    name: UserRoleName;
+    @IsEnum(Roles)
+    name: RoleName;
 }
 
 export class CreateRoleDto extends OmitType(RoleEntity, ['id'] as const) {}

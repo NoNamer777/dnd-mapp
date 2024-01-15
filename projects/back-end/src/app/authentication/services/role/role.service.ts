@@ -1,4 +1,4 @@
-import { UserRole, UserRoleName } from '@dnd-mapp/data';
+import { Role, RoleName } from '@dnd-mapp/data';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { DndMappLoggerService } from '../../../common';
 import { CreateRoleDto } from '../../entities';
@@ -13,12 +13,12 @@ export class RoleService {
         this.logger.setContext(RoleService.name);
     }
 
-    async findAll(): Promise<UserRole[]> {
+    async findAll(): Promise<Role[]> {
         this.logger.log('Finding all User Roles');
         return this.userRoleRepository.findAll();
     }
 
-    async findById(id: number, throwsError = true): Promise<UserRole> {
+    async findById(id: number, throwsError = true): Promise<Role> {
         this.logger.log('Finding a User Role by ID');
         const byId = await this.userRoleRepository.findOneById(id);
 
@@ -28,7 +28,7 @@ export class RoleService {
         return byId;
     }
 
-    async findByName(name: UserRoleName, throwsError = true): Promise<UserRole> {
+    async findByName(name: RoleName, throwsError = true): Promise<Role> {
         this.logger.log('Finding a User Role by name');
         const byName = await this.userRoleRepository.findOneByName(name);
 
@@ -38,7 +38,7 @@ export class RoleService {
         return byName;
     }
 
-    async update(role: UserRole): Promise<UserRole> {
+    async update(role: Role): Promise<Role> {
         this.logger.log(`Updating a User Role's data`);
         const byId = await this.findById(role.id, false);
 
@@ -53,7 +53,7 @@ export class RoleService {
         return await this.userRoleRepository.save(role);
     }
 
-    async create(role: CreateRoleDto): Promise<UserRole> {
+    async create(role: CreateRoleDto): Promise<Role> {
         this.logger.log('Creating a new User Role');
         const byName = await this.findByName(role.name, false);
 

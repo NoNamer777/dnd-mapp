@@ -1,4 +1,4 @@
-import { UserRoles } from '@dnd-mapp/data';
+import { Roles } from '@dnd-mapp/data';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { genSalt, hash } from 'bcryptjs';
 import { DndMappLoggerService } from '../../../common';
@@ -69,7 +69,7 @@ export class UserService {
                 `Cannot create User because the username '${byUsername.username}' is already used`
             );
         }
-        (user as UserEntity).roles = [await this.userRoleService.findByName(UserRoles.PLAYER)];
+        (user as UserEntity).roles = [await this.userRoleService.findByName(Roles.PLAYER)];
         user.password = await this.hashPassword(user.password);
 
         await this.userRepository.save(user);

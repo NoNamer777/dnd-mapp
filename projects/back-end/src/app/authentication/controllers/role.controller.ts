@@ -1,4 +1,4 @@
-import { UserRole } from '@dnd-mapp/data';
+import { Role } from '@dnd-mapp/data';
 import {
     BadRequestException,
     Body,
@@ -29,13 +29,13 @@ export class RoleController {
     }
 
     @Get()
-    async getAll(): Promise<UserRole[]> {
+    async getAll(): Promise<Role[]> {
         this.logger.log('Received request for getting all User Roles');
         return await this.skillService.findAll();
     }
 
     @Post()
-    async create(@Body() data: CreateRoleDto): Promise<UserRole> {
+    async create(@Body() data: CreateRoleDto): Promise<Role> {
         this.logger.log('Received request for creating a new User Role');
         return await this.skillService.create(data);
     }
@@ -57,7 +57,7 @@ export class RoleController {
         @Req() request: Request,
         @Param('id', ParseIntPipe) id: number,
         @Body() data: RoleEntity
-    ): Promise<UserRole> {
+    ): Promise<Role> {
         this.logger.log('Received a request for updating a User Role');
         const requestPath = request.path;
 
