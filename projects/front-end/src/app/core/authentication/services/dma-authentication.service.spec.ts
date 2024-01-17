@@ -4,7 +4,7 @@ import { defaultUser } from '@dnd-mapp/data/testing';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../../environments';
 import { DmaHttpRequestTestingModule } from '../../../../testing';
-import { TOKEN_STORAGE_KEY, inMemoryStorageProvider } from '../../../shared';
+import { StorageKey, inMemoryStorageProvider } from '../../../shared';
 import { UserService } from '../../../user';
 import { DmaAuthenticationService } from './dma-authentication.service';
 
@@ -18,7 +18,9 @@ describe('DmaAuthenticationService', () => {
             providers: [
                 UserService,
                 DmaAuthenticationService,
-                inMemoryStorageProvider(params.token !== undefined ? { [TOKEN_STORAGE_KEY]: params.token } : undefined),
+                inMemoryStorageProvider(
+                    params.token !== undefined ? { [StorageKey.ACCESS_TOKEN]: params.token } : undefined
+                ),
             ],
         });
 

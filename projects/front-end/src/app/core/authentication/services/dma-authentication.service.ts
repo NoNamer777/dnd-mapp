@@ -2,7 +2,12 @@ import { Inject, Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { CreateUserData, User } from '@dnd-mapp/data';
 import { BehaviorSubject } from 'rxjs';
-import { DmaHttpRequestService, JWT_HELPER_SERVICE, StorageService, TOKEN_STORAGE_KEY } from '../../../shared';
+import {
+    DmaHttpRequestService,
+    JWT_HELPER_SERVICE,
+    StorageKey,
+    StorageService,
+} from '../../../shared';
 import { UserService } from '../../../user';
 
 @Injectable({ providedIn: 'root' })
@@ -48,6 +53,6 @@ export class DmaAuthenticationService {
     }
 
     private get token() {
-        return this.localStorageService.getItem(TOKEN_STORAGE_KEY);
+        return this.localStorageService.getItem(StorageKey.ACCESS_TOKEN);
     }
 }

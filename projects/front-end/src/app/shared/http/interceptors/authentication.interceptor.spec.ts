@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../../environments';
 import { DmaHttpRequestTestingModule } from '../../../../testing';
-import { inMemoryStorageProvider, TOKEN_STORAGE_KEY } from '../../storage';
+import { inMemoryStorageProvider, StorageKey } from '../../storage';
 import { DmaHttpRequestService } from '../dma-http-request.service';
 import { authenticationInterceptorProvider } from './authentication.interceptor';
 
@@ -15,7 +15,7 @@ describe('AuthenticationInterceptor', () => {
         TestBed.configureTestingModule({
             imports: [DmaHttpRequestTestingModule],
             providers: [
-                inMemoryStorageProvider(params?.token ? { [TOKEN_STORAGE_KEY]: params?.token } : undefined),
+                inMemoryStorageProvider(params?.token ? { [StorageKey.ACCESS_TOKEN]: params?.token } : undefined),
                 authenticationInterceptorProvider,
                 DmaHttpRequestService,
             ],

@@ -2,7 +2,7 @@ import { HTTP_INTERCEPTORS, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
 import { ClassProvider, Inject, Injectable, forwardRef } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable } from 'rxjs';
-import { StorageService, TOKEN_STORAGE_KEY } from '../../storage';
+import { StorageKey, StorageService } from '../../storage';
 import { JWT_HELPER_SERVICE } from '../../tokens';
 
 export const authenticationInterceptorProvider: ClassProvider = {
@@ -20,7 +20,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<unknown>, handler: HttpHandler): Observable<HttpEvent<unknown>> {
         try {
-            const token = this.storageService.getItem(TOKEN_STORAGE_KEY);
+            const token = this.storageService.getItem(StorageKey.ACCESS_TOKEN);
             const tokenIsValid = Boolean(this.jwtHelperService.decodeToken(token as string));
 
             if (token && tokenIsValid) {
