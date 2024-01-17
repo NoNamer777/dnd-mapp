@@ -38,18 +38,3 @@ To run the test in watch mode:
 # This will rerun all the tests after changes are detected.
 nx run client:test:dev
 ```
-
-## Docker
-
-A Docker image can be made locally of this project by running the following command in a terminal in the root of this
-repository:
-
-```shell
-nx run client:docker-build
-```
-
-After that you can create a container by running the following command:
-
-```shell
-docker run -it -d -p 4200:80/tcp --name dnd-mapp-client dnd-mapp/client
-```
