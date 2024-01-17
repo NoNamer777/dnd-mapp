@@ -1,6 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { nanoid } from 'nanoid';
+import { tap } from 'rxjs';
 import { environment } from '../../../environments';
+
+interface RequestOptions {
+    withState: true;
+}
+
+type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 @Injectable({
     providedIn: 'root',
@@ -10,19 +18,44 @@ export class DmaHttpRequestService {
 
     constructor(private httpClient: HttpClient) {}
 
-    post<T>(endPoint: string, data?: unknown) {
-        return this.httpClient.post<T>(this.baseURL + endPoint, data ?? null);
+    post<R, B = null>(endPoint: string, data: B, options?: RequestOptions) {
+        return this.makeRequest<R, B>('POST', this.baseURL + endPoint, data, options);
     }
 
-    get<T>(endPoint: string) {
-        return this.httpClient.get<T>(this.baseURL + endPoint);
+    get<R, B = null>(endPoint: string, options?: RequestOptions) {
+        return this.makeRequest<R, B>('GET', this.baseURL + endPoint, null, options);
     }
 
     delete(endPoint: string) {
-        return this.httpClient.delete(this.baseURL + endPoint);
+        return this.makeRequest('DELETE', this.baseURL + endPoint);
     }
 
-    put(endPoint: string, data: unknown) {
-        return this.httpClient.put(this.baseURL + endPoint, data);
+    put<R, B>(endPoint: string, data: B) {
+        return this.makeRequest<R, B>('PUT', this.baseURL + endPoint, data);
+    }
+
+    private makeRequest<R, B = null>(
+        method: RequestMethod,
+        url: string,
+        body: B | (B & { state: string }) | { state: string } | null = null,
+        options?: RequestOptions
+    ) {
+        if (options?.withState) {
+            const state = nanoid();
+
+            if (body) {
+                body = { ...body, state: state };
+            } else {
+                body = { state: state };
+            }
+            return this.httpClient.request<R & { state: string }>(method, url, { body: body }).pipe(
+                tap((response) => {
+                    if (response.state !== state) {
+                        throw new Error('State validation error');
+                    }
+                })
+            );
+        }
+        return this.httpClient.request<R>(method, url, { body: body });
     }
 }

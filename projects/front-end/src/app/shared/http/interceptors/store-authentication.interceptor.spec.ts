@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../../environments';
 import { DmaHttpRequestTestingModule } from '../../../../testing';
-import { inMemoryStorageProvider, StorageService, TOKEN_STORAGE_KEY } from '../../storage';
+import { StorageKey, StorageService, inMemoryStorageProvider } from '../../storage';
 import { DmaHttpRequestService } from '../dma-http-request.service';
 import { storeAuthenticationInterceptorProvider } from './store-authentication.interceptor';
 
@@ -30,12 +30,12 @@ describe('StoreAuthenticationInterceptor', () => {
         const response = firstValueFrom(requestService.get('/example'));
         const request = testController.expectOne(`${environment.baseBackEndURL}/example`);
 
-        expect(storageService.getItem(TOKEN_STORAGE_KEY)).toBeNull();
+        expect(storageService.getItem(StorageKey.ACCESS_TOKEN)).toBeNull();
 
         request.flush({}, { headers: { Authorization: `Bearer ${token}` } });
         await response;
 
-        expect(storageService.getItem(TOKEN_STORAGE_KEY)).toEqual(token);
+        expect(storageService.getItem(StorageKey.ACCESS_TOKEN)).toEqual(token);
     });
 
     it('should not store a token when no Authorization header is found', async () => {
@@ -44,12 +44,12 @@ describe('StoreAuthenticationInterceptor', () => {
         const response = firstValueFrom(requestService.get('/example'));
         const request = testController.expectOne(`${environment.baseBackEndURL}/example`);
 
-        expect(storageService.getItem(TOKEN_STORAGE_KEY)).toBeNull();
+        expect(storageService.getItem(StorageKey.ACCESS_TOKEN)).toBeNull();
 
         request.flush({});
         await response;
 
-        expect(storageService.getItem(TOKEN_STORAGE_KEY)).toBeNull();
+        expect(storageService.getItem(StorageKey.ACCESS_TOKEN)).toBeNull();
     });
 
     it('should not store a token when an empty Authorization header is found', async () => {
@@ -58,12 +58,12 @@ describe('StoreAuthenticationInterceptor', () => {
         const response = firstValueFrom(requestService.get('/example'));
         const request = testController.expectOne(`${environment.baseBackEndURL}/example`);
 
-        expect(storageService.getItem(TOKEN_STORAGE_KEY)).toBeNull();
+        expect(storageService.getItem(StorageKey.ACCESS_TOKEN)).toBeNull();
 
         request.flush({}, { headers: { Authorization: 'Bearer ' } });
         await response;
 
-        expect(storageService.getItem(TOKEN_STORAGE_KEY)).toBeNull();
+        expect(storageService.getItem(StorageKey.ACCESS_TOKEN)).toBeNull();
     });
 
     it('should not store a token when an invalid token is found in the Authorization header', async () => {
@@ -72,11 +72,11 @@ describe('StoreAuthenticationInterceptor', () => {
         const response = firstValueFrom(requestService.get('/example'));
         const request = testController.expectOne(`${environment.baseBackEndURL}/example`);
 
-        expect(storageService.getItem(TOKEN_STORAGE_KEY)).toBeNull();
+        expect(storageService.getItem(StorageKey.ACCESS_TOKEN)).toBeNull();
 
         request.flush({}, { headers: { Authorization: 'Bearer token' } });
         await response;
 
-        expect(storageService.getItem(TOKEN_STORAGE_KEY)).toBeNull();
+        expect(storageService.getItem(StorageKey.ACCESS_TOKEN)).toBeNull();
     });
 });

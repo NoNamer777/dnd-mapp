@@ -10,7 +10,7 @@ import {
 import { ClassProvider, Inject, Injectable, forwardRef } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable, tap } from 'rxjs';
-import { StorageService, TOKEN_STORAGE_KEY } from '../../storage';
+import { StorageKey, StorageService } from '../../storage';
 import { JWT_HELPER_SERVICE } from '../../tokens';
 
 export const storeAuthenticationInterceptorProvider: ClassProvider = {
@@ -48,7 +48,7 @@ export class StoreAuthenticationInterceptor implements HttpInterceptor {
             // Make sure the token is valid before storing it
             this.jwtHelperService.decodeToken(token);
 
-            this.localStorageService.setItem(TOKEN_STORAGE_KEY, token);
+            this.localStorageService.setItem(StorageKey.ACCESS_TOKEN, token);
         } catch (error) {
             // Swallow errors produced by decoding the token
         }

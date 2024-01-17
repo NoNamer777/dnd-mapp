@@ -1,14 +1,16 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { nanoid } from 'nanoid';
-import { EMPTY, Subject, map, onErrorResumeNext, takeUntil } from 'rxjs';
-import { CLIENT_ID_STORAGE_KEY, DmaHttpRequestService, StorageService } from '../../shared';
-import { ConfigModel, ConfigModelResponse } from './config.model';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, catchError, filter, map, tap } from 'rxjs';
+import { DmaHttpRequestService, StorageKey, StorageService } from '../../shared';
+import { ConfigModel } from './config.model';
 
 @Injectable({ providedIn: 'root' })
-export class ConfigService implements OnDestroy {
-    config: ConfigModel;
+export class ConfigService {
+    private readonly config = new BehaviorSubject<ConfigModel | null>(null);
 
-    private destroy$ = new Subject<void>();
+    config$ = this.config.pipe(
+        filter((config) => Boolean(config)),
+        map((config) => config!)
+    );
 
     constructor(
         private requestService: DmaHttpRequestService,
@@ -16,53 +18,51 @@ export class ConfigService implements OnDestroy {
     ) {}
 
     initialize() {
-        try {
-            this.initializeConfigFromStorage();
-            this.retrieveConfig();
-        } catch (error) {
-            throw new Error('State validation error');
-        }
-    }
-
-    ngOnDestroy() {
-        this.destroy$.next();
-        this.destroy$.complete();
+        this.initializeConfigFromStorage();
+        return this.retrieveConfig();
     }
 
     storeConfig() {
-        if (!this.config) return;
+        if (!this.config.value) return;
 
-        this.storageService.setItem(CLIENT_ID_STORAGE_KEY, this.config.clientId);
+        this.storageService.setItem(StorageKey.CLIENT_ID, this.config.value.id);
     }
 
     private initializeConfigFromStorage() {
-        const clientId = this.storageService.getItem(CLIENT_ID_STORAGE_KEY);
+        const clientId = this.storageService.getItem(StorageKey.CLIENT_ID);
 
         if (clientId) {
-            this.config = { clientId };
-            this.storageService.removeItem(CLIENT_ID_STORAGE_KEY);
+            this.config.next({ id: clientId });
+            this.storageService.removeItem(StorageKey.CLIENT_ID);
         }
     }
 
+    private initializeNewClient() {
+        return this.requestService.post<ConfigModel>('/api/client', null, { withState: true }).pipe(
+            tap((data) => this.config.next({ id: data.id })),
+            catchError((error) => {
+                console.error('Something unexepected went wrong whilen trying to create a new client configuration');
+                throw error;
+            })
+        );
+    }
+
     private retrieveConfig() {
-        if (this.config) return;
+        const clientId = this.config.value?.id;
 
-        const state = nanoid();
-        const endPoint = `/api/client?state=${encodeURIComponent(state)}`;
-
-        onErrorResumeNext(
-            this.requestService.post<ConfigModelResponse>(endPoint).pipe(
-                map((data) => {
-                    if (state !== data.state) throw new Error();
-                    return data.clientId;
-                }),
-                takeUntil(this.destroy$)
-            ),
-            EMPTY
-        ).subscribe({
-            next: (clientId) => {
-                this.config = { clientId };
-            },
-        });
+        if (!clientId) {
+            return this.initializeNewClient();
+        }
+        return this.requestService
+            .get<ConfigModel>(`/api/client/${encodeURIComponent(clientId)}`, { withState: true })
+            .pipe(
+                tap((data) => this.config.next({ id: data.id })),
+                catchError((error) => {
+                    if (error.error.statusCode === 404) {
+                        return this.initializeNewClient();
+                    }
+                    throw error;
+                })
+            );
     }
 }

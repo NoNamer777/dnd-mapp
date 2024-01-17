@@ -1,8 +1,8 @@
 export interface ConfigModel {
-    clientId: string;
+    id: string;
 }
 
 export interface ConfigModelResponse {
-    clientId: string;
+    id: string;
     state: string;
 }
