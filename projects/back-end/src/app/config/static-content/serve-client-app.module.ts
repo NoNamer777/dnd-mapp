@@ -3,9 +3,9 @@ import { ServeStaticModule, ServeStaticModuleOptions } from '@nestjs/serve-stati
 import { join } from 'path';
 
 const serveStaticOptions: ServeStaticModuleOptions = {
-    rootPath: join(...[__dirname, '..', 'client']),
+    rootPath: join(...[__dirname, '..', 'front-end']),
     serveRoot: '/app',
-    exclude: ['/server/(.*)'],
+    exclude: ['/back-end/(.*)'],
     serveStaticOptions: {
         redirect: true,
     },

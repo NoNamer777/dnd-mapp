@@ -121,7 +121,7 @@
             "options": {
                 "buildTarget": "front-end:build",
                 "format": "json",
-                "outputPath": "dist/client/translations"
+                "outputPath": "dist/front-end/translations"
             }
         },
         "lint": {
