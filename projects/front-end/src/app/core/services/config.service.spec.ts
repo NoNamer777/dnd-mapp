@@ -6,7 +6,7 @@ import { DmaHttpRequestTestingModule } from '../../../testing';
 import { StorageKey, StorageService, inMemoryStorageProvider } from '../../shared';
 import { ConfigService } from './config.service';
 
-fdescribe('ConfigService', () => {
+describe('ConfigService', () => {
     function setupTestEnvironment(params?: { initWithStorage: boolean }) {
         TestBed.configureTestingModule({
             imports: [DmaHttpRequestTestingModule],

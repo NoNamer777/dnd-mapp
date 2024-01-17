@@ -6,7 +6,7 @@ import { DmaHttpRequestTestingModule } from '../../../testing';
 import { DmaHttpRequestService } from './dma-http-request.service';
 import objectContaining = jasmine.objectContaining;
 
-fdescribe('DmaHttpRequestService', () => {
+describe('DmaHttpRequestService', () => {
     function setupTestEnvironment() {
         TestBed.configureTestingModule({
             imports: [DmaHttpRequestTestingModule],
