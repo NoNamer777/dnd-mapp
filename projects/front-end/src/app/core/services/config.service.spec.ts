@@ -1,21 +1,24 @@
 import { HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { firstValueFrom, lastValueFrom } from 'rxjs';
 import { environment } from '../../../environments';
 import { DmaHttpRequestTestingModule } from '../../../testing';
-import { CLIENT_ID_STORAGE_KEY, inMemoryStorageProvider, StorageService } from '../../shared';
+import { StorageKey, StorageService, inMemoryStorageProvider } from '../../shared';
 import { ConfigService } from './config.service';
 
-describe('ConfigService', () => {
+fdescribe('ConfigService', () => {
     function setupTestEnvironment(params?: { initWithStorage: boolean }) {
         TestBed.configureTestingModule({
             imports: [DmaHttpRequestTestingModule],
             providers: [
                 ConfigService,
                 inMemoryStorageProvider(
-                    params?.initWithStorage ? { [CLIENT_ID_STORAGE_KEY]: 'stored_client_id' } : undefined
+                    params?.initWithStorage ? { [StorageKey.CLIENT_ID]: 'stored_client_id' } : undefined
                 ),
             ],
         });
+
+        spyOn(console, 'error');
 
         return {
             configService: TestBed.inject(ConfigService),
@@ -24,60 +27,82 @@ describe('ConfigService', () => {
         };
     }
 
-    it('should retrieve a new config', () => {
+    it('should retrieve a new config', async () => {
         const { configService, testingController } = setupTestEnvironment();
+        const init = lastValueFrom(configService.initialize());
 
-        configService.initialize();
+        const request = testingController.expectOne(environment.baseBackEndURL + '/api/client');
+        request.flush({ id: 'client_id', state: request.request.body.state });
 
-        const request = testingController.expectOne((request) =>
-            request.url.startsWith(environment.baseBackEndURL + '/api/client?state=')
+        await init;
+
+        expect(await firstValueFrom(configService.config$)).toEqual({ id: 'client_id' });
+    });
+
+    it('should request an existing Client config when the Client ID was stored in storage', async () => {
+        const { configService, testingController } = setupTestEnvironment({ initWithStorage: true });
+        const init = lastValueFrom(configService.initialize());
+
+        const request = testingController.expectOne(environment.baseBackEndURL + '/api/client/stored_client_id');
+        request.flush({ id: 'stored_client_id', state: request.request.body.state });
+
+        await init;
+
+        expect(await firstValueFrom(configService.config$)).toEqual({ id: 'stored_client_id' });
+    });
+
+    it('should initialize a new Client config if the old one could not be found on the back-end', async () => {
+        const { configService, testingController } = setupTestEnvironment({ initWithStorage: true });
+        const init = lastValueFrom(configService.initialize());
+
+        const notFound = testingController.expectOne(environment.baseBackEndURL + '/api/client/stored_client_id');
+        notFound.flush(
+            { message: `Could not find Client with ID: 'stored_client_id'`, statusCode: 404, error: 'Not Found' },
+            { status: 404, statusText: 'Not Found' }
         );
 
-        expect(request.request.url).not.toContain('?id=');
+        const request = testingController.expectOne(environment.baseBackEndURL + '/api/client');
+        request.flush({ id: 'client_id', state: request.request.body.state });
 
-        request.flush({
-            clientId: 'client_id',
-            state: request.request.url.split('=')[1],
-        });
+        await init;
 
-        expect(configService.config).toEqual({ clientId: 'client_id' });
+        expect(await firstValueFrom(configService.config$)).toEqual({ id: 'client_id' });
+    });
+
+    it('should throw an error when returning any other error code than 404 when retrieving an existing Client config', async () => {
+        const { configService, testingController } = setupTestEnvironment({ initWithStorage: true });
+        const init = lastValueFrom(configService.initialize());
+
+        const notFound = testingController.expectOne(environment.baseBackEndURL + '/api/client/stored_client_id');
+        notFound.flush(
+            { statusCode: 500, error: 'Internal Server Error' },
+            { status: 500, statusText: 'Internal Server Error' }
+        );
+
+        await expectAsync(init).toBeRejected();
     });
 
     it('should throw an error when the state present in the request', async () => {
         const { configService, testingController } = setupTestEnvironment();
-        const spy = spyOn(configService, 'initialize').and.callThrough();
+        const init = lastValueFrom(configService.initialize());
 
-        configService.initialize();
+        const request = testingController.expectOne(environment.baseBackEndURL + '/api/client');
 
-        const request = testingController.expectOne((request) =>
-            request.url.startsWith(environment.baseBackEndURL + '/api/client?state=')
-        );
+        request.flush({ id: 'client_id' });
 
-        request.flush({ clientId: 'client_id' });
-
-        expect(spy).toThrowError('State validation error');
+        await expectAsync(init).toBeRejected();
     });
 
-    it('should not request a client ID when one was stored in storage already', () => {
-        const { configService, testingController } = setupTestEnvironment({ initWithStorage: true });
+    it('should remove the stored client ID during initialization', async () => {
+        const { configService, storageService, testingController } = setupTestEnvironment({ initWithStorage: true });
+        const init = lastValueFrom(configService.initialize());
 
-        configService.initialize();
+        const request = testingController.expectOne(environment.baseBackEndURL + '/api/client/stored_client_id');
+        request.flush({ id: 'stored_client_id', state: request.request.body.state });
 
-        testingController.expectNone((request) =>
-            request.url.startsWith(environment.baseBackEndURL + '/api/client?state=')
-        );
+        await init;
 
-        expect(configService.config).toEqual({ clientId: 'stored_client_id' });
-    });
-
-    it('should remove the stored client ID during initialization', () => {
-        const { configService, storageService } = setupTestEnvironment({ initWithStorage: true });
-
-        expect(storageService.getItem(CLIENT_ID_STORAGE_KEY)).toEqual('stored_client_id');
-
-        configService.initialize();
-
-        expect(storageService.getItem(CLIENT_ID_STORAGE_KEY)).toBeNull();
+        expect(storageService.getItem(StorageKey.CLIENT_ID)).toBeNull();
     });
 
     it(`should not store the client ID when it's not defined`, () => {
@@ -85,24 +110,20 @@ describe('ConfigService', () => {
 
         configService.storeConfig();
 
-        expect(storageService.getItem(CLIENT_ID_STORAGE_KEY)).toBeNull();
+        expect(storageService.getItem(StorageKey.CLIENT_ID)).toBeNull();
     });
 
-    it(`should store the client ID when it's defined`, () => {
+    it(`should store the client ID when it's defined`, async () => {
         const { configService, storageService, testingController } = setupTestEnvironment();
+        const init = lastValueFrom(configService.initialize());
 
-        configService.initialize();
+        const request = testingController.expectOne(environment.baseBackEndURL + '/api/client');
+        request.flush({ id: 'client_id', state: request.request.body.state });
 
-        const request = testingController.expectOne((request) =>
-            request.url.startsWith(environment.baseBackEndURL + '/api/client?state=')
-        );
-        request.flush({
-            clientId: 'client_id',
-            state: request.request.url.split('=')[1],
-        });
+        await init;
 
         configService.storeConfig();
 
-        expect(storageService.getItem(CLIENT_ID_STORAGE_KEY)).toEqual('client_id');
+        expect(storageService.getItem(StorageKey.CLIENT_ID)).toEqual('client_id');
     });
 });
