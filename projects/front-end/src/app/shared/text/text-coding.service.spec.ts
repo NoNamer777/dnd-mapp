@@ -19,11 +19,21 @@ describe('TextCodingService', () => {
         expect(service.encode('test')).toEqual(buffer);
     });
 
-    it('Should decode text', () => {
+    it('Should handle base64 encoding an Uint8Array', () => {
         const { service } = setupTestEnvironment();
         const buffer = new TextEncoder().encode('test');
+
         const value = btoa(String.fromCodePoint(...buffer));
 
         expect(service.base64(buffer)).toEqual(value);
+    });
+
+    it('Should handle base64 encoding an ArrayBuffer', () => {
+        const { service } = setupTestEnvironment();
+        const buffer = new TextEncoder().encode('test');
+
+        const value = btoa(String.fromCodePoint(...buffer));
+
+        expect(service.base64(buffer.buffer)).toEqual(value);
     });
 });
