@@ -1,10 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { BehaviorSubject, Subject, finalize, takeUntil } from 'rxjs';
 import { DmaAuthenticationService } from '../../services';
 
-const UNAUTHORIZED_ERROR_STATUS_CODE = 401;
+const INVALID_CREDENTIALS_STATUS_CODE = [400, 404];
 
 @Component({
     selector: 'dma-login',
@@ -54,18 +54,20 @@ export class DmaLoginPage implements OnDestroy {
     }
 
     private onLoginError(error: HttpErrorResponse) {
-        const message =
-            error.status === UNAUTHORIZED_ERROR_STATUS_CODE
-                ? 'Invalid username/password'
-                : 'Something unexpected went wrong while trying to log in. Try again later';
+        let validationError: ValidationErrors | null = null;
+        let message: string;
 
-        const formError =
-            error.status == UNAUTHORIZED_ERROR_STATUS_CODE ? { invalidCredentials: true } : { unexpectedError: true };
-
+        if (INVALID_CREDENTIALS_STATUS_CODE.includes(error.status)) {
+            validationError = { invalidCredentials: true };
+            message = 'Invalid username/password';
+        } else {
+            validationError = { unexpectedError: true };
+            message = 'Something unexpected went wrong while trying to log in. Try again later';
+        }
         this.error$.next(message);
         this.form.setErrors({
             ...this.form.errors,
-            ...formError,
+            ...validationError,
         });
     }
 

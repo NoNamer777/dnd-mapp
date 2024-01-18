@@ -49,6 +49,10 @@ export class DmaAuthenticationService {
         );
     }
 
+    signUp(userData: CreateUserData) {
+        return this.requestService.post<SignUpResponse, CreateUserData>('/authentication/sign-up', userData);
+    }
+
     private requestTokens(authorizationCode: string) {
         return this.configService.config$.pipe(
             take(1),
@@ -60,10 +64,6 @@ export class DmaAuthenticationService {
                 })
             )
         );
-    }
-
-    signUp(userData: CreateUserData) {
-        return this.requestService.post<SignUpResponse, CreateUserData>('/authentication/sign-up', userData);
     }
 
     private generateCodeChallenge() {
