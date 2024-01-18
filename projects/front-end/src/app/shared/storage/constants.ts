@@ -2,7 +2,6 @@ import { InjectionToken } from '@angular/core';
 
 export enum StorageKey {
     CLIENT_ID = 'clientId',
-    ACCESS_TOKEN = 'accessToken',
 }
 
 export const STORAGE = new InjectionToken('storage location', {

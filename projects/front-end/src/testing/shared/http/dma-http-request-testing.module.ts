@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { DmaHttpRequestModule } from '../../../app/shared';
 
 @NgModule({
-    imports: [DmaHttpRequestModule.withInterceptors([]), HttpClientTestingModule],
+    imports: [DmaHttpRequestModule, HttpClientTestingModule],
     exports: [DmaHttpRequestModule, HttpClientTestingModule],
 })
 export class DmaHttpRequestTestingModule {}

@@ -50,7 +50,7 @@ export class DmaHttpRequestService {
             }
             return this.httpClient.request<R & { state: string }>(method, url, { body: body }).pipe(
                 tap((response) => {
-                    if (response.state !== state) {
+                    if (!response || response.state !== state) {
                         throw new Error('State validation error');
                     }
                 })
