@@ -21,6 +21,9 @@ describe('DmaHeaderComponent', () => {
             declarations: [TestComponent],
         });
 
+        // TODO: Remove once authentication service has been finished implemented
+        spyOn(console, 'warn');
+
         const harnessLoader = TestbedHarnessEnvironment.loader(TestBed.createComponent(TestComponent));
 
         return {
