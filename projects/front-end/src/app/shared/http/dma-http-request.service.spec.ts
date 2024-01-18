@@ -4,7 +4,6 @@ import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../environments';
 import { DmaHttpRequestTestingModule } from '../../../testing';
 import { DmaHttpRequestService } from './dma-http-request.service';
-import objectContaining = jasmine.objectContaining;
 
 describe('DmaHttpRequestService', () => {
     function setupTestEnvironment() {
@@ -42,7 +41,7 @@ describe('DmaHttpRequestService', () => {
         const request = testingController.expectOne(environment.baseBackEndURL + '/example');
         request.flush({ state: request.request.body.state, attribute: true });
 
-        expect(await response).toEqual(objectContaining({ attribute: true }));
+        expect(await response).toEqual(jasmine.objectContaining({ attribute: true }));
     });
 
     it('should throw an error when state is not returned response', async () => {
