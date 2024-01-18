@@ -1,96 +1,265 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { defaultUser } from '@dnd-mapp/data/testing';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../../environments';
 import { DmaHttpRequestTestingModule } from '../../../../testing';
-import { StorageKey, inMemoryStorageProvider } from '../../../shared';
-import { UserService } from '../../../user';
+import { TextCodingService } from '../../../shared';
+import { ConfigService } from '../../services/config.service';
 import { DmaAuthenticationService } from './dma-authentication.service';
 
-describe('DmaAuthenticationService', () => {
-    const token =
-        'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTY5ODkxNjcxNCwibmJmIjoxNjk4OTE2NzE0LCJleHAiOjE2OTg5Mjc1MTR9.pK9FW6brgVsUJewKZ8sNn17mNnHj-pAx7Hbry2ZSiqTjTYzYtrB8WhBpcNQN9IYJzJ6GwZXLA4Og3Zord0E1bg';
-
-    async function setupTestEnvironment(params: { token?: string } = {}) {
+fdescribe('DmaAuthenticationService', () => {
+    async function setupTestEnvironment() {
         TestBed.configureTestingModule({
             imports: [DmaHttpRequestTestingModule],
-            providers: [
-                UserService,
-                DmaAuthenticationService,
-                inMemoryStorageProvider(
-                    params.token !== undefined ? { [StorageKey.ACCESS_TOKEN]: params.token } : undefined
-                ),
-            ],
+            providers: [DmaAuthenticationService, TextCodingService, ConfigService],
         });
 
+        // TODO: Remove after back-end authentication has been implemented
+        spyOn(console, 'warn');
+
+        const testingController = TestBed.inject(HttpTestingController);
+        const authenticationService = TestBed.inject(DmaAuthenticationService);
+
+        await initializeConfigService(testingController);
+
         return {
-            authenticationService: TestBed.inject(DmaAuthenticationService),
-            testController: TestBed.inject(HttpTestingController),
+            authenticationService: authenticationService,
+            testingController: testingController,
         };
     }
 
-    async function handleInitialization() {
-        const testController = TestBed.inject(HttpTestingController);
-        const { id, username, roles } = defaultUser;
+    async function initializeConfigService(testingController: HttpTestingController) {
+        const configService = TestBed.inject(ConfigService);
 
-        const request = testController.expectOne(`${environment.baseBackEndURL}/api/user/1`);
+        const configInit = firstValueFrom(configService.initialize());
+        const request = testingController.expectOne(environment.baseBackEndURL + '/api/client');
+        request.flush({ id: 'client_id', state: request.request.body.state });
 
-        request.flush({ id, username, roles });
+        await configInit;
+    }
+
+    // Need to wait until Web Crypto has finished the digest of the code verifier.
+    async function waitForCrypto() {
+        await new Promise<void>((resolve) => {
+            const timeout = setTimeout(() => {
+                clearTimeout(timeout);
+                resolve();
+            }, 1);
+        });
     }
 
     afterEach(() => TestBed.inject(HttpTestingController).verify());
 
-    it('should not initialize an authenticated User when no token is found in the storage', async () => {
-        const { authenticationService } = await setupTestEnvironment();
+    // TODO: Enable after back-end authentication has been implemented
+    xit('should not initialize an authenticated User when no User data is returned based on the presented cookies', async () => {
+        const { authenticationService, testingController } = await setupTestEnvironment();
 
-        expect(await firstValueFrom(authenticationService.authenticatedUser$)).toBeNull();
+        const request = testingController.expectOne(environment.baseBackEndURL + '/authentication/user');
+        request.flush({ statusCode: 401, error: 'Unauthorized' }, { status: 401, statusText: 'Unauthorized' });
+
+        expect(authenticationService.authenticatedUser$.value).toBeNull();
     });
 
-    it('should not initialize an authenticated User when a incorrect token format is found in the storage', async () => {
-        const { authenticationService } = await setupTestEnvironment({ token: 'ma.d' });
+    // TODO: Enable after back-end authentication has been implemented
+    xit('should initialize an authenticated User when User data is returned based on the presented cookies', async () => {
+        const { authenticationService, testingController } = await setupTestEnvironment();
 
-        expect(await firstValueFrom(authenticationService.authenticatedUser$)).toBeNull();
+        const request = testingController.expectOne(environment.baseBackEndURL + '/authentication/user');
+        request.flush({ ...defaultUser });
+
+        expect(authenticationService.authenticatedUser$.value).toEqual(defaultUser);
     });
 
-    it('should initialize an authenticated User when a token is found in the storage', async () => {
-        const { authenticationService } = await setupTestEnvironment({ token });
+    it('should process an sign-up request', async () => {
+        const { authenticationService, testingController } = await setupTestEnvironment();
+        const userData = { username: 'User2', password: 'secure_password', emailAddress: 'user2@domain.com' };
 
-        await handleInitialization();
+        const signUp = firstValueFrom(authenticationService.signUp(userData));
 
-        expect(await firstValueFrom(authenticationService.authenticatedUser$)).toEqual(
-            jasmine.objectContaining({ id: defaultUser.id, username: defaultUser.username, roles: defaultUser.roles })
+        const response = testingController.expectOne(environment.baseBackEndURL + '/authentication/sign-up');
+
+        expect(response.request.body).toEqual(userData);
+        expect(response.request.method).toEqual('POST');
+
+        response.flush(null);
+
+        await expectAsync(signUp).toBeResolved();
+    });
+
+    it('should be processing login requests without throwing errors.', async () => {
+        const { authenticationService, testingController } = await setupTestEnvironment();
+        const { username, password } = defaultUser;
+
+        const login = firstValueFrom(authenticationService.login(username, password));
+
+        await waitForCrypto();
+
+        // Check if the code challenge and verifier have been generated and the code challenge has been sent to the back-end
+        const challengeRequest = testingController.expectOne(environment.baseBackEndURL + '/authentication/challenge');
+
+        expect(challengeRequest.request.body).toEqual(jasmine.objectContaining({ codeChallenge: jasmine.any(String) }));
+        challengeRequest.flush({ state: challengeRequest.request.body.state });
+
+        // Determine that the provided credentials are valid
+        const loginRequest = testingController.expectOne(environment.baseBackEndURL + '/authentication/login');
+        expect(loginRequest.request.body).toEqual({ username: username, password: password });
+
+        loginRequest.flush(null);
+
+        // Retrieve an authorization code
+        const authorizeRequest = testingController.expectOne(environment.baseBackEndURL + '/authentication/authorize');
+        authorizeRequest.flush({ state: authorizeRequest.request.body.state, authorizationCode: 'authorization_code' });
+
+        // Retrieve the access- and refresh tokens with the authorization code and code verifier
+        const tokenRequest = testingController.expectOne(environment.baseBackEndURL + '/authentication/token');
+
+        expect(tokenRequest.request.body).toEqual(
+            jasmine.objectContaining({
+                codeVerifier: jasmine.any(String),
+                authorizationCode: 'authorization_code',
+                clientId: 'client_id',
+            })
+        );
+
+        tokenRequest.flush(null);
+
+        await expectAsync(login).toBeResolved();
+    });
+
+    it('should throw errors when an error response is returned when registering a User', async () => {
+        const { authenticationService, testingController } = await setupTestEnvironment();
+        const userData = { username: 'User2', password: 'secure_password', emailAddress: 'user2@domain.com' };
+
+        const signUp = firstValueFrom(authenticationService.signUp(userData));
+
+        const response = testingController.expectOne(environment.baseBackEndURL + '/authentication/sign-up');
+
+        expect(response.request.body).toEqual(userData);
+        expect(response.request.method).toEqual('POST');
+
+        response.flush(
+            { statusCode: 400, error: 'Bad Request', message: 'Username is not available' },
+            { status: 400, statusText: 'Bad Request' }
+        );
+
+        await expectAsync(signUp).toBeRejectedWith(
+            new HttpErrorResponse({
+                url: environment.baseBackEndURL + '/authentication/sign-up',
+                status: 400,
+                statusText: 'Bad Request',
+                error: { statusCode: 400, error: 'Bad Request', message: 'Username is not available' },
+            })
         );
     });
 
-    it('should be processing log in requests without throwing errors.', async () => {
-        const { authenticationService, testController } = await setupTestEnvironment();
+    it('should not proceed with logging in when sending the code challenge did not succeed', async () => {
+        const { authenticationService, testingController } = await setupTestEnvironment();
+        const { username, password } = defaultUser;
 
-        const response = firstValueFrom(authenticationService.login('user1', 'secure_password'));
-        const request = testController.expectOne(environment.baseBackEndURL + '/authentication/login');
+        const login = firstValueFrom(authenticationService.login(username, password));
 
-        request.flush(null, {
-            status: 200,
-            statusText: 'success',
-            headers: {
-                Authorization: 'Bearer token',
-            },
-        });
+        await waitForCrypto();
 
-        expect(async () => await response).not.toThrow();
+        // Check if the code challenge and verifier have been generated and the code challenge has been sent to the back-end
+        const challengeRequest = testingController.expectOne(environment.baseBackEndURL + '/authentication/challenge');
+        challengeRequest.flush(null);
+
+        await expectAsync(login).toBeRejectedWithError('State validation error');
     });
 
-    it('should throw errors when processing httpErrorResponses', async () => {
-        const { authenticationService, testController } = await setupTestEnvironment();
+    it('should not proceed with logging in when the User provided invalid credentials', async () => {
+        const { authenticationService, testingController } = await setupTestEnvironment();
+        const { username } = defaultUser;
 
-        const response = firstValueFrom(authenticationService.login('user1', 'secure_password'));
-        const request = testController.expectOne(environment.baseBackEndURL + '/authentication/login');
+        const login = firstValueFrom(authenticationService.login(username, 'fake_password'));
 
-        request.flush(null, {
-            status: 500,
-            statusText: 'internal server error',
-        });
+        await waitForCrypto();
 
-        await expectAsync(response).toBeRejected();
+        // Check if the code challenge and verifier have been generated and the code challenge has been sent to the back-end
+        const challengeRequest = testingController.expectOne(environment.baseBackEndURL + '/authentication/challenge');
+        challengeRequest.flush({ state: challengeRequest.request.body.state });
+
+        // Determine that the provided credentials are valid
+        const loginRequest = testingController.expectOne(environment.baseBackEndURL + '/authentication/login');
+        loginRequest.flush(
+            { statusCode: 400, error: 'Bad Request', message: 'Invalid credentials' },
+            { status: 400, statusText: 'Bad Request' }
+        );
+
+        await expectAsync(login).toBeRejectedWith(
+            new HttpErrorResponse({
+                url: environment.baseBackEndURL + '/authentication/login',
+                error: { message: 'Invalid credentials', statusCode: 400, error: 'Bad Request' },
+                statusText: 'Bad Request',
+                status: 400,
+            })
+        );
+    });
+
+    it('should not proceed with logging in when retrieving the authorization code fails', async () => {
+        const { authenticationService, testingController } = await setupTestEnvironment();
+        const { username, password } = defaultUser;
+
+        const login = firstValueFrom(authenticationService.login(username, password));
+
+        await waitForCrypto();
+
+        // Check if the code challenge and verifier have been generated and the code challenge has been sent to the back-end
+        const challengeRequest = testingController.expectOne(environment.baseBackEndURL + '/authentication/challenge');
+        challengeRequest.flush({ state: challengeRequest.request.body.state });
+
+        // Determine that the provided credentials are valid
+        const loginRequest = testingController.expectOne(environment.baseBackEndURL + '/authentication/login');
+        loginRequest.flush(null);
+
+        // Retrieve an authorization code
+        const authorizeRequest = testingController.expectOne(environment.baseBackEndURL + '/authentication/authorize');
+        authorizeRequest.flush({ authorizationCode: 'authorization_code' });
+
+        await expectAsync(login).toBeRejectedWithError('State validation error');
+    });
+
+    it('should not proceed with logging in when the code challenge verification fails', async () => {
+        const { authenticationService, testingController } = await setupTestEnvironment();
+        const { username, password } = defaultUser;
+
+        const login = firstValueFrom(authenticationService.login(username, password));
+
+        await waitForCrypto();
+
+        // Check if the code challenge and verifier have been generated and the code challenge has been sent to the back-end
+        const challengeRequest = testingController.expectOne(environment.baseBackEndURL + '/authentication/challenge');
+
+        expect(challengeRequest.request.body).toEqual(jasmine.objectContaining({ codeChallenge: jasmine.any(String) }));
+        challengeRequest.flush({ state: challengeRequest.request.body.state });
+
+        // Determine that the provided credentials are valid
+        const loginRequest = testingController.expectOne(environment.baseBackEndURL + '/authentication/login');
+        expect(loginRequest.request.body).toEqual({ username: username, password: password });
+
+        loginRequest.flush(null);
+
+        // Retrieve an authorization code
+        const authorizeRequest = testingController.expectOne(environment.baseBackEndURL + '/authentication/authorize');
+        authorizeRequest.flush({ state: authorizeRequest.request.body.state, authorizationCode: 'authorization_code' });
+
+        // Retrieve the access- and refresh tokens with the authorization code and code verifier
+        const tokenRequest = testingController.expectOne(environment.baseBackEndURL + '/authentication/token');
+
+        tokenRequest.flush(
+            { error: 'Bad Request', statusCode: 400, message: 'The provided code verifier is invalid' },
+            { status: 400, statusText: 'Bad Request' }
+        );
+
+        await expectAsync(login).toBeRejectedWith(
+            new HttpErrorResponse({
+                url: environment.baseBackEndURL + '/authentication/token',
+                error: { message: 'The provided code verifier is invalid', statusCode: 400, error: 'Bad Request' },
+                statusText: 'Bad Request',
+                status: 400,
+            })
+        );
     });
 });

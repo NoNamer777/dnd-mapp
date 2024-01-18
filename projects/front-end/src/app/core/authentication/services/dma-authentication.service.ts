@@ -1,53 +1,86 @@
-import { Inject, Injectable } from '@angular/core';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import { CreateUserData, User } from '@dnd-mapp/data';
-import { BehaviorSubject } from 'rxjs';
-import { DmaHttpRequestService, JWT_HELPER_SERVICE, StorageKey, StorageService } from '../../../shared';
-import { UserService } from '../../../user';
+import { Injectable } from '@angular/core';
+import { CreateUserData, User, UserModel } from '@dnd-mapp/data';
+import { nanoid } from 'nanoid';
+import { BehaviorSubject, from, map, switchMap, take } from 'rxjs';
+import { DmaHttpRequestService, TextCodingService } from '../../../shared';
+import { ConfigService } from '../../services/config.service';
+
+interface AuthorizeResponse {
+    authorizationCode: string;
+}
+
+interface TokenRequestBody {
+    codeVerifier: string;
+    authorizationCode: string;
+    clientId: string;
+}
+
+type SignUpResponse = Omit<UserModel, 'roles'>;
 
 @Injectable({ providedIn: 'root' })
 export class DmaAuthenticationService {
     authenticatedUser$ = new BehaviorSubject<User | null>(null);
 
+    private codeVerifier: string | null = null;
+
     constructor(
-        private readonly httpRequestService: DmaHttpRequestService,
-        private readonly localStorageService: StorageService,
-        @Inject(JWT_HELPER_SERVICE) private readonly jwtHelperService: JwtHelperService,
-        private readonly userService: UserService
+        private readonly requestService: DmaHttpRequestService,
+        private readonly textCodingService: TextCodingService,
+        private readonly configService: ConfigService
     ) {
         this.initialize();
     }
 
+    /**
+     * When a User logs in, requests an authorization code from the back-end which is base64 encoded.
+     * With this code we can request an access token from the back-end.
+     */
     login(username: string, password: string) {
-        const data = { username, password };
+        const data = { username: username, password: password };
+        return this.generateCodeChallenge().pipe(
+            switchMap(() => this.requestService.post('/authentication/login', data)),
+            switchMap(() =>
+                this.requestService.post<AuthorizeResponse>('/authentication/authorize', null, {
+                    withState: true,
+                })
+            ),
+            map((response) => response.authorizationCode),
+            switchMap((authorizationCode) => this.requestTokens(authorizationCode))
+        );
+    }
 
-        return this.httpRequestService.post('/authentication/login', data);
+    private requestTokens(authorizationCode: string) {
+        return this.configService.config$.pipe(
+            take(1),
+            switchMap(({ id }) =>
+                this.requestService.post<void, TokenRequestBody>('/authentication/token', {
+                    codeVerifier: this.codeVerifier!,
+                    authorizationCode: authorizationCode,
+                    clientId: id,
+                })
+            )
+        );
     }
 
     signUp(userData: CreateUserData) {
-        return this.httpRequestService.post('/authentication/sign-up', userData);
+        return this.requestService.post<SignUpResponse, CreateUserData>('/authentication/sign-up', userData);
+    }
+
+    private generateCodeChallenge() {
+        this.codeVerifier = nanoid(32);
+
+        return from(crypto.subtle.digest('SHA-256', this.textCodingService.encode(this.codeVerifier))).pipe(
+            switchMap((codeChallenge) =>
+                this.requestService.post<null, { codeChallenge: string }>(
+                    '/authentication/challenge',
+                    { codeChallenge: this.textCodingService.base64(codeChallenge) },
+                    { withState: true }
+                )
+            )
+        );
     }
 
     private initialize() {
-        const token = this.token;
-
-        if (!token) {
-            this.authenticatedUser$.next(null);
-            return;
-        }
-
-        try {
-            const decodedToken: { sub: string } = this.jwtHelperService.decodeToken(token)!;
-
-            this.userService.getById(Number(decodedToken.sub)).subscribe({
-                next: (user) => this.authenticatedUser$.next(user as User),
-            });
-        } catch (error) {
-            this.authenticatedUser$.next(null);
-        }
-    }
-
-    private get token() {
-        return this.localStorageService.getItem(StorageKey.ACCESS_TOKEN);
+        console.warn('INITIALIZING AUTHENTICATION');
     }
 }
