@@ -9,7 +9,7 @@ import { TextCodingService } from '../../../shared';
 import { ConfigService } from '../../services/config.service';
 import { DmaAuthenticationService } from './dma-authentication.service';
 
-fdescribe('DmaAuthenticationService', () => {
+describe('DmaAuthenticationService', () => {
     async function setupTestEnvironment() {
         TestBed.configureTestingModule({
             imports: [DmaHttpRequestTestingModule],
