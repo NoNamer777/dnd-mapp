@@ -10,5 +10,7 @@ export class ClientEntity implements ClientModel {
         nullable: false,
         unique: true,
     })
+    @IsString()
+    @IsNotEmpty()
     id: string;
 }

@@ -26,11 +26,19 @@ export class SignUpDto {
     emailAddress: string;
 }
 
-export class RegisterQueryParamsDto {
+export class StateRequest {
     @IsString()
     @IsNotEmpty()
-    @IsOptional()
-    id?: string;
+    state: string;
+}
+
+export class StateResponse {
+    state: string;
+}
+
+export class ClientIdResponse extends StateResponse {
+    id: string;
+}
 
     @IsString()
     @IsNotEmpty()

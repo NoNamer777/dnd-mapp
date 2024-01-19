@@ -1,6 +1,6 @@
-import { Controller, Delete, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
 import { LoggerService } from '../../common';
-import { RegisterQueryParamsDto } from '../models';
+import { ClientIdResponse, StateRequest } from '../models';
 import { ClientService } from '../services';
 
 @Controller('api/client')
@@ -13,17 +13,30 @@ export class ClientController {
     }
 
     @Post()
-    async register(@Query() queryParams: RegisterQueryParamsDto) {
-        const { state } = queryParams;
+    async create(@Body() requestBody: StateRequest): Promise<ClientIdResponse> {
+        this.logger.log('Received request to create a new Client configuration');
+        const { state } = requestBody;
 
         return {
-            clientId: (await this.clientService.register()).id,
+            id: (await this.clientService.create()).id,
             state: state,
         };
     }
 
+    @Post(':id')
+    async findById(@Param('id') idParam: string, @Body() requestBody: StateRequest): Promise<ClientIdResponse> {
+        this.logger.log(`Received request to find Client configuration by ID: '${idParam}'`);
+        const { state } = requestBody;
+
+        return {
+            state: state,
+            id: (await this.clientService.findById(idParam)).id,
+        };
+    }
+
     @Delete(':id')
-    async remove(@Param('id', ParseIntPipe) idParam: string) {
+    async remove(@Param('id') idParam: string) {
+        this.logger.log(`Received request to remove Client configuration with ID: '${idParam}'`);
         await this.clientService.remove(idParam);
     }
 }
