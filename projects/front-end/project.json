@@ -7,20 +7,20 @@
     "prefix": "dma",
     "targets": {
         "build": {
-            "executor": "@angular-devkit/build-angular:browser",
+            "executor": "@nx/angular:application",
             "outputs": ["{options.outputPath}"],
             "options": {
                 "assets": ["projects/front-end/src/favicon.ico", "projects/front-end/src/assets"],
                 "baseHref": "/app/",
+                "browser": "projects/front-end/src/main.ts",
+                "buildLibsFromSource": true,
                 "index": "projects/front-end/src/index.html",
                 "inlineStyleLanguage": "scss",
-                "main": "projects/front-end/src/main.ts",
                 "outputPath": "dist/front-end",
                 "polyfills": ["zone.js"],
                 "scripts": ["node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"],
                 "styles": ["projects/front-end/src/styles.scss"],
-                "tsConfig": "projects/front-end/tsconfig.app.json",
-                "vendorChunk": true
+                "tsConfig": "projects/front-end/tsconfig.app.json"
             },
             "defaultConfiguration": "prod",
             "configurations": {

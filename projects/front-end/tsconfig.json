@@ -15,8 +15,8 @@
     ],
     "compilerOptions": {
         "alwaysStrict": true,
+        "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
-        "noFallthroughCasesInSwitch": true,
         "noImplicitAny": true,
         "noImplicitOverride": true,
         "noImplicitReturns": true,
@@ -28,7 +28,7 @@
         "strictBindCallApply": true,
         "strictFunctionTypes": true,
         "strictPropertyInitialization": false,
-        "target": "es2022",
+        "target": "ES2022",
         "useDefineForClassFields": false,
         "useUnknownInCatchVariables": true
     },

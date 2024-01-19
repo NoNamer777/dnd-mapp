@@ -53,12 +53,12 @@
             "options": {
                 "commands": [
                     {
-                        "command": "npx nx build-dev front-end",
-                        "prefix": "[front-end]:\t"
-                    },
-                    {
                         "command": "npx nx build data -c dev",
                         "prefix": "[data]:\t\t"
+                    },
+                    {
+                        "command": "npx nx build front-end --watch",
+                        "prefix": "[front-end]:\t"
                     },
                     {
                         "command": "npx nx serve back-end",
