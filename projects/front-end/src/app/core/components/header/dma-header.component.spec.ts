@@ -3,10 +3,10 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { defaultUser } from '@dnd-mapp/data/testing';
-import { DmaHeaderHarness, DmaHttpRequestTestingModule } from '../../../../testing';
+import { DmaHeaderHarness, provideDmaHttpTesting } from '../../../../testing';
 import { inMemoryStorageProvider } from '../../../shared';
 import { DmaAuthenticationService } from '../../authentication';
-import { DmaHeaderModule } from './dma-header.module';
+import { DmaHeaderComponent } from './dma-header.component';
 
 describe('DmaHeaderComponent', () => {
     @Component({
@@ -16,8 +16,8 @@ describe('DmaHeaderComponent', () => {
 
     async function setupTestEnvironment() {
         TestBed.configureTestingModule({
-            imports: [DmaHeaderModule, RouterTestingModule, DmaHttpRequestTestingModule],
-            providers: [inMemoryStorageProvider(), DmaAuthenticationService],
+            imports: [DmaHeaderComponent, RouterTestingModule],
+            providers: [provideDmaHttpTesting(), inMemoryStorageProvider(), DmaAuthenticationService],
             declarations: [TestComponent],
         });
 

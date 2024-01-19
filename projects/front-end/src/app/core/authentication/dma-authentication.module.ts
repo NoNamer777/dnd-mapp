@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DmaLoginModule, DmaLoginPage } from './pages/login';
-import { DmaSignUpModule, DmaSignUpPage } from './pages/sign-up';
+import { DmaLoginPage } from './pages/login';
+import { DmaSignUpPage } from './pages/sign-up';
 
 const authenticationRoutes: Routes = [
     {
@@ -20,6 +20,6 @@ const authenticationRoutes: Routes = [
 ];
 
 @NgModule({
-    imports: [DmaLoginModule, DmaSignUpModule, RouterModule.forChild(authenticationRoutes)],
+    imports: [RouterModule.forChild(authenticationRoutes)],
 })
 export class DmaAuthenticationModule {}

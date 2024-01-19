@@ -10,9 +10,7 @@ interface RequestOptions {
 
 type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-@Injectable({
-    providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class DmaHttpRequestService {
     private readonly baseURL = environment.baseBackEndURL;
 

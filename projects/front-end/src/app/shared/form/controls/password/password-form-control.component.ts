@@ -1,5 +1,7 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, FactoryProvider, inject, Input, OnInit } from '@angular/core';
-import { ControlContainer, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ControlContainer, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DmaIconsModule } from '../../../icons';
 
 type PasswordIconProp = 'eye' | 'eye-slash';
 
@@ -16,6 +18,8 @@ const controlContainerProvider: FactoryProvider = {
     styleUrls: ['./password-form-control.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     viewProviders: [controlContainerProvider],
+    standalone: true,
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, DmaIconsModule],
 })
 export class PasswordFormControlComponent implements OnInit {
     @Input() label: string;

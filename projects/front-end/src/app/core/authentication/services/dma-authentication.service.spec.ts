@@ -4,16 +4,14 @@ import { TestBed } from '@angular/core/testing';
 import { defaultUser } from '@dnd-mapp/data/testing';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../../environments';
-import { DmaHttpRequestTestingModule } from '../../../../testing';
-import { TextCodingService } from '../../../shared';
+import { provideDmaHttpTesting } from '../../../../testing';
 import { ConfigService } from '../../services/config.service';
 import { DmaAuthenticationService } from './dma-authentication.service';
 
 describe('DmaAuthenticationService', () => {
     async function setupTestEnvironment() {
         TestBed.configureTestingModule({
-            imports: [DmaHttpRequestTestingModule],
-            providers: [DmaAuthenticationService, TextCodingService, ConfigService],
+            providers: [provideDmaHttpTesting(), DmaAuthenticationService],
         });
 
         // TODO: Remove after back-end authentication has been implemented

@@ -1,7 +1,10 @@
+import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { BehaviorSubject, Subject, finalize, takeUntil } from 'rxjs';
+import { DmaIconsModule } from '../../../../shared';
 import { DmaAuthenticationService } from '../../services';
 
 const INVALID_CREDENTIALS_STATUS_CODE = [400, 404];
@@ -11,6 +14,8 @@ const INVALID_CREDENTIALS_STATUS_CODE = [400, 404];
     templateUrl: './dma-login.page.html',
     styleUrls: ['./dma-login.page.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, DmaIconsModule],
 })
 export class DmaLoginPage implements OnDestroy {
     form = new FormGroup({
