@@ -6,9 +6,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { defaultUser } from '@dnd-mapp/data/testing';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../../../environments';
-import { DmaHttpRequestTestingModule, DmaLoginHarness } from '../../../../../testing';
+import { DmaLoginHarness, provideDmaHttpTesting } from '../../../../../testing';
 import { ConfigService } from '../../../services/config.service';
-import { DmaLoginModule } from './dma-login.module';
+import { DmaLoginPage } from './dma-login.page';
 
 describe('DmaLoginComponent', () => {
     @Component({
@@ -18,7 +18,8 @@ describe('DmaLoginComponent', () => {
 
     async function initializeTestEnvironment() {
         TestBed.configureTestingModule({
-            imports: [DmaHttpRequestTestingModule, DmaLoginModule, RouterTestingModule],
+            imports: [DmaLoginPage, RouterTestingModule],
+            providers: [provideDmaHttpTesting()],
             declarations: [TestComponent],
         });
 

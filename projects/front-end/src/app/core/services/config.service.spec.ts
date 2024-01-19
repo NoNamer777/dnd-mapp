@@ -2,19 +2,19 @@ import { HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { firstValueFrom, lastValueFrom } from 'rxjs';
 import { environment } from '../../../environments';
-import { DmaHttpRequestTestingModule } from '../../../testing';
+import { provideDmaHttpTesting } from '../../../testing';
 import { StorageKey, StorageService, inMemoryStorageProvider } from '../../shared';
 import { ConfigService } from './config.service';
 
 describe('ConfigService', () => {
     function setupTestEnvironment(params?: { initWithStorage: boolean }) {
         TestBed.configureTestingModule({
-            imports: [DmaHttpRequestTestingModule],
             providers: [
-                ConfigService,
+                provideDmaHttpTesting(),
                 inMemoryStorageProvider(
                     params?.initWithStorage ? { [StorageKey.CLIENT_ID]: 'stored_client_id' } : undefined
                 ),
+                ConfigService,
             ],
         });
 

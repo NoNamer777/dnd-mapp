@@ -1,7 +1,17 @@
+import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import {
+    FormControl,
+    FormGroup,
+    FormGroupDirective,
+    FormsModule,
+    ReactiveFormsModule,
+    Validators,
+} from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { BehaviorSubject, Subject, finalize, takeUntil } from 'rxjs';
+import { DmaIconsModule, PasswordFormControlComponent } from '../../../../shared';
 import { swipeInOutAnimation } from '../../animations';
 import { DmaAuthenticationService } from '../../services';
 import { emailValidator, passwordValidator } from './validators';
@@ -14,6 +24,15 @@ const STATUS_CODE_BAD_REQUEST = 400;
     styleUrls: ['./dma-sign-up.page.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [swipeInOutAnimation],
+    standalone: true,
+    imports: [
+        CommonModule,
+        RouterModule,
+        FormsModule,
+        ReactiveFormsModule,
+        DmaIconsModule,
+        PasswordFormControlComponent,
+    ],
 })
 export class DmaSignUpPage implements AfterViewInit, OnDestroy {
     error$ = new Subject<string | null>();

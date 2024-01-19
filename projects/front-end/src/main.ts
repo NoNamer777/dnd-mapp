@@ -1,12 +1,9 @@
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import '@popperjs/core/dist/esm/popper.js';
-import 'bootstrap/dist/js/bootstrap.esm.min.js';
-
-import { AppModule } from './app/core';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { appConfig, DmaRootComponent } from './app/core';
 
 (async () => {
     try {
-        await platformBrowserDynamic().bootstrapModule(AppModule);
+        await bootstrapApplication(DmaRootComponent, appConfig);
     } catch (error) {
         console.error(error);
     }

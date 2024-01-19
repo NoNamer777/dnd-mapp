@@ -6,8 +6,8 @@ import { TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from '../../../../../environments';
-import { DmaHttpRequestTestingModule, DmaSignUpHarness } from '../../../../../testing';
-import { DmaSignUpModule } from './dma-sign-up.module';
+import { DmaSignUpHarness, provideDmaHttpTesting } from '../../../../../testing';
+import { DmaSignUpPage } from './dma-sign-up.page';
 
 describe('DmaSignUpPage', () => {
     @Component({
@@ -17,7 +17,8 @@ describe('DmaSignUpPage', () => {
 
     async function initializeTestEnvironment() {
         TestBed.configureTestingModule({
-            imports: [DmaSignUpModule, RouterTestingModule, NoopAnimationsModule, DmaHttpRequestTestingModule],
+            imports: [DmaSignUpPage, RouterTestingModule, NoopAnimationsModule],
+            providers: [provideDmaHttpTesting()],
             declarations: [TestComponent],
         });
 

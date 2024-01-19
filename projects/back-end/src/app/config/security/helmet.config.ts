@@ -8,7 +8,7 @@ export const helmetConfig: HelmetOptions = {
             'base-uri': [(_, response: Response) => response.locals.backEndUrl],
             'frame-ancestors': [`'none'`],
             'child-src': [`'none'`],
-            'script-src': [(_, response: Response) => `${response.locals.hashes.join(' ')}`],
+            'script-src': [`'self'`, (_, response: Response) => `${response.locals.hashes.join(' ')}`],
             'script-src-attr': null,
             'script-src-elem': null,
             // TODO: Replace `'unsafe-inline'` with `'nonce-xxx'` once a good way to add nonce values to each request for requested style resources has been established

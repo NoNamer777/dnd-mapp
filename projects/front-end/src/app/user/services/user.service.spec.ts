@@ -2,14 +2,13 @@ import { HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../environments';
-import { DmaHttpRequestTestingModule } from '../../../testing';
+import { provideDmaHttpTesting } from '../../../testing';
 import { UserService } from './user.service';
 
 describe('UserService', () => {
     function setupTestEnvironment() {
         TestBed.configureTestingModule({
-            imports: [DmaHttpRequestTestingModule],
-            providers: [UserService],
+            providers: [provideDmaHttpTesting(), UserService],
         });
 
         return {

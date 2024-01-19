@@ -1,4 +1,4 @@
-import { InjectionToken } from '@angular/core';
+import { FactoryProvider, InjectionToken } from '@angular/core';
 
 export enum StorageKey {
     CLIENT_ID = 'clientId',
@@ -9,9 +9,12 @@ export const STORAGE = new InjectionToken('storage location', {
     factory: () => sessionStorage,
 });
 
-export const inMemoryStorageProvider = (initialValues?: { [key: string]: string }) => ({
+export const inMemoryStorageProvider: (initialValues?: Record<string, string>) => FactoryProvider = (
+    initialValues?: Record<string, string>
+) => ({
     provide: STORAGE,
     useFactory: () => new InMemoryStorage(initialValues),
+    multi: false,
 });
 
 export class InMemoryStorage {

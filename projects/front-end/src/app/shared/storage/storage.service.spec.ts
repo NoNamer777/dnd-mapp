@@ -5,7 +5,7 @@ import { StorageService } from './storage.service';
 describe('StorageService', () => {
     function setupTestEnvironment(params?: { initialValue: { [key: string]: string } }) {
         TestBed.configureTestingModule({
-            providers: [StorageService, inMemoryStorageProvider(params?.initialValue)],
+            providers: [inMemoryStorageProvider(params?.initialValue), StorageService],
         });
 
         return {

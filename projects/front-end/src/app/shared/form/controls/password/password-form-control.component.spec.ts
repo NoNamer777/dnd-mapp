@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PasswordFromControlHarness } from '../../../../../testing';
-import { PasswordFromControlModule } from './password-from-control.module';
+import { PasswordFormControlComponent } from './password-form-control.component';
 
 describe('PasswordFormControlComponent', () => {
     @Component({
@@ -21,7 +21,7 @@ describe('PasswordFormControlComponent', () => {
 
     async function setupTestEnvironment() {
         TestBed.configureTestingModule({
-            imports: [PasswordFromControlModule, ReactiveFormsModule],
+            imports: [PasswordFormControlComponent, ReactiveFormsModule],
             declarations: [TestComponent],
         });
 
