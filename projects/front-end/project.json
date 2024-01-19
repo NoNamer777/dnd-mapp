@@ -17,7 +17,7 @@
                 "main": "projects/front-end/src/main.ts",
                 "outputPath": "dist/front-end",
                 "polyfills": ["zone.js"],
-                "scripts": [],
+                "scripts": ["node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"],
                 "styles": ["projects/front-end/src/styles.scss"],
                 "tsConfig": "projects/front-end/tsconfig.app.json",
                 "vendorChunk": true
