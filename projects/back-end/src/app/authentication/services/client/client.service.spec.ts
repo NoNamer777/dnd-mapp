@@ -33,17 +33,17 @@ describe('ClientService', () => {
             const { service } = await setupTestEnvironment();
             const id = nanoid(32);
 
-            await expect(service.findById(id)).rejects.toThrowError(`Couldn't find Client with ID: '${id}'`);
+            await expect(service.findById(id)).rejects.toThrow(`Couldn't find Client with ID: '${id}'`);
         });
     });
 
-    describe('register', () => {
-        it('should register a new client', async () => {
+    describe('create', () => {
+        it('should create a new client', async () => {
             const { service } = await setupTestEnvironment();
 
             expect(mockClientDB.findAll()).toHaveLength(1);
 
-            const client = await service.register();
+            const client = await service.create();
 
             expect(mockClientDB.findOneById(client.id)).toBeDefined();
             expect(mockClientDB.findAll()).toHaveLength(2);
@@ -66,7 +66,7 @@ describe('ClientService', () => {
             const { service } = await setupTestEnvironment();
             const id = nanoid(32);
 
-            await expect(service.remove(id)).rejects.toThrowError(
+            await expect(service.remove(id)).rejects.toThrow(
                 `Couldn't remove Client by ID: '${id}' because it does not exist`
             );
         });

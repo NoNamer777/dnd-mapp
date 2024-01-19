@@ -13,7 +13,17 @@ export class ClientService {
         this.logger.setContext(ClientService.name);
     }
 
+    async create() {
+        this.logger.log('Creating a new Client configuration');
+        const client = new ClientEntity();
+        client.id = nanoid(32);
+
+        await this.clientRepository.save(client);
+        return client;
+    }
+
     async findById(id: string, throwsError = true) {
+        this.logger.log(`Finding Client configuration with ID: '${id}'`);
         const byId = await this.clientRepository.findOneById(id);
 
         if (!byId && throwsError) {
@@ -22,15 +32,8 @@ export class ClientService {
         return byId;
     }
 
-    async register() {
-        const client = new ClientEntity();
-        client.id = nanoid(32);
-
-        await this.clientRepository.save(client);
-        return client;
-    }
-
     async remove(id: string) {
+        this.logger.log(`Removing Client configuration with ID: '${id}'`);
         if (!(await this.findById(id, false))) {
             throw new NotFoundException(`Couldn't remove Client by ID: '${id}' because it does not exist`);
         }

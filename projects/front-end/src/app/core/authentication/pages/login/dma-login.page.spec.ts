@@ -1,12 +1,13 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HttpTestingController } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { defaultUser } from '@dnd-mapp/data/testing';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../../../environments';
 import { DmaLoginHarness, provideDmaHttpTesting } from '../../../../../testing';
+import { TextCodingService } from '../../../../shared';
 import { ConfigService } from '../../../services/config.service';
 import { DmaLoginPage } from './dma-login.page';
 
@@ -25,6 +26,12 @@ describe('DmaLoginComponent', () => {
 
         // TODO: Remove once authentication service has been finished
         spyOn(console, 'warn');
+
+        // The Web Crypto API is only available in a secure environment (HTTPS). Since the tests don't run
+        // in such an environment, we need to fake the returned value for now.
+        spyOn(crypto.subtle, 'digest').and.resolveTo(
+            TestBed.inject(TextCodingService).encode('mock_code_challenge').buffer
+        );
 
         const harnessLoader = TestbedHarnessEnvironment.loader(TestBed.createComponent(TestComponent));
         const testingController = TestBed.inject(HttpTestingController);
@@ -48,13 +55,7 @@ describe('DmaLoginComponent', () => {
     }
 
     async function waitForLoginRequest(testingController: HttpTestingController) {
-        // Need to wait until Web Crypto has finished the digest of the code verifier.
-        await new Promise<void>((resolve) => {
-            const timeout = setTimeout(() => {
-                clearTimeout(timeout);
-                resolve();
-            }, 1);
-        });
+        tick(3);
 
         // Check if the code challenge and verifier have been generated and the code challenge has been sent to the back-end
         const challengeRequest = testingController.expectOne(environment.baseBackEndURL + '/authentication/challenge');
@@ -111,7 +112,7 @@ describe('DmaLoginComponent', () => {
         expect(await harness.getSuccessMessage()).toEqual('Login successful');
     });
 
-    it('should be able to handle invalid credentials error responses', async () => {
+    it('should be able to handle invalid credentials error responses', fakeAsync(async () => {
         const { harness, testingController } = await initializeTestEnvironment();
         const { username } = defaultUser;
 
@@ -128,9 +129,9 @@ describe('DmaLoginComponent', () => {
 
         expect(await harness.hasErrorMessage()).toBeTrue();
         expect(await harness.getErrorMessage()).toEqual('Invalid username/password');
-    });
+    }));
 
-    it('should be able to handle client or server error responses', async () => {
+    it('should be able to handle client or server error responses', fakeAsync(async () => {
         const { harness, testingController } = await initializeTestEnvironment();
         const { username, password } = defaultUser;
 
@@ -150,7 +151,7 @@ describe('DmaLoginComponent', () => {
         expect(await harness.getErrorMessage()).toEqual(
             'Something unexpected went wrong while trying to log in. Try again later'
         );
-    });
+    }));
 
     it('should have disabled submit button with only username entered', async () => {
         const { harness } = await initializeTestEnvironment();

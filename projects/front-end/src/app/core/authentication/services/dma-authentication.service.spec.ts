@@ -1,10 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpTestingController } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { defaultUser } from '@dnd-mapp/data/testing';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../../environments';
 import { provideDmaHttpTesting } from '../../../../testing';
+import { TextCodingService } from '../../../shared';
 import { ConfigService } from '../../services/config.service';
 import { DmaAuthenticationService } from './dma-authentication.service';
 
@@ -16,6 +17,12 @@ describe('DmaAuthenticationService', () => {
 
         // TODO: Remove after back-end authentication has been implemented
         spyOn(console, 'warn');
+
+        // The Web Crypto API is only available in a secure environment (HTTPS). Since the tests don't run
+        // in such an environment, we need to fake the returned value for now.
+        spyOn(crypto.subtle, 'digest').and.resolveTo(
+            TestBed.inject(TextCodingService).encode('mock_code_challenge').buffer
+        );
 
         const testingController = TestBed.inject(HttpTestingController);
         const authenticationService = TestBed.inject(DmaAuthenticationService);
@@ -36,16 +43,6 @@ describe('DmaAuthenticationService', () => {
         request.flush({ id: 'client_id', state: request.request.body.state });
 
         await configInit;
-    }
-
-    // Need to wait until Web Crypto has finished the digest of the code verifier.
-    async function waitForCrypto() {
-        await new Promise<void>((resolve) => {
-            const timeout = setTimeout(() => {
-                clearTimeout(timeout);
-                resolve();
-            }, 1);
-        });
     }
 
     afterEach(() => TestBed.inject(HttpTestingController).verify());
@@ -86,13 +83,13 @@ describe('DmaAuthenticationService', () => {
         await expectAsync(signUp).toBeResolved();
     });
 
-    it('should be processing login requests without throwing errors.', async () => {
+    it('should be processing login requests without throwing errors.', fakeAsync(async () => {
         const { authenticationService, testingController } = await setupTestEnvironment();
         const { username, password } = defaultUser;
 
         const login = firstValueFrom(authenticationService.login(username, password));
 
-        await waitForCrypto();
+        tick(3);
 
         // Check if the code challenge and verifier have been generated and the code challenge has been sent to the back-end
         const challengeRequest = testingController.expectOne(environment.baseBackEndURL + '/authentication/challenge');
@@ -124,7 +121,7 @@ describe('DmaAuthenticationService', () => {
         tokenRequest.flush(null);
 
         await expectAsync(login).toBeResolved();
-    });
+    }));
 
     it('should throw errors when an error response is returned when registering a User', async () => {
         const { authenticationService, testingController } = await setupTestEnvironment();
@@ -152,28 +149,28 @@ describe('DmaAuthenticationService', () => {
         );
     });
 
-    it('should not proceed with logging in when sending the code challenge did not succeed', async () => {
+    it('should not proceed with logging in when sending the code challenge did not succeed', fakeAsync(async () => {
         const { authenticationService, testingController } = await setupTestEnvironment();
         const { username, password } = defaultUser;
 
         const login = firstValueFrom(authenticationService.login(username, password));
 
-        await waitForCrypto();
+        tick(3);
 
         // Check if the code challenge and verifier have been generated and the code challenge has been sent to the back-end
         const challengeRequest = testingController.expectOne(environment.baseBackEndURL + '/authentication/challenge');
         challengeRequest.flush(null);
 
         await expectAsync(login).toBeRejectedWithError('State validation error');
-    });
+    }));
 
-    it('should not proceed with logging in when the User provided invalid credentials', async () => {
+    it('should not proceed with logging in when the User provided invalid credentials', fakeAsync(async () => {
         const { authenticationService, testingController } = await setupTestEnvironment();
         const { username } = defaultUser;
 
         const login = firstValueFrom(authenticationService.login(username, 'fake_password'));
 
-        await waitForCrypto();
+        tick(3);
 
         // Check if the code challenge and verifier have been generated and the code challenge has been sent to the back-end
         const challengeRequest = testingController.expectOne(environment.baseBackEndURL + '/authentication/challenge');
@@ -194,15 +191,15 @@ describe('DmaAuthenticationService', () => {
                 status: 400,
             })
         );
-    });
+    }));
 
-    it('should not proceed with logging in when retrieving the authorization code fails', async () => {
+    it('should not proceed with logging in when retrieving the authorization code fails', fakeAsync(async () => {
         const { authenticationService, testingController } = await setupTestEnvironment();
         const { username, password } = defaultUser;
 
         const login = firstValueFrom(authenticationService.login(username, password));
 
-        await waitForCrypto();
+        tick(3);
 
         // Check if the code challenge and verifier have been generated and the code challenge has been sent to the back-end
         const challengeRequest = testingController.expectOne(environment.baseBackEndURL + '/authentication/challenge');
@@ -217,15 +214,15 @@ describe('DmaAuthenticationService', () => {
         authorizeRequest.flush({ authorizationCode: 'authorization_code' });
 
         await expectAsync(login).toBeRejectedWithError('State validation error');
-    });
+    }));
 
-    it('should not proceed with logging in when the code challenge verification fails', async () => {
+    it('should not proceed with logging in when the code challenge verification fails', fakeAsync(async () => {
         const { authenticationService, testingController } = await setupTestEnvironment();
         const { username, password } = defaultUser;
 
         const login = firstValueFrom(authenticationService.login(username, password));
 
-        await waitForCrypto();
+        tick(3);
 
         // Check if the code challenge and verifier have been generated and the code challenge has been sent to the back-end
         const challengeRequest = testingController.expectOne(environment.baseBackEndURL + '/authentication/challenge');
@@ -259,5 +256,5 @@ describe('DmaAuthenticationService', () => {
                 status: 400,
             })
         );
-    });
+    }));
 });

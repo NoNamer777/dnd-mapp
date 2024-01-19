@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 
 export class LoginDto {
     @IsString()
@@ -26,13 +26,16 @@ export class SignUpDto {
     emailAddress: string;
 }
 
-export class RegisterQueryParamsDto {
-    @IsString()
-    @IsNotEmpty()
-    @IsOptional()
-    id?: string;
-
+export class StateRequest {
     @IsString()
     @IsNotEmpty()
     state: string;
+}
+
+export class StateResponse {
+    state: string;
+}
+
+export class ClientIdResponse extends StateResponse {
+    id: string;
 }
