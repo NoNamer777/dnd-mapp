@@ -54,7 +54,7 @@ export class ConfigService {
             return this.initializeNewClient();
         }
         return this.requestService
-            .get<ConfigModel>(`/api/client/${encodeURIComponent(clientId)}`, { withState: true })
+            .post<ConfigModel>(`/api/client/${encodeURIComponent(clientId)}`, null, { withState: true })
             .pipe(
                 tap((data) => this.config.next({ id: data.id })),
                 catchError((error) => {
