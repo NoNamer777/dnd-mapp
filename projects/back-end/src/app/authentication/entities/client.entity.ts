@@ -1,4 +1,5 @@
 import { ClientModel } from '@dnd-mapp/data';
+import { IsNotEmpty, IsString } from 'class-validator';
 import { Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('client')
