@@ -40,7 +40,3 @@ export class ClientIdResponse extends StateResponse {
     id: string;
 }
 
-    @IsString()
-    @IsNotEmpty()
-    state: string;
-}
