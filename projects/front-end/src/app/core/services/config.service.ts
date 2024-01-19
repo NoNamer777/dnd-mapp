@@ -17,6 +17,10 @@ export class ConfigService {
         private storageService: StorageService
     ) {}
 
+    get clientId() {
+        return this.config.value?.id;
+    }
+
     initialize() {
         this.initializeConfigFromStorage();
         return this.retrieveConfig();
