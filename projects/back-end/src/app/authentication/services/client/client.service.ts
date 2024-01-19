@@ -32,8 +32,6 @@ export class ClientService {
         return byId;
     }
 
-
-
     async remove(id: string) {
         this.logger.log(`Removing Client configuration with ID: '${id}'`);
         if (!(await this.findById(id, false))) {
