@@ -70,16 +70,6 @@
                 "watch": true
             }
         },
-        "serve": {
-            "executor": "@angular-devkit/build-angular:dev-server",
-            "options": {
-                "buildTarget": "front-end:build:dev",
-                "host": "0.0.0.0",
-                "open": false,
-                "port": 4200,
-                "watch": true
-            }
-        },
         "test": {
             "executor": "@angular-devkit/build-angular:karma",
             "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
