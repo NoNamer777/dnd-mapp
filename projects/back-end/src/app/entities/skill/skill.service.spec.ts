@@ -54,9 +54,7 @@ describe('SkillService', () => {
         it('should throw an Error when not finding a skill by ID', async () => {
             const { service } = await setupTestEnvironment();
 
-            await expect(service.findById(2)).rejects.toThrowError(
-                new NotFoundException(`Skill with ID: '2' is not found`)
-            );
+            await expect(service.findById(2)).rejects.toThrow(new NotFoundException(`Skill with ID: '2' is not found`));
         });
     });
 
@@ -70,7 +68,7 @@ describe('SkillService', () => {
         it('should throw 404', async () => {
             const { service } = await setupTestEnvironment();
 
-            await expect(service.findByName('Skill Test')).rejects.toThrowError(
+            await expect(service.findByName('Skill Test')).rejects.toThrow(
                 new NotFoundException(`Skill with name: 'Skill Test' is not found`)
             );
         });
@@ -89,7 +87,7 @@ describe('SkillService', () => {
             const { service } = await setupTestEnvironment();
             const newSkillData: Skill = { id: 2, name: 'Skill Test Test', ability: defaultAbility };
 
-            await expect(service.update(newSkillData)).rejects.toThrowError(
+            await expect(service.update(newSkillData)).rejects.toThrow(
                 new NotFoundException(`Cannot update Skill with ID: '2' because it does not exist`)
             );
         });
@@ -100,7 +98,7 @@ describe('SkillService', () => {
             const { service } = await setupTestEnvironment();
             const newSkillData: Skill = { id: 1, name: 'Skill Test Test', ability: defaultAbility };
 
-            await expect(service.update(newSkillData)).rejects.toThrowError(
+            await expect(service.update(newSkillData)).rejects.toThrow(
                 new NotFoundException(`Cannot update Skill because the name 'Skill Test Test' is already used`)
             );
             expect(mockSkillDB.findOneById(1)).toEqual(expect.not.objectContaining(newSkillData));
@@ -120,7 +118,7 @@ describe('SkillService', () => {
             const { service } = await setupTestEnvironment();
             const newSkillData: CreateSkillData = { name: 'Test Skill', ability: defaultAbility };
 
-            await expect(service.create(newSkillData)).rejects.toThrowError(
+            await expect(service.create(newSkillData)).rejects.toThrow(
                 new NotFoundException(`Cannot create Skill because the name 'Test Skill' is already used`)
             );
         });
@@ -137,7 +135,7 @@ describe('SkillService', () => {
         it('should throw an error when trying to remove a Skill by ID which does not exist', async () => {
             const { service } = await setupTestEnvironment();
 
-            await expect(service.remove(2)).rejects.toThrowError(
+            await expect(service.remove(2)).rejects.toThrow(
                 `Could not remove Skill with ID: '2' because it does not exist`
             );
         });

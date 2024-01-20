@@ -32,7 +32,7 @@ describe('RoleService', () => {
         it('should throw an Error when not finding a skill by ID', async () => {
             const { service } = await setupTestEnvironment();
 
-            await expect(service.findById(2)).rejects.toThrowError(
+            await expect(service.findById(2)).rejects.toThrow(
                 new NotFoundException(`User Role with ID: '2' is not found`)
             );
         });
@@ -48,7 +48,7 @@ describe('RoleService', () => {
         it('should throw 404', async () => {
             const { service } = await setupTestEnvironment();
 
-            await expect(service.findByName(Roles.ADMIN)).rejects.toThrowError(
+            await expect(service.findByName(Roles.ADMIN)).rejects.toThrow(
                 new NotFoundException(`User Role with name: '${Roles.ADMIN}' is not found`)
             );
         });
@@ -67,7 +67,7 @@ describe('RoleService', () => {
             const { service } = await setupTestEnvironment();
             const newUserRoleData: Role = { id: 2, name: Roles.PLAYER };
 
-            await expect(service.update(newUserRoleData)).rejects.toThrowError(
+            await expect(service.update(newUserRoleData)).rejects.toThrow(
                 new NotFoundException(`Cannot update User Role with ID: '2' because it does not exist`)
             );
         });
@@ -78,7 +78,7 @@ describe('RoleService', () => {
             const { service } = await setupTestEnvironment();
             const newUserRoleData: Role = { id: 1, name: Roles.ADMIN };
 
-            await expect(service.update(newUserRoleData)).rejects.toThrowError(
+            await expect(service.update(newUserRoleData)).rejects.toThrow(
                 new NotFoundException(`Cannot update User Role because the name '${Roles.ADMIN}' is already used`)
             );
             expect(mockRoleDB.findOneById(1)).toEqual(expect.not.objectContaining(newUserRoleData));
@@ -98,7 +98,7 @@ describe('RoleService', () => {
             const { service } = await setupTestEnvironment();
             const newUserRoleData: CreateRoleData = { name: Roles.PLAYER };
 
-            await expect(service.create(newUserRoleData)).rejects.toThrowError(
+            await expect(service.create(newUserRoleData)).rejects.toThrow(
                 new NotFoundException(`Cannot create User Role because the name '${Roles.PLAYER}' is already used`)
             );
         });
@@ -115,7 +115,7 @@ describe('RoleService', () => {
         it('should throw an error when trying to remove a UserRole by ID which does not exist', async () => {
             const { service } = await setupTestEnvironment();
 
-            await expect(service.remove(2)).rejects.toThrowError(
+            await expect(service.remove(2)).rejects.toThrow(
                 `Could not remove User Role with ID: '2' because it does not exist`
             );
         });
