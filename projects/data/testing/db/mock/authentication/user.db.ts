@@ -1,7 +1,7 @@
-import { CreateUserData, User } from '../../../../src';
+import { CreateUserData, UserModel } from '../../../../src';
 
 interface UserDB {
-    [userId: string]: User;
+    [userId: string]: UserModel;
 }
 
 class MockUserDB {
@@ -24,12 +24,12 @@ class MockUserDB {
         return Object.values(this.db).find((user) => user.username === username) ?? null;
     }
 
-    save(userData: User) {
+    save(userData: UserModel) {
         return userData.id ? this.update(userData) : this.insert(userData);
     }
 
     insert(userData: CreateUserData) {
-        const newUser: User = new User(
+        const newUser = new UserModel(
             userData.username,
             userData.password,
             userData.emailAddress,
@@ -41,7 +41,7 @@ class MockUserDB {
         return newUser;
     }
 
-    update(userData: User) {
+    update(userData: UserModel) {
         if (!this.db[userData.id]) {
             throw new Error(`Could not update User with ID: '${userData.id}' because it does not exist.`);
         }
@@ -62,7 +62,7 @@ class MockUserDB {
     }
 }
 
-export const defaultUser = new User(
+export const defaultUser = new UserModel(
     'User1',
     '$2b$12$CU2n8T1reHQ24urHR3HFFO.LMmw6zGEHKtfkwuiTyemO1Mz.68Psa',
     'user1@domain.com',

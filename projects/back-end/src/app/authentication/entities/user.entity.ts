@@ -1,77 +1,62 @@
 import { UserModel } from '@dnd-mapp/data';
-import { OmitType } from '@nestjs/mapped-types';
-import { Exclude } from 'class-transformer';
-import {
-    ArrayMinSize,
-    IsArray,
-    IsEmail,
-    IsInt,
-    IsNotEmpty,
-    IsString,
-    Min,
-    MinLength,
-    ValidateNested,
-} from 'class-validator';
-import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
-import { RoleEntity } from './role.entity';
+import { EntitySchema } from 'typeorm';
 
-@Entity('user')
-export class UserEntity implements UserModel {
-    @PrimaryGeneratedColumn('increment')
-    @PrimaryColumn()
-    @IsInt()
-    @Min(1)
-    id: number;
-
-    @Column({
-        name: 'username',
-        type: 'varchar',
-        nullable: false,
-        unique: true,
-    })
-    @IsString()
-    @IsNotEmpty()
-    username: string;
-
-    @Column({
-        name: 'password',
-        type: 'varchar',
-        nullable: false,
-    })
-    @IsString()
-    @IsNotEmpty()
-    @MinLength(8)
-    @Exclude({ toPlainOnly: true })
-    password: string;
-
-    @Column({
-        name: 'email_address',
-        type: 'varchar',
-        nullable: false,
-        unique: true,
-    })
-    @IsString()
-    @IsNotEmpty()
-    @IsEmail()
-    @Exclude({ toPlainOnly: true })
-    emailAddress: string;
-
-    @IsArray()
-    @ArrayMinSize(1)
-    @ValidateNested({ each: true })
-    @ManyToMany(() => RoleEntity)
-    @JoinTable({
-        name: 'user_role',
-        joinColumn: {
-            name: 'user_id',
-            referencedColumnName: 'id',
+export const UserEntity = new EntitySchema<UserModel>({
+    name: 'User',
+    columns: {
+        id: {
+            name: 'id',
+            type: Number,
+            primary: true,
+            generated: 'increment',
+            primaryKeyConstraintName: 'pk_user',
         },
-        inverseJoinColumn: {
-            name: 'role_id',
-            referencedColumnName: 'id',
+        username: {
+            name: 'username',
+            type: String,
+            nullable: false,
         },
-    })
-    roles: RoleEntity[];
-}
-
-export class CreateUserDto extends OmitType(UserEntity, ['id', 'roles'] as const) {}
+        password: {
+            name: 'password',
+            type: String,
+            nullable: false,
+        },
+        emailAddress: {
+            name: 'email_address',
+            type: String,
+            nullable: false,
+        },
+    },
+    uniques: [
+        {
+            name: 'unique_idx_user_username',
+            columns: ['username'],
+        },
+    ],
+    indices: [
+        {
+            name: 'idx_user_email_address',
+            columns: ['emailAddress'],
+        },
+    ],
+    relations: {
+        roles: {
+            type: 'many-to-many',
+            target: 'Role',
+            eager: true,
+            joinTable: {
+                name: 'UserRole',
+                joinColumn: {
+                    name: 'user_id',
+                    referencedColumnName: 'id',
+                    foreignKeyConstraintName: 'fk_user_role',
+                },
+                inverseJoinColumn: {
+                    name: 'role_id',
+                    referencedColumnName: 'id',
+                    foreignKeyConstraintName: 'fk_role_user',
+                },
+            },
+        },
+    },
+});

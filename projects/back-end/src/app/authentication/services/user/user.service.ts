@@ -1,8 +1,7 @@
-import { Roles } from '@dnd-mapp/data';
+import { CreateUserData, Roles, UserModel } from '@dnd-mapp/data';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { genSalt, hash } from 'bcryptjs';
 import { LoggerService } from '../../../common';
-import { CreateUserDto, UserEntity } from '../../entities';
 import { UserRepository } from '../../repositories';
 import { RoleService } from '../role';
 
@@ -41,7 +40,7 @@ export class UserService {
         return byUsername;
     }
 
-    async update(user: UserEntity) {
+    async update(user: UserModel) {
         this.logger.log(`Updating a User's data`);
         const byId = await this.findById(user.id, false);
         const byUsername = await this.findByUsername(user.username, false);
@@ -60,7 +59,7 @@ export class UserService {
         return await this.userRepository.findOneById(user.id);
     }
 
-    async create(user: CreateUserDto) {
+    async create(user: CreateUserData) {
         this.logger.log('Creating a new User');
         const byUsername = await this.findByUsername(user.username, false);
 
@@ -69,7 +68,7 @@ export class UserService {
                 `Cannot create User because the username '${byUsername.username}' is already used`
             );
         }
-        (user as UserEntity).roles = [await this.userRoleService.findByName(Roles.PLAYER)];
+        (user as UserModel).roles = [await this.userRoleService.findByName(Roles.PLAYER)];
         user.password = await this.hashPassword(user.password);
 
         await this.userRepository.save(user);

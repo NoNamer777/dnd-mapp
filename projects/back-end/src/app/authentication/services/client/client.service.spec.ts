@@ -1,8 +1,8 @@
+import { ClientModel } from '@dnd-mapp/data';
 import { defaultClient, mockClientDB } from '@dnd-mapp/data/testing';
 import { Test } from '@nestjs/testing';
 import { nanoid } from 'nanoid';
 import { mockClientModuleProviders, mockLoggingServiceProvider } from '../../../../../testing';
-import { ClientEntity } from '../../entities';
 import { ClientService } from './client.service';
 
 describe('ClientService', () => {
@@ -64,7 +64,7 @@ describe('ClientService', () => {
 
         it('should not update when a Client does not exist', async () => {
             const { service } = await setupTestEnvironment();
-            const client = new ClientEntity();
+            const client = new ClientModel();
 
             await expect(service.update(client)).rejects.toThrow(
                 `Could not update client with ID: '${client.id}' because it does not exist`

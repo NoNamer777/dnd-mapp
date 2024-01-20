@@ -1,14 +1,14 @@
+import { Ability, CreateAbilityData } from '@dnd-mapp/data';
 import { BadRequestException, Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { LoggerService } from '../../common';
 import { EntityService } from '../entity.service';
 import { EntityApiService } from '../models';
-import { AbilityEntity, CreateAbilityDto } from './ability.entity';
 import { AbilityRepository } from './ability.repository';
 
 export const ABILITY_SERVICE_TOKEN = 'ABILITY_TOKEN';
 
 @Injectable()
-export class AbilityService implements EntityApiService<AbilityEntity>, OnModuleInit {
+export class AbilityService implements EntityApiService<Ability>, OnModuleInit {
     constructor(
         private readonly abilityRepository: AbilityRepository,
         private readonly logger: LoggerService,
@@ -18,7 +18,7 @@ export class AbilityService implements EntityApiService<AbilityEntity>, OnModule
     }
 
     onModuleInit() {
-        this.entityService.addEntityType<AbilityEntity>({ type: 'Ability', serviceToken: ABILITY_SERVICE_TOKEN });
+        this.entityService.addEntityType<Ability>({ type: 'Ability', serviceToken: ABILITY_SERVICE_TOKEN });
     }
 
     async findAll() {
@@ -46,7 +46,7 @@ export class AbilityService implements EntityApiService<AbilityEntity>, OnModule
         return byName;
     }
 
-    async update(ability: AbilityEntity) {
+    async update(ability: Ability) {
         this.logger.log(`Updating an Ability's data`);
         const byId = await this.findById(ability.id, false);
 
@@ -61,7 +61,7 @@ export class AbilityService implements EntityApiService<AbilityEntity>, OnModule
         return await this.abilityRepository.save(ability);
     }
 
-    async create(ability: CreateAbilityDto) {
+    async create(ability: CreateAbilityData) {
         this.logger.log('Creating a new Ability');
         const byName = await this.findByName(ability.name, false);
 

@@ -1,4 +1,4 @@
-import { Race } from '@dnd-mapp/data';
+import { CreateRaceData, Race } from '@dnd-mapp/data';
 import {
     BadRequestException,
     Body,
@@ -13,7 +13,6 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { LoggerService } from '../../common';
-import { CreateRaceDto, RaceEntity } from './race.entity';
 import { RaceService } from './race.service';
 
 @Controller('api/race')
@@ -26,35 +25,31 @@ export class RaceController {
     }
 
     @Get()
-    async getAll(): Promise<Race[]> {
+    async getAll() {
         this.logger.log('Received request for getting all Races');
         return await this.raceService.findAll();
     }
 
     @Post()
-    async create(@Body() requestBody: CreateRaceDto): Promise<Race> {
+    async create(@Body() requestBody: CreateRaceData) {
         this.logger.log('Received request for creating a new Race');
         return await this.raceService.create(requestBody);
     }
 
     @Get(':id')
-    async getById(@Param('id', ParseIntPipe) raceId: number): Promise<Race> {
+    async getById(@Param('id', ParseIntPipe) raceId: number) {
         this.logger.log('Received request for returning a Race');
         return await this.raceService.findById(raceId);
     }
 
     @Delete(':id')
-    async delete(@Param('id', ParseIntPipe) raceId: number): Promise<void> {
+    async delete(@Param('id', ParseIntPipe) raceId: number) {
         this.logger.log('Received a request for removing a Race');
         return await this.raceService.remove(raceId);
     }
 
     @Put(':id')
-    async update(
-        @Param('id', ParseIntPipe) raceId: number,
-        @Body() requestBody: RaceEntity,
-        @Req() request: Request
-    ): Promise<Race> {
+    async update(@Param('id', ParseIntPipe) raceId: number, @Body() requestBody: Race, @Req() request: Request) {
         this.logger.log('Received a request for updating a Race');
         const requestPath = request.url;
 

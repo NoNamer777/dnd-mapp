@@ -1,4 +1,4 @@
-import { Role } from '@dnd-mapp/data';
+import { CreateRoleData, Role } from '@dnd-mapp/data';
 import {
     BadRequestException,
     Body,
@@ -14,7 +14,6 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { LoggerService } from '../../common';
-import { CreateRoleDto, RoleEntity } from '../entities';
 import { IsAdminGuard } from '../guards';
 import { RoleService } from '../services';
 
@@ -29,13 +28,13 @@ export class RoleController {
     }
 
     @Get()
-    async getAll(): Promise<Role[]> {
+    async getAll() {
         this.logger.log('Received request for getting all User Roles');
         return await this.skillService.findAll();
     }
 
     @Post()
-    async create(@Body() data: CreateRoleDto): Promise<Role> {
+    async create(@Body() data: CreateRoleData) {
         this.logger.log('Received request for creating a new User Role');
         return await this.skillService.create(data);
     }
@@ -47,17 +46,13 @@ export class RoleController {
     }
 
     @Delete('/:id')
-    async deleteById(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    async deleteById(@Param('id', ParseIntPipe) id: number) {
         this.logger.log('Received a request for removing a User Role');
         await this.skillService.remove(id);
     }
 
     @Put(':/id')
-    async update(
-        @Req() request: Request,
-        @Param('id', ParseIntPipe) id: number,
-        @Body() data: RoleEntity
-    ): Promise<Role> {
+    async update(@Req() request: Request, @Param('id', ParseIntPipe) id: number, @Body() data: Role) {
         this.logger.log('Received a request for updating a User Role');
         const requestPath = request.path;
 

@@ -1,3 +1,4 @@
+import { CreateUserData, UserModel } from '@dnd-mapp/data';
 import {
     BadRequestException,
     Body,
@@ -15,7 +16,6 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { LoggerService } from '../../common';
-import { CreateUserDto, UserEntity } from '../entities';
 import { IsOwnerOrAdminGuard } from '../guards';
 import { UserService } from '../services';
 
@@ -38,7 +38,7 @@ export class UserController {
 
     @Post()
     @UseInterceptors(ClassSerializerInterceptor)
-    async create(@Body() data: CreateUserDto) {
+    async create(@Body() data: CreateUserData) {
         this.logger.log('Received request for creating a new User');
         return await this.userService.create(data);
     }
@@ -56,7 +56,7 @@ export class UserController {
     }
 
     @Put(':id')
-    async update(@Param('id', ParseIntPipe) id: number, @Body() data: UserEntity, @Req() request: Request) {
+    async update(@Param('id', ParseIntPipe) id: number, @Body() data: UserModel, @Req() request: Request) {
         this.logger.log('Received a request for updating a User');
         const requestPath = request.url;
 

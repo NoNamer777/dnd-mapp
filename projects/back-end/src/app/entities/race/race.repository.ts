@@ -1,9 +1,10 @@
+import { Race } from '@dnd-mapp/data';
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { RaceEntity } from './race.entity';
 
 @Injectable()
-export class RaceRepository extends Repository<RaceEntity> {
+export class RaceRepository extends Repository<Race> {
     constructor(dataSource: DataSource) {
         super(RaceEntity, dataSource.createEntityManager());
     }

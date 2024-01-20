@@ -1,9 +1,26 @@
 import { Race } from '@dnd-mapp/data';
-import { OmitType } from '@nestjs/mapped-types';
-import { Entity } from 'typeorm';
-import { NameableEntity } from '../models';
+import { EntitySchema } from 'typeorm';
 
-@Entity('race')
-export class RaceEntity extends NameableEntity implements Race {}
-
-export class CreateRaceDto extends OmitType(RaceEntity, ['id'] as const) {}
+export const RaceEntity = new EntitySchema<Race>({
+    name: 'Race',
+    columns: {
+        id: {
+            name: 'id',
+            type: Number,
+            primary: true,
+            generated: 'increment',
+            primaryKeyConstraintName: 'pk_race',
+        },
+        name: {
+            name: 'name',
+            type: String,
+            nullable: false,
+        },
+    },
+    uniques: [
+        {
+            name: 'unique_idx_race_name',
+            columns: ['name'],
+        },
+    ],
+});

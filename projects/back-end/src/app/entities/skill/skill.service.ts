@@ -1,14 +1,14 @@
+import { CreateSkillData, Skill } from '@dnd-mapp/data';
 import { BadRequestException, Injectable, InjectionToken, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { LoggerService } from '../../common';
 import { EntityService } from '../entity.service';
 import { EntityApiService } from '../models';
-import { CreateSkillDto, SkillEntity } from './skill.entity';
 import { SkillRepository } from './skill.repository';
 
 export const SKILL_SERVICE_TOKEN: InjectionToken = 'SKILL_SERVICE';
 
 @Injectable()
-export class SkillService implements EntityApiService<SkillEntity>, OnModuleInit {
+export class SkillService implements EntityApiService<Skill>, OnModuleInit {
     constructor(
         private readonly skillRepository: SkillRepository,
         private readonly logger: LoggerService,
@@ -18,7 +18,7 @@ export class SkillService implements EntityApiService<SkillEntity>, OnModuleInit
     }
 
     onModuleInit() {
-        this.entityService.addEntityType<SkillEntity>({ type: 'Skill', serviceToken: SKILL_SERVICE_TOKEN });
+        this.entityService.addEntityType<Skill>({ type: 'Skill', serviceToken: SKILL_SERVICE_TOKEN });
     }
 
     async findAll() {
@@ -51,7 +51,7 @@ export class SkillService implements EntityApiService<SkillEntity>, OnModuleInit
         return byName;
     }
 
-    async update(skill: SkillEntity) {
+    async update(skill: Skill) {
         this.logger.log(`Updating a Skill's data`);
         const byId = await this.findById(skill.id, false);
 
@@ -66,7 +66,7 @@ export class SkillService implements EntityApiService<SkillEntity>, OnModuleInit
         return await this.skillRepository.save(skill);
     }
 
-    async create(skill: CreateSkillDto) {
+    async create(skill: CreateSkillData) {
         this.logger.log('Creating a new Skill');
         const byName = await this.findByName(skill.name, false);
 

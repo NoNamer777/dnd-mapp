@@ -1,26 +1,17 @@
 import { EntityModel } from '../models';
 import { Role, RoleName } from './role.model';
 
-export interface UserModel extends EntityModel {
-    username: string;
-    password: string;
-    emailAddress: string;
-    roles: Role[];
-}
-
-export class User implements UserModel {
-    id: number;
+export class UserModel extends EntityModel {
     username: string;
     password: string;
     emailAddress: string;
     roles: Role[];
 
     constructor(username: string, password: string, emailAddress: string, id?: number, roles?: Role[]) {
+        super(id);
+
         if (!roles) {
             this.roles = [];
-        }
-        if (id) {
-            this.id = id;
         }
         this.username = username;
         this.password = password;
@@ -33,4 +24,4 @@ export class User implements UserModel {
     }
 }
 
-export type CreateUserData = Omit<User, 'id' | 'roles' | 'hasRole'>;
+export type CreateUserData = Omit<UserModel, 'id' | 'roles' | 'hasRole'>;

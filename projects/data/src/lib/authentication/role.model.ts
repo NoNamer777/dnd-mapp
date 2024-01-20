@@ -8,8 +8,7 @@ export enum Roles {
 
 export type RoleName = (typeof Roles)[keyof typeof Roles];
 
-export interface Role extends EntityModel {
-    id: number;
+export class Role extends EntityModel {
     name: RoleName;
 }
 

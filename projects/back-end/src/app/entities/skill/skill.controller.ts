@@ -1,4 +1,4 @@
-import { Skill } from '@dnd-mapp/data';
+import { CreateSkillData, Skill } from '@dnd-mapp/data';
 import {
     BadRequestException,
     Body,
@@ -13,7 +13,6 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { LoggerService } from '../../common';
-import { CreateSkillDto, SkillEntity } from './skill.entity';
 import { SkillService } from './skill.service';
 
 @Controller('/api/skill')
@@ -26,13 +25,13 @@ export class SkillController {
     }
 
     @Get()
-    async getAll(): Promise<Skill[]> {
+    async getAll() {
         this.logger.log('Received request for getting all Skills');
         return await this.skillService.findAll();
     }
 
     @Post()
-    async create(@Body() data: CreateSkillDto): Promise<Skill> {
+    async create(@Body() data: CreateSkillData) {
         this.logger.log('Received request for creating a new Skill');
         return await this.skillService.create(data);
     }
@@ -44,17 +43,13 @@ export class SkillController {
     }
 
     @Delete('/:id')
-    async deleteById(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    async deleteById(@Param('id', ParseIntPipe) id: number) {
         this.logger.log('Received a request for removing a Skill');
         await this.skillService.remove(id);
     }
 
     @Put(':/id')
-    async update(
-        @Req() request: Request,
-        @Param('id', ParseIntPipe) id: number,
-        @Body() data: SkillEntity
-    ): Promise<Skill> {
+    async update(@Req() request: Request, @Param('id', ParseIntPipe) id: number, @Body() data: Skill) {
         this.logger.log('Received a request for updating a Skill');
         const requestPath = request.path;
 

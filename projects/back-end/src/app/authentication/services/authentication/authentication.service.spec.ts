@@ -1,4 +1,4 @@
-import { User } from '@dnd-mapp/data';
+import { UserModel } from '@dnd-mapp/data';
 import { defaultClient, defaultUser, mockClientDB, mockUserDB } from '@dnd-mapp/data/testing';
 import { Test } from '@nestjs/testing';
 import {
@@ -36,7 +36,7 @@ describe('AuthenticationService', () => {
 
     it('should handle sign up requests', async () => {
         const { service } = await setupTestEnvironment();
-        const user = await service.signup(new User('User2', 'secure_password', 'user2@domain.com'));
+        const user = await service.signup(new UserModel('User2', 'secure_password', 'user2@domain.com'));
 
         expect(user.id).toEqual(expect.any(Number));
         expect(mockUserDB.findAll()).toHaveLength(2);
