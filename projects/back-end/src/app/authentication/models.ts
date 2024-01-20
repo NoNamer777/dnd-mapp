@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { IsBase64, IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 
 export class LoginDto {
     @IsString()
@@ -38,4 +38,15 @@ export class StateResponse {
 
 export class ClientIdResponse extends StateResponse {
     id: string;
+}
+
+export class CodeChallengeRequest extends StateRequest {
+    @IsString()
+    @IsNotEmpty()
+    @IsBase64()
+    codeChallenge: string;
+}
+
+export class AuthorizationCodeResponse extends StateResponse {
+    authorizationCode: string;
 }

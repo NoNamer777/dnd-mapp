@@ -33,9 +33,7 @@ describe('UserService', () => {
         it('should throw 404', async () => {
             const { service } = await setupTestEnvironment();
 
-            await expect(service.findById(2)).rejects.toThrowError(
-                new NotFoundException(`User with ID: '2' is not found`)
-            );
+            await expect(service.findById(2)).rejects.toThrow(new NotFoundException(`User with ID: '2' is not found`));
         });
     });
 
@@ -49,7 +47,7 @@ describe('UserService', () => {
         it('should throw 404', async () => {
             const { service } = await setupTestEnvironment();
 
-            await expect(service.findByUsername('User Test')).rejects.toThrowError(
+            await expect(service.findByUsername('User Test')).rejects.toThrow(
                 new NotFoundException(`User with name: 'User Test' is not found`)
             );
         });
@@ -79,7 +77,7 @@ describe('UserService', () => {
             const { password, emailAddress } = defaultUser;
             const newUserData = new User('User Test Test', password, emailAddress, 2);
 
-            await expect(service.update(newUserData)).rejects.toThrowError(
+            await expect(service.update(newUserData)).rejects.toThrow(
                 new NotFoundException(`Cannot update User with ID: '2' because it does not exist`)
             );
         });
@@ -91,7 +89,7 @@ describe('UserService', () => {
             const { id, password, emailAddress } = defaultUser;
             const newUserData = new User('User Test Test', password, emailAddress, id);
 
-            await expect(service.update(newUserData)).rejects.toThrowError(
+            await expect(service.update(newUserData)).rejects.toThrow(
                 new NotFoundException(`Cannot update User because the username 'User Test Test' is already used`)
             );
             expect(mockUserDB.findOneById(1)).toEqual(expect.not.objectContaining(newUserData));
@@ -113,7 +111,7 @@ describe('UserService', () => {
             const { service } = await setupTestEnvironment();
             const newUserData = new User('User1', 'user1@domain.com', 'secure_password');
 
-            await expect(service.create(newUserData)).rejects.toThrowError(
+            await expect(service.create(newUserData)).rejects.toThrow(
                 new NotFoundException(`Cannot create User because the username 'User1' is already used`)
             );
         });
@@ -130,7 +128,7 @@ describe('UserService', () => {
         it('should throw 404 for deleting non existent User', async () => {
             const { service } = await setupTestEnvironment();
 
-            await expect(service.remove(2)).rejects.toThrowError(
+            await expect(service.remove(2)).rejects.toThrow(
                 new NotFoundException(`Could not remove User with ID: '2' because it does not exist`)
             );
         });

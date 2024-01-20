@@ -41,6 +41,9 @@ class MockClientDB {
 
 export const defaultClient: ClientModel = {
     id: '9mez32qmVA9Tl1QBuwAgqZSRf69i3x3B',
+    authorizationCode: null,
+    codeChallenge: null,
+    codeGeneratedAt: null,
 };
 
 export const mockClientDB = new MockClientDB();

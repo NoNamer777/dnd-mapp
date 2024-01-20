@@ -41,7 +41,7 @@ describe('AbilityService', () => {
         it('should throw 404', async () => {
             const { service } = await setupTestEnvironment();
 
-            await expect(service.findById(2)).rejects.toThrowError(
+            await expect(service.findById(2)).rejects.toThrow(
                 new NotFoundException(`Ability with ID: '2' is not found`)
             );
         });
@@ -63,7 +63,7 @@ describe('AbilityService', () => {
         it('should throw 404', async () => {
             const { service } = await setupTestEnvironment();
 
-            await expect(service.findByName('Ability Test')).rejects.toThrowError(
+            await expect(service.findByName('Ability Test')).rejects.toThrow(
                 new NotFoundException(`Ability with name: 'Ability Test' is not found`)
             );
         });
@@ -88,7 +88,7 @@ describe('AbilityService', () => {
             const { service } = await setupTestEnvironment();
             const newAbilityData: Ability = { id: 2, name: 'Ability Test Test', skills: [] };
 
-            await expect(service.update(newAbilityData)).rejects.toThrowError(
+            await expect(service.update(newAbilityData)).rejects.toThrow(
                 new NotFoundException(`Cannot update Ability with ID: '2' because it does not exist`)
             );
         });
@@ -99,7 +99,7 @@ describe('AbilityService', () => {
             const { service } = await setupTestEnvironment();
             const newAbilityData: Ability = { id: 1, name: 'Ability Test Test', skills: [] };
 
-            await expect(service.update(newAbilityData)).rejects.toThrowError(
+            await expect(service.update(newAbilityData)).rejects.toThrow(
                 new NotFoundException(`Cannot update Ability because the name 'Ability Test Test' is already used`)
             );
             expect(mockAbilityDB.findOneById(1)).toEqual(expect.not.objectContaining(newAbilityData));
@@ -119,7 +119,7 @@ describe('AbilityService', () => {
             const { service } = await setupTestEnvironment();
             const newAbilityData: CreateAbilityData = { name: 'Test Ability', skills: [] };
 
-            await expect(service.create(newAbilityData)).rejects.toThrowError(
+            await expect(service.create(newAbilityData)).rejects.toThrow(
                 new NotFoundException(`Cannot create Ability because the name 'Test Ability' is already used`)
             );
         });
@@ -136,7 +136,7 @@ describe('AbilityService', () => {
         it('should not remove and throw 404', async () => {
             const { service } = await setupTestEnvironment();
 
-            await expect(service.remove(2)).rejects.toThrowError(
+            await expect(service.remove(2)).rejects.toThrow(
                 `Could not remove Ability with ID: '2' because it does not exist`
             );
         });
