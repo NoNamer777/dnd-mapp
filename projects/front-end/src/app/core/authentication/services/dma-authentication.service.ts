@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CreateUserData, User, UserModel } from '@dnd-mapp/data';
+import { CreateUserData, UserModel } from '@dnd-mapp/data';
 import { nanoid } from 'nanoid';
 import { BehaviorSubject, from, map, switchMap, take } from 'rxjs';
 import { DmaHttpRequestService, TextCodingService } from '../../../shared';
@@ -19,7 +19,7 @@ type SignUpResponse = Omit<UserModel, 'roles'>;
 
 @Injectable({ providedIn: 'root' })
 export class DmaAuthenticationService {
-    authenticatedUser$ = new BehaviorSubject<User | null>(null);
+    authenticatedUser$ = new BehaviorSubject<UserModel | null>(null);
 
     private codeVerifier: string | null = null;
 

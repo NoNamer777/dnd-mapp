@@ -1,26 +1,31 @@
+import { ArrayMinSize, ArrayNotEmpty, IsArray, IsEmail, IsNotEmpty, IsString } from 'class-validator';
 import { EntityModel } from '../models';
-import { Role, RoleName } from './role.model';
+import { RoleModel, RoleName } from './role.model';
 
-export interface UserModel extends EntityModel {
+export class UserModel extends EntityModel {
+    @IsString()
+    @IsNotEmpty()
     username: string;
-    password: string;
-    emailAddress: string;
-    roles: Role[];
-}
 
-export class User implements UserModel {
-    id: number;
-    username: string;
+    @IsString()
+    @IsNotEmpty()
     password: string;
-    emailAddress: string;
-    roles: Role[];
 
-    constructor(username: string, password: string, emailAddress: string, id?: number, roles?: Role[]) {
+    @IsString()
+    @IsNotEmpty()
+    @IsEmail()
+    emailAddress: string;
+
+    @IsArray()
+    @ArrayNotEmpty()
+    @ArrayMinSize(1)
+    roles: RoleModel[];
+
+    constructor(username: string, password: string, emailAddress: string, id?: number, roles?: RoleModel[]) {
+        super(id);
+
         if (!roles) {
             this.roles = [];
-        }
-        if (id) {
-            this.id = id;
         }
         this.username = username;
         this.password = password;
@@ -33,4 +38,4 @@ export class User implements UserModel {
     }
 }
 
-export type CreateUserData = Omit<User, 'id' | 'roles' | 'hasRole'>;
+export type CreateUserData = Omit<UserModel, 'id' | 'roles' | 'hasRole'>;

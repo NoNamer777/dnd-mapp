@@ -1,5 +1,5 @@
-import { NameableEntityModel } from '../models';
+import { NameableModel } from '../models';
 
-export type Race = NameableEntityModel;
+export class Race extends NameableModel {}
 
 export type CreateRaceData = Omit<Race, 'id'>;

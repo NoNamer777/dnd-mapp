@@ -1,7 +1,6 @@
-import { Role, RoleName } from '@dnd-mapp/data';
+import { CreateRoleData, RoleModel, RoleName } from '@dnd-mapp/data';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { LoggerService } from '../../../common';
-import { CreateRoleDto } from '../../entities';
 import { RoleRepository } from '../../repositories';
 
 @Injectable()
@@ -13,12 +12,12 @@ export class RoleService {
         this.logger.setContext(RoleService.name);
     }
 
-    async findAll(): Promise<Role[]> {
+    async findAll() {
         this.logger.log('Finding all User Roles');
         return this.userRoleRepository.findAll();
     }
 
-    async findById(id: number, throwsError = true): Promise<Role> {
+    async findById(id: number, throwsError = true) {
         this.logger.log('Finding a User Role by ID');
         const byId = await this.userRoleRepository.findOneById(id);
 
@@ -28,7 +27,7 @@ export class RoleService {
         return byId;
     }
 
-    async findByName(name: RoleName, throwsError = true): Promise<Role> {
+    async findByName(name: RoleName, throwsError = true) {
         this.logger.log('Finding a User Role by name');
         const byName = await this.userRoleRepository.findOneByName(name);
 
@@ -38,7 +37,7 @@ export class RoleService {
         return byName;
     }
 
-    async update(role: Role): Promise<Role> {
+    async update(role: RoleModel) {
         this.logger.log(`Updating a User Role's data`);
         const byId = await this.findById(role.id, false);
 
@@ -53,7 +52,7 @@ export class RoleService {
         return await this.userRoleRepository.save(role);
     }
 
-    async create(role: CreateRoleDto): Promise<Role> {
+    async create(role: CreateRoleData) {
         this.logger.log('Creating a new User Role');
         const byName = await this.findByName(role.name, false);
 
@@ -63,7 +62,7 @@ export class RoleService {
         return await this.userRoleRepository.save(role);
     }
 
-    async remove(id: number): Promise<void> {
+    async remove(id: number) {
         this.logger.log('Removing a User Role by ID');
         const byId = await this.findById(id, false);
 

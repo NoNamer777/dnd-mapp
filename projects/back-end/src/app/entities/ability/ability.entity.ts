@@ -1,15 +1,36 @@
-import { Ability } from '@dnd-mapp/data';
+import { AbilityModel } from '@dnd-mapp/data';
 import { OmitType } from '@nestjs/mapped-types';
-import { ArrayMinSize, ValidateNested } from 'class-validator';
-import { Entity } from 'typeorm';
-import { NameableEntity } from '../models';
-import { SkillEntity } from '../skill/skill.entity';
+import { EntitySchema } from 'typeorm';
 
-@Entity('ability')
-export class AbilityEntity extends NameableEntity implements Ability {
-    @ValidateNested({ each: true })
-    @ArrayMinSize(0)
-    skills: SkillEntity[];
-}
+export const AbilityEntity = new EntitySchema<AbilityModel>({
+    name: 'Ability',
+    columns: {
+        id: {
+            name: 'id',
+            type: Number,
+            primary: true,
+            generated: 'increment',
+            primaryKeyConstraintName: 'pk_ability',
+        },
+        name: {
+            name: 'name',
+            type: String,
+            nullable: false,
+        },
+    },
+    uniques: [
+        {
+            name: 'unique_idx_ability_name',
+            columns: ['name'],
+        },
+    ],
+    relations: {
+        skills: {
+            type: 'one-to-many',
+            target: 'Skill',
+            eager: true,
+        },
+    },
+});
 
-export class CreateAbilityDto extends OmitType(AbilityEntity, ['id', 'skills'] as const) {}
+export class CreateAbilityData extends OmitType(AbilityModel, ['id'] as const) {}

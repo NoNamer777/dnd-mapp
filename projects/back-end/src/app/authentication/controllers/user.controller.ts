@@ -6,7 +6,6 @@ import {
     Delete,
     Get,
     Param,
-    ParseIntPipe,
     Post,
     Put,
     Req,
@@ -15,7 +14,7 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { LoggerService } from '../../common';
-import { CreateUserDto, UserEntity } from '../entities';
+import { CreateUserData, UpdateUserData } from '../entities';
 import { IsOwnerOrAdminGuard } from '../guards';
 import { UserService } from '../services';
 
@@ -38,25 +37,25 @@ export class UserController {
 
     @Post()
     @UseInterceptors(ClassSerializerInterceptor)
-    async create(@Body() data: CreateUserDto) {
+    async create(@Body() data: CreateUserData) {
         this.logger.log('Received request for creating a new User');
         return await this.userService.create(data);
     }
 
     @Get(':id')
-    async getById(@Param('id', ParseIntPipe) id: number) {
+    async getById(@Param('id') id: number) {
         this.logger.log('Received request for returning a User');
         return await this.userService.findById(id);
     }
 
     @Delete(':id')
-    async delete(@Param('id', ParseIntPipe) id: number) {
+    async delete(@Param('id') id: number) {
         this.logger.log('Received a request for removing a User');
         return await this.userService.remove(id);
     }
 
     @Put(':id')
-    async update(@Param('id', ParseIntPipe) id: number, @Body() data: UserEntity, @Req() request: Request) {
+    async update(@Param('id') id: number, @Body() data: UpdateUserData, @Req() request: Request) {
         this.logger.log('Received a request for updating a User');
         const requestPath = request.url;
 

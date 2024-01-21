@@ -1,8 +1,8 @@
-import { Roles } from '@dnd-mapp/data';
+import { Roles, UserModel } from '@dnd-mapp/data';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { genSalt, hash } from 'bcryptjs';
 import { LoggerService } from '../../../common';
-import { CreateUserDto, UserEntity } from '../../entities';
+import { CreateUserData, UpdateUserData } from '../../entities';
 import { UserRepository } from '../../repositories';
 import { RoleService } from '../role';
 
@@ -21,12 +21,12 @@ export class UserService {
         return this.userRepository.findAll();
     }
 
-    async findById(userId: number, throwsError = true) {
+    async findById(id: number, throwsError = true) {
         this.logger.log('Finding a User by ID');
-        const byId = await this.userRepository.findOneById(userId);
+        const byId = await this.userRepository.findOneById(id);
 
         if (!byId && throwsError) {
-            throw new NotFoundException(`User with ID: '${userId}' is not found`);
+            throw new NotFoundException(`User with ID: '${id}' is not found`);
         }
         return byId;
     }
@@ -41,7 +41,7 @@ export class UserService {
         return byUsername;
     }
 
-    async update(user: UserEntity) {
+    async update(user: UpdateUserData) {
         this.logger.log(`Updating a User's data`);
         const byId = await this.findById(user.id, false);
         const byUsername = await this.findByUsername(user.username, false);
@@ -60,7 +60,7 @@ export class UserService {
         return await this.userRepository.findOneById(user.id);
     }
 
-    async create(user: CreateUserDto) {
+    async create(user: CreateUserData) {
         this.logger.log('Creating a new User');
         const byUsername = await this.findByUsername(user.username, false);
 
@@ -69,7 +69,7 @@ export class UserService {
                 `Cannot create User because the username '${byUsername.username}' is already used`
             );
         }
-        (user as UserEntity).roles = [await this.userRoleService.findByName(Roles.PLAYER)];
+        (user as UserModel).roles = [await this.userRoleService.findByName(Roles.PLAYER)];
         user.password = await this.hashPassword(user.password);
 
         await this.userRepository.save(user);
@@ -77,14 +77,14 @@ export class UserService {
         return await this.userRepository.findOneByUsername(user.username);
     }
 
-    async remove(userId: number) {
+    async remove(id: number) {
         this.logger.log('Removing a User by ID');
-        const byId = await this.findById(userId, false);
+        const byId = await this.findById(id, false);
 
         if (!byId) {
-            throw new NotFoundException(`Could not remove User with ID: '${userId}' because it does not exist`);
+            throw new NotFoundException(`Could not remove User with ID: '${id}' because it does not exist`);
         }
-        await this.userRepository.deleteById(userId);
+        await this.userRepository.deleteById(id);
     }
 
     private async hashPassword(plainTextPassword: string) {

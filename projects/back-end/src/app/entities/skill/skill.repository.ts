@@ -1,10 +1,10 @@
-import { FactoryProvider, Injectable } from '@nestjs/common';
-import { getDataSourceToken, getRepositoryToken } from '@nestjs/typeorm';
+import { SkillModel } from '@dnd-mapp/data';
+import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { SkillEntity } from './skill.entity';
 
 @Injectable()
-export class SkillRepository extends Repository<SkillEntity> {
+export class SkillRepository extends Repository<SkillModel> {
     constructor(datasource: DataSource) {
         super(SkillEntity, datasource.createEntityManager());
     }
@@ -33,9 +33,3 @@ export class SkillRepository extends Repository<SkillEntity> {
         await this.delete({ id });
     }
 }
-
-export const skillRepositoryProvider: FactoryProvider<Repository<SkillEntity>> = {
-    provide: getRepositoryToken(SkillEntity),
-    inject: [getDataSourceToken()],
-    useFactory: (datasource: DataSource) => datasource.getRepository(SkillEntity).extend(SkillRepository),
-};

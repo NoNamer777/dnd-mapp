@@ -1,7 +1,7 @@
-import { CreateRoleData, Role, Roles } from '../../../../src';
+import { CreateRoleData, RoleModel, Roles } from '../../../../src';
 
 interface RoleDb {
-    [id: string]: Role;
+    [id: string]: RoleModel;
 }
 
 class MockRoleDB {
@@ -24,12 +24,12 @@ class MockRoleDB {
         return Object.values(this.db).find((role) => role.name === name) ?? null;
     }
 
-    save(role: Role) {
+    save(role: RoleModel) {
         return role.id ? this.update(role) : this.insert(role);
     }
 
     insert(role: CreateRoleData) {
-        const newRole: Role = {
+        const newRole: RoleModel = {
             id: this.nextId++,
             ...role,
         };
@@ -38,7 +38,7 @@ class MockRoleDB {
         return newRole;
     }
 
-    update(role: Role) {
+    update(role: RoleModel) {
         if (!this.db[role.id]) {
             throw new Error(`Could not update Role with ID: '${role.id}' because it does not exist.`);
         }
@@ -59,7 +59,7 @@ class MockRoleDB {
     }
 }
 
-export const defaultRole: Role = {
+export const defaultRole: RoleModel = {
     id: 1,
     name: Roles.PLAYER,
 };

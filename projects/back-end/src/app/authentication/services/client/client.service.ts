@@ -1,7 +1,7 @@
+import { ClientModel } from '@dnd-mapp/data';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { randomBytes } from 'crypto';
 import { LoggerService } from '../../../common';
-import { ClientEntity } from '../../entities';
 import { ClientRepository } from '../../repositories';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class ClientService {
     async create() {
         this.logger.log('Creating a new Client configuration');
 
-        return await this.clientRepository.save(new ClientEntity());
+        return await this.clientRepository.save(new ClientModel());
     }
 
     async findById(id: string, throwsError = true) {
@@ -29,7 +29,7 @@ export class ClientService {
         return byId;
     }
 
-    async update(client: ClientEntity) {
+    async update(client: ClientModel) {
         this.logger.log(`Updating Client configuration with ID: '${client.id}'`);
         const byId = await this.findById(client.id, false);
 

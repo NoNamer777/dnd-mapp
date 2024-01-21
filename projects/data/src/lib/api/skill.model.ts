@@ -1,8 +1,10 @@
-import { NameableEntityModel } from '../models';
-import { Ability } from './ability.model';
+import { ValidateNested } from 'class-validator';
+import { NameableModel } from '../models';
+import { AbilityModel } from './ability.model';
 
-export interface Skill extends NameableEntityModel {
-    ability: Ability;
+export class SkillModel extends NameableModel {
+    @ValidateNested()
+    ability: AbilityModel;
 }
 
-export type CreateSkillData = Omit<Skill, 'id'>;
+export type CreateSkillData = Omit<SkillModel, 'id'>;

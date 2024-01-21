@@ -1,16 +1,42 @@
-import { Skill } from '@dnd-mapp/data';
+import { SkillModel } from '@dnd-mapp/data';
 import { OmitType } from '@nestjs/mapped-types';
-import { ValidateNested } from 'class-validator';
-import { Entity, JoinColumn, ManyToOne } from 'typeorm';
-import { AbilityEntity } from '../ability';
-import { NameableEntity } from '../models';
+import { EntitySchema } from 'typeorm';
 
-@Entity('skill')
-export class SkillEntity extends NameableEntity implements Skill {
-    @ManyToOne('AbilityEntity', 'skills')
-    @JoinColumn({ name: 'ability_id', referencedColumnName: 'id' })
-    @ValidateNested()
-    ability: AbilityEntity;
-}
+export const SkillEntity = new EntitySchema<SkillModel>({
+    name: 'Skill',
+    columns: {
+        id: {
+            name: 'id',
+            type: Number,
+            primary: true,
+            generated: 'increment',
+            primaryKeyConstraintName: 'pk_skill',
+        },
+        name: {
+            name: 'name',
+            type: String,
+            nullable: false,
+        },
+    },
+    uniques: [
+        {
+            name: 'unique_idx_skill_nane',
+            columns: ['name'],
+        },
+    ],
+    relations: {
+        ability: {
+            type: 'many-to-one',
+            target: 'Ability',
+            nullable: false,
+            lazy: true,
+            joinColumn: {
+                name: 'ability_id',
+                referencedColumnName: 'id',
+                foreignKeyConstraintName: 'fk_skill_ability',
+            },
+        },
+    },
+});
 
-export class CreateSkillDto extends OmitType(SkillEntity, ['id'] as const) {}
+export class CreateSkillData extends OmitType(SkillModel, ['id'] as const) {}

@@ -1,7 +1,7 @@
-import { Ability, CreateAbilityData } from '../../../../src';
+import { AbilityModel, CreateAbilityData } from '../../../../src';
 
 interface AbilityDB {
-    [id: string]: Ability;
+    [id: string]: AbilityModel;
 }
 
 class MockAbilityDB {
@@ -24,12 +24,12 @@ class MockAbilityDB {
         return Object.values(this.db).find((ability) => ability.name === abilityName) ?? null;
     }
 
-    save(abilityData: Ability) {
+    save(abilityData: AbilityModel) {
         return abilityData.id ? this.update(abilityData) : this.insert(abilityData);
     }
 
     insert(abilityData: CreateAbilityData) {
-        const newAbility: Ability = {
+        const newAbility: AbilityModel = {
             id: this.nextId++,
             ...abilityData,
         };
@@ -38,7 +38,7 @@ class MockAbilityDB {
         return newAbility;
     }
 
-    update(abilityData: Ability) {
+    update(abilityData: AbilityModel) {
         if (!this.db[abilityData.id]) {
             throw new Error(`Could not update Ability with ID: '${abilityData.id}' because it does not exist.`);
         }
@@ -59,7 +59,7 @@ class MockAbilityDB {
     }
 }
 
-export const defaultAbility: Ability = {
+export const defaultAbility: AbilityModel = {
     id: 1,
     name: 'Test Ability',
     skills: [],

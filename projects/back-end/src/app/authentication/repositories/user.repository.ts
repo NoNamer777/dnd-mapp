@@ -1,9 +1,10 @@
+import { UserModel } from '@dnd-mapp/data';
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { UserEntity } from '../entities';
 
 @Injectable()
-export class UserRepository extends Repository<UserEntity> {
+export class UserRepository extends Repository<UserModel> {
     constructor(datasource: DataSource) {
         super(UserEntity, datasource.createEntityManager());
     }

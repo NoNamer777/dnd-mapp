@@ -1,8 +1,8 @@
-import { CreateSkillData, Skill } from '../../../../src';
+import { CreateSkillData, SkillModel } from '../../../../src';
 import { defaultAbility } from './ability.db';
 
 interface SkillDB {
-    [id: string]: Skill;
+    [id: string]: SkillModel;
 }
 
 class MockSkillDB {
@@ -29,12 +29,12 @@ class MockSkillDB {
         return Object.values(this.db).find((skill) => skill.name === abilityName) ?? null;
     }
 
-    save(skillData: Skill) {
+    save(skillData: SkillModel) {
         return skillData.id ? this.update(skillData) : this.insert(skillData);
     }
 
     insert(skillData: CreateSkillData) {
-        const newSkill: Skill = {
+        const newSkill: SkillModel = {
             id: this.nextId++,
             ...skillData,
         };
@@ -43,7 +43,7 @@ class MockSkillDB {
         return newSkill;
     }
 
-    update(skillData: Skill) {
+    update(skillData: SkillModel) {
         if (!this.db[skillData.id]) {
             throw new Error(`Could not update Skill with ID: '${skillData.id}' because it does not exist.`);
         }
@@ -64,7 +64,7 @@ class MockSkillDB {
     }
 }
 
-export const defaultSkill: Skill = {
+export const defaultSkill: SkillModel = {
     id: 1,
     name: 'Test Skill',
     ability: defaultAbility,

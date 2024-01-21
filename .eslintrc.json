@@ -61,7 +61,7 @@
                             },
                             {
                                 "sourceTag": "@dnd-mapp/data",
-                                "bannedExternalImports": ["*"]
+                                "allowedExternalImports": ["nanoid", "class-validator"]
                             }
                         ]
                     }
