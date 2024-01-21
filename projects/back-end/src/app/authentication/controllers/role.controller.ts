@@ -1,17 +1,5 @@
 import { CreateRoleData, Role } from '@dnd-mapp/data';
-import {
-    BadRequestException,
-    Body,
-    Controller,
-    Delete,
-    Get,
-    Param,
-    ParseIntPipe,
-    Post,
-    Put,
-    Req,
-    UseGuards,
-} from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
 import { LoggerService } from '../../common';
 import { IsAdminGuard } from '../guards';
@@ -40,19 +28,19 @@ export class RoleController {
     }
 
     @Get('/:id')
-    async getById(@Param('id', ParseIntPipe) id: number) {
+    async getById(@Param('id') id: number) {
         this.logger.log('Received request for returning a User Role');
         return await this.skillService.findById(id);
     }
 
     @Delete('/:id')
-    async deleteById(@Param('id', ParseIntPipe) id: number) {
+    async deleteById(@Param('id') id: number) {
         this.logger.log('Received a request for removing a User Role');
         await this.skillService.remove(id);
     }
 
     @Put(':/id')
-    async update(@Req() request: Request, @Param('id', ParseIntPipe) id: number, @Body() data: Role) {
+    async update(@Req() request: Request, @Param('id') id: number, @Body() data: Role) {
         this.logger.log('Received a request for updating a User Role');
         const requestPath = request.path;
 

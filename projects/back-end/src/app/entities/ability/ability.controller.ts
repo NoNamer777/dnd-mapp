@@ -1,16 +1,5 @@
 import { Ability, CreateAbilityData } from '@dnd-mapp/data';
-import {
-    BadRequestException,
-    Body,
-    Controller,
-    Delete,
-    Get,
-    Param,
-    ParseIntPipe,
-    Post,
-    Put,
-    Req,
-} from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Req } from '@nestjs/common';
 import { Request } from 'express';
 import { LoggerService } from '../../common';
 import { AbilityService } from './ability.service';
@@ -37,19 +26,19 @@ export class AbilityController {
     }
 
     @Get('/:id')
-    async getById(@Param('id', ParseIntPipe) id: number) {
+    async getById(@Param('id') id: number) {
         this.logger.log('Received request for returning a Ability');
         return await this.abilityService.findById(id);
     }
 
     @Delete('/:id')
-    async deleteById(@Param('id', ParseIntPipe) id: number) {
+    async deleteById(@Param('id') id: number) {
         this.logger.log('Received a request for removing a Ability');
         await this.abilityService.remove(id);
     }
 
     @Put('/:id')
-    async update(@Req() request: Request, @Body() data: Ability, @Param('id', ParseIntPipe) id: number) {
+    async update(@Req() request: Request, @Body() data: Ability, @Param('id') id: number) {
         this.logger.log('Received a request for updating a Ability', 'AbilityController');
         const requestPath = request.path;
 

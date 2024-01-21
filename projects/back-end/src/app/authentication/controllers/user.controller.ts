@@ -7,7 +7,6 @@ import {
     Delete,
     Get,
     Param,
-    ParseIntPipe,
     Post,
     Put,
     Req,
@@ -44,19 +43,19 @@ export class UserController {
     }
 
     @Get(':id')
-    async getById(@Param('id', ParseIntPipe) id: number) {
+    async getById(@Param('id') id: number) {
         this.logger.log('Received request for returning a User');
         return await this.userService.findById(id);
     }
 
     @Delete(':id')
-    async delete(@Param('id', ParseIntPipe) id: number) {
+    async delete(@Param('id') id: number) {
         this.logger.log('Received a request for removing a User');
         return await this.userService.remove(id);
     }
 
     @Put(':id')
-    async update(@Param('id', ParseIntPipe) id: number, @Body() data: UserModel, @Req() request: Request) {
+    async update(@Param('id') id: number, @Body() data: UserModel, @Req() request: Request) {
         this.logger.log('Received a request for updating a User');
         const requestPath = request.url;
 

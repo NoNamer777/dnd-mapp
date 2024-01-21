@@ -1,16 +1,5 @@
 import { CreateSkillData, Skill } from '@dnd-mapp/data';
-import {
-    BadRequestException,
-    Body,
-    Controller,
-    Delete,
-    Get,
-    Param,
-    ParseIntPipe,
-    Post,
-    Put,
-    Req,
-} from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Req } from '@nestjs/common';
 import { Request } from 'express';
 import { LoggerService } from '../../common';
 import { SkillService } from './skill.service';
@@ -37,19 +26,19 @@ export class SkillController {
     }
 
     @Get('/:id')
-    async getById(@Param('id', ParseIntPipe) id: number) {
+    async getById(@Param('id') id: number) {
         this.logger.log('Received request for returning a Skill');
         return await this.skillService.findById(id);
     }
 
     @Delete('/:id')
-    async deleteById(@Param('id', ParseIntPipe) id: number) {
+    async deleteById(@Param('id') id: number) {
         this.logger.log('Received a request for removing a Skill');
         await this.skillService.remove(id);
     }
 
     @Put(':/id')
-    async update(@Req() request: Request, @Param('id', ParseIntPipe) id: number, @Body() data: Skill) {
+    async update(@Req() request: Request, @Param('id') id: number, @Body() data: Skill) {
         this.logger.log('Received a request for updating a Skill');
         const requestPath = request.path;
 

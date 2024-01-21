@@ -1,16 +1,5 @@
 import { CreateRaceData, Race } from '@dnd-mapp/data';
-import {
-    BadRequestException,
-    Body,
-    Controller,
-    Delete,
-    Get,
-    Param,
-    ParseIntPipe,
-    Post,
-    Put,
-    Req,
-} from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Req } from '@nestjs/common';
 import { Request } from 'express';
 import { LoggerService } from '../../common';
 import { RaceService } from './race.service';
@@ -37,19 +26,19 @@ export class RaceController {
     }
 
     @Get(':id')
-    async getById(@Param('id', ParseIntPipe) raceId: number) {
+    async getById(@Param('id') raceId: number) {
         this.logger.log('Received request for returning a Race');
         return await this.raceService.findById(raceId);
     }
 
     @Delete(':id')
-    async delete(@Param('id', ParseIntPipe) raceId: number) {
+    async delete(@Param('id') raceId: number) {
         this.logger.log('Received a request for removing a Race');
         return await this.raceService.remove(raceId);
     }
 
     @Put(':id')
-    async update(@Param('id', ParseIntPipe) raceId: number, @Body() requestBody: Race, @Req() request: Request) {
+    async update(@Param('id') raceId: number, @Body() requestBody: Race, @Req() request: Request) {
         this.logger.log('Received a request for updating a Race');
         const requestPath = request.url;
 
