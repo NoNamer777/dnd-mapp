@@ -1,4 +1,5 @@
 import { Race } from '@dnd-mapp/data';
+import { OmitType } from '@nestjs/mapped-types';
 import { EntitySchema } from 'typeorm';
 
 export const RaceEntity = new EntitySchema<Race>({
@@ -24,3 +25,5 @@ export const RaceEntity = new EntitySchema<Race>({
         },
     ],
 });
+
+export class CreateRaceData extends OmitType(Race, ['id'] as const) {}

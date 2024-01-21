@@ -1,9 +1,9 @@
-import { NameableEntityModel } from '@dnd-mapp/data';
+import { NameableModel } from '@dnd-mapp/data';
 import { Injectable, InjectionToken } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { EntityApiService } from './models';
 
-interface EntityType<T extends NameableEntityModel = NameableEntityModel> {
+interface EntityType<T extends NameableModel = NameableModel> {
     type: string;
     serviceToken: InjectionToken;
     service?: EntityApiService<T>;
@@ -15,7 +15,7 @@ export class EntityService {
 
     constructor(private readonly moduleRef: ModuleRef) {}
 
-    addEntityType<T extends NameableEntityModel>(entityType: EntityType<T>) {
+    addEntityType<T extends NameableModel>(entityType: EntityType<T>) {
         this.entityTypes = [...this.entityTypes, entityType];
 
         this.entityTypes.find((eType) => eType.type === entityType.type).service = this.moduleRef.get(

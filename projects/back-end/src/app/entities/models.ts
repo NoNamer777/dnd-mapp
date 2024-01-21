@@ -1,6 +1,6 @@
-import { CreateNameableEntityData, NameableEntityModel } from '@dnd-mapp/data';
+import { CreateNameableEntityData, NameableModel } from '@dnd-mapp/data';
 
-export interface EntityApiService<T extends NameableEntityModel, C = CreateNameableEntityData> {
+export interface EntityApiService<T extends NameableModel, C = CreateNameableEntityData> {
     findAll(): Promise<T[]>;
     findById(id: number): Promise<T | null>;
     findByName(name: string): Promise<T | null>;

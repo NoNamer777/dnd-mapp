@@ -1,13 +1,27 @@
+import { ArrayMinSize, ArrayNotEmpty, IsArray, IsEmail, IsNotEmpty, IsString } from 'class-validator';
 import { EntityModel } from '../models';
-import { Role, RoleName } from './role.model';
+import { RoleModel, RoleName } from './role.model';
 
 export class UserModel extends EntityModel {
+    @IsString()
+    @IsNotEmpty()
     username: string;
-    password: string;
-    emailAddress: string;
-    roles: Role[];
 
-    constructor(username: string, password: string, emailAddress: string, id?: number, roles?: Role[]) {
+    @IsString()
+    @IsNotEmpty()
+    password: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @IsEmail()
+    emailAddress: string;
+
+    @IsArray()
+    @ArrayNotEmpty()
+    @ArrayMinSize(1)
+    roles: RoleModel[];
+
+    constructor(username: string, password: string, emailAddress: string, id?: number, roles?: RoleModel[]) {
         super(id);
 
         if (!roles) {

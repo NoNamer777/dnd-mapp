@@ -1,4 +1,8 @@
+import { IsNotEmpty, IsNumber, IsPositive, IsString } from 'class-validator';
+
 export class EntityModel {
+    @IsNumber({ allowNaN: false, allowInfinity: false })
+    @IsPositive()
     id: number;
 
     constructor(id?: number) {
@@ -7,8 +11,10 @@ export class EntityModel {
     }
 }
 
-export class NameableEntityModel extends EntityModel {
+export class NameableModel extends EntityModel {
+    @IsString()
+    @IsNotEmpty()
     name: string;
 }
 
-export type CreateNameableEntityData = Omit<NameableEntityModel, 'id'>;
+export type CreateNameableEntityData = Omit<NameableModel, 'id'>;

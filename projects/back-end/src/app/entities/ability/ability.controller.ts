@@ -1,7 +1,8 @@
-import { Ability, CreateAbilityData } from '@dnd-mapp/data';
+import { AbilityModel } from '@dnd-mapp/data';
 import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Req } from '@nestjs/common';
 import { Request } from 'express';
 import { LoggerService } from '../../common';
+import { CreateAbilityData } from './ability.entity';
 import { AbilityService } from './ability.service';
 
 @Controller('/api/ability')
@@ -38,7 +39,7 @@ export class AbilityController {
     }
 
     @Put('/:id')
-    async update(@Req() request: Request, @Body() data: Ability, @Param('id') id: number) {
+    async update(@Req() request: Request, @Body() data: AbilityModel, @Param('id') id: number) {
         this.logger.log('Received a request for updating a Ability', 'AbilityController');
         const requestPath = request.path;
 

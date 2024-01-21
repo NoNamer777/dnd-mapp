@@ -1,6 +1,7 @@
+import { ClientModel } from '@dnd-mapp/data';
 import { EntitySchema } from 'typeorm';
 
-export const ClientEntity = new EntitySchema({
+export const ClientEntity = new EntitySchema<ClientModel>({
     name: 'Client',
     columns: {
         id: {

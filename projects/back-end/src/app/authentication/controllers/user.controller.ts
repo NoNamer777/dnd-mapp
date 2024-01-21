@@ -1,4 +1,3 @@
-import { CreateUserData, UserModel } from '@dnd-mapp/data';
 import {
     BadRequestException,
     Body,
@@ -15,6 +14,7 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { LoggerService } from '../../common';
+import { CreateUserData, UpdateUserData } from '../entities';
 import { IsOwnerOrAdminGuard } from '../guards';
 import { UserService } from '../services';
 
@@ -55,7 +55,7 @@ export class UserController {
     }
 
     @Put(':id')
-    async update(@Param('id') id: number, @Body() data: UserModel, @Req() request: Request) {
+    async update(@Param('id') id: number, @Body() data: UpdateUserData, @Req() request: Request) {
         this.logger.log('Received a request for updating a User');
         const requestPath = request.url;
 

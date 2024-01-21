@@ -1,4 +1,4 @@
-import { Ability, CreateAbilityData } from '@dnd-mapp/data';
+import { AbilityModel, CreateAbilityData } from '@dnd-mapp/data';
 import { BadRequestException, Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { LoggerService } from '../../common';
 import { EntityService } from '../entity.service';
@@ -8,7 +8,7 @@ import { AbilityRepository } from './ability.repository';
 export const ABILITY_SERVICE_TOKEN = 'ABILITY_TOKEN';
 
 @Injectable()
-export class AbilityService implements EntityApiService<Ability>, OnModuleInit {
+export class AbilityService implements EntityApiService<AbilityModel>, OnModuleInit {
     constructor(
         private readonly abilityRepository: AbilityRepository,
         private readonly logger: LoggerService,
@@ -18,7 +18,7 @@ export class AbilityService implements EntityApiService<Ability>, OnModuleInit {
     }
 
     onModuleInit() {
-        this.entityService.addEntityType<Ability>({ type: 'Ability', serviceToken: ABILITY_SERVICE_TOKEN });
+        this.entityService.addEntityType<AbilityModel>({ type: 'Ability', serviceToken: ABILITY_SERVICE_TOKEN });
     }
 
     async findAll() {
@@ -46,7 +46,7 @@ export class AbilityService implements EntityApiService<Ability>, OnModuleInit {
         return byName;
     }
 
-    async update(ability: Ability) {
+    async update(ability: AbilityModel) {
         this.logger.log(`Updating an Ability's data`);
         const byId = await this.findById(ability.id, false);
 

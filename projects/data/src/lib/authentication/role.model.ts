@@ -1,3 +1,4 @@
+import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import { EntityModel } from '../models';
 
 export enum Roles {
@@ -8,8 +9,11 @@ export enum Roles {
 
 export type RoleName = (typeof Roles)[keyof typeof Roles];
 
-export class Role extends EntityModel {
+export class RoleModel extends EntityModel {
+    @IsString()
+    @IsNotEmpty()
+    @IsEnum(Roles)
     name: RoleName;
 }
 
-export type CreateRoleData = Omit<Role, 'id'>;
+export type CreateRoleData = Omit<RoleModel, 'id'>;

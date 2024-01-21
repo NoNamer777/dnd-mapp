@@ -1,4 +1,4 @@
-import { Ability, CreateAbilityData } from '@dnd-mapp/data';
+import { AbilityModel, CreateAbilityData } from '@dnd-mapp/data';
 import { defaultAbility, mockAbilityDB } from '@dnd-mapp/data/testing';
 import { NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
@@ -78,7 +78,7 @@ describe('AbilityService', () => {
     describe('update', () => {
         it('should update', async () => {
             const { service } = await setupTestEnvironment();
-            const newAbilityData: Ability = { id: 1, name: 'Ability Test Test', skills: [] };
+            const newAbilityData: AbilityModel = { id: 1, name: 'Ability Test Test', skills: [] };
 
             expect(await service.update(newAbilityData)).toEqual(newAbilityData);
             expect(mockAbilityDB.findOneById(1)).toEqual(expect.objectContaining(newAbilityData));
@@ -86,7 +86,7 @@ describe('AbilityService', () => {
 
         it('should throw 404 when using ID of non existing Ability', async () => {
             const { service } = await setupTestEnvironment();
-            const newAbilityData: Ability = { id: 2, name: 'Ability Test Test', skills: [] };
+            const newAbilityData: AbilityModel = { id: 2, name: 'Ability Test Test', skills: [] };
 
             await expect(service.update(newAbilityData)).rejects.toThrow(
                 new NotFoundException(`Cannot update Ability with ID: '2' because it does not exist`)
@@ -97,7 +97,7 @@ describe('AbilityService', () => {
             mockAbilityDB.insert({ name: 'Ability Test Test', skills: [] });
 
             const { service } = await setupTestEnvironment();
-            const newAbilityData: Ability = { id: 1, name: 'Ability Test Test', skills: [] };
+            const newAbilityData: AbilityModel = { id: 1, name: 'Ability Test Test', skills: [] };
 
             await expect(service.update(newAbilityData)).rejects.toThrow(
                 new NotFoundException(`Cannot update Ability because the name 'Ability Test Test' is already used`)

@@ -1,10 +1,10 @@
-import { Skill } from '@dnd-mapp/data';
+import { SkillModel } from '@dnd-mapp/data';
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { SkillEntity } from './skill.entity';
 
 @Injectable()
-export class SkillRepository extends Repository<Skill> {
+export class SkillRepository extends Repository<SkillModel> {
     constructor(datasource: DataSource) {
         super(SkillEntity, datasource.createEntityManager());
     }

@@ -1,10 +1,10 @@
-import { Ability } from '@dnd-mapp/data';
+import { AbilityModel } from '@dnd-mapp/data';
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { AbilityEntity } from './ability.entity';
 
 @Injectable()
-export class AbilityRepository extends Repository<Ability> {
+export class AbilityRepository extends Repository<AbilityModel> {
     constructor(datasource: DataSource) {
         super(AbilityEntity, datasource.createEntityManager());
     }

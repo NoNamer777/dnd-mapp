@@ -1,7 +1,8 @@
-import { Ability } from '@dnd-mapp/data';
+import { AbilityModel } from '@dnd-mapp/data';
+import { OmitType } from '@nestjs/mapped-types';
 import { EntitySchema } from 'typeorm';
 
-export const AbilityEntity = new EntitySchema<Ability>({
+export const AbilityEntity = new EntitySchema<AbilityModel>({
     name: 'Ability',
     columns: {
         id: {
@@ -31,3 +32,5 @@ export const AbilityEntity = new EntitySchema<Ability>({
         },
     },
 });
+
+export class CreateAbilityData extends OmitType(AbilityModel, ['id'] as const) {}

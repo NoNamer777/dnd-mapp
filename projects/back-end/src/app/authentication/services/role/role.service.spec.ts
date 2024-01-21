@@ -1,4 +1,4 @@
-import { CreateRoleData, Role, Roles } from '@dnd-mapp/data';
+import { CreateRoleData, RoleModel, Roles } from '@dnd-mapp/data';
 import { defaultRole, mockRoleDB } from '@dnd-mapp/data/testing';
 import { NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
@@ -57,7 +57,7 @@ describe('RoleService', () => {
     describe('update', () => {
         it('should update', async () => {
             const { service } = await setupTestEnvironment();
-            const newUserRoleData: Role = { id: 1, name: Roles.ADMIN };
+            const newUserRoleData: RoleModel = { id: 1, name: Roles.ADMIN };
 
             expect(await service.update(newUserRoleData)).toEqual(newUserRoleData);
             expect(mockRoleDB.findOneById(1)).toEqual(expect.objectContaining(newUserRoleData));
@@ -65,7 +65,7 @@ describe('RoleService', () => {
 
         it('should throw 404 when using ID of non existing UserRole', async () => {
             const { service } = await setupTestEnvironment();
-            const newUserRoleData: Role = { id: 2, name: Roles.PLAYER };
+            const newUserRoleData: RoleModel = { id: 2, name: Roles.PLAYER };
 
             await expect(service.update(newUserRoleData)).rejects.toThrow(
                 new NotFoundException(`Cannot update User Role with ID: '2' because it does not exist`)
@@ -76,7 +76,7 @@ describe('RoleService', () => {
             mockRoleDB.insert({ name: Roles.ADMIN } as CreateRoleData);
 
             const { service } = await setupTestEnvironment();
-            const newUserRoleData: Role = { id: 1, name: Roles.ADMIN };
+            const newUserRoleData: RoleModel = { id: 1, name: Roles.ADMIN };
 
             await expect(service.update(newUserRoleData)).rejects.toThrow(
                 new NotFoundException(`Cannot update User Role because the name '${Roles.ADMIN}' is already used`)

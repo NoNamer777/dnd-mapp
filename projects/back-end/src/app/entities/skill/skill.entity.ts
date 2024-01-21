@@ -1,7 +1,8 @@
-import { Skill } from '@dnd-mapp/data';
+import { SkillModel } from '@dnd-mapp/data';
+import { OmitType } from '@nestjs/mapped-types';
 import { EntitySchema } from 'typeorm';
 
-export const SkillEntity = new EntitySchema<Skill>({
+export const SkillEntity = new EntitySchema<SkillModel>({
     name: 'Skill',
     columns: {
         id: {
@@ -37,3 +38,5 @@ export const SkillEntity = new EntitySchema<Skill>({
         },
     },
 });
+
+export class CreateSkillData extends OmitType(SkillModel, ['id'] as const) {}

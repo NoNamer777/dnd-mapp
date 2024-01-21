@@ -1,8 +1,12 @@
-import { NameableEntityModel } from '../models';
-import { Skill } from './skill.model';
+import { ArrayMinSize, IsArray, ValidateNested } from 'class-validator';
+import { NameableModel } from '../models';
+import { SkillModel } from './skill.model';
 
-export class Ability extends NameableEntityModel {
-    skills: Skill[];
+export class AbilityModel extends NameableModel {
+    @IsArray()
+    @ArrayMinSize(0)
+    @ValidateNested()
+    skills: SkillModel[];
 }
 
-export type CreateAbilityData = Omit<Ability, 'id'>;
+export type CreateAbilityData = Omit<AbilityModel, 'id'>;

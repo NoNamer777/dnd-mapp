@@ -1,7 +1,8 @@
-import { CreateRoleData, Role } from '@dnd-mapp/data';
+import { RoleModel } from '@dnd-mapp/data';
 import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
 import { LoggerService } from '../../common';
+import { CreateRoleData } from '../entities';
 import { IsAdminGuard } from '../guards';
 import { RoleService } from '../services';
 
@@ -40,7 +41,7 @@ export class RoleController {
     }
 
     @Put(':/id')
-    async update(@Req() request: Request, @Param('id') id: number, @Body() data: Role) {
+    async update(@Req() request: Request, @Param('id') id: number, @Body() data: RoleModel) {
         this.logger.log('Received a request for updating a User Role');
         const requestPath = request.path;
 

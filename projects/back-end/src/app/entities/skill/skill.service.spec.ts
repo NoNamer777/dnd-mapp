@@ -1,4 +1,4 @@
-import { CreateSkillData, Skill } from '@dnd-mapp/data';
+import { CreateSkillData, SkillModel } from '@dnd-mapp/data';
 import { defaultAbility, defaultSkill, mockSkillDB } from '@dnd-mapp/data/testing';
 import { NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
@@ -77,7 +77,7 @@ describe('SkillService', () => {
     describe('update', () => {
         it('should update', async () => {
             const { service } = await setupTestEnvironment();
-            const newSkillData: Skill = { id: 1, name: 'Skill Test Test', ability: defaultAbility };
+            const newSkillData: SkillModel = { id: 1, name: 'Skill Test Test', ability: defaultAbility };
 
             expect(await service.update(newSkillData)).toEqual(newSkillData);
             expect(mockSkillDB.findOneById(1)).toEqual(expect.objectContaining(newSkillData));
@@ -85,7 +85,7 @@ describe('SkillService', () => {
 
         it('should throw 404 when using ID of non existing Skill', async () => {
             const { service } = await setupTestEnvironment();
-            const newSkillData: Skill = { id: 2, name: 'Skill Test Test', ability: defaultAbility };
+            const newSkillData: SkillModel = { id: 2, name: 'Skill Test Test', ability: defaultAbility };
 
             await expect(service.update(newSkillData)).rejects.toThrow(
                 new NotFoundException(`Cannot update Skill with ID: '2' because it does not exist`)
@@ -96,7 +96,7 @@ describe('SkillService', () => {
             mockSkillDB.insert({ name: 'Skill Test Test', ability: defaultAbility } as CreateSkillData);
 
             const { service } = await setupTestEnvironment();
-            const newSkillData: Skill = { id: 1, name: 'Skill Test Test', ability: defaultAbility };
+            const newSkillData: SkillModel = { id: 1, name: 'Skill Test Test', ability: defaultAbility };
 
             await expect(service.update(newSkillData)).rejects.toThrow(
                 new NotFoundException(`Cannot update Skill because the name 'Skill Test Test' is already used`)

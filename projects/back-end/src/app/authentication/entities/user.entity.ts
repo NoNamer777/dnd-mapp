@@ -1,4 +1,5 @@
 import { UserModel } from '@dnd-mapp/data';
+import { PickType } from '@nestjs/mapped-types';
 import { EntitySchema } from 'typeorm';
 
 export const UserEntity = new EntitySchema<UserModel>({
@@ -60,3 +61,13 @@ export const UserEntity = new EntitySchema<UserModel>({
         },
     },
 });
+
+export class CreateUserData extends PickType(UserModel, ['username', 'password', 'emailAddress'] as const) {}
+
+export class UpdateUserData extends PickType(UserModel, [
+    'id',
+    'username',
+    'password',
+    'emailAddress',
+    'roles',
+] as const) {}

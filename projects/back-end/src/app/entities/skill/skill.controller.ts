@@ -1,7 +1,8 @@
-import { CreateSkillData, Skill } from '@dnd-mapp/data';
+import { SkillModel } from '@dnd-mapp/data';
 import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Req } from '@nestjs/common';
 import { Request } from 'express';
 import { LoggerService } from '../../common';
+import { CreateSkillData } from './skill.entity';
 import { SkillService } from './skill.service';
 
 @Controller('/api/skill')
@@ -38,7 +39,7 @@ export class SkillController {
     }
 
     @Put(':/id')
-    async update(@Req() request: Request, @Param('id') id: number, @Body() data: Skill) {
+    async update(@Req() request: Request, @Param('id') id: number, @Body() data: SkillModel) {
         this.logger.log('Received a request for updating a Skill');
         const requestPath = request.path;
 

@@ -1,6 +1,8 @@
+import { RoleModel } from '@dnd-mapp/data';
+import { OmitType } from '@nestjs/mapped-types';
 import { EntitySchema } from 'typeorm';
 
-export const RoleEntity = new EntitySchema({
+export const RoleEntity = new EntitySchema<RoleModel>({
     name: 'Role',
     columns: {
         id: {
@@ -23,3 +25,5 @@ export const RoleEntity = new EntitySchema({
         },
     ],
 });
+
+export class CreateRoleData extends OmitType(RoleModel, ['id'] as const) {}

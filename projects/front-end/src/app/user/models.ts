@@ -1,7 +1,7 @@
-import { Role } from '@dnd-mapp/data';
+import { RoleModel } from '@dnd-mapp/data';
 
 export interface UserResponse {
     id: number;
     username: string;
-    roles: Role[];
+    roles: RoleModel[];
 }

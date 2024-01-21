@@ -1,4 +1,4 @@
-import { CreateRoleData, Role, RoleName } from '@dnd-mapp/data';
+import { CreateRoleData, RoleModel, RoleName } from '@dnd-mapp/data';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { LoggerService } from '../../../common';
 import { RoleRepository } from '../../repositories';
@@ -37,7 +37,7 @@ export class RoleService {
         return byName;
     }
 
-    async update(role: Role) {
+    async update(role: RoleModel) {
         this.logger.log(`Updating a User Role's data`);
         const byId = await this.findById(role.id, false);
 
