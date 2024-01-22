@@ -43,3 +43,4 @@ jobs:
                 npm ci
             environment-variables: |
                 JWT_SECRET=${{ vars.JWT_SECRET }}
+                COOKIE_SECRET=${{ vars.COOKIE_SECRET }}
