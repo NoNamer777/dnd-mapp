@@ -1,5 +1,5 @@
 import { Roles } from '@dnd-mapp/data';
-import { CanActivate, ExecutionContext, Inject, Injectable, forwardRef } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../services';
 import { getAuthenticatedUser, hasRole } from './methods';
@@ -8,7 +8,7 @@ import { getAuthenticatedUser, hasRole } from './methods';
 export class IsAdminGuard implements CanActivate {
     constructor(
         private readonly jwtService: JwtService,
-        @Inject(forwardRef(() => UserService)) private readonly userService: UserService
+        private readonly userService: UserService
     ) {}
 
     async canActivate(context: ExecutionContext) {

@@ -3,6 +3,12 @@ import { EntityModel } from '../models';
 import { RoleModel, RoleName } from './role.model';
 
 export class UserModel extends EntityModel {
+    static from(data: UserModel) {
+        if (!data) return null;
+
+        return new UserModel(data.username, data.password, data.emailAddress, data.id, data.roles);
+    }
+
     @IsString()
     @IsNotEmpty()
     username: string;

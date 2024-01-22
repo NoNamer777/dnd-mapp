@@ -1,6 +1,7 @@
 import { SkillModel } from '@dnd-mapp/data';
-import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Req } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
+import { IsAdminGuard } from '../../authentication/guards';
 import { LoggerService } from '../../common';
 import { CreateSkillData } from './skill.entity';
 import { SkillService } from './skill.service';
@@ -20,6 +21,7 @@ export class SkillController {
         return await this.skillService.findAll();
     }
 
+    @UseGuards(IsAdminGuard)
     @Post()
     async create(@Body() data: CreateSkillData) {
         this.logger.log('Received request for creating a new Skill');
@@ -32,12 +34,14 @@ export class SkillController {
         return await this.skillService.findById(id);
     }
 
+    @UseGuards(IsAdminGuard)
     @Delete('/:id')
     async deleteById(@Param('id') id: number) {
         this.logger.log('Received a request for removing a Skill');
         await this.skillService.remove(id);
     }
 
+    @UseGuards(IsAdminGuard)
     @Put(':/id')
     async update(@Req() request: Request, @Param('id') id: number, @Body() data: SkillModel) {
         this.logger.log('Received a request for updating a Skill');

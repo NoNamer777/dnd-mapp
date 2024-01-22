@@ -10,22 +10,17 @@ export async function getAuthenticatedUser(
     userService: UserService
 ) {
     const request: Request = context.switchToHttp().getRequest();
-    const authorizationHeader = request.header('Authorization');
+    const accessTokenCookie = request.signedCookies['access-token'];
 
-    if (!authorizationHeader) {
-        // Missing Authorization header
+    if (!accessTokenCookie) {
+        // Missing Access token cookie
         throw new UnauthorizedException();
     }
-    const token = authorizationHeader.replace('Bearer ', '').trim();
 
-    if (!token) {
-        // Missing JWT token
-        throw new UnauthorizedException();
-    }
     let decodedToken: { sub: number };
 
     try {
-        decodedToken = await jwtService.verifyAsync(token);
+        decodedToken = await jwtService.verifyAsync(accessTokenCookie);
     } catch (error) {
         // JWT decoding error, token expired error
         throw new UnauthorizedException();

@@ -1,4 +1,4 @@
-import { AbilityModel } from '@dnd-mapp/data';
+import { AbilityModel, AbilityName } from '@dnd-mapp/data';
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { AbilityEntity } from './ability.entity';
@@ -10,14 +10,14 @@ export class AbilityRepository extends Repository<AbilityModel> {
     }
 
     async findAll() {
-        return await this.find({ order: { id: 'ASC' } });
+        return await this.find({ order: { id: 'ASC' }, select: ['skills'] });
     }
 
     async findOneById(id: number) {
         return await this.findOneBy({ id });
     }
 
-    async findOneByName(name: string) {
+    async findOneByName(name: AbilityName) {
         return await this.findOneBy({ name });
     }
 

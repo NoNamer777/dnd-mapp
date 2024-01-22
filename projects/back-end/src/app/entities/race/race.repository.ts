@@ -1,10 +1,10 @@
-import { Race } from '@dnd-mapp/data';
+import { RaceModel, RaceName } from '@dnd-mapp/data';
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { RaceEntity } from './race.entity';
 
 @Injectable()
-export class RaceRepository extends Repository<Race> {
+export class RaceRepository extends Repository<RaceModel> {
     constructor(dataSource: DataSource) {
         super(RaceEntity, dataSource.createEntityManager());
     }
@@ -17,7 +17,7 @@ export class RaceRepository extends Repository<Race> {
         return await this.findOneBy({ id });
     }
 
-    async findOneByName(name: string) {
+    async findOneByName(name: RaceName) {
         return await this.findOneBy({ name });
     }
 

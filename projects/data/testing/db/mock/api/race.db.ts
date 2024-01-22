@@ -1,7 +1,7 @@
-import { CreateRaceData, Race } from '../../../../src';
+import { CreateRaceData, RaceModel, Races } from '../../../../src';
 
 interface RaceDB {
-    [raceId: string]: Race;
+    [raceId: string]: RaceModel;
 }
 
 class MockRaceDB {
@@ -17,19 +17,19 @@ class MockRaceDB {
     }
 
     findOneById(raceId: number) {
-        return Object.values<Race>(this.db).find((race) => race.id === raceId) ?? null;
+        return Object.values<RaceModel>(this.db).find((race) => race.id === raceId) ?? null;
     }
 
     findOneByName(raceName: string) {
         return Object.values(this.db).find((race) => race.name === raceName) ?? null;
     }
 
-    save(raceData: Race) {
+    save(raceData: RaceModel) {
         return raceData.id ? this.update(raceData) : this.insert(raceData);
     }
 
     insert(raceData: CreateRaceData) {
-        const newRace: Race = {
+        const newRace: RaceModel = {
             id: this.nextId++,
             ...raceData,
         };
@@ -38,7 +38,7 @@ class MockRaceDB {
         return newRace;
     }
 
-    update(raceData: Race) {
+    update(raceData: RaceModel) {
         if (!this.db[raceData.id]) {
             throw new Error(`Could not update Race with ID: '${raceData.id}' because it does not exist.`);
         }
@@ -54,12 +54,12 @@ class MockRaceDB {
     }
 
     reset() {
-        defaultRace = new Race(1, 'Test Race');
+        defaultRace = new RaceModel(1, Races.DWARF);
         this.db = { [defaultRace.id]: defaultRace };
         this.nextId = 2;
     }
 }
 
-export let defaultRace: Race;
+export let defaultRace: RaceModel;
 
 export const mockRaceDB = new MockRaceDB();

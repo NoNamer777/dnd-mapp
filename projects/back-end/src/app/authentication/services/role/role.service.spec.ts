@@ -16,30 +16,28 @@ describe('RoleService', () => {
         };
     }
 
-    it('should get all User Roles', async () => {
+    it('should get all Roles', async () => {
         const { service } = await setupTestEnvironment();
 
         expect(await service.findAll()).toHaveLength(1);
     });
 
     describe('get by id', () => {
-        it('should get UserRole by ID', async () => {
+        it('should get Role by ID', async () => {
             const { service } = await setupTestEnvironment();
 
             expect(await service.findById(1)).toEqual(defaultRole);
         });
 
-        it('should throw an Error when not finding a skill by ID', async () => {
+        it('should throw an Error when not finding a Role by ID', async () => {
             const { service } = await setupTestEnvironment();
 
-            await expect(service.findById(2)).rejects.toThrow(
-                new NotFoundException(`User Role with ID: '2' is not found`)
-            );
+            await expect(service.findById(2)).rejects.toThrow(new NotFoundException(`Role with ID: '2' is not found`));
         });
     });
 
     describe('get by name', () => {
-        it('should get UserRole by name', async () => {
+        it('should get Role by name', async () => {
             const { service } = await setupTestEnvironment();
 
             expect(await service.findByName(Roles.PLAYER)).toEqual(defaultRole);
@@ -49,7 +47,7 @@ describe('RoleService', () => {
             const { service } = await setupTestEnvironment();
 
             await expect(service.findByName(Roles.ADMIN)).rejects.toThrow(
-                new NotFoundException(`User Role with name: '${Roles.ADMIN}' is not found`)
+                new NotFoundException(`Role with name: '${Roles.ADMIN}' is not found`)
             );
         });
     });
@@ -68,7 +66,7 @@ describe('RoleService', () => {
             const newUserRoleData: RoleModel = { id: 2, name: Roles.PLAYER };
 
             await expect(service.update(newUserRoleData)).rejects.toThrow(
-                new NotFoundException(`Cannot update User Role with ID: '2' because it does not exist`)
+                new NotFoundException(`Cannot update Role with ID: '2' because it does not exist`)
             );
         });
 
@@ -79,7 +77,7 @@ describe('RoleService', () => {
             const newUserRoleData: RoleModel = { id: 1, name: Roles.ADMIN };
 
             await expect(service.update(newUserRoleData)).rejects.toThrow(
-                new NotFoundException(`Cannot update User Role because the name '${Roles.ADMIN}' is already used`)
+                new NotFoundException(`Cannot update Role because the name '${Roles.ADMIN}' is already used`)
             );
             expect(mockRoleDB.findOneById(1)).toEqual(expect.not.objectContaining(newUserRoleData));
         });
@@ -99,24 +97,24 @@ describe('RoleService', () => {
             const newUserRoleData: CreateRoleData = { name: Roles.PLAYER };
 
             await expect(service.create(newUserRoleData)).rejects.toThrow(
-                new NotFoundException(`Cannot create User Role because the name '${Roles.PLAYER}' is already used`)
+                new NotFoundException(`Cannot create Role because the name '${Roles.PLAYER}' is already used`)
             );
         });
     });
 
     describe('remove', () => {
-        it('should remove a UserRole by ID', async () => {
+        it('should remove a Role by ID', async () => {
             const { service } = await setupTestEnvironment();
 
             await service.remove(1);
             expect(mockRoleDB.findOneById(1)).toBeNull();
         });
 
-        it('should throw an error when trying to remove a UserRole by ID which does not exist', async () => {
+        it('should throw an error when trying to remove a Role by ID which does not exist', async () => {
             const { service } = await setupTestEnvironment();
 
             await expect(service.remove(2)).rejects.toThrow(
-                `Could not remove User Role with ID: '2' because it does not exist`
+                `Could not remove Role with ID: '2' because it does not exist`
             );
         });
     });

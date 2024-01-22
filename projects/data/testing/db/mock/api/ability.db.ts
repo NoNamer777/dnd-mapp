@@ -1,4 +1,4 @@
-import { AbilityModel, CreateAbilityData } from '../../../../src';
+import { Abilities, AbilityModel, AbilityName, CreateAbilityData } from '../../../../src';
 
 interface AbilityDB {
     [id: string]: AbilityModel;
@@ -16,45 +16,45 @@ class MockAbilityDB {
         return Object.values(this.db);
     }
 
-    findOneById(abilityId: number) {
-        return Object.values(this.db).find((ability) => ability.id === abilityId) ?? null;
+    findOneById(id: number) {
+        return Object.values(this.db).find((ability) => ability.id === id) ?? null;
     }
 
-    findOneByName(abilityName: string) {
-        return Object.values(this.db).find((ability) => ability.name === abilityName) ?? null;
+    findOneByName(name: AbilityName) {
+        return Object.values(this.db).find((ability) => ability.name === name) ?? null;
     }
 
-    save(abilityData: AbilityModel) {
-        return abilityData.id ? this.update(abilityData) : this.insert(abilityData);
+    save(ability: AbilityModel) {
+        return ability.id ? this.update(ability) : this.insert(ability);
     }
 
-    insert(abilityData: CreateAbilityData) {
+    insert(ability: CreateAbilityData) {
         const newAbility: AbilityModel = {
             id: this.nextId++,
-            ...abilityData,
+            ...ability,
         };
 
         this.db[newAbility.id] = newAbility;
         return newAbility;
     }
 
-    update(abilityData: AbilityModel) {
-        if (!this.db[abilityData.id]) {
-            throw new Error(`Could not update Ability with ID: '${abilityData.id}' because it does not exist.`);
+    update(ability: AbilityModel) {
+        if (!this.db[ability.id]) {
+            throw new Error(`Could not update Ability with ID: '${ability.id}' because it does not exist.`);
         }
-        this.db[abilityData.id] = abilityData;
-        return abilityData;
+        this.db[ability.id] = ability;
+        return ability;
     }
 
-    deleteById(abilityId: number) {
-        if (!this.db[abilityId]) {
-            throw new Error(`Cannot delete Ability with ID: '${abilityId}' because it does not exist.`);
+    deleteById(id: number) {
+        if (!this.db[id]) {
+            throw new Error(`Cannot delete Ability with ID: '${id}' because it does not exist.`);
         }
-        delete this.db[abilityId];
+        delete this.db[id];
     }
 
     reset() {
-        defaultAbility = new AbilityModel(1, 'Test Ability', []);
+        defaultAbility = new AbilityModel(1, Abilities.STRENGTH, []);
         this.db = { [defaultAbility.id]: defaultAbility };
         this.nextId = 2;
     }

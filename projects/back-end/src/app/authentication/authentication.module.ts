@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DndMappJwtModule } from '../config';
 import { AuthenticationController, ClientController, RoleController, UserController } from './controllers';
@@ -14,6 +14,7 @@ import {
     maxTokensProvider,
 } from './services';
 
+@Global()
 @Module({
     imports: [DndMappJwtModule, TypeOrmModule.forFeature([ClientEntity, UserEntity, RoleEntity, TokenEntity])],
     controllers: [AuthenticationController, UserController, RoleController, ClientController],
@@ -29,6 +30,6 @@ import {
         TokenRepository,
         maxTokensProvider,
     ],
-    exports: [AuthenticationService, ClientService],
+    exports: [AuthenticationService, ClientService, UserService],
 })
 export class AuthenticationModule {}

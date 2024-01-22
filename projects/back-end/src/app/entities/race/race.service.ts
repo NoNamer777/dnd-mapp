@@ -1,4 +1,4 @@
-import { CreateRaceData, Race } from '@dnd-mapp/data';
+import { CreateRaceData, RaceModel, RaceName } from '@dnd-mapp/data';
 import { BadRequestException, Injectable, InjectionToken, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { LoggerService } from '../../common';
 import { EntityService } from '../entity.service';
@@ -8,7 +8,7 @@ import { RaceRepository } from './race.repository';
 export const RACE_SERVICE_TOKEN: InjectionToken = 'RACE_SERVICE';
 
 @Injectable()
-export class RaceService implements EntityApiService<Race>, OnModuleInit {
+export class RaceService implements EntityApiService<RaceModel>, OnModuleInit {
     constructor(
         private readonly raceRepository: RaceRepository,
         private readonly logger: LoggerService,
@@ -18,7 +18,7 @@ export class RaceService implements EntityApiService<Race>, OnModuleInit {
     }
 
     onModuleInit() {
-        this.entityService.addEntityType<Race>({ type: 'Race', serviceToken: RACE_SERVICE_TOKEN });
+        this.entityService.addEntityType<RaceModel>({ type: 'Race', serviceToken: RACE_SERVICE_TOKEN });
     }
 
     async findAll() {
@@ -36,7 +36,7 @@ export class RaceService implements EntityApiService<Race>, OnModuleInit {
         return byId;
     }
 
-    async findByName(raceName: string, throwsError = true) {
+    async findByName(raceName: RaceName, throwsError = true) {
         this.logger.log('Finding a Race by name');
         const byName = await this.raceRepository.findOneByName(raceName);
 
@@ -46,7 +46,7 @@ export class RaceService implements EntityApiService<Race>, OnModuleInit {
         return byName;
     }
 
-    async update(race: Race) {
+    async update(race: RaceModel) {
         this.logger.log(`Updating a Race's data`);
         const byId = await this.findById(race.id, false);
         const byName = await this.findByName(race.name, false);

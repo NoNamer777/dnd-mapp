@@ -14,11 +14,11 @@ export class UserRepository extends Repository<UserModel> {
     }
 
     async findOneById(id: number) {
-        return await this.findOne({ relations: ['roles'], where: { id } });
+        return UserModel.from(await this.findOne({ relations: ['roles'], where: { id } }));
     }
 
     async findOneByUsername(username: string) {
-        return await this.findOne({ relations: ['roles'], where: { username } });
+        return UserModel.from(await this.findOne({ relations: ['roles'], where: { username } }));
     }
 
     async deleteById(id: number) {
