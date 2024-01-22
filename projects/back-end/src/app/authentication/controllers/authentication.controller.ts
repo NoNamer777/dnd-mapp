@@ -9,10 +9,8 @@ import {
     Res,
     UseInterceptors,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { Request, Response } from 'express';
-import { LoggerService, buildServerUrl } from '../../common';
-import { ServerConfig } from '../../config';
+import { DmaClientRequest, LoggerService, backEndServerAddress } from '../../common';
 import {
     AuthorizationCodeResponse,
     CodeChallengeRequest,
@@ -27,8 +25,7 @@ import { AuthenticationService } from '../services';
 export class AuthenticationController {
     constructor(
         private readonly authenticationService: AuthenticationService,
-        private readonly logger: LoggerService,
-        private readonly configService: ConfigService
+        private readonly logger: LoggerService
     ) {
         logger.setContext(AuthenticationController.name);
     }
@@ -72,9 +69,8 @@ export class AuthenticationController {
         this.logger.log('Received a request to register a new User');
 
         const user = await this.authenticationService.signup(userData);
-        const { host, port, address, useSsl } = this.configService.get<ServerConfig>('server');
 
-        response.header('Location', `${buildServerUrl(host, port, useSsl, address)}/server/api/user/${user.id}`);
+        response.header('Location', `${backEndServerAddress}/server/api/user/${user.id}`);
 
         return user;
     }
