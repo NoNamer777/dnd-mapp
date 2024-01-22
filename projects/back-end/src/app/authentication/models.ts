@@ -1,6 +1,6 @@
 import { IsBase64, IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 
-export class LoginDto {
+export class LoginRequest {
     @IsString()
     @IsNotEmpty()
     username: string;
@@ -10,7 +10,7 @@ export class LoginDto {
     password: string;
 }
 
-export class SignUpDto {
+export class SignUpRequest {
     @IsString()
     @IsNotEmpty()
     username: string;
@@ -49,4 +49,19 @@ export class CodeChallengeRequest extends StateRequest {
 
 export class AuthorizationCodeResponse extends StateResponse {
     authorizationCode: string;
+}
+
+export class TokenRequest {
+    @IsString()
+    @IsNotEmpty()
+    codeVerifier: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @IsBase64()
+    authorizationCode: string;
+
+    @IsString()
+    @IsNotEmpty()
+    username: string;
 }

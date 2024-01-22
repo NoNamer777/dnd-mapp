@@ -4,7 +4,7 @@ export class AbilityEntity1690464387448 implements MigrationInterface {
     async up(queryRunner: QueryRunner) {
         await queryRunner.createTable(
             new Table({
-                name: 'ability',
+                name: 'Ability',
                 columns: [
                     {
                         name: 'id',
@@ -20,11 +20,14 @@ export class AbilityEntity1690464387448 implements MigrationInterface {
                         isUnique: true,
                     },
                 ],
-            })
+            }),
+            true,
+            true,
+            true
         );
     }
 
     async down(queryRunner: QueryRunner) {
-        await queryRunner.dropTable('ability', true, true, true);
+        await queryRunner.dropTable('Ability', true, true, true);
     }
 }

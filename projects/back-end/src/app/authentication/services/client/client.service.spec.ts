@@ -1,11 +1,13 @@
 import { ClientModel } from '@dnd-mapp/data';
 import { defaultClient, mockClientDB } from '@dnd-mapp/data/testing';
+import { ForbiddenException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
+import crypto from 'crypto';
 import { nanoid } from 'nanoid';
 import { mockClientModuleProviders, mockLoggingServiceProvider } from '../../../../../testing';
 import { ClientService } from './client.service';
 
-describe('ClientService', () => {
+fdescribe('ClientService', () => {
     async function setupTestEnvironment() {
         const module = await Test.createTestingModule({
             providers: [mockLoggingServiceProvider, ...mockClientModuleProviders],
@@ -15,6 +17,32 @@ describe('ClientService', () => {
             service: module.get(ClientService),
         };
     }
+
+    it('should reset authorization for Client', async () => {
+        defaultClient.codeGeneratedAt = new Date();
+        defaultClient.codeChallenge = 'code_challenge';
+        defaultClient.authorizationCode = 'authorization_code';
+
+        const { service } = await setupTestEnvironment();
+
+        expect(mockClientDB.findOneById(defaultClient.id)).toEqual(
+            expect.objectContaining({
+                codeGeneratedAt: expect.any(Date),
+                codeChallenge: 'code_challenge',
+                authorizationCode: 'authorization_code',
+            })
+        );
+
+        await service.resetClientAuthorization(defaultClient);
+
+        expect(mockClientDB.findOneById(defaultClient.id)).toEqual(
+            expect.objectContaining({
+                codeGeneratedAt: null,
+                codeChallenge: null,
+                authorizationCode: null,
+            })
+        );
+    });
 
     describe('create', () => {
         it('should create a new client', async () => {
@@ -54,12 +82,11 @@ describe('ClientService', () => {
     describe('update', () => {
         it('should update an existing Client', async () => {
             const { service } = await setupTestEnvironment();
-            const client = { ...defaultClient };
 
-            client.codeChallenge = 'code_challenge';
+            defaultClient.codeChallenge = 'code_challenge';
 
-            await expect(service.update(client)).resolves.not.toThrow();
-            expect(mockClientDB.findOneById(client.id).codeChallenge).toEqual('code_challenge');
+            await expect(service.update(defaultClient)).resolves.not.toThrow();
+            expect(mockClientDB.findOneById(defaultClient.id).codeChallenge).toEqual('code_challenge');
         });
 
         it('should not update when a Client does not exist', async () => {
@@ -94,6 +121,65 @@ describe('ClientService', () => {
 
             await expect(service.generateAuthorizationCodeForClient(id)).rejects.toThrow(
                 `Could not generate authorization code for Client with ID: '${id}' because it does not exist`
+            );
+        });
+    });
+
+    describe('verifyCodeChallengeForClient', () => {
+        it('should verify the code challenge', async () => {
+            defaultClient.codeChallenge = crypto
+                .createHash('sha256')
+                .update('code_challenge')
+                .digest()
+                .toString('base64');
+
+            const { service } = await setupTestEnvironment();
+
+            await expect(service.verifyCodeChallengeForClient(defaultClient, 'code_challenge')).resolves.not.toThrow();
+        });
+
+        it('should fail to verify the code challenge', async () => {
+            defaultClient.codeChallenge = 'code_challenge';
+
+            const { service } = await setupTestEnvironment();
+
+            await expect(service.verifyCodeChallengeForClient(defaultClient, 'code_challenge')).rejects.toThrow(
+                new ForbiddenException()
+            );
+
+            expect(defaultClient.codeChallenge).toBeNull();
+        });
+    });
+
+    describe('verifyAuthorizationCodeForClient', () => {
+        it('should verify the authorization code', async () => {
+            defaultClient.codeGeneratedAt = new Date();
+            defaultClient.authorizationCode = 'authorization_code';
+
+            const { service } = await setupTestEnvironment();
+
+            await expect(service.verifyAuthorizationCode(defaultClient, 'authorization_code')).resolves.not.toThrow();
+        });
+
+        it('should throw when verifying the authorization code outside of the validity window', async () => {
+            defaultClient.codeGeneratedAt = new Date(2000, 1, 1, 1, 1, 1, 1);
+            defaultClient.authorizationCode = 'authorization_code';
+
+            const { service } = await setupTestEnvironment();
+
+            await expect(service.verifyAuthorizationCode(defaultClient, 'authorization_code')).rejects.toThrow(
+                new ForbiddenException()
+            );
+        });
+
+        it('should throw when verifying the authorization code with an invalid code', async () => {
+            defaultClient.codeGeneratedAt = new Date();
+            defaultClient.authorizationCode = 'authorization_code';
+
+            const { service } = await setupTestEnvironment();
+
+            await expect(service.verifyAuthorizationCode(defaultClient, 'invalid_code')).rejects.toThrow(
+                new ForbiddenException()
             );
         });
     });

@@ -4,7 +4,7 @@ export class ClientEntity1700125921270 implements MigrationInterface {
     async up(queryRunner: QueryRunner) {
         await queryRunner.createTable(
             new Table({
-                name: 'client',
+                name: 'Client',
                 columns: [
                     {
                         name: 'id',
@@ -15,11 +15,14 @@ export class ClientEntity1700125921270 implements MigrationInterface {
                         isUnique: true,
                     },
                 ],
-            })
+            }),
+            true,
+            true,
+            true
         );
     }
 
     async down(queryRunner: QueryRunner) {
-        await queryRunner.dropTable('client', true, true, true);
+        await queryRunner.dropTable('Client', true, true, true);
     }
 }

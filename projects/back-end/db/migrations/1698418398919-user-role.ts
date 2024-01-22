@@ -4,7 +4,7 @@ export class UserRole1698418398919 implements MigrationInterface {
     async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(
             new Table({
-                name: 'role',
+                name: 'Role',
                 columns: [
                     {
                         name: 'id',
@@ -24,16 +24,19 @@ export class UserRole1698418398919 implements MigrationInterface {
                         isUnique: true,
                     },
                 ],
-            })
+            }),
+            true,
+            true,
+            true
         );
 
-        await queryRunner.query("INSERT INTO role (name) VALUES ('Player');");
-        await queryRunner.query(`INSERT INTO role (name) VALUES ('Admin');`);
-        await queryRunner.query(`INSERT INTO role (name) VALUES ('Dungeon Master');`);
+        await queryRunner.query("INSERT INTO Role (name) VALUES ('Player');");
+        await queryRunner.query(`INSERT INTO Role (name) VALUES ('Admin');`);
+        await queryRunner.query(`INSERT INTO Role (name) VALUES ('Dungeon Master');`);
 
         await queryRunner.createTable(
             new Table({
-                name: 'user_role',
+                name: 'UserRole',
                 columns: [
                     {
                         name: 'user_id',
@@ -53,24 +56,27 @@ export class UserRole1698418398919 implements MigrationInterface {
                 foreignKeys: [
                     {
                         columnNames: ['user_id'],
-                        referencedTableName: 'user',
+                        referencedTableName: 'User',
                         referencedColumnNames: ['id'],
                         onDelete: 'CASCADE',
                         onUpdate: 'CASCADE',
                     },
                     {
                         columnNames: ['role_id'],
-                        referencedTableName: 'role',
+                        referencedTableName: 'Role',
                         referencedColumnNames: ['id'],
                         onDelete: 'RESTRICT',
                     },
                 ],
-            })
+            }),
+            true,
+            true,
+            true
         );
     }
 
     async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable('user_role', true, true, true);
-        await queryRunner.dropTable('role', true, true, true);
+        await queryRunner.dropTable('UserRole', true, true, true);
+        await queryRunner.dropTable('Role', true, true, true);
     }
 }

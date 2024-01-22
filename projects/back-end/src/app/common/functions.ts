@@ -2,7 +2,9 @@ import { networkInterfaces as getNetworkInterfaces, NetworkInterfaceInfo } from 
 
 const hiddenPorts = [80, 443];
 
-export function buildServerUrl(host: string, port: number, useSsl: boolean, address?: string): string {
+export let backEndServerAddress: string;
+
+export function buildServerUrl(host: string, port: number, useSsl: boolean, address?: string) {
     let backEndUrl = 'http';
 
     if (useSsl) {
@@ -18,7 +20,7 @@ export function buildServerUrl(host: string, port: number, useSsl: boolean, addr
     if (!hiddenPorts.includes(port)) {
         backEndUrl += `:${port}`;
     }
-    return backEndUrl;
+    backEndServerAddress = backEndUrl;
 }
 
 function determinePrivateIpAddress(host: string): string {

@@ -4,7 +4,12 @@ import { AbilityModel } from './ability.model';
 
 export class SkillModel extends NameableModel {
     @ValidateNested()
-    ability: AbilityModel;
+    ability: AbilityModel | null;
+
+    constructor(id?: number, name?: string, ability?: AbilityModel) {
+        super(id, name);
+        this.ability = ability ? ability : null;
+    }
 }
 
 export type CreateSkillData = Omit<SkillModel, 'id'>;

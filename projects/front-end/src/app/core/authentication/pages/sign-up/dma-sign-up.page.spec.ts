@@ -22,9 +22,6 @@ describe('DmaSignUpPage', () => {
             declarations: [TestComponent],
         });
 
-        // TODO: Remove once authentication service has been finished implementation
-        spyOn(console, 'warn');
-
         const harnessLoader = TestbedHarnessEnvironment.loader(TestBed.createComponent(TestComponent));
 
         return {

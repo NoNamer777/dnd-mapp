@@ -4,7 +4,7 @@ export class RaceEntity1690464017430 implements MigrationInterface {
     async up(queryRunner: QueryRunner) {
         await queryRunner.createTable(
             new Table({
-                name: 'race',
+                name: 'Race',
                 columns: [
                     {
                         name: 'id',
@@ -20,11 +20,14 @@ export class RaceEntity1690464017430 implements MigrationInterface {
                         isUnique: true,
                     },
                 ],
-            })
+            }),
+            true,
+            true,
+            true
         );
     }
 
     async down(queryRunner: QueryRunner) {
-        await queryRunner.dropTable('race', true, true, true);
+        await queryRunner.dropTable('Race', true, true, true);
     }
 }

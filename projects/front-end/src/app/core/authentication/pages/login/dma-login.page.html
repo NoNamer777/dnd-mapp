@@ -14,11 +14,19 @@
                 id="username-input"
                 placeholder="TheLegend27"
                 formControlName="username"
+                autocomplete="username"
             />
         </div>
         <div class="mb-3">
+            <!--            TODO: Replace with the custom password component field so that Users can view their password-->
             <label for="password-input" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password-input" formControlName="password" />
+            <input
+                type="password"
+                class="form-control"
+                id="password-input"
+                formControlName="password"
+                autocomplete="current-password"
+            />
         </div>
         <div class="d-flex gap-2 align-items-baseline">
             <button

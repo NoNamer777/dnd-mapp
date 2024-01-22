@@ -2,7 +2,7 @@ import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
 
 export class AddClientCodeChallenge1705660226572 implements MigrationInterface {
     async up(queryRunner: QueryRunner) {
-        await queryRunner.addColumns('client', [
+        await queryRunner.addColumns('Client', [
             new TableColumn({
                 name: 'code_challenge',
                 type: 'varchar',
@@ -26,7 +26,7 @@ export class AddClientCodeChallenge1705660226572 implements MigrationInterface {
     }
 
     async down(queryRunner: QueryRunner) {
-        await queryRunner.dropColumns('client', [
+        await queryRunner.dropColumns('Client', [
             'code_challenge',
             'authorization_code',
             'authorization_code_generated_at',

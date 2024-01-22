@@ -16,6 +16,8 @@
                         id="username-input"
                         placeholder="TheLegend27"
                         formControlName="username"
+                        autocomplete="username"
+                        autofocus
                     />
                     <p class="text-danger my-2" *ngIf="doesControlHasErrors('username', 'usernameUnavailable')">
                         {{ getControlError('username', 'usernameUnavailable') }}
@@ -29,6 +31,7 @@
                         id="email-input"
                         placeholder="username@domain.com"
                         formControlName="email"
+                        autocomplete="email"
                     />
                 </div>
                 <div class="mb-3">
@@ -39,6 +42,7 @@
                         id="email-confirm-input"
                         placeholder="username@domain.com"
                         formControlName="emailConfirm"
+                        autocomplete="email"
                         (keyup.enter)="onGoToNextStage()"
                     />
                     <p class="text-danger my-2" *ngIf="form.getError('emailShouldMatch')">
@@ -65,6 +69,7 @@
                         label="Password"
                         inputId="password-input"
                         inputFormControlName="password"
+                        autocomplete="new-password"
                     ></dma-password-form-control>
                 </div>
                 <div class="mb-3">
@@ -72,6 +77,7 @@
                         label="Confirm Password"
                         inputId="password-confirm-input"
                         inputFormControlName="passwordConfirm"
+                        autocomplete="new-password"
                     ></dma-password-form-control>
                     <p class="text-danger mt-1" *ngIf="form.getError('passwordShouldMatch')">
                         The 2 provided password are not the same. Please, provide 2 identical passwords

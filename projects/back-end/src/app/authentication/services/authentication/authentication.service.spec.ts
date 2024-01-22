@@ -1,13 +1,17 @@
 import { UserModel } from '@dnd-mapp/data';
-import { defaultClient, defaultUser, mockClientDB, mockUserDB } from '@dnd-mapp/data/testing';
+import { defaultClient, defaultUser, mockClientDB, mockTokenDB, mockUserDB } from '@dnd-mapp/data/testing';
+import { ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
+import crypto from 'crypto';
 import {
     mockClientModuleProviders,
     mockLoggingServiceProvider,
     mockRoleModuleProviders,
     mockUserModuleProviders,
 } from '../../../../../testing';
-import { DndMappJwtModule, NestConfigModule } from '../../../config';
+import { mockTokenModuleProviders } from '../../../../../testing/mock/entities/authentication/mock-token-module.provider';
+import { buildServerUrl } from '../../../common';
+import { DndMappJwtModule, NestConfigModule, ServerConfig } from '../../../config';
 import { AuthenticationService } from './authentication.service';
 
 describe('AuthenticationService', () => {
@@ -19,14 +23,40 @@ describe('AuthenticationService', () => {
                 mockLoggingServiceProvider,
                 ...mockUserModuleProviders,
                 ...mockRoleModuleProviders,
+                ...mockTokenModuleProviders,
                 ...mockClientModuleProviders,
             ],
         }).compile();
+
+        const { host, port, useSsl, address } = module.get(ConfigService).get<ServerConfig>('server');
+
+        buildServerUrl(host, port, useSsl, address);
 
         return {
             service: module.get(AuthenticationService),
         };
     }
+
+    it('should return the active Client tokens for a User', async () => {
+        defaultClient.codeChallenge = crypto.createHash('sha256').update('code_challenge').digest().toString('base64');
+
+        defaultClient.authorizationCode = 'authorization_code';
+        defaultClient.codeGeneratedAt = new Date();
+
+        const { service } = await setupTestEnvironment();
+
+        // Generate the tokens
+        await service.login({ username: defaultUser.username, password: 'secure_password' }, defaultClient);
+
+        const tokens = await service.getTokensForClient(
+            defaultClient,
+            'code_challenge',
+            'authorization_code',
+            defaultUser.username
+        );
+
+        expect(tokens.size).toEqual(3);
+    });
 
     it('should generate an authorization code for a client', async () => {
         const { service } = await setupTestEnvironment();
@@ -57,24 +87,30 @@ describe('AuthenticationService', () => {
             const { service } = await setupTestEnvironment();
 
             await expect(
-                service.login({ username: defaultUser.username, password: 'secure_password' })
+                service.login({ username: defaultUser.username, password: 'secure_password' }, defaultClient)
             ).resolves.not.toThrow();
+
+            expect(mockTokenDB.findAllTokensForUser(defaultUser.id)).toHaveLength(3);
         });
 
         it('should throw an 401 when providing an incorrect password', async () => {
             const { service } = await setupTestEnvironment();
 
             await expect(
-                service.login({ username: defaultUser.username, password: 'incorrect_password' })
+                service.login({ username: defaultUser.username, password: 'incorrect_password' }, defaultClient)
             ).rejects.toThrow('Invalid username/password');
+
+            expect(mockTokenDB.findAllTokensForUser(defaultUser.id)).toHaveLength(0);
         });
 
         it('should throw an 401 when unable to find the User', async () => {
             const { service } = await setupTestEnvironment();
 
-            await expect(service.login({ username: 'Bob', password: defaultUser.password })).rejects.toThrow(
-                'Invalid username/password'
-            );
+            await expect(
+                service.login({ username: 'Bob', password: defaultUser.password }, defaultClient)
+            ).rejects.toThrow('Invalid username/password');
+
+            expect(mockTokenDB.findAllTokensForUser(defaultUser.id)).toHaveLength(0);
         });
     });
 });

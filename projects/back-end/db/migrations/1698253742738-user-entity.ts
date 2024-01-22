@@ -4,7 +4,7 @@ export class UserEntity1698253742738 implements MigrationInterface {
     async up(queryRunner: QueryRunner) {
         await queryRunner.createTable(
             new Table({
-                name: 'user',
+                name: 'User',
                 columns: [
                     {
                         name: 'id',
@@ -32,11 +32,14 @@ export class UserEntity1698253742738 implements MigrationInterface {
                         isNullable: false,
                     },
                 ],
-            })
+            }),
+            true,
+            true,
+            true
         );
     }
 
     async down(queryRunner: QueryRunner) {
-        await queryRunner.dropTable('user', true, true, true);
+        await queryRunner.dropTable('User', true, true, true);
     }
 }

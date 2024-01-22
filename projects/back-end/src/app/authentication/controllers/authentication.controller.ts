@@ -1,3 +1,4 @@
+import { TokenTypes } from '@dnd-mapp/data';
 import {
     Body,
     ClassSerializerInterceptor,
@@ -9,17 +10,16 @@ import {
     Res,
     UseInterceptors,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { Request, Response } from 'express';
-import { LoggerService, buildServerUrl } from '../../common';
-import { ServerConfig } from '../../config';
+import { Response } from 'express';
+import { DmaClientRequest, LoggerService, backEndServerAddress } from '../../common';
 import {
     AuthorizationCodeResponse,
     CodeChallengeRequest,
-    LoginDto,
-    SignUpDto,
+    LoginRequest,
+    SignUpRequest,
     StateRequest,
     StateResponse,
+    TokenRequest,
 } from '../models';
 import { AuthenticationService } from '../services';
 
@@ -27,31 +27,35 @@ import { AuthenticationService } from '../services';
 export class AuthenticationController {
     constructor(
         private readonly authenticationService: AuthenticationService,
-        private readonly logger: LoggerService,
-        private readonly configService: ConfigService
+        private readonly logger: LoggerService
     ) {
         logger.setContext(AuthenticationController.name);
     }
 
     @Post('/authorize')
-    async authorize(@Body() requestBody: StateRequest, @Req() request: Request): Promise<AuthorizationCodeResponse> {
-        const clientId = request.header('Dma-Client-Id');
+    async authorize(
+        @Body() requestBody: StateRequest,
+        @Req() request: DmaClientRequest
+    ): Promise<AuthorizationCodeResponse> {
+        this.logger.log(
+            `Received request to generate authorization code for Client with ID: '${request.dmaClient?.id}'`
+        );
 
-        this.logger.log(`Received request to generate authorization code for Client with ID: '${clientId}'`);
-
-        const authorizationCode = await this.authenticationService.generateAuthorizationCode(clientId);
+        const authorizationCode = await this.authenticationService.generateAuthorizationCode(request.dmaClient?.id);
 
         return { state: requestBody.state, authorizationCode: authorizationCode };
     }
 
     @Post('/challenge')
-    async codeChallenge(@Body() requestBody: CodeChallengeRequest, @Req() request: Request): Promise<StateResponse> {
+    async codeChallenge(
+        @Body() requestBody: CodeChallengeRequest,
+        @Req() request: DmaClientRequest
+    ): Promise<StateResponse> {
         const { codeChallenge, state } = requestBody;
-        const clientId = request.header('Dma-Client-Id');
 
-        this.logger.log(`Received request to persist code challenge for Client with ID: '${clientId}'`);
+        this.logger.log(`Received request to persist code challenge for Client with ID: '${request.dmaClient?.id}'`);
 
-        await this.authenticationService.storeClientChallenge(clientId, codeChallenge);
+        await this.authenticationService.storeClientChallenge(request.dmaClient?.id, codeChallenge);
 
         return {
             state: state,
@@ -59,23 +63,53 @@ export class AuthenticationController {
     }
 
     @Post('/login')
-    async login(@Body() user: LoginDto) {
+    async login(@Body() user: LoginRequest, @Req() request: DmaClientRequest) {
         this.logger.log(`Received a request to authenticate User with username: '${user.username}'`);
 
-        await this.authenticationService.login(user);
+        await this.authenticationService.login(user, request.dmaClient);
     }
 
     @Post('/sign-up')
     @HttpCode(HttpStatus.CREATED)
     @UseInterceptors(ClassSerializerInterceptor)
-    async signup(@Body() userData: SignUpDto, @Res({ passthrough: true }) response: Response) {
+    async signup(@Body() userData: SignUpRequest, @Res({ passthrough: true }) response: Response) {
         this.logger.log('Received a request to register a new User');
 
         const user = await this.authenticationService.signup(userData);
-        const { host, port, address, useSsl } = this.configService.get<ServerConfig>('server');
 
-        response.header('Location', `${buildServerUrl(host, port, useSsl, address)}/server/api/user/${user.id}`);
+        response.header('Location', `${backEndServerAddress}/server/api/user/${user.id}`);
 
         return user;
+    }
+
+    @Post('/token')
+    async token(
+        @Body() requestBody: TokenRequest,
+        @Req() request: DmaClientRequest,
+        @Res({ passthrough: true }) response: Response
+    ) {
+        this.logger.log(`Received request for JWT tokens for Client with ID: '${request.dmaClient?.id}'`);
+        const { authorizationCode, codeVerifier, username } = requestBody;
+
+        const tokens = await this.authenticationService.getTokensForClient(
+            request.dmaClient,
+            codeVerifier,
+            authorizationCode,
+            username
+        );
+
+        this.setResponseCookies(tokens, response);
+    }
+
+    private setResponseCookies(tokens: Map<TokenTypes, { token: string; expiresAt: Date }>, response: Response) {
+        tokens.forEach((data, type) =>
+            response.cookie(`${type.toLowerCase()}-token`, data.token, {
+                secure: true,
+                signed: type !== TokenTypes.IDENTITY,
+                httpOnly: type !== TokenTypes.IDENTITY,
+                sameSite: 'strict',
+                expires: data.expiresAt,
+            })
+        );
     }
 }

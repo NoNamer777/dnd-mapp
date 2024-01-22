@@ -54,15 +54,12 @@ class MockAbilityDB {
     }
 
     reset() {
+        defaultAbility = new AbilityModel(1, 'Test Ability', []);
         this.db = { [defaultAbility.id]: defaultAbility };
-        this.nextId = Object.values(this.db).length + 1;
+        this.nextId = 2;
     }
 }
 
-export const defaultAbility: AbilityModel = {
-    id: 1,
-    name: 'Test Ability',
-    skills: [],
-};
+export let defaultAbility: AbilityModel;
 
 export const mockAbilityDB = new MockAbilityDB();

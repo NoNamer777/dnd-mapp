@@ -29,10 +29,7 @@ class MockRoleDB {
     }
 
     insert(role: CreateRoleData) {
-        const newRole: RoleModel = {
-            id: this.nextId++,
-            ...role,
-        };
+        const newRole: RoleModel = new RoleModel(this.nextId++, role.name);
 
         this.db[newRole.id] = newRole;
         return newRole;
@@ -54,14 +51,12 @@ class MockRoleDB {
     }
 
     reset() {
+        defaultRole = new RoleModel(1, Roles.PLAYER);
         this.db = { [defaultRole.id]: defaultRole };
-        this.nextId = Object.values(this.db).length + 1;
+        this.nextId = 2;
     }
 }
 
-export const defaultRole: RoleModel = {
-    id: 1,
-    name: Roles.PLAYER,
-};
+export let defaultRole: RoleModel;
 
 export const mockRoleDB = new MockRoleDB();

@@ -1,7 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, OnDestroy, ViewChild } from '@angular/core';
+import {
+    FormControl,
+    FormGroup,
+    FormGroupDirective,
+    FormsModule,
+    ReactiveFormsModule,
+    ValidationErrors,
+    Validators,
+} from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { BehaviorSubject, Subject, finalize, takeUntil } from 'rxjs';
 import { DmaIconsModule } from '../../../../shared';
@@ -22,6 +30,8 @@ export class DmaLoginPage implements OnDestroy {
         username: new FormControl<string | null>(null, [Validators.required]),
         password: new FormControl<string | null>(null, [Validators.required]),
     });
+
+    @ViewChild(FormGroupDirective, { static: true }) private readonly formGroup: FormGroupDirective;
 
     loading$ = new BehaviorSubject(false);
     error$ = new BehaviorSubject<string | null>(null);
@@ -45,6 +55,7 @@ export class DmaLoginPage implements OnDestroy {
 
         this.loading$.next(true);
         this.error$.next(null);
+        this.success$.next(null);
 
         this.authenticationService
             .login(username!, password!)
@@ -78,5 +89,10 @@ export class DmaLoginPage implements OnDestroy {
 
     private onLoginSuccess() {
         this.success$.next('Login successful');
+
+        this.formGroup.resetForm();
+        (document.activeElement as HTMLElement)?.blur();
+
+        // TODO: Redirect to the next page
     }
 }
