@@ -1,4 +1,4 @@
-import { ClientModel } from '@dnd-mapp/data';
+import { ClientModel, UserModel } from '@dnd-mapp/data';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { compare } from 'bcryptjs';
 import { LoggerService } from '../../../common';
@@ -43,6 +43,10 @@ export class AuthenticationService {
             throw new UnauthorizedException('Invalid username/password');
         }
         await this.tokenService.generateTokensForUser(byUsername, client);
+    }
+
+    async logout(user: UserModel, client: ClientModel) {
+        await this.tokenService.revokedTokensForUserOnClient(user, client);
     }
 
     async signup(user: SignUpRequest) {

@@ -11,6 +11,6 @@ export class IsAuthenticatedGuard implements CanActivate {
     ) {}
 
     async canActivate(context: ExecutionContext) {
-        return !(await getAuthenticatedUser(context, this.jwtService, this.userService));
+        return Boolean(await getAuthenticatedUser(context, this.jwtService, this.userService));
     }
 }

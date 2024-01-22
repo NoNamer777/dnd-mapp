@@ -22,6 +22,7 @@ export class TokenService {
         this.loggerService.setContext(TokenService.name);
     }
 
+    // TODO: Don't generate tokens if there's no code challenge stored for a client
     async generateTokensForUser(user: UserModel, client: ClientModel) {
         await this.revokedTokensForUserOnClient(user, client);
 
@@ -58,7 +59,7 @@ export class TokenService {
         await this.tokenRepository.save(refreshToken);
         await this.tokenRepository.save(identityToken);
 
-        await this.cleanUpUserTokensForClient(user);
+        await this.cleanUpUserTokens(user);
     }
 
     async getEncodedTokensUserOnForClient(user: UserModel, client: ClientModel) {
@@ -80,7 +81,17 @@ export class TokenService {
         return signedTokens;
     }
 
-    private async cleanUpUserTokensForClient(user: UserModel) {
+    async revokedTokensForUserOnClient(user: UserModel, client: ClientModel) {
+        const userTokens = await this.tokenRepository.findActiveTokensForUserOnClient(user.id, client.id);
+
+        for (const token of userTokens) {
+            token.revoked = true;
+
+            await this.tokenRepository.save(token);
+        }
+    }
+
+    private async cleanUpUserTokens(user: UserModel) {
         const userTokens = await this.tokenRepository.findAllTokensForUser(user.id);
 
         if (userTokens.length < this.maxTokens) return;
@@ -89,16 +100,6 @@ export class TokenService {
             const token = userTokens.shift();
 
             await this.tokenRepository.remove(token);
-        }
-    }
-
-    private async revokedTokensForUserOnClient(user: UserModel, client: ClientModel) {
-        const userTokens = await this.tokenRepository.findActiveTokensForUserOnClient(user.id, client.id);
-
-        for (const token of userTokens) {
-            token.revoked = true;
-
-            await this.tokenRepository.save(token);
         }
     }
 }
