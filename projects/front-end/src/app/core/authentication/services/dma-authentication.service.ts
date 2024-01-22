@@ -87,10 +87,14 @@ export class DmaAuthenticationService {
 
     private setAuthentication() {
         const token = this.cookieService.getCookie('identity-token');
-        const decodedToken = this.jwtService.decodeToken<IdentityTokenData>(token);
+        try {
+            const decodedToken = this.jwtService.decodeToken<IdentityTokenData>(token);
 
-        if (!decodedToken) return;
+            if (!decodedToken) return;
 
-        this.authenticatedUser$.next(decodedToken.user);
+            this.authenticatedUser$.next(decodedToken.user);
+        } catch (error) {
+            this.authenticatedUser$.next(null);
+        }
     }
 }
