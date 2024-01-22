@@ -1,3 +1,4 @@
+import { TokenTypes } from '@dnd-mapp/data';
 import {
     Body,
     ClassSerializerInterceptor,
@@ -95,6 +96,20 @@ export class AuthenticationController {
             codeVerifier,
             authorizationCode,
             username
+        );
+
+        this.setResponseCookies(tokens, response);
+    }
+
+    private setResponseCookies(tokens: Map<TokenTypes, { token: string; expiresAt: Date }>, response: Response) {
+        tokens.forEach((data, type) =>
+            response.cookie(`${type.toLowerCase()}-token`, data.token, {
+                secure: true,
+                signed: type !== TokenTypes.IDENTITY,
+                httpOnly: type !== TokenTypes.IDENTITY,
+                sameSite: 'strict',
+                expires: data.expiresAt,
+            })
         );
     }
 }

@@ -29,6 +29,10 @@ export class ServerEnvironmentVariables {
     JWT_SECRET: string;
 
     @Expose()
+    @IsString()
+    COOKIE_SECRET: string;
+
+    @Expose()
     @IsBoolean()
     @IsOptional()
     USE_SSL?: boolean;

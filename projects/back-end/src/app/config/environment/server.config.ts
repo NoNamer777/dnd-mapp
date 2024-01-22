@@ -23,6 +23,7 @@ export interface ServerConfig {
     useSsl: boolean;
     address: string;
     jwtSecret: string;
+    cookieSecret: string;
     ssl?: SslConfig | undefined;
 }
 
@@ -33,5 +34,6 @@ export default registerAs('server', () => ({
     useSsl: process.env.USE_SSL === 'true' || Boolean(getSslConfig().ssl),
     address: process.env.ADDRESS || 'localhost.dndmapp.net',
     jwtSecret: process.env.JWT_SECRET,
+    cookieSecret: process.env.COOKIE_SECRET,
     ...getSslConfig(),
 }));

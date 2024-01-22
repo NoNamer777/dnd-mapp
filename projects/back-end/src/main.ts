@@ -2,6 +2,7 @@ import { HttpStatus, Logger, ValidationPipe, ValidationPipeOptions } from '@nest
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
+import cookieParser from 'cookie-parser';
 import express from 'express';
 import { readFile } from 'fs/promises';
 import { createServer as createHttpServer } from 'http';
@@ -32,7 +33,7 @@ async function bootstrap() {
     logger.setContext('NestApplication');
     Logger.flush();
 
-    const { host, port, address, useSsl, ssl } = configService.get<ServerConfig>('server');
+    const { host, port, address, useSsl, ssl, cookieSecret } = configService.get<ServerConfig>('server');
     buildServerUrl(host, port, useSsl, address);
 
     nestApp.useLogger(logger);
@@ -42,6 +43,8 @@ async function bootstrap() {
     nestApp.useGlobalPipes(new ValidationPipe(validationOptions));
 
     nestApp.enableCors(corsConfig(backEndServerAddress));
+
+    nestApp.use(cookieParser(cookieSecret));
 
     const server = ssl
         ? createHttpsServer({ cert: await readFile(ssl.certPath), key: await readFile(ssl.keyPath) }, expressServer)
