@@ -14,8 +14,8 @@ import { DmaClientRequest, LoggerService, backEndServerAddress } from '../../com
 import {
     AuthorizationCodeResponse,
     CodeChallengeRequest,
-    LoginDto,
-    SignUpDto,
+    LoginRequest,
+    SignUpRequest,
     StateRequest,
     StateResponse,
 } from '../models';
@@ -61,16 +61,16 @@ export class AuthenticationController {
     }
 
     @Post('/login')
-    async login(@Body() user: LoginDto) {
+    async login(@Body() user: LoginRequest, @Req() request: DmaClientRequest) {
         this.logger.log(`Received a request to authenticate User with username: '${user.username}'`);
 
-        await this.authenticationService.login(user);
+        await this.authenticationService.login(user, request.dmaClient);
     }
 
     @Post('/sign-up')
     @HttpCode(HttpStatus.CREATED)
     @UseInterceptors(ClassSerializerInterceptor)
-    async signup(@Body() userData: SignUpDto, @Res({ passthrough: true }) response: Response) {
+    async signup(@Body() userData: SignUpRequest, @Res({ passthrough: true }) response: Response) {
         this.logger.log('Received a request to register a new User');
 
         const user = await this.authenticationService.signup(userData);

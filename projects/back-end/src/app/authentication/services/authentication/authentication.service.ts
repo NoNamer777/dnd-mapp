@@ -20,7 +20,7 @@ export class AuthenticationService {
     }
 
     // TODO: Add maximum of 3 attempts within 5 minutes, otherwise timeout for 10 minutes
-    async login(user: LoginDto) {
+    async login(user: LoginRequest, client: ClientModel) {
         this.logger.log(`Authenticating User with username: ${user.username}`);
         const byUsername = await this.userService.findByUsername(user.username, false);
 
@@ -30,7 +30,7 @@ export class AuthenticationService {
         }
     }
 
-    async signup(user: SignUpDto) {
+    async signup(user: SignUpRequest) {
         this.logger.log('Registering a new User');
         return await this.userService.create(user);
     }
