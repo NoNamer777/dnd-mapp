@@ -67,6 +67,10 @@ export class DmaAuthenticationService {
         );
     }
 
+    signOut() {
+        return this.requestService.post<void>('/authentication/sign-out', null);
+    }
+
     signUp(userData: CreateUserData) {
         return this.requestService.post<SignUpResponse, CreateUserData>('/authentication/sign-up', userData);
     }
