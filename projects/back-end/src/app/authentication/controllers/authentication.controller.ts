@@ -9,7 +9,7 @@ import {
     Res,
     UseInterceptors,
 } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { DmaClientRequest, LoggerService, backEndServerAddress } from '../../common';
 import {
     AuthorizationCodeResponse,
@@ -31,24 +31,29 @@ export class AuthenticationController {
     }
 
     @Post('/authorize')
-    async authorize(@Body() requestBody: StateRequest, @Req() request: Request): Promise<AuthorizationCodeResponse> {
-        const clientId = request.header('Dma-Client-Id');
+    async authorize(
+        @Body() requestBody: StateRequest,
+        @Req() request: DmaClientRequest
+    ): Promise<AuthorizationCodeResponse> {
+        this.logger.log(
+            `Received request to generate authorization code for Client with ID: '${request.dmaClient?.id}'`
+        );
 
-        this.logger.log(`Received request to generate authorization code for Client with ID: '${clientId}'`);
-
-        const authorizationCode = await this.authenticationService.generateAuthorizationCode(clientId);
+        const authorizationCode = await this.authenticationService.generateAuthorizationCode(request.dmaClient?.id);
 
         return { state: requestBody.state, authorizationCode: authorizationCode };
     }
 
     @Post('/challenge')
-    async codeChallenge(@Body() requestBody: CodeChallengeRequest, @Req() request: Request): Promise<StateResponse> {
+    async codeChallenge(
+        @Body() requestBody: CodeChallengeRequest,
+        @Req() request: DmaClientRequest
+    ): Promise<StateResponse> {
         const { codeChallenge, state } = requestBody;
-        const clientId = request.header('Dma-Client-Id');
 
-        this.logger.log(`Received request to persist code challenge for Client with ID: '${clientId}'`);
+        this.logger.log(`Received request to persist code challenge for Client with ID: '${request.dmaClient?.id}'`);
 
-        await this.authenticationService.storeClientChallenge(clientId, codeChallenge);
+        await this.authenticationService.storeClientChallenge(request.dmaClient?.id, codeChallenge);
 
         return {
             state: state,

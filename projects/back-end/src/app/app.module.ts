@@ -2,7 +2,7 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import helmet from 'helmet';
 import { AppController } from './app.controller';
 import { AuthenticationModule } from './authentication';
-import { LoggingModule } from './common';
+import { ClientIdHeaderMiddleware, LoggingModule } from './common';
 import {
     AssetsModule,
     HashCollectorMiddleware,
@@ -33,6 +33,6 @@ import { SkillModule } from './entities/skill';
 })
 export class AppModule implements NestModule {
     configure(consumer: MiddlewareConsumer): void {
-        consumer.apply(HashCollectorMiddleware, helmet(helmetConfig)).forRoutes('/*');
+        consumer.apply(ClientIdHeaderMiddleware, HashCollectorMiddleware, helmet(helmetConfig)).forRoutes('/*');
     }
 }
