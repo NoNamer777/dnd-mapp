@@ -4,7 +4,7 @@ export class SkillEntity1690464526450 implements MigrationInterface {
     async up(queryRunner: QueryRunner) {
         await queryRunner.createTable(
             new Table({
-                name: 'skill',
+                name: 'Skill',
                 columns: [
                     {
                         name: 'id',
@@ -32,11 +32,14 @@ export class SkillEntity1690464526450 implements MigrationInterface {
                         referencedColumnNames: ['id'],
                     },
                 ],
-            })
+            }),
+            true,
+            true,
+            true
         );
     }
 
     async down(queryRunner: QueryRunner) {
-        await queryRunner.dropTable('skill', true, true, true);
+        await queryRunner.dropTable('Skill', true, true, true);
     }
 }
