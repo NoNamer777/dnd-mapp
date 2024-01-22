@@ -1,15 +1,33 @@
-import { ArrayMinSize, IsArray, ValidateNested } from 'class-validator';
-import { NameableModel } from '../models';
+import { ArrayMinSize, IsArray, IsEnum, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
+import { EntityModel } from '../models';
 import { SkillModel } from './skill.model';
 
-export class AbilityModel extends NameableModel {
+export enum Abilities {
+    STRENGTH = 'Strength',
+    DEXTERITY = 'Dexterity',
+    CONSTITUTION = 'Constitution',
+    INTELLIGENCE = 'Intelligence',
+    WISDOM = 'Wisdom',
+    CHARISMA = 'Charisma',
+}
+
+export type AbilityName = (typeof Abilities)[keyof typeof Abilities];
+
+export class AbilityModel extends EntityModel {
     @IsArray()
     @ArrayMinSize(0)
     @ValidateNested()
     skills: SkillModel[];
 
-    constructor(id?: number, name?: string, skills?: SkillModel[]) {
-        super(id, name);
+    @IsString()
+    @IsNotEmpty()
+    @IsEnum(Abilities)
+    name: AbilityName;
+
+    constructor(id?: number, name?: AbilityName, skills?: SkillModel[]) {
+        super(id);
+
+        if (name) this.name = name;
 
         this.skills = skills ? skills : [];
     }

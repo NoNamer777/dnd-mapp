@@ -1,4 +1,4 @@
-import { SkillModel } from '@dnd-mapp/data';
+import { SkillModel, SkillName } from '@dnd-mapp/data';
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { SkillEntity } from './skill.entity';
@@ -25,7 +25,7 @@ export class SkillRepository extends Repository<SkillModel> {
         return await this.findOne({ where: { id }, relations: ['ability'] });
     }
 
-    async findOneByName(name: string) {
+    async findOneByName(name: SkillName) {
         return await this.findOne({ where: { name }, relations: ['ability'] });
     }
 

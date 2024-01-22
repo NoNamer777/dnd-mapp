@@ -7,10 +7,10 @@ import { IsAdminGuard } from '../guards';
 import { RoleService } from '../services';
 
 @UseGuards(IsAdminGuard)
-@Controller('/api/user-role')
+@Controller('/api/role')
 export class RoleController {
     constructor(
-        private readonly skillService: RoleService,
+        private readonly roleService: RoleService,
         private readonly logger: LoggerService
     ) {
         logger.setContext(RoleController.name);
@@ -18,31 +18,31 @@ export class RoleController {
 
     @Get()
     async getAll() {
-        this.logger.log('Received request for getting all User Roles');
-        return await this.skillService.findAll();
+        this.logger.log('Received request for getting all Roles');
+        return await this.roleService.findAll();
     }
 
     @Post()
     async create(@Body() data: CreateRoleData) {
-        this.logger.log('Received request for creating a new User Role');
-        return await this.skillService.create(data);
+        this.logger.log('Received request for creating a new Role');
+        return await this.roleService.create(data);
     }
 
     @Get('/:id')
     async getById(@Param('id') id: number) {
-        this.logger.log('Received request for returning a User Role');
-        return await this.skillService.findById(id);
+        this.logger.log('Received request for returning a Role');
+        return await this.roleService.findById(id);
     }
 
     @Delete('/:id')
     async deleteById(@Param('id') id: number) {
-        this.logger.log('Received a request for removing a User Role');
-        await this.skillService.remove(id);
+        this.logger.log('Received a request for removing a Role');
+        await this.roleService.remove(id);
     }
 
     @Put(':/id')
     async update(@Req() request: Request, @Param('id') id: number, @Body() data: RoleModel) {
-        this.logger.log('Received a request for updating a User Role');
+        this.logger.log('Received a request for updating a Role');
         const requestPath = request.path;
 
         if (id !== data.id) {
@@ -50,6 +50,6 @@ export class RoleController {
                 `Could not update User Role on path: '${requestPath}' with data from User Role with ID: '${data.id}'`
             );
         }
-        return await this.skillService.update(data);
+        return await this.roleService.update(data);
     }
 }

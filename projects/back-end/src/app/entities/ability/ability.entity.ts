@@ -28,7 +28,6 @@ export const AbilityEntity = new EntitySchema<AbilityModel>({
         skills: {
             type: 'one-to-many',
             target: 'Skill',
-            eager: true,
         },
     },
 });

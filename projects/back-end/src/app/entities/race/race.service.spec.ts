@@ -1,3 +1,4 @@
+import { Races } from '@dnd-mapp/data';
 import { defaultRace, mockRaceDB } from '@dnd-mapp/data/testing';
 import { NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
@@ -44,14 +45,14 @@ describe('RaceService', () => {
         it('should get Race by name', async () => {
             const { service } = await setupTestEnvironment();
 
-            expect(await service.findByName('Test Race')).toEqual(defaultRace);
+            expect(await service.findByName(Races.DWARF)).toEqual(defaultRace);
         });
 
         it('should throw 404', async () => {
             const { service } = await setupTestEnvironment();
 
-            await expect(service.findByName('Race Test')).rejects.toThrow(
-                new NotFoundException(`Race with name: 'Race Test' is not found`)
+            await expect(service.findByName(Races.ELF)).rejects.toThrow(
+                new NotFoundException(`Race with name: 'Elf' is not found`)
             );
         });
     });
@@ -59,7 +60,7 @@ describe('RaceService', () => {
     describe('update', () => {
         it('should update', async () => {
             const { service } = await setupTestEnvironment();
-            const newRaceData = { id: 1, name: 'Race Test Test' };
+            const newRaceData = { id: 1, name: Races.ELF };
 
             expect(await service.update(newRaceData)).toEqual(newRaceData);
             expect(mockRaceDB.findOneById(1)).toEqual(expect.objectContaining(newRaceData));
@@ -67,7 +68,7 @@ describe('RaceService', () => {
 
         it('should throw 404 when using ID of non existing Race', async () => {
             const { service } = await setupTestEnvironment();
-            const newRaceData = { id: 2, name: 'Race Test Test' };
+            const newRaceData = { id: 2, name: Races.ELF };
 
             await expect(service.update(newRaceData)).rejects.toThrow(
                 new NotFoundException(`Cannot update Race with ID: '2' because it does not exist`)
@@ -75,13 +76,13 @@ describe('RaceService', () => {
         });
 
         it('should throw 400 when using non unique name', async () => {
-            mockRaceDB.insert({ name: 'Race Test Test' });
+            mockRaceDB.insert({ name: Races.ELF });
 
             const { service } = await setupTestEnvironment();
-            const newRaceData = { id: 1, name: 'Race Test Test' };
+            const newRaceData = { id: 1, name: Races.ELF };
 
             await expect(service.update(newRaceData)).rejects.toThrow(
-                new NotFoundException(`Cannot update Race because the name 'Race Test Test' is already used`)
+                new NotFoundException(`Cannot update Race because the name 'Elf' is already used`)
             );
             expect(mockRaceDB.findOneById(1)).toEqual(expect.not.objectContaining(newRaceData));
         });
@@ -90,18 +91,18 @@ describe('RaceService', () => {
     describe('create', () => {
         it('should create', async () => {
             const { service } = await setupTestEnvironment();
-            const newRaceData = { name: 'New Race Test' };
+            const newRaceData = { name: Races.ELF };
 
             expect((await service.create(newRaceData)).id).toBeDefined();
-            expect(mockRaceDB.findOneByName('New Race Test')).toEqual(expect.objectContaining(newRaceData));
+            expect(mockRaceDB.findOneByName(Races.ELF)).toEqual(expect.objectContaining(newRaceData));
         });
 
         it('should throw 400 when using non unique name', async () => {
             const { service } = await setupTestEnvironment();
-            const newRaceData = { name: 'Test Race' };
+            const newRaceData = { name: Races.DWARF };
 
             await expect(service.create(newRaceData)).rejects.toThrow(
-                new NotFoundException(`Cannot create Race because the name 'Test Race' is already used`)
+                new NotFoundException(`Cannot create Race because the name 'Dwarf' is already used`)
             );
         });
     });

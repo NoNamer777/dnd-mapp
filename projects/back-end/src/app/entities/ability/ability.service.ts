@@ -1,4 +1,4 @@
-import { AbilityModel, CreateAbilityData } from '@dnd-mapp/data';
+import { AbilityModel, AbilityName, CreateAbilityData } from '@dnd-mapp/data';
 import { BadRequestException, Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { LoggerService } from '../../common';
 import { EntityService } from '../entity.service';
@@ -36,7 +36,7 @@ export class AbilityService implements EntityApiService<AbilityModel>, OnModuleI
         return byId;
     }
 
-    async findByName(name: string, throwsError = true) {
+    async findByName(name: AbilityName, throwsError = true) {
         this.logger.log('Finding an Ability by name');
         const byName = await this.abilityRepository.findOneByName(name);
 

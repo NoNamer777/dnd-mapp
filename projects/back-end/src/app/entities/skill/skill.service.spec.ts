@@ -1,4 +1,4 @@
-import { CreateSkillData, SkillModel } from '@dnd-mapp/data';
+import { CreateSkillData, SkillModel, Skills } from '@dnd-mapp/data';
 import { defaultAbility, defaultSkill, mockSkillDB } from '@dnd-mapp/data/testing';
 import { NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
@@ -29,7 +29,7 @@ describe('SkillService', () => {
     describe('get by ability', () => {
         it('should get all Skills by Ability', async () => {
             defaultSkill.ability = defaultAbility;
-            mockSkillDB.insert({ name: 'Test Skill 2', ability: defaultAbility });
+            mockSkillDB.insert({ name: Skills.ACROBATICS, ability: defaultAbility });
 
             const { service } = await setupTestEnvironment();
 
@@ -37,7 +37,7 @@ describe('SkillService', () => {
         });
 
         it('should get no skills by Ability', async () => {
-            mockSkillDB.insert({ name: 'Test Skill 2', ability: defaultAbility });
+            mockSkillDB.insert({ name: Skills.ATHLETICS, ability: defaultAbility });
 
             const { service } = await setupTestEnvironment();
 
@@ -63,14 +63,14 @@ describe('SkillService', () => {
         it('should get Skill by name', async () => {
             const { service } = await setupTestEnvironment();
 
-            expect(await service.findByName('Test Skill')).toEqual(defaultSkill);
+            expect(await service.findByName(Skills.ACROBATICS)).toEqual(defaultSkill);
         });
 
         it('should throw 404', async () => {
             const { service } = await setupTestEnvironment();
 
-            await expect(service.findByName('Skill Test')).rejects.toThrow(
-                new NotFoundException(`Skill with name: 'Skill Test' is not found`)
+            await expect(service.findByName(Skills.ATHLETICS)).rejects.toThrow(
+                new NotFoundException(`Skill with name: 'Athletics' is not found`)
             );
         });
     });
@@ -78,7 +78,7 @@ describe('SkillService', () => {
     describe('update', () => {
         it('should update', async () => {
             const { service } = await setupTestEnvironment();
-            const newSkillData: SkillModel = { id: 1, name: 'Skill Test Test', ability: defaultAbility };
+            const newSkillData: SkillModel = { id: 1, name: Skills.ATHLETICS, ability: defaultAbility };
 
             expect(await service.update(newSkillData)).toEqual(newSkillData);
             expect(mockSkillDB.findOneById(1)).toEqual(expect.objectContaining(newSkillData));
@@ -86,7 +86,7 @@ describe('SkillService', () => {
 
         it('should throw 404 when using ID of non existing Skill', async () => {
             const { service } = await setupTestEnvironment();
-            const newSkillData: SkillModel = { id: 2, name: 'Skill Test Test', ability: defaultAbility };
+            const newSkillData: SkillModel = { id: 2, name: Skills.ACROBATICS, ability: defaultAbility };
 
             await expect(service.update(newSkillData)).rejects.toThrow(
                 new NotFoundException(`Cannot update Skill with ID: '2' because it does not exist`)
@@ -94,13 +94,13 @@ describe('SkillService', () => {
         });
 
         it('should throw 400 when using non unique name', async () => {
-            mockSkillDB.insert({ name: 'Skill Test Test', ability: defaultAbility } as CreateSkillData);
+            mockSkillDB.insert({ name: Skills.ATHLETICS, ability: defaultAbility } as CreateSkillData);
 
             const { service } = await setupTestEnvironment();
-            const newSkillData: SkillModel = { id: 1, name: 'Skill Test Test', ability: defaultAbility };
+            const newSkillData: SkillModel = { id: 1, name: Skills.ATHLETICS, ability: defaultAbility };
 
             await expect(service.update(newSkillData)).rejects.toThrow(
-                new NotFoundException(`Cannot update Skill because the name 'Skill Test Test' is already used`)
+                new NotFoundException(`Cannot update Skill because the name 'Athletics' is already used`)
             );
             expect(mockSkillDB.findOneById(1)).toEqual(expect.not.objectContaining(newSkillData));
         });
@@ -109,18 +109,18 @@ describe('SkillService', () => {
     describe('create', () => {
         it('should create', async () => {
             const { service } = await setupTestEnvironment();
-            const newSkillData: CreateSkillData = { name: 'New Skill Test', ability: defaultAbility };
+            const newSkillData: CreateSkillData = { name: Skills.ATHLETICS, ability: defaultAbility };
 
             expect((await service.create(newSkillData)).id).toBeDefined();
-            expect(mockSkillDB.findOneByName('New Skill Test')).toEqual(expect.objectContaining(newSkillData));
+            expect(mockSkillDB.findOneByName(Skills.ATHLETICS)).toEqual(expect.objectContaining(newSkillData));
         });
 
         it('should throw 400 when using non unique name', async () => {
             const { service } = await setupTestEnvironment();
-            const newSkillData: CreateSkillData = { name: 'Test Skill', ability: defaultAbility };
+            const newSkillData: CreateSkillData = { name: Skills.ACROBATICS, ability: defaultAbility };
 
             await expect(service.create(newSkillData)).rejects.toThrow(
-                new NotFoundException(`Cannot create Skill because the name 'Test Skill' is already used`)
+                new NotFoundException(`Cannot create Skill because the name 'Acrobatics' is already used`)
             );
         });
     });

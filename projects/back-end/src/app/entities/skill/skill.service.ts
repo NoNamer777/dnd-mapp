@@ -1,4 +1,4 @@
-import { CreateSkillData, SkillModel } from '@dnd-mapp/data';
+import { CreateSkillData, SkillModel, SkillName } from '@dnd-mapp/data';
 import { BadRequestException, Injectable, InjectionToken, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { LoggerService } from '../../common';
 import { EntityService } from '../entity.service';
@@ -31,22 +31,22 @@ export class SkillService implements EntityApiService<SkillModel>, OnModuleInit 
         return this.skillRepository.findAllByAbility(abilityId);
     }
 
-    async findById(skillId: number, throwsError = true) {
+    async findById(id: number, throwsError = true) {
         this.logger.log('Finding a Skill by ID');
-        const byId = await this.skillRepository.findOneById(skillId);
+        const byId = await this.skillRepository.findOneById(id);
 
         if (!byId && throwsError) {
-            throw new NotFoundException(`Skill with ID: '${skillId}' is not found`);
+            throw new NotFoundException(`Skill with ID: '${id}' is not found`);
         }
         return byId;
     }
 
-    async findByName(skillName: string, throwsError = true) {
+    async findByName(name: SkillName, throwsError = true) {
         this.logger.log('Finding a Skill by name');
-        const byName = await this.skillRepository.findOneByName(skillName);
+        const byName = await this.skillRepository.findOneByName(name);
 
         if (!byName && throwsError) {
-            throw new NotFoundException(`Skill with name: '${skillName}' is not found`);
+            throw new NotFoundException(`Skill with name: '${name}' is not found`);
         }
         return byName;
     }
@@ -76,13 +76,13 @@ export class SkillService implements EntityApiService<SkillModel>, OnModuleInit 
         return await this.skillRepository.save(skill);
     }
 
-    async remove(skillId: number) {
+    async remove(id: number) {
         this.logger.log('Removing a Skill by ID');
-        const byId = await this.findById(skillId, false);
+        const byId = await this.findById(id, false);
 
         if (!byId) {
-            throw new NotFoundException(`Could not remove Skill with ID: '${skillId}' because it does not exist`);
+            throw new NotFoundException(`Could not remove Skill with ID: '${id}' because it does not exist`);
         }
-        await this.skillRepository.deleteById(skillId);
+        await this.skillRepository.deleteById(id);
     }
 }
