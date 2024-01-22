@@ -34,7 +34,6 @@ export class AuthenticationService {
         return await this.tokenService.getEncodedTokensUserOnForClient(user, client);
     }
 
-    // TODO: Add maximum of 3 attempts within 5 minutes, otherwise timeout for 10 minutes
     async login(user: LoginRequest, client: ClientModel) {
         this.logger.log(`Authenticating User with username: ${user.username}`);
         const byUsername = await this.userService.findByUsername(user.username, false);

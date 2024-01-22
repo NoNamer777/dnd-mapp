@@ -10,6 +10,7 @@ import {
     Res,
     UseInterceptors,
 } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import { Response } from 'express';
 import { DmaClientRequest, LoggerService, backEndServerAddress } from '../../common';
 import {
@@ -23,6 +24,7 @@ import {
 } from '../models';
 import { AuthenticationService } from '../services';
 
+@Throttle({ default: { limit: 15, ttl: 60_000 } })
 @Controller({ path: '/authentication' })
 export class AuthenticationController {
     constructor(
