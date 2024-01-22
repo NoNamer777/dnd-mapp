@@ -25,6 +25,7 @@ export class PasswordFormControlComponent implements OnInit {
     @Input() label: string;
     @Input() inputId: string;
     @Input() inputFormControlName: string;
+    @Input() autocomplete: string;
 
     protected icon: PasswordIconProp = 'eye';
 
