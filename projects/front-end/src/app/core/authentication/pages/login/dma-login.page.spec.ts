@@ -24,9 +24,6 @@ describe('DmaLoginComponent', () => {
             declarations: [TestComponent],
         });
 
-        // TODO: Remove once authentication service has been finished
-        spyOn(console, 'warn');
-
         // The Web Crypto API is only available in a secure environment (HTTPS). Since the tests don't run
         // in such an environment, we need to fake the returned value for now.
         spyOn(crypto.subtle, 'digest').and.resolveTo(

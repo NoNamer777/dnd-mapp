@@ -15,9 +15,6 @@ describe('DmaAuthenticationService', () => {
             providers: [provideDmaHttpTesting(), DmaAuthenticationService],
         });
 
-        // TODO: Remove after back-end authentication has been implemented
-        spyOn(console, 'warn');
-
         // The Web Crypto API is only available in a secure environment (HTTPS). Since the tests don't run
         // in such an environment, we need to fake the returned value for now.
         spyOn(crypto.subtle, 'digest').and.resolveTo(
@@ -47,24 +44,26 @@ describe('DmaAuthenticationService', () => {
 
     afterEach(() => TestBed.inject(HttpTestingController).verify());
 
-    // TODO: Enable after back-end authentication has been implemented
-    xit('should not initialize an authenticated User when no User data is returned based on the presented cookies', async () => {
-        const { authenticationService, testingController } = await setupTestEnvironment();
-
-        const request = testingController.expectOne(environment.baseBackEndURL + '/authentication/user');
-        request.flush({ statusCode: 401, error: 'Unauthorized' }, { status: 401, statusText: 'Unauthorized' });
+    it('should not initialize an authenticated User when no User data is returned based on the presented cookies', async () => {
+        const { authenticationService } = await setupTestEnvironment();
 
         expect(authenticationService.authenticatedUser$.value).toBeNull();
     });
 
-    // TODO: Enable after back-end authentication has been implemented
-    xit('should initialize an authenticated User when User data is returned based on the presented cookies', async () => {
-        const { authenticationService, testingController } = await setupTestEnvironment();
+    it('should initialize an authenticated User when User data is returned based on the presented cookies', async () => {
+        spyOnProperty(document, 'cookie').and.returnValue(
+            'identity-token=eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJKeTNQOWNaclgtU0oxOG04Iiwic3ViIjoxLCJjbHQiOiJGVDB1NktNck8waU9oRFFnck1BU2lBOEExYTkxeFhNQyIsIm5iZiI6MTcwNTkxMzk0NywiaWF0IjoxNzA1OTEzOTQ3LCJleHAiOjE3MDU5NDk5NDcsInVzZXIiOnsiaWQiOjEsInVzZXJuYW1lIjoiVXNlcjEiLCJlbWFpbEFkZHJlc3MiOiJ1c2VyMUBkb21haW4uY29tIiwicm9sZXMiOlt7ImlkIjoxLCJuYW1lIjoiUGxheWVyIn1dfSwiYXVkIjpbImh0dHBzOi8vbG9jYWxob3N0LmRuZG1hcHAubmV0Il0sImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0LmRuZG1hcHAubmV0In0.iSpP0LYYcq33QIopqYJxH6SeDE9fhCkgKFG9p2KpwzyWaGySQlsrYgdeJ8fY9y8CGcegu-KKLDG_bHfRKU1vHg'
+        );
 
-        const request = testingController.expectOne(environment.baseBackEndURL + '/authentication/user');
-        request.flush({ ...defaultUser });
+        const { authenticationService } = await setupTestEnvironment();
 
-        expect(authenticationService.authenticatedUser$.value).toEqual(defaultUser);
+        expect(authenticationService.authenticatedUser$.value).toEqual(
+            jasmine.objectContaining({
+                id: defaultUser.id,
+                username: defaultUser.username,
+                emailAddress: defaultUser.emailAddress,
+            })
+        );
     });
 
     it('should process an sign-up request', async () => {
@@ -114,7 +113,6 @@ describe('DmaAuthenticationService', () => {
             jasmine.objectContaining({
                 codeVerifier: jasmine.any(String),
                 authorizationCode: 'authorization_code',
-                clientId: 'client_id',
             })
         );
 

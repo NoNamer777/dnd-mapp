@@ -21,9 +21,6 @@ describe('DmaHeaderComponent', () => {
             declarations: [TestComponent],
         });
 
-        // TODO: Remove once authentication service has been finished implemented
-        spyOn(console, 'warn');
-
         const harnessLoader = TestbedHarnessEnvironment.loader(TestBed.createComponent(TestComponent));
 
         return {
@@ -38,8 +35,11 @@ describe('DmaHeaderComponent', () => {
         expect(await harness.isNavItemByLabelVisible('Log in')).toBeTrue();
     });
 
-    // TODO: Disabled until authentication is completed and we switched over to using cookies
-    xit('should show authenticated links when a User is logged in', async () => {
+    it('should show authenticated links when a User is logged in', async () => {
+        spyOnProperty(document, 'cookie').and.returnValue(
+            'identity-token=eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJKeTNQOWNaclgtU0oxOG04Iiwic3ViIjoxLCJjbHQiOiJGVDB1NktNck8waU9oRFFnck1BU2lBOEExYTkxeFhNQyIsIm5iZiI6MTcwNTkxMzk0NywiaWF0IjoxNzA1OTEzOTQ3LCJleHAiOjE3MDU5NDk5NDcsInVzZXIiOnsiaWQiOjEsInVzZXJuYW1lIjoiVXNlcjEiLCJlbWFpbEFkZHJlc3MiOiJ1c2VyMUBkb21haW4uY29tIiwicm9sZXMiOlt7ImlkIjoxLCJuYW1lIjoiUGxheWVyIn1dfSwiYXVkIjpbImh0dHBzOi8vbG9jYWxob3N0LmRuZG1hcHAubmV0Il0sImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0LmRuZG1hcHAubmV0In0.iSpP0LYYcq33QIopqYJxH6SeDE9fhCkgKFG9p2KpwzyWaGySQlsrYgdeJ8fY9y8CGcegu-KKLDG_bHfRKU1vHg'
+        );
+
         const { harness } = await setupTestEnvironment();
 
         expect(await harness.isNavItemByLabelVisible(defaultUser.username)).toBeTrue();

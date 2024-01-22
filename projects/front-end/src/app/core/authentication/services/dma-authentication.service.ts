@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { CreateUserData, UserModel } from '@dnd-mapp/data';
 import { nanoid } from 'nanoid';
-import { BehaviorSubject, from, map, switchMap, take } from 'rxjs';
-import { DmaHttpRequestService, TextCodingService } from '../../../shared';
-import { ConfigService } from '../../services/config.service';
+import { BehaviorSubject, from, map, switchMap, tap } from 'rxjs';
+import { CookieService, DmaHttpRequestService, JWT_HELPER_SERVICE, TextCodingService } from '../../../shared';
 
 interface AuthorizeResponse {
     authorizationCode: string;
@@ -12,10 +12,20 @@ interface AuthorizeResponse {
 interface TokenRequestBody {
     codeVerifier: string;
     authorizationCode: string;
-    clientId: string;
+    username: string;
 }
 
 type SignUpResponse = Omit<UserModel, 'roles'>;
+
+interface IdentityTokenData {
+    jti: string;
+    sub: number;
+    clt: string;
+    nbf: number;
+    iat: number;
+    exp: number;
+    user: UserModel;
+}
 
 @Injectable({ providedIn: 'root' })
 export class DmaAuthenticationService {
@@ -26,9 +36,10 @@ export class DmaAuthenticationService {
     constructor(
         private readonly requestService: DmaHttpRequestService,
         private readonly textCodingService: TextCodingService,
-        private readonly configService: ConfigService
+        private readonly cookieService: CookieService,
+        @Inject(JWT_HELPER_SERVICE) private readonly jwtService: JwtHelperService
     ) {
-        this.initialize();
+        this.setAuthentication();
     }
 
     /**
@@ -45,25 +56,19 @@ export class DmaAuthenticationService {
                 })
             ),
             map((response) => response.authorizationCode),
-            switchMap((authorizationCode) => this.requestTokens(authorizationCode))
+            switchMap((authorizationCode) =>
+                this.requestService.post<void, TokenRequestBody>('/authentication/token', {
+                    codeVerifier: this.codeVerifier!,
+                    authorizationCode: authorizationCode,
+                    username: username,
+                })
+            ),
+            tap(() => this.setAuthentication())
         );
     }
 
     signUp(userData: CreateUserData) {
         return this.requestService.post<SignUpResponse, CreateUserData>('/authentication/sign-up', userData);
-    }
-
-    private requestTokens(authorizationCode: string) {
-        return this.configService.config$.pipe(
-            take(1),
-            switchMap(({ id }) =>
-                this.requestService.post<void, TokenRequestBody>('/authentication/token', {
-                    codeVerifier: this.codeVerifier!,
-                    authorizationCode: authorizationCode,
-                    clientId: id,
-                })
-            )
-        );
     }
 
     private generateCodeChallenge() {
@@ -80,7 +85,12 @@ export class DmaAuthenticationService {
         );
     }
 
-    private initialize() {
-        console.warn('INITIALIZING AUTHENTICATION');
+    private setAuthentication() {
+        const token = this.cookieService.getCookie('identity-token');
+        const decodedToken = this.jwtService.decodeToken<IdentityTokenData>(token);
+
+        if (!decodedToken) return;
+
+        this.authenticatedUser$.next(decodedToken.user);
     }
 }
