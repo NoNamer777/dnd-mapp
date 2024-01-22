@@ -50,3 +50,18 @@ export class CodeChallengeRequest extends StateRequest {
 export class AuthorizationCodeResponse extends StateResponse {
     authorizationCode: string;
 }
+
+export class TokenRequest {
+    @IsString()
+    @IsNotEmpty()
+    codeVerifier: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @IsBase64()
+    authorizationCode: string;
+
+    @IsString()
+    @IsNotEmpty()
+    username: string;
+}

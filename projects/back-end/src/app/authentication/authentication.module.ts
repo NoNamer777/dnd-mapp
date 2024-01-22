@@ -4,7 +4,15 @@ import { DndMappJwtModule } from '../config';
 import { AuthenticationController, ClientController, RoleController, UserController } from './controllers';
 import { ClientEntity, RoleEntity, TokenEntity, UserEntity } from './entities';
 import { ClientRepository, RoleRepository, UserRepository } from './repositories';
-import { AuthenticationService, ClientService, RoleService, UserService } from './services';
+import { TokenRepository } from './repositories/token.repository';
+import {
+    AuthenticationService,
+    ClientService,
+    RoleService,
+    TokenService,
+    UserService,
+    maxTokensProvider,
+} from './services';
 
 @Module({
     imports: [DndMappJwtModule, TypeOrmModule.forFeature([ClientEntity, UserEntity, RoleEntity, TokenEntity])],
@@ -17,7 +25,10 @@ import { AuthenticationService, ClientService, RoleService, UserService } from '
         RoleRepository,
         ClientService,
         ClientRepository,
+        TokenService,
+        TokenRepository,
+        maxTokensProvider,
     ],
-    exports: [AuthenticationService],
+    exports: [AuthenticationService, ClientService],
 })
 export class AuthenticationModule {}

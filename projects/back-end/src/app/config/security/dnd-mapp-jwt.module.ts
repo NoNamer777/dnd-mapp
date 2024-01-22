@@ -8,9 +8,6 @@ const jwtModuleOptions: JwtModuleAsyncOptions = {
     inject: [ConfigService],
     useFactory: (configService: ConfigService) => ({
         signOptions: {
-            // TODO: Shorten expiration time once the refresh token has been implemented
-            expiresIn: '3h',
-            notBefore: 0,
             algorithm: 'HS512',
         },
         verifyOptions: {

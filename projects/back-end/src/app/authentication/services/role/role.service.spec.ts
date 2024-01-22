@@ -8,7 +8,7 @@ import { RoleService } from './role.service';
 describe('RoleService', () => {
     async function setupTestEnvironment() {
         const module = await Test.createTestingModule({
-            providers: [RoleService, mockLoggingServiceProvider, ...mockRoleModuleProviders],
+            providers: [mockLoggingServiceProvider, ...mockRoleModuleProviders],
         }).compile();
 
         return {

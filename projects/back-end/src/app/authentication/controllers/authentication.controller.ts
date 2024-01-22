@@ -18,6 +18,7 @@ import {
     SignUpRequest,
     StateRequest,
     StateResponse,
+    TokenRequest,
 } from '../models';
 import { AuthenticationService } from '../services';
 
@@ -78,5 +79,22 @@ export class AuthenticationController {
         response.header('Location', `${backEndServerAddress}/server/api/user/${user.id}`);
 
         return user;
+    }
+
+    @Post('/token')
+    async token(
+        @Body() requestBody: TokenRequest,
+        @Req() request: DmaClientRequest,
+        @Res({ passthrough: true }) response: Response
+    ) {
+        this.logger.log(`Received request for JWT tokens for Client with ID: '${request.dmaClient?.id}'`);
+        const { authorizationCode, codeVerifier, username } = requestBody;
+
+        const tokens = await this.authenticationService.getTokensForClient(
+            request.dmaClient,
+            codeVerifier,
+            authorizationCode,
+            username
+        );
     }
 }
