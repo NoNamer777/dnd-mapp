@@ -20,7 +20,7 @@ class MockClientDB {
     }
 
     save(data: ClientModel) {
-        this.db[data.id] = { ...data };
+        this.db[data.id] = data;
 
         return data;
     }
@@ -33,17 +33,11 @@ class MockClientDB {
     }
 
     reset() {
+        defaultClient = new ClientModel('9mez32qmVA9Tl1QBuwAgqZSRf69i3x3B', null, null, null);
         this.db = { [defaultClient.id]: defaultClient };
     }
 }
 
-// Unhashed client secret: TPh2MKReLtKndS_GVo5c8Y59jq-aHNev5AhcHMmcbvuXAiiy4Q8K5AaBgshBO2bg
-
-export const defaultClient: ClientModel = {
-    id: '9mez32qmVA9Tl1QBuwAgqZSRf69i3x3B',
-    authorizationCode: null,
-    codeChallenge: null,
-    codeGeneratedAt: null,
-};
+export let defaultClient: ClientModel;
 
 export const mockClientDB = new MockClientDB();

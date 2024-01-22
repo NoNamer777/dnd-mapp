@@ -7,6 +7,12 @@ export class AbilityModel extends NameableModel {
     @ArrayMinSize(0)
     @ValidateNested()
     skills: SkillModel[];
+
+    constructor(id?: number, name?: string, skills?: SkillModel[]) {
+        super(id, name);
+
+        this.skills = skills ? skills : [];
+    }
 }
 
 export type CreateAbilityData = Omit<AbilityModel, 'id'>;

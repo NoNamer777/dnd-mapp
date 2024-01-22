@@ -1,4 +1,5 @@
 import { AbilityModel, CreateAbilityData } from '../../../../src';
+import { defaultSkill } from './skill.db';
 
 interface AbilityDB {
     [id: string]: AbilityModel;
@@ -54,15 +55,12 @@ class MockAbilityDB {
     }
 
     reset() {
+        defaultAbility = new AbilityModel(1, 'Test Ability', [defaultSkill]);
         this.db = { [defaultAbility.id]: defaultAbility };
-        this.nextId = Object.values(this.db).length + 1;
+        this.nextId = 2;
     }
 }
 
-export const defaultAbility: AbilityModel = {
-    id: 1,
-    name: 'Test Ability',
-    skills: [],
-};
+export let defaultAbility: AbilityModel;
 
 export const mockAbilityDB = new MockAbilityDB();

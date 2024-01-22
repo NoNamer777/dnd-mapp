@@ -54,14 +54,12 @@ class MockRaceDB {
     }
 
     reset() {
+        defaultRace = new Race(1, 'Test Race');
         this.db = { [defaultRace.id]: defaultRace };
-        this.nextId = Object.values(this.db).length + 1;
+        this.nextId = 2;
     }
 }
 
-export const defaultRace: Race = {
-    id: 1,
-    name: 'Test Race',
-};
+export let defaultRace: Race;
 
 export const mockRaceDB = new MockRaceDB();

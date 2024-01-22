@@ -18,7 +18,7 @@ class MockSkillDB {
     }
 
     findAllByAbility(abilityId: number) {
-        return Object.values(this.db).filter((skill) => skill.ability.id === abilityId);
+        return Object.values(this.db).filter((skill) => skill.ability?.id === abilityId);
     }
 
     findOneById(id: number) {
@@ -59,15 +59,12 @@ class MockSkillDB {
     }
 
     reset() {
+        defaultSkill = new SkillModel(1, 'Test Skill', defaultAbility);
         this.db = { [defaultSkill.id]: defaultSkill };
-        this.nextId = Object.values(this.db).length + 1;
+        this.nextId = 2;
     }
 }
 
-export const defaultSkill: SkillModel = {
-    id: 1,
-    name: 'Test Skill',
-    ability: defaultAbility,
-};
+export let defaultSkill: SkillModel;
 
 export const mockSkillDB = new MockSkillDB();
