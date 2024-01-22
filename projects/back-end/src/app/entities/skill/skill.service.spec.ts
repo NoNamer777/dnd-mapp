@@ -28,6 +28,7 @@ describe('SkillService', () => {
 
     describe('get by ability', () => {
         it('should get all Skills by Ability', async () => {
+            defaultSkill.ability = defaultAbility;
             mockSkillDB.insert({ name: 'Test Skill 2', ability: defaultAbility });
 
             const { service } = await setupTestEnvironment();
