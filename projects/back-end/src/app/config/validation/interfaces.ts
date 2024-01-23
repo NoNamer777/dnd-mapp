@@ -1,5 +1,17 @@
 import { Expose } from 'class-transformer';
-import { IsArray, IsBoolean, IsIn, IsInt, IsOptional, IsString, Matches, Max, Min, ValidateIf } from 'class-validator';
+import {
+    IsArray,
+    IsBoolean,
+    IsIn,
+    IsInt,
+    IsOptional,
+    IsString,
+    Matches,
+    Max,
+    Min,
+    MinLength,
+    ValidateIf,
+} from 'class-validator';
 
 export class ServerEnvironmentVariables {
     @Expose()
@@ -26,10 +38,12 @@ export class ServerEnvironmentVariables {
 
     @Expose()
     @IsString()
+    @MinLength(16)
     JWT_SECRET: string;
 
     @Expose()
     @IsString()
+    @MinLength(16)
     COOKIE_SECRET: string;
 
     @Expose()

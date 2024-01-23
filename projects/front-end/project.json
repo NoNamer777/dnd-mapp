@@ -80,10 +80,7 @@
                 "inlineStyleLanguage": "scss",
                 "karmaConfig": "projects/front-end/karma.conf.js",
                 "polyfills": ["zone.js", "zone.js/testing"],
-                "scripts": [
-                    "node_modules/@popperjs/core/dist/umd/popper.min.js",
-                    "node_modules/bootstrap/dist/js/bootstrap.min.js"
-                ],
+                "scripts": ["node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"],
                 "styles": ["projects/front-end/src/styles.scss", "node_modules/bootstrap/dist/css/bootstrap.min.css"],
                 "tsConfig": "projects/front-end/tsconfig.spec.json",
                 "watch": false

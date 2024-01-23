@@ -1,15 +1,17 @@
 import { RoleName, UserModel } from '@dnd-mapp/data';
 import { ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Request } from 'express';
+import { DmaClientRequest } from '../../common';
 import { UserService } from '../services';
+
+export type AuthenticatedRequest = DmaClientRequest & { authenticatedUser?: UserModel };
 
 export async function getAuthenticatedUser(
     context: ExecutionContext,
     jwtService: JwtService,
     userService: UserService
 ) {
-    const request: Request = context.switchToHttp().getRequest();
+    const request: AuthenticatedRequest = context.switchToHttp().getRequest();
     const accessTokenCookie = request.signedCookies['access-token'];
 
     if (!accessTokenCookie) {
@@ -25,7 +27,11 @@ export async function getAuthenticatedUser(
         // JWT decoding error, token expired error
         throw new UnauthorizedException();
     }
-    return await userService.findById(decodedToken.sub);
+    const user = await userService.findById(decodedToken.sub);
+
+    request.authenticatedUser = user;
+
+    return user;
 }
 
 export function hasRole(user: UserModel, role: RoleName) {

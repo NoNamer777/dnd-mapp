@@ -8,11 +8,14 @@ import {
     Post,
     Req,
     Res,
+    UseGuards,
     UseInterceptors,
 } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import { Response } from 'express';
 import { DmaClientRequest, LoggerService, backEndServerAddress } from '../../common';
+import { IsAuthenticatedGuard } from '../guards';
+import { AuthenticatedRequest } from '../guards/methods';
 import {
     AuthorizationCodeResponse,
     CodeChallengeRequest,
@@ -69,6 +72,18 @@ export class AuthenticationController {
         this.logger.log(`Received a request to authenticate User with username: '${user.username}'`);
 
         await this.authenticationService.login(user, request.dmaClient);
+    }
+
+    @UseGuards(IsAuthenticatedGuard)
+    @Post('/sign-out')
+    async logout(@Req() request: AuthenticatedRequest, @Res({ passthrough: true }) response: Response) {
+        this.logger.log('Receiving a request to log out a User');
+
+        await this.authenticationService.logout(request.authenticatedUser, request.dmaClient);
+
+        response.clearCookie('access-token');
+        response.clearCookie('refresh-token');
+        response.clearCookie('identity-token');
     }
 
     @Post('/sign-up')

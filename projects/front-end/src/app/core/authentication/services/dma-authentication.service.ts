@@ -67,6 +67,12 @@ export class DmaAuthenticationService {
         );
     }
 
+    signOut() {
+        return this.requestService
+            .post<void>('/authentication/sign-out', null)
+            .pipe(tap(() => this.setAuthentication()));
+    }
+
     signUp(userData: CreateUserData) {
         return this.requestService.post<SignUpResponse, CreateUserData>('/authentication/sign-up', userData);
     }
@@ -87,10 +93,16 @@ export class DmaAuthenticationService {
 
     private setAuthentication() {
         const token = this.cookieService.getCookie('identity-token');
-        const decodedToken = this.jwtService.decodeToken<IdentityTokenData>(token);
+        try {
+            const decodedToken = this.jwtService.decodeToken<IdentityTokenData>(token);
 
-        if (!decodedToken) return;
-
-        this.authenticatedUser$.next(decodedToken.user);
+            if (decodedToken) {
+                this.authenticatedUser$.next(decodedToken.user);
+                return;
+            }
+        } catch (error) {
+            console.error('Something unexpected went wrong while parsing the Identity token from the cookie', error);
+        }
+        this.authenticatedUser$.next(null);
     }
 }
