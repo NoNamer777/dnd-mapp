@@ -82,6 +82,18 @@ describe('AuthenticationService', () => {
         expect(mockClientDB.findOneById(id).codeChallenge).toEqual('code_challenge');
     });
 
+    it('should revoke active tokens on log out', async () => {
+        const { service } = await setupTestEnvironment();
+
+        await service.login({ username: defaultUser.username, password: 'secure_password' }, defaultClient);
+
+        expect(mockTokenDB.findAllTokensForUser(defaultUser.id)).toHaveLength(3);
+
+        await service.logout(defaultUser, defaultClient);
+
+        expect(mockTokenDB.findActiveTokensForUserOnClient(defaultUser.id, defaultClient.id)).toHaveLength(0);
+    });
+
     describe('login', () => {
         it('should handle login requests', async () => {
             const { service } = await setupTestEnvironment();

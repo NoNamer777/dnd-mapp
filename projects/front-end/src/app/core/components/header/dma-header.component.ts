@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, NgZone, OnDestroy } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { DmaIconsModule } from '../../../shared';
@@ -20,7 +20,8 @@ export class DmaHeaderComponent implements OnDestroy {
 
     constructor(
         private readonly authenticationService: DmaAuthenticationService,
-        private readonly router: Router
+        private readonly router: Router,
+        private readonly zone: NgZone
     ) {}
 
     ngOnDestroy() {
@@ -33,7 +34,7 @@ export class DmaHeaderComponent implements OnDestroy {
             .signOut()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: async () => await this.router.navigate(['/authentication/login']),
+                next: () => this.zone.run(() => this.router.navigate(['/authentication/login'])),
             });
     }
 }
