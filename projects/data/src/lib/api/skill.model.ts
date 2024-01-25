@@ -1,4 +1,4 @@
-import { ValidateNested } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
 import { EntityModel } from '../models';
 import { AbilityModel } from './ability.model';
 
@@ -29,6 +29,9 @@ export class SkillModel extends EntityModel {
     @ValidateNested()
     ability: AbilityModel;
 
+    @IsString()
+    @IsNotEmpty()
+    @IsEnum(Skills)
     name: SkillName;
 }
 
