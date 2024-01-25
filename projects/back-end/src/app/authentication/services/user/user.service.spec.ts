@@ -1,4 +1,4 @@
-import { UserModel } from '@dnd-mapp/data';
+import { UserBuilder } from '@dnd-mapp/data';
 import { defaultUser, mockUserDB } from '@dnd-mapp/data/testing';
 import { NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
@@ -56,8 +56,11 @@ describe('UserService', () => {
     describe('update', () => {
         it('should update', async () => {
             const { service } = await setupTestEnvironment();
-            const { id, password, emailAddress } = defaultUser;
-            const newUserData = new UserModel('User11', password, emailAddress, id);
+            const newUserData = new UserBuilder()
+                .withUsername('User11')
+                .withPassword(defaultUser.password)
+                .withId(defaultUser.id)
+                .build();
 
             expect(await service.update(newUserData)).toEqual(newUserData);
             expect(mockUserDB.findOneById(1)).toEqual(expect.objectContaining(newUserData));
@@ -65,8 +68,7 @@ describe('UserService', () => {
 
         it('should update the password with a new hashed password', async () => {
             const { service } = await setupTestEnvironment();
-            const { id, username, emailAddress } = defaultUser;
-            const newUserData = new UserModel(username, 'new_secure_password', emailAddress, id);
+            const newUserData = new UserBuilder().withPassword('new_secure_password').withId(defaultUser.id).build();
 
             expect(await service.update(newUserData)).toEqual(newUserData);
             expect(mockUserDB.findOneById(1)).toEqual(expect.objectContaining(newUserData));
@@ -74,8 +76,7 @@ describe('UserService', () => {
 
         it('should throw 404 when using ID of non existing User', async () => {
             const { service } = await setupTestEnvironment();
-            const { password, emailAddress } = defaultUser;
-            const newUserData = new UserModel('User Test Test', password, emailAddress, 2);
+            const newUserData = new UserBuilder().withId(2).build();
 
             await expect(service.update(newUserData)).rejects.toThrow(
                 new NotFoundException(`Cannot update User with ID: '2' because it does not exist`)
@@ -83,11 +84,10 @@ describe('UserService', () => {
         });
 
         it('should throw 400 when using non unique name', async () => {
-            mockUserDB.insert(new UserModel('User Test Test', 'user-test-test@domain.com', 'secure_password'));
+            mockUserDB.insert(new UserBuilder().withUsername('User Test Test').build());
 
             const { service } = await setupTestEnvironment();
-            const { id, password, emailAddress } = defaultUser;
-            const newUserData = new UserModel('User Test Test', password, emailAddress, id);
+            const newUserData = new UserBuilder().withUsername('User Test Test').withId(defaultUser.id).build();
 
             await expect(service.update(newUserData)).rejects.toThrow(
                 new NotFoundException(`Cannot update User because the username 'User Test Test' is already used`)
@@ -99,7 +99,11 @@ describe('UserService', () => {
     describe('create', () => {
         it('should create', async () => {
             const { service } = await setupTestEnvironment();
-            const newUserData = new UserModel('New User Test', 'user-test-test@domain.com', 'secure_password');
+            const newUserData = new UserBuilder()
+                .withUsername('New User Test')
+                .withEmailAddress('user-test-test@domain.com')
+                .withPassword('secure_password')
+                .build();
 
             expect((await service.create(newUserData)).id).toBeDefined();
             expect(mockUserDB.findOneByUsername('New User Test')).toEqual(
@@ -109,7 +113,7 @@ describe('UserService', () => {
 
         it('should throw 400 when using non unique name', async () => {
             const { service } = await setupTestEnvironment();
-            const newUserData = new UserModel('User1', 'user1@domain.com', 'secure_password');
+            const newUserData = new UserBuilder().withUsername('User1').build();
 
             await expect(service.create(newUserData)).rejects.toThrow(
                 new NotFoundException(`Cannot create User because the username 'User1' is already used`)

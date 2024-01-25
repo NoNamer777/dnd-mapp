@@ -1,3 +1,4 @@
+import { plainToInstance } from 'class-transformer';
 import { CreateSkillData, SkillBuilder, SkillModel, SkillName, Skills } from '../../../../src';
 import { defaultAbility } from './ability.db';
 
@@ -14,19 +15,22 @@ class MockSkillDB {
     }
 
     findAll() {
-        return Object.values(this.db);
+        return plainToInstance(SkillModel, Object.values(this.db));
     }
 
     findAllByAbility(abilityId: number) {
-        return Object.values(this.db).filter((skill) => skill.ability?.id === abilityId);
+        return plainToInstance(
+            SkillModel,
+            Object.values(this.db).filter((skill) => skill.ability?.id === abilityId)
+        );
     }
 
     findOneById(id: number) {
-        return Object.values(this.db).find((skill) => skill.id === id) ?? null;
+        return plainToInstance(SkillModel, Object.values(this.db).find((skill) => skill.id === id) ?? null);
     }
 
     findOneByName(name: SkillName) {
-        return Object.values(this.db).find((skill) => skill.name === name) ?? null;
+        return plainToInstance(SkillModel, Object.values(this.db).find((skill) => skill.name === name) ?? null);
     }
 
     save(skill: SkillModel) {
@@ -60,7 +64,7 @@ class MockSkillDB {
     }
 
     reset() {
-        defaultSkill = new SkillBuilder().withId(1).withName(Skills.ATHLETICS).fallsUnder(defaultAbility).build();
+        defaultSkill = new SkillBuilder().withId(1).withName(Skills.ACROBATICS).fallsUnder(defaultAbility).build();
         this.db = { [defaultSkill.id]: defaultSkill };
         this.nextId = 2;
     }

@@ -1,4 +1,4 @@
-import { UserModel } from '@dnd-mapp/data';
+import { UserBuilder } from '@dnd-mapp/data';
 import { defaultClient, defaultUser, mockClientDB, mockTokenDB, mockUserDB } from '@dnd-mapp/data/testing';
 import { ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
@@ -66,7 +66,13 @@ describe('AuthenticationService', () => {
 
     it('should handle sign up requests', async () => {
         const { service } = await setupTestEnvironment();
-        const user = await service.signup(new UserModel('User2', 'secure_password', 'user2@domain.com'));
+        const user = await service.signup(
+            new UserBuilder()
+                .withUsername('User2')
+                .withPassword('secure_password')
+                .withPassword('user2@domain.com')
+                .build()
+        );
 
         expect(user.id).toEqual(expect.any(Number));
         expect(mockUserDB.findAll()).toHaveLength(2);
