@@ -21,12 +21,26 @@ export class RaceModel extends EntityModel {
     @IsNotEmpty()
     @IsEnum(Races)
     name: RaceName;
-
-    constructor(id?: number, name?: RaceName) {
-        super(id);
-
-        if (name) this.name = name;
-    }
 }
 
 export type CreateRaceData = Omit<RaceModel, 'id'>;
+
+export class RaceBuilder {
+    private readonly race = new RaceModel();
+
+    build() {
+        return this.race;
+    }
+
+    withId(id: number) {
+        this.race.id = id;
+
+        return this;
+    }
+
+    withName(name: RaceName) {
+        this.race.name = name;
+
+        return this;
+    }
+}

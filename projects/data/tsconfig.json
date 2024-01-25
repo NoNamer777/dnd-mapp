@@ -23,7 +23,7 @@
         "noPropertyAccessFromIndexSignature": true,
         "noUnusedParameters": true,
         "noUnusedLocals": true,
-        "strictNullChecks": true,
+        "strictNullChecks": false,
         "strictBindCallApply": true,
         "strictFunctionTypes": true,
         "strictPropertyInitialization": false,

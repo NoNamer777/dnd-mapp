@@ -18,19 +18,6 @@ const TOKEN_EXPIRATION_TIME_PER_TYPE: Record<TokenTypes, number> = {
 export type TokenType = (typeof TokenTypes)[keyof typeof TokenTypes];
 
 export class TokenModel {
-    static from(data: TokenModel) {
-        return new TokenModel(
-            data.jti,
-            data.type,
-            data.revoked,
-            data.notBefore,
-            data.issuedAt,
-            data.expiresAt,
-            data.client,
-            data.user
-        );
-    }
-
     @IsString()
     @IsNotEmpty()
     jti: string;
@@ -57,26 +44,6 @@ export class TokenModel {
 
     @ValidateNested()
     user: UserModel;
-
-    constructor(
-        jti?: string,
-        type?: TokenType,
-        revoked?: boolean,
-        notBefore?: Date,
-        issuedAt?: Date,
-        expiresAt?: Date,
-        client?: ClientModel,
-        user?: UserModel
-    ) {
-        if (jti) this.jti = jti;
-        if (type) this.type = type;
-        if (revoked) this.revoked = revoked;
-        if (notBefore) this.notBefore = notBefore;
-        if (issuedAt) this.issuedAt = issuedAt;
-        if (expiresAt) this.expiresAt = expiresAt;
-        if (client) this.client = client;
-        if (user) this.user = user;
-    }
 
     setExpiresAtBasedOnType() {
         if (!this.type || !this.issuedAt) return;
@@ -105,11 +72,7 @@ export class TokenModel {
 }
 
 export class TokenModelBuilder {
-    private readonly token: TokenModel;
-
-    constructor() {
-        this.token = new TokenModel();
-    }
+    private readonly token = new TokenModel();
 
     assignToUser(user: UserModel) {
         this.token.user = user;

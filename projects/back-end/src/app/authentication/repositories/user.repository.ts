@@ -1,12 +1,11 @@
 import { UserModel } from '@dnd-mapp/data';
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
-import { UserEntity } from '../entities';
 
 @Injectable()
 export class UserRepository extends Repository<UserModel> {
     constructor(datasource: DataSource) {
-        super(UserEntity, datasource.createEntityManager());
+        super('User', datasource.createEntityManager());
     }
 
     async findAll() {
@@ -14,11 +13,11 @@ export class UserRepository extends Repository<UserModel> {
     }
 
     async findOneById(id: number) {
-        return UserModel.from(await this.findOne({ relations: ['roles'], where: { id } }));
+        return await this.findOne({ relations: ['roles'], where: { id } });
     }
 
     async findOneByUsername(username: string) {
-        return UserModel.from(await this.findOne({ relations: ['roles'], where: { username } }));
+        return await this.findOne({ relations: ['roles'], where: { username } });
     }
 
     async deleteById(id: number) {

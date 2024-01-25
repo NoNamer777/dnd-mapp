@@ -4,6 +4,8 @@ import { EntitySchema } from 'typeorm';
 
 export const RoleEntity = new EntitySchema<RoleModel>({
     name: 'Role',
+    target: RoleModel,
+    tableName: 'Role',
     columns: {
         id: {
             name: 'id',

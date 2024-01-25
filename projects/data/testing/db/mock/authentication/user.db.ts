@@ -1,4 +1,4 @@
-import { CreateUserData, UserModel } from '../../../../src';
+import { CreateUserData, UserBuilder, UserModel } from '../../../../src';
 import { defaultRole } from './role.db';
 
 interface UserDB {
@@ -30,9 +30,13 @@ class MockUserDB {
     }
 
     insert(userData: CreateUserData) {
-        const newUser = new UserModel(userData.username, userData.password, userData.emailAddress, this.nextId++, [
-            defaultRole,
-        ]);
+        const newUser = new UserBuilder()
+            .withId(this.nextId++)
+            .withUsername(userData.username)
+            .withPassword(userData.password)
+            .withEmailAddress(userData.emailAddress)
+            .withRoles([defaultRole])
+            .build();
 
         this.db[newUser.id] = newUser;
         return newUser;
@@ -54,13 +58,14 @@ class MockUserDB {
     }
 
     reset() {
-        defaultUser = new UserModel(
-            'User1',
-            '$2b$12$CU2n8T1reHQ24urHR3HFFO.LMmw6zGEHKtfkwuiTyemO1Mz.68Psa',
-            'user1@domain.com',
-            1,
-            [defaultRole]
-        );
+        defaultUser = new UserBuilder()
+            .withId(1)
+            .withUsername('User1')
+            .withPassword('$2b$12$CU2n8T1reHQ24urHR3HFFO.LMmw6zGEHKtfkwuiTyemO1Mz.68Psa')
+            .withEmailAddress('user1@domain.com')
+            .withRoles([defaultRole])
+            .build();
+
         this.db = { [defaultUser.id]: defaultUser };
         this.nextId = 2;
     }

@@ -1,4 +1,5 @@
-import { Abilities, AbilityModel, AbilityName, CreateAbilityData } from '../../../../src';
+import { Abilities, AbilityBuilder, AbilityModel, AbilityName, CreateAbilityData } from '../../../../src';
+import { defaultSkill } from './skill.db';
 
 interface AbilityDB {
     [id: string]: AbilityModel;
@@ -29,10 +30,7 @@ class MockAbilityDB {
     }
 
     insert(ability: CreateAbilityData) {
-        const newAbility: AbilityModel = {
-            id: this.nextId++,
-            ...ability,
-        };
+        const newAbility = new AbilityBuilder().withId(this.nextId++).withName(ability.name).build();
 
         this.db[newAbility.id] = newAbility;
         return newAbility;
@@ -54,7 +52,7 @@ class MockAbilityDB {
     }
 
     reset() {
-        defaultAbility = new AbilityModel(1, Abilities.STRENGTH, []);
+        defaultAbility = new AbilityBuilder().withId(1).withName(Abilities.STRENGTH).withSkills([defaultSkill]).build();
         this.db = { [defaultAbility.id]: defaultAbility };
         this.nextId = 2;
     }

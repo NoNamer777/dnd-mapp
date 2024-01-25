@@ -6,12 +6,6 @@ import { nanoid } from 'nanoid';
 const MAX_LIFESPAN_AUTHORIZATION_CODE = 30 * 1000;
 
 export class ClientModel {
-    static from(data: ClientModel) {
-        if (!data) return null;
-
-        return new ClientModel(data.id, data.codeChallenge, data.authorizationCode, data.codeGeneratedAt);
-    }
-
     @IsString()
     @IsNotEmpty()
     id: string;
@@ -19,29 +13,16 @@ export class ClientModel {
     @IsOptional()
     @IsString()
     @IsNotEmpty()
-    codeChallenge: string | null;
+    codeChallenge: string = null;
 
     @IsOptional()
     @IsString()
     @IsNotEmpty()
-    authorizationCode: string | null;
+    authorizationCode: string = null;
 
     @IsOptional()
     @IsDate()
-    codeGeneratedAt: Date | null;
-
-    constructor(
-        id?: string,
-        codeChallenge?: string | null,
-        authorizationCode?: string | null,
-        codeGeneratedAt?: Date | null
-    ) {
-        this.id = id ? id : nanoid(32);
-
-        this.codeChallenge = codeChallenge ?? null;
-        this.authorizationCode = authorizationCode ?? null;
-        this.codeGeneratedAt = codeGeneratedAt ?? null;
-    }
+    codeGeneratedAt: Date = null;
 
     reset() {
         this.codeChallenge = null;
@@ -53,5 +34,38 @@ export class ClientModel {
         const now = new Date();
 
         return now.getTime() - this.codeGeneratedAt!.getTime() < MAX_LIFESPAN_AUTHORIZATION_CODE;
+    }
+}
+
+export class ClientBuilder {
+    private readonly client = new ClientModel();
+
+    build() {
+        return this.client;
+    }
+
+    codeGeneratedAt(timestamp: Date) {
+        this.client.codeGeneratedAt = timestamp;
+
+        return this;
+    }
+
+    withAuthorizationCode(code: string) {
+        this.client.authorizationCode = code;
+        this.client.codeGeneratedAt = new Date();
+
+        return this;
+    }
+
+    withCodeChallenge(challenge: string) {
+        this.client.codeChallenge = challenge;
+
+        return this;
+    }
+
+    withId(id?: string) {
+        this.client.id = id ? id : nanoid(32);
+
+        return this;
     }
 }

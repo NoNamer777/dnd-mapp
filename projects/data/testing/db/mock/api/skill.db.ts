@@ -1,4 +1,5 @@
-import { CreateSkillData, SkillModel, SkillName, Skills } from '../../../../src';
+import { CreateSkillData, SkillBuilder, SkillModel, SkillName, Skills } from '../../../../src';
+import { defaultAbility } from './ability.db';
 
 interface SkillDB {
     [id: string]: SkillModel;
@@ -33,10 +34,11 @@ class MockSkillDB {
     }
 
     insert(skill: CreateSkillData) {
-        const newSkill: SkillModel = {
-            id: this.nextId++,
-            ...skill,
-        };
+        const newSkill = new SkillBuilder()
+            .withId(this.nextId++)
+            .withName(skill.name)
+            .fallsUnder(skill.ability)
+            .build();
 
         this.db[newSkill.id] = newSkill;
         return newSkill;
@@ -58,7 +60,7 @@ class MockSkillDB {
     }
 
     reset() {
-        defaultSkill = new SkillModel(1, Skills.ACROBATICS);
+        defaultSkill = new SkillBuilder().withId(1).withName(Skills.ATHLETICS).fallsUnder(defaultAbility).build();
         this.db = { [defaultSkill.id]: defaultSkill };
         this.nextId = 2;
     }

@@ -1,4 +1,4 @@
-import { ClientModel } from '../../../../src';
+import { ClientBuilder, ClientModel } from '../../../../src';
 
 interface ClientDB {
     [id: string]: ClientModel;
@@ -33,7 +33,7 @@ class MockClientDB {
     }
 
     reset() {
-        defaultClient = new ClientModel('9mez32qmVA9Tl1QBuwAgqZSRf69i3x3B', null, null, null);
+        defaultClient = new ClientBuilder().withId('9mez32qmVA9Tl1QBuwAgqZSRf69i3x3B').build();
         this.db = { [defaultClient.id]: defaultClient };
     }
 }

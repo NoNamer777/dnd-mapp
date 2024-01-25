@@ -14,12 +14,26 @@ export class RoleModel extends EntityModel {
     @IsNotEmpty()
     @IsEnum(Roles)
     name: RoleName;
-
-    constructor(id?: number, name?: RoleName) {
-        super(id);
-
-        if (name) this.name = name;
-    }
 }
 
 export type CreateRoleData = Omit<RoleModel, 'id'>;
+
+export class RoleBuilder {
+    private readonly role = new RoleModel();
+
+    build() {
+        return this.role;
+    }
+
+    withId(id: number) {
+        this.role.id = id;
+
+        return this;
+    }
+
+    withName(name: RoleName) {
+        this.role.name = name;
+
+        return this;
+    }
+}
