@@ -1,4 +1,4 @@
-import { CreateRoleData, RoleModel, Roles } from '../../../../src';
+import { CreateRoleData, RoleBuilder, RoleModel, Roles } from '../../../../src';
 
 interface RoleDb {
     [id: string]: RoleModel;
@@ -29,9 +29,9 @@ class MockRoleDB {
     }
 
     insert(role: CreateRoleData) {
-        const newRole: RoleModel = new RoleModel(this.nextId++, role.name);
+        const newRole = new RoleBuilder().withId(this.nextId).withName(role.name).build();
 
-        this.db[newRole.id] = newRole;
+        this.db[newRole.id] = new RoleBuilder().withId(this.nextId).withName(role.name).build();
         return newRole;
     }
 
@@ -51,7 +51,7 @@ class MockRoleDB {
     }
 
     reset() {
-        defaultRole = new RoleModel(1, Roles.PLAYER);
+        defaultRole = new RoleBuilder().withId(1).withName(Roles.PLAYER).build();
         this.db = { [defaultRole.id]: defaultRole };
         this.nextId = 2;
     }

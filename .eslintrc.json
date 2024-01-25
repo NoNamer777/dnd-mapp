@@ -22,7 +22,6 @@
                                     "sqlite3",
                                     "mysql2",
                                     "class-validator",
-                                    "class-transformer",
                                     "axios",
                                     "reflect-metadata",
                                     "js-yaml",
@@ -61,7 +60,7 @@
                             },
                             {
                                 "sourceTag": "@dnd-mapp/data",
-                                "allowedExternalImports": ["nanoid", "class-validator"]
+                                "allowedExternalImports": ["nanoid", "class-validator", "class-transformer"]
                             }
                         ]
                     }

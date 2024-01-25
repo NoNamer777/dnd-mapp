@@ -37,7 +37,7 @@ describe('EntityService', () => {
         const entitiesOfType = await service.getAllOfType('Ability');
 
         expect(entitiesOfType).toHaveLength(1);
-        expect(entitiesOfType).toContain(defaultAbility);
+        expect(entitiesOfType).toEqual(expect.arrayContaining([defaultAbility]));
     });
 
     it('should get an entity by ID of a particular type', async () => {

@@ -10,6 +10,7 @@
             "executor": "@nx/angular:application",
             "outputs": ["{options.outputPath}"],
             "options": {
+                "allowedCommonJsDependencies": ["validator"],
                 "assets": ["projects/front-end/src/favicon.ico", "projects/front-end/src/assets"],
                 "baseHref": "/app/",
                 "browser": "projects/front-end/src/main.ts",

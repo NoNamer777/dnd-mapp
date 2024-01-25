@@ -23,14 +23,36 @@ export class AbilityModel extends EntityModel {
     @IsNotEmpty()
     @IsEnum(Abilities)
     name: AbilityName;
-
-    constructor(id?: number, name?: AbilityName, skills?: SkillModel[]) {
-        super(id);
-
-        if (name) this.name = name;
-
-        this.skills = skills ? skills : [];
-    }
 }
 
 export type CreateAbilityData = Omit<AbilityModel, 'id'>;
+
+export class AbilityBuilder {
+    private readonly ability = new AbilityModel();
+
+    constructor() {
+        this.ability.skills = [];
+    }
+
+    build() {
+        return this.ability;
+    }
+
+    withId(id: number) {
+        this.ability.id = id;
+
+        return this;
+    }
+
+    withName(name: AbilityName) {
+        this.ability.name = name;
+
+        return this;
+    }
+
+    withSkills(skills: SkillModel[]) {
+        this.ability.skills = skills;
+
+        return this;
+    }
+}

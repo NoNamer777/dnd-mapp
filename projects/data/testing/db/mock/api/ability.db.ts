@@ -1,4 +1,5 @@
-import { Abilities, AbilityModel, AbilityName, CreateAbilityData } from '../../../../src';
+import { plainToInstance } from 'class-transformer';
+import { Abilities, AbilityBuilder, AbilityModel, AbilityName, CreateAbilityData } from '../../../../src';
 
 interface AbilityDB {
     [id: string]: AbilityModel;
@@ -13,15 +14,15 @@ class MockAbilityDB {
     }
 
     findAll() {
-        return Object.values(this.db);
+        return plainToInstance(AbilityModel, Object.values(this.db));
     }
 
     findOneById(id: number) {
-        return Object.values(this.db).find((ability) => ability.id === id) ?? null;
+        return plainToInstance(AbilityModel, Object.values(this.db).find((ability) => ability.id === id) ?? null);
     }
 
     findOneByName(name: AbilityName) {
-        return Object.values(this.db).find((ability) => ability.name === name) ?? null;
+        return plainToInstance(AbilityModel, Object.values(this.db).find((ability) => ability.name === name) ?? null);
     }
 
     save(ability: AbilityModel) {
@@ -29,10 +30,7 @@ class MockAbilityDB {
     }
 
     insert(ability: CreateAbilityData) {
-        const newAbility: AbilityModel = {
-            id: this.nextId++,
-            ...ability,
-        };
+        const newAbility = new AbilityBuilder().withId(this.nextId++).withName(ability.name).build();
 
         this.db[newAbility.id] = newAbility;
         return newAbility;
@@ -54,7 +52,7 @@ class MockAbilityDB {
     }
 
     reset() {
-        defaultAbility = new AbilityModel(1, Abilities.STRENGTH, []);
+        defaultAbility = new AbilityBuilder().withId(1).withName(Abilities.DEXTERITY).build();
         this.db = { [defaultAbility.id]: defaultAbility };
         this.nextId = 2;
     }

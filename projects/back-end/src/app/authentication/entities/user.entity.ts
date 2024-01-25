@@ -4,6 +4,8 @@ import { EntitySchema } from 'typeorm';
 
 export const UserEntity = new EntitySchema<UserModel>({
     name: 'User',
+    target: UserModel,
+    tableName: 'User',
     columns: {
         id: {
             name: 'id',

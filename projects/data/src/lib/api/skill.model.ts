@@ -1,4 +1,4 @@
-import { ValidateNested } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
 import { EntityModel } from '../models';
 import { AbilityModel } from './ability.model';
 
@@ -27,16 +27,38 @@ export type SkillName = (typeof Skills)[keyof typeof Skills];
 
 export class SkillModel extends EntityModel {
     @ValidateNested()
-    ability: AbilityModel | null;
+    ability: AbilityModel;
 
+    @IsString()
+    @IsNotEmpty()
+    @IsEnum(Skills)
     name: SkillName;
-
-    constructor(id?: number, name?: SkillName, ability?: AbilityModel) {
-        super(id);
-
-        if (name) this.name = name;
-        this.ability = ability ? ability : null;
-    }
 }
 
 export type CreateSkillData = Omit<SkillModel, 'id'>;
+
+export class SkillBuilder {
+    private readonly skill = new SkillModel();
+
+    build() {
+        return this.skill;
+    }
+
+    fallsUnder(ability: AbilityModel) {
+        this.skill.ability = ability;
+
+        return this;
+    }
+
+    withId(id: number) {
+        this.skill.id = id;
+
+        return this;
+    }
+
+    withName(name: SkillName) {
+        this.skill.name = name;
+
+        return this;
+    }
+}

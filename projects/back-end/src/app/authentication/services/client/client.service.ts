@@ -1,4 +1,4 @@
-import { ClientModel } from '@dnd-mapp/data';
+import { ClientBuilder, ClientModel } from '@dnd-mapp/data';
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import * as crypto from 'crypto';
 import { randomBytes } from 'crypto';
@@ -17,7 +17,7 @@ export class ClientService {
     async create() {
         this.logger.log('Creating a new Client configuration');
 
-        return await this.clientRepository.save(new ClientModel());
+        return await this.clientRepository.save(new ClientBuilder().withId().build());
     }
 
     async findById(id: string, throwsError = true) {
@@ -27,7 +27,7 @@ export class ClientService {
         if (!byId && throwsError) {
             throw new NotFoundException(`Couldn't find Client with ID: '${id}'`);
         }
-        return ClientModel.from(byId);
+        return byId;
     }
 
     async verifyCodeChallengeForClient(client: ClientModel, codeVerifier: string) {
@@ -64,7 +64,7 @@ export class ClientService {
         if (!byId) {
             throw new NotFoundException(`Could not update client with ID: '${client.id}' because it does not exist`);
         }
-        return ClientModel.from(await this.clientRepository.save(client));
+        return await this.clientRepository.save(client);
     }
 
     async generateAuthorizationCodeForClient(id: string) {

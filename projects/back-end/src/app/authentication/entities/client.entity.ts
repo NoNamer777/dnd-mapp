@@ -3,6 +3,8 @@ import { EntitySchema } from 'typeorm';
 
 export const ClientEntity = new EntitySchema<ClientModel>({
     name: 'Client',
+    target: ClientModel,
+    tableName: 'Client',
     columns: {
         id: {
             name: 'id',

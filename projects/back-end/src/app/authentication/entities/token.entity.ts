@@ -3,6 +3,8 @@ import { EntitySchema } from 'typeorm';
 
 export const TokenEntity = new EntitySchema<TokenModel>({
     name: 'Token',
+    target: TokenModel,
+    tableName: 'Token',
     columns: {
         jti: {
             name: 'jti',

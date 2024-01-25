@@ -1,4 +1,4 @@
-import { CreateRaceData, RaceModel, Races } from '../../../../src';
+import { CreateRaceData, RaceBuilder, RaceModel, Races } from '../../../../src';
 
 interface RaceDB {
     [raceId: string]: RaceModel;
@@ -29,10 +29,7 @@ class MockRaceDB {
     }
 
     insert(raceData: CreateRaceData) {
-        const newRace: RaceModel = {
-            id: this.nextId++,
-            ...raceData,
-        };
+        const newRace = new RaceBuilder().withId(this.nextId++).withName(raceData.name).build();
 
         this.db[newRace.id] = newRace;
         return newRace;
@@ -54,7 +51,7 @@ class MockRaceDB {
     }
 
     reset() {
-        defaultRace = new RaceModel(1, Races.DWARF);
+        defaultRace = new RaceBuilder().withId(1).withName(Races.DWARF).build();
         this.db = { [defaultRace.id]: defaultRace };
         this.nextId = 2;
     }

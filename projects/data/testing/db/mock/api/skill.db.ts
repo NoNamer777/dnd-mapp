@@ -1,4 +1,6 @@
-import { CreateSkillData, SkillModel, SkillName, Skills } from '../../../../src';
+import { plainToInstance } from 'class-transformer';
+import { CreateSkillData, SkillBuilder, SkillModel, SkillName, Skills } from '../../../../src';
+import { defaultAbility } from './ability.db';
 
 interface SkillDB {
     [id: string]: SkillModel;
@@ -13,19 +15,22 @@ class MockSkillDB {
     }
 
     findAll() {
-        return Object.values(this.db);
+        return plainToInstance(SkillModel, Object.values(this.db));
     }
 
     findAllByAbility(abilityId: number) {
-        return Object.values(this.db).filter((skill) => skill.ability?.id === abilityId);
+        return plainToInstance(
+            SkillModel,
+            Object.values(this.db).filter((skill) => skill.ability?.id === abilityId)
+        );
     }
 
     findOneById(id: number) {
-        return Object.values(this.db).find((skill) => skill.id === id) ?? null;
+        return plainToInstance(SkillModel, Object.values(this.db).find((skill) => skill.id === id) ?? null);
     }
 
     findOneByName(name: SkillName) {
-        return Object.values(this.db).find((skill) => skill.name === name) ?? null;
+        return plainToInstance(SkillModel, Object.values(this.db).find((skill) => skill.name === name) ?? null);
     }
 
     save(skill: SkillModel) {
@@ -33,10 +38,11 @@ class MockSkillDB {
     }
 
     insert(skill: CreateSkillData) {
-        const newSkill: SkillModel = {
-            id: this.nextId++,
-            ...skill,
-        };
+        const newSkill = new SkillBuilder()
+            .withId(this.nextId++)
+            .withName(skill.name)
+            .fallsUnder(skill.ability)
+            .build();
 
         this.db[newSkill.id] = newSkill;
         return newSkill;
@@ -58,7 +64,7 @@ class MockSkillDB {
     }
 
     reset() {
-        defaultSkill = new SkillModel(1, Skills.ACROBATICS);
+        defaultSkill = new SkillBuilder().withId(1).withName(Skills.ACROBATICS).fallsUnder(defaultAbility).build();
         this.db = { [defaultSkill.id]: defaultSkill };
         this.nextId = 2;
     }
