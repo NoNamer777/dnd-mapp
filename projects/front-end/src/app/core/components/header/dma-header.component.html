@@ -57,33 +57,37 @@
                 <hr class="d-lg-none" />
                 <ul class="navbar-nav mb-2 mb-lg-0 dropstart">
                     @if (authenticatedUser$ | async; as user) {
-                    <li class="nav-item dropdown authenticated-dropdown">
-                        <a href="#" class="nav-link" role="button" data-bs-toggle="dropdown">
-                            <fa-icon icon="circle-user" size="xl"></fa-icon>
-                            <span class="navbar-text ms-2">{{ user.username }}</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a routerLink="/me" routerLinkActive="active" class="dropdown-item">My Profile</a>
-                            </li>
-                            <li>
-                                <a routerLink="/settings" routerLinkActive="active" class="dropdown-item">Settings</a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider" />
-                            </li>
-                            <li>
-                                <button class="dropdown-item text-danger" (click)="onSignOut()">Sign Out</button>
-                            </li>
-                        </ul>
-                    </li>
+                        <li class="nav-item dropdown authenticated-dropdown">
+                            <a href="#" class="nav-link" role="button" data-bs-toggle="dropdown">
+                                <fa-icon icon="circle-user" size="xl"></fa-icon>
+                                <span class="navbar-text ms-2">{{ user.username }}</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a routerLink="/me" routerLinkActive="active" class="dropdown-item">My Profile</a>
+                                </li>
+                                <li>
+                                    <a routerLink="/settings" routerLinkActive="active" class="dropdown-item"
+                                        >Settings</a
+                                    >
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider" />
+                                </li>
+                                <li>
+                                    <button class="dropdown-item text-danger" (click)="onSignOut()">Sign Out</button>
+                                </li>
+                            </ul>
+                        </li>
                     } @else {
-                    <li class="nav-item">
-                        <a routerLink="/authentication/sign-up" routerLinkActive="active" class="nav-link"> Sign Up </a>
-                    </li>
-                    <li class="nav-item">
-                        <a routerLink="/authentication/login" class="nav-link text-success fw-bold">Log In</a>
-                    </li>
+                        <li class="nav-item">
+                            <a routerLink="/authentication/sign-up" routerLinkActive="active" class="nav-link">
+                                Sign Up
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a routerLink="/authentication/login" class="nav-link text-success fw-bold">Log In</a>
+                        </li>
                     }
                 </ul>
             </div>
