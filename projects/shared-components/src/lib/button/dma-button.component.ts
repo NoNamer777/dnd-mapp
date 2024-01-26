@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit } from '@angular/core';
 import { DmaStateComponent, StateColors } from '../state';
 
@@ -17,6 +18,8 @@ const containerColorsPerButtonType = new Map<DmaButtonType, StateColors>([
     templateUrl: './dma-button.component.html',
     styleUrls: ['./dma-button.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [CommonModule, DmaStateComponent],
 })
 export class DmaButtonComponent extends DmaStateComponent implements OnInit {
     @Input('dma-button') set dmaButtonType(buttonType: DmaButtonType | string) {

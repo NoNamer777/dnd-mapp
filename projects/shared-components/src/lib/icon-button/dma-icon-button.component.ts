@@ -1,4 +1,5 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { CommonModule } from '@angular/common';
 import {
     ChangeDetectionStrategy,
     Component,
@@ -10,7 +11,7 @@ import {
     Output,
 } from '@angular/core';
 import { DmaStateComponent, StateColors } from '../state';
-import { DmaTooltipDirective } from '../tooltip';
+import { DmaTooltipDirective, DmaTooltipModule } from '../tooltip';
 
 export type DmaIconButtonType = 'filled' | 'tonal' | 'outlined' | 'standard';
 
@@ -67,6 +68,8 @@ const containerColorsPerButtonType = new Map<DmaIconButtonType, DmaButtonColorPe
             inputs: ['dmaTooltip: dmaIconButtonLabel', 'dmaTooltipPosition: dmaIconButtonLabelPosition'],
         },
     ],
+    standalone: true,
+    imports: [CommonModule, DmaStateComponent, DmaTooltipModule],
 })
 export class DmaIconButtonComponent extends DmaStateComponent implements OnInit {
     @Output() selectedChange = new EventEmitter<boolean>();

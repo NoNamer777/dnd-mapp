@@ -1,7 +1,9 @@
-<ng-container *ngIf="toggle">
-    <ng-container *ngIf="_selected; else unselected">
+@if (!toggle) {
+    <ng-content select="dma-icon:not(.dma-icon-button-unselected):not(.dma-icon-button-selected)"></ng-content>
+} @else {
+    @if (_selected) {
         <ng-content select="dma-icon.dma-icon-button-selected"></ng-content>
-    </ng-container>
-    <ng-template #unselected><ng-content select="dma-icon.dma-icon-button-unselected"></ng-content></ng-template>
-</ng-container>
-<ng-content select="dma-icon:not(.dma-icon-button-unselected):not(.dma-icon-button-selected)"></ng-content>
+    } @else {
+        <ng-content select="dma-icon.dma-icon-button-unselected"></ng-content>
+    }
+}

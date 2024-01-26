@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { StateHarness } from '../testing';
 import { DmaStateComponent } from './dma-state.component';
-import { DmaStateModule } from './dma-state.module';
 
 describe('DmaStateComponent', () => {
     @Component({
@@ -20,7 +19,7 @@ describe('DmaStateComponent', () => {
 
     async function setupTestEnvironment(params?: { disabled?: boolean }) {
         TestBed.configureTestingModule({
-            imports: [DmaStateModule],
+            imports: [DmaStateComponent],
             declarations: [TestComponent],
         });
 

@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { StoryObj, moduleMetadata } from '@storybook/angular';
-import { DmaButtonModule } from '../../button';
+import { DmaButtonComponent } from '../../button';
 import { DmaTooltipDirective } from '../dma-tooltip.directive';
 import { DmaTooltipModule } from '../dma-tooltip.module';
 
 export default {
     title: 'DmaTooltip',
-    decorators: [moduleMetadata({ imports: [CommonModule, DmaTooltipModule, DmaButtonModule] })],
+    decorators: [moduleMetadata({ imports: [CommonModule, DmaTooltipModule, DmaButtonComponent] })],
     argTypes: {
         tooltipText: {
             control: 'text',
