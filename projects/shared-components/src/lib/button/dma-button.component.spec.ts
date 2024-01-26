@@ -2,8 +2,7 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component, Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { DmaButtonHarness } from '../testing';
-import { DmaButtonType } from './dma-button.component';
-import { DmaButtonModule } from './dma-button.module';
+import { DmaButtonComponent, DmaButtonType } from './dma-button.component';
 
 describe('DmaButtonComponent', () => {
     @Component({
@@ -29,7 +28,7 @@ describe('DmaButtonComponent', () => {
         params: { component: Type<T>; disabled?: boolean } = { component: TestComponent as Type<T> }
     ) {
         TestBed.configureTestingModule({
-            imports: [DmaButtonModule],
+            imports: [DmaButtonComponent],
             declarations: [TestComponent, MinimalTestComponent],
         });
 

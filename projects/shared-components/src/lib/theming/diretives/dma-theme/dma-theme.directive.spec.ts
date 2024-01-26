@@ -1,8 +1,8 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { DmaThemeDirective } from '@dnd-mapp/shared-components';
 import { DmaThemeHarness } from '../../../testing';
-import { DmaThemingModule } from '../../dma-theming.module';
 
 describe('DmaThemeDirective', () => {
     @Component({
@@ -13,7 +13,7 @@ describe('DmaThemeDirective', () => {
     }
 
     async function setupTestEnvironment() {
-        TestBed.configureTestingModule({ imports: [DmaThemingModule], declarations: [TestComponent] });
+        TestBed.configureTestingModule({ imports: [DmaThemeDirective], declarations: [TestComponent] });
 
         const fixture = TestBed.createComponent(TestComponent);
         const harnessLoader = TestbedHarnessEnvironment.loader(fixture);

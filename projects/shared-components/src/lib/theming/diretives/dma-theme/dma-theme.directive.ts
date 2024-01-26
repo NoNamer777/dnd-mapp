@@ -6,6 +6,7 @@ import { DmaThemeService } from '../../services/dma-theme/dma-theme.service';
 @Directive({
     selector: '[dmaTheme]',
     providers: [DmaThemeService],
+    standalone: true,
 })
 export class DmaThemeDirective implements OnInit {
     @Input() set dmaTheme(theme: DmaTheme) {

@@ -5,8 +5,7 @@ import { DmaTooltipComponent } from './dma-tooltip.component';
 import { DmaTooltipDirective } from './dma-tooltip.directive';
 
 @NgModule({
-    imports: [CommonModule, OverlayModule, DmaTooltipDirective],
-    declarations: [DmaTooltipComponent],
+    imports: [CommonModule, OverlayModule, DmaTooltipDirective, DmaTooltipComponent],
     exports: [DmaTooltipComponent, DmaTooltipDirective],
 })
 export class DmaTooltipModule {}

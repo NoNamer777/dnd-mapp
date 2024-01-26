@@ -3,8 +3,7 @@ import { Component, Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { DmaIconsModule } from '../icons';
 import { DmaIconButtonHarness } from '../testing';
-import { DmaIconButtonType } from './dma-icon-button.component';
-import { DmaIconButtonModule } from './dma-icon-button.module';
+import { DmaIconButtonComponent, DmaIconButtonType } from './dma-icon-button.component';
 
 describe('DmaIconButtonComponent', () => {
     @Component({
@@ -60,7 +59,7 @@ describe('DmaIconButtonComponent', () => {
         params: { component: Type<T> } = { component: StandardTestComponent as Type<T> }
     ) {
         TestBed.configureTestingModule({
-            imports: [DmaIconButtonModule, DmaIconsModule],
+            imports: [DmaIconButtonComponent, DmaIconsModule],
             declarations: [MinimalTestComponent, StandardTestComponent, ToggleTestComponent],
         });
 

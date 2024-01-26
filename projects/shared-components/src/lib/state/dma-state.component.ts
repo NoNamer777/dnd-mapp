@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, HostListener } from '@angular/core';
 
 type State = 'focussed' | 'hovered' | 'pressed' | 'dragging';
@@ -21,6 +22,8 @@ const opacityPerState = new Map<State, number>([
     selector: '[dma-state]',
     template: '',
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [CommonModule],
 })
 export class DmaStateComponent {
     @HostBinding('attr.dma-focussed')

@@ -1,5 +1,5 @@
+import { DmaThemeDirective } from '@dnd-mapp/shared-components';
 import { componentWrapperDecorator, moduleMetadata, Preview } from '@storybook/angular';
-import { DmaThemingModule } from '../src/lib/theming';
 
 export default {
     parameters: {
@@ -9,7 +9,7 @@ export default {
     },
     decorators: [
         moduleMetadata({
-            imports: [DmaThemingModule],
+            imports: [DmaThemeDirective],
         }),
         componentWrapperDecorator((story) => `<main dmaTheme><section>${story}</section></main>`),
     ],
