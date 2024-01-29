@@ -36,8 +36,8 @@
                 "polyfills": ["zone.js", "zone.js/testing"],
                 "scripts": [],
                 "styles": [
-                    "projects/shared-components/src/lib/styling/theme-variables.scss",
-                    "projects/shared-components/src/lib/styling/font.scss"
+                    "projects/shared-components/src/assets/styles/theme-variables.scss",
+                    "projects/shared-components/src/assets/styles/font.scss"
                 ],
                 "tsConfig": "projects/shared-components/tsconfig.spec.json",
                 "watch": false
@@ -63,9 +63,8 @@
                 "browserTarget": "shared-components:build-storybook",
                 "compodoc": false,
                 "configDir": "projects/shared-components/.storybook",
-                "outputDir": "dist/storybook/shared-components",
-                "styles": ["projects/shared-components/.storybook/styling.scss"]
                 "outputDir": "dist/shared-components-sb",
+                "styles": ["projects/shared-components/.storybook/styling.scss"]
             }
         },
         "storybook": {
