@@ -1,3 +1,4 @@
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { ConnectedPosition, Overlay, OverlayRef, ScrollStrategyOptions } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { Directive, ElementRef, EventEmitter, HostBinding, HostListener, Input, OnInit, Output } from '@angular/core';
@@ -10,7 +11,7 @@ export type DmaTooltipPosition = 'above' | 'below' | 'after' | 'before';
     standalone: true,
 })
 export class DmaTooltipDirective implements OnInit {
-    @Input({ alias: 'dmaTooltip', required: true })
+    @Input({ alias: 'dmaTooltip' })
     @HostBinding('attr.dmaTooltip')
     tooltipText: string;
 
@@ -29,6 +30,14 @@ export class DmaTooltipDirective implements OnInit {
     }
     private _position: DmaTooltipPosition = 'above';
 
+    get disabled(): boolean {
+        return this._disabled;
+    }
+    @Input() set disabled(value: boolean | string) {
+        this._disabled = coerceBooleanProperty(value);
+    }
+    private _disabled = false;
+
     private overlayRef: OverlayRef;
 
     constructor(
@@ -43,6 +52,7 @@ export class DmaTooltipDirective implements OnInit {
 
     @HostListener('mouseenter')
     onShowTooltip() {
+        if (this.disabled || this.overlayRef.hasAttached()) return;
         const tooltipRef = this.overlayRef.attach(new ComponentPortal(DmaTooltipComponent));
 
         tooltipRef.instance.text = this.tooltipText;
