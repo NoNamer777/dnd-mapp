@@ -2,8 +2,12 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input } from '@angular/core';
 
 export enum DmaIcons {
-    STAR = 'star',
+    BARS = 'bars',
+    BOOK = 'book',
     PLUS = 'plus',
+    STAR = 'star',
+    USERS = 'users',
+    WAND_SPARKLES = 'wand-sparkles',
 }
 
 export enum DmaIconTypes {
