@@ -65,6 +65,7 @@
                 "configDir": "projects/shared-components/.storybook",
                 "outputDir": "dist/storybook/shared-components",
                 "styles": ["projects/shared-components/.storybook/styling.scss"]
+                "outputDir": "dist/shared-components-sb",
             }
         },
         "storybook": {
