@@ -1,23 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input } from '@angular/core';
-
-export enum DmaIcons {
-    BARS = 'bars',
-    BOOK = 'book',
-    PLUS = 'plus',
-    STAR = 'star',
-    USERS = 'users',
-    WAND_SPARKLES = 'wand-sparkles',
-}
-
-export enum DmaIconTypes {
-    SOLID = 'solid',
-    REGULAR = 'regular',
-}
-
-export type DmaIconName = (typeof DmaIcons)[keyof typeof DmaIcons];
-
-export type DmaIconType = (typeof DmaIconTypes)[keyof typeof DmaIconTypes];
+import { DmaIconName, DmaIconType, DmaIconTypes } from './models';
 
 @Component({
     selector: 'dma-icon',
