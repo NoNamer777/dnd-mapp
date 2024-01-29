@@ -28,7 +28,7 @@
             "executor": "@angular-devkit/build-angular:karma",
             "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
             "options": {
-                "assets": [],
+                "assets": ["projects/shared-components/src/assets"],
                 "codeCoverage": true,
                 "codeCoverageExclude": ["**/testing/**/*", "**/*.module.ts", "**/index.ts"],
                 "inlineStyleLanguage": "scss",
@@ -59,7 +59,7 @@
             "executor": "@storybook/angular:build-storybook",
             "outputs": ["{options.outputDir}"],
             "options": {
-                "assets": [],
+                "assets": ["projects/shared-components/src/assets"],
                 "browserTarget": "shared-components:build-storybook",
                 "compodoc": false,
                 "configDir": "projects/shared-components/.storybook",
@@ -70,6 +70,7 @@
         "storybook": {
             "executor": "@storybook/angular:start-storybook",
             "options": {
+                "assets": ["projects/shared-components/src/assets"],
                 "browserTarget": "shared-components:build-storybook",
                 "compodoc": false,
                 "configDir": "projects/shared-components/.storybook",
