@@ -74,6 +74,7 @@
                 "browserTarget": "shared-components:build-storybook",
                 "compodoc": false,
                 "configDir": "projects/shared-components/.storybook",
+                "enableProdMode": true,
                 "host": "0.0.0.0",
                 "open": false,
                 "port": 4300
