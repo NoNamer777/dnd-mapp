@@ -122,7 +122,6 @@ export class DmaIconButtonComponent extends DmaStateComponent implements OnInit 
     }
 
     private updateRenderedAttribute() {
-        /* eslint-disable @typescript-eslint/no-non-null-assertion */
         this.baseColor = this.getLayerColor('base');
         this.layerColor = this.getLayerColor('state');
     }
