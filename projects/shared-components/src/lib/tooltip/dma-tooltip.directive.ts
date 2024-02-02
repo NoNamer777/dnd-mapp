@@ -33,7 +33,7 @@ export class DmaTooltipDirective implements OnInit {
     get disabled(): boolean {
         return this._disabled;
     }
-    @Input() set disabled(value: boolean | string) {
+    @Input() set disabled(value: boolean | string | unknown) {
         this._disabled = coerceBooleanProperty(value);
     }
     private _disabled = false;
@@ -41,9 +41,9 @@ export class DmaTooltipDirective implements OnInit {
     private overlayRef: OverlayRef;
 
     constructor(
-        private overlay: Overlay,
-        private elementRef: ElementRef,
-        private scrollStrategyOptions: ScrollStrategyOptions
+        private readonly overlay: Overlay,
+        private readonly elementRef: ElementRef,
+        private readonly scrollStrategyOptions: ScrollStrategyOptions
     ) {}
 
     ngOnInit() {

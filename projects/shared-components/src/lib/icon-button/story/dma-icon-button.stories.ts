@@ -39,7 +39,6 @@ const meta: Meta<DmaIconButtonComponent> = {
             description: 'The label of the icon button which should provide context of what the button does.',
             type: {
                 name: 'string',
-                required: true,
             },
         },
         dmaIconButtonLabelPosition: {
@@ -56,7 +55,7 @@ const meta: Meta<DmaIconButtonComponent> = {
         dmaButtonType: 'standard',
         dmaIconButtonLabel: 'My icon button label',
         dmaIconButtonLabelPosition: 'after',
-    } as Partial<DmaIconButtonComponent> & Partial<HTMLButtonElement>,
+    } as Partial<DmaIconButtonComponent>,
 };
 
 export default meta;
