@@ -3,9 +3,10 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DmaIconsModule, DmaNavigationBarComponent } from '@dnd-mapp/shared-components';
+import { DmaIconsModule } from '../icons';
 import { DmaNavigationBarHarness } from '../testing';
 import { DmaNavigationBarButtonComponent } from './button';
+import { DmaNavigationBarModule } from './dma-navigation-bar.module';
 
 describe('DmaNavigationBar', () => {
     @Component({
@@ -32,9 +33,9 @@ describe('DmaNavigationBar', () => {
     async function setupTestEnvironment(params: { activeRoute?: string } = {}) {
         TestBed.configureTestingModule({
             imports: [
-                DmaNavigationBarComponent,
-                DmaNavigationBarButtonComponent,
+                DmaNavigationBarModule,
                 DmaIconsModule,
+                DmaNavigationBarButtonComponent,
                 RouterTestingModule.withRoutes(routes),
             ],
             declarations: [TestComponent],
