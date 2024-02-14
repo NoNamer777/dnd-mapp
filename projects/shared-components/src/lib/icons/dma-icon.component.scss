@@ -9,6 +9,11 @@
     margin-right: 0.5em;
 }
 
+:host-context(dma-navigation-bar-button button[dma-icon-button]) {
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
 :host-context(button[dma-icon-button]) {
     height: 1.35em;
     width: 1.35em;

@@ -1,0 +1,62 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs';
+import * as DmaNavigationBarStories from './dma-navigation-bar.stories';
+import * as DmaNavigationBarButtonStories from './dma-navigation-bar-button.stories';
+
+<Meta of={DmaNavigationBarStories} />
+
+# DmaNavigationBar
+
+This component serves as a central place for navigation for when the application viewed on a device with the smallest
+screen width.
+
+<Canvas of={DmaNavigationBarStories.Common} />
+
+## Usage
+
+In order to use the components, you first need to import its feature module like so:
+
+```typescript
+import { Component } from '@angular/core';
+import { DmaNavigationBarModule, DmaIconsModule } from '@dnd-mapp/shared-components';
+
+@Component({
+    template: '',
+    standalone: true,
+    imports: [DmaNavigationBarModule, DmaIconsModule],
+})
+class MyComponent {}
+```
+
+Important to note is that you are required to use icons for the buttons. So if you've not already set up icons for your
+application or component, please find the documentation for the icons on how to set those up [here](/docs/dmaicons--docs).
+
+After that, you'll be able to use the navigation bar and its buttons in your template like so:
+
+```angular2html
+<footer dma-navigation-bar>
+    <dma-navigation-bar-button path="/my-route">
+        <dma-icon icon="star"></dma-icon>
+        My label
+    </dma-navigation-bar-button>
+</footer>
+```
+
+## Recommendations
+
+The recommended amount of buttons on the navigation bar is at least 3 and no more than 5. The buttons need to do the same
+action regardless of what page is shown. Keep the labels short but descriptive to prevent the bottom navigation bar from
+looking cluttered.
+
+As shown, you need to provide an icon and a label to make the buttons distinguishable from each other and let Users know
+where the buttons lead to or what actions the buttons do.
+
+## DmaNavigationBarButton
+
+The DmaNavigationBarComponent itself doesn't have any attributes that can be set from outside the component, but the
+DmaNavigationBarButtonComponent has a couple attributes which can be set. You can find those attributes below.
+
+<Canvas of={DmaNavigationBarButtonStories.Common} />
+
+<Controls of={DmaNavigationBarButtonStories.Common} />
+
+Clicking on the button after it has been selected will have no result, since it's already active.

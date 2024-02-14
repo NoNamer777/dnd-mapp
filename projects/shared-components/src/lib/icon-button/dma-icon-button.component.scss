@@ -56,3 +56,12 @@
         }
     }
 }
+
+:host-context(dma-navigation-bar-button) {
+    width: 4rem;
+    height: 2rem;
+}
+
+:host-context(dma-navigation-bar-button.active) {
+    background-color: $secondary-container !important;
+}
