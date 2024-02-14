@@ -7,23 +7,32 @@ import { DmaIconButtonComponent, DmaIconButtonType } from './dma-icon-button.com
 
 describe('DmaIconButtonComponent', () => {
     @Component({
-        template: `<button dmaIconButtonLabel="My icon button label" dma-icon-button>
-            <dma-icon dma-star-so-icon />
-        </button>`,
+        template: `
+            <button dmaIconButtonLabel="My icon button label" dma-icon-button>
+                <dma-icon icon="star"></dma-icon>
+            </button>
+        `,
     })
     class MinimalTestComponent {}
 
     @Component({
-        template: `<button
-            dmaIconButtonLabel="My icon button label"
-            [dma-icon-button]="buttonType"
-            (selectedChange)="onSelect()"
-        >
-            <dma-icon dma-star-so-icon />
-        </button>`,
+        template: `
+            <button
+                dmaIconButtonLabel="My icon button label"
+                [dma-icon-button]="buttonType"
+                [disabled]="disabled"
+                [selected]="selected"
+                (selectedChange)="onSelect()"
+            >
+                <dma-icon icon="star"></dma-icon>
+            </button>
+        `,
     })
     class StandardTestComponent {
         buttonType: DmaIconButtonType = 'standard';
+
+        disabled = false;
+        selected = false;
 
         isSelected = false;
 
@@ -33,16 +42,18 @@ describe('DmaIconButtonComponent', () => {
     }
 
     @Component({
-        template: ` <button
-            toggle
-            dmaIconButtonLabel="My icon button label"
-            [dma-icon-button]="buttonType"
-            [disabled]="disabled"
-            (selectedChange)="onSelect()"
-        >
-            <dma-icon dma-star-re-icon class="dma-icon-button-unselected" />
-            <dma-icon dma-star-so-icon class="dma-icon-button-selected" />
-        </button>`,
+        template: `
+            <button
+                toggle
+                dmaIconButtonLabel="My icon button label"
+                [dma-icon-button]="buttonType"
+                [disabled]="disabled"
+                (selectedChange)="onSelect()"
+            >
+                <dma-icon icon="star" iconType="regular" ngProjectAs="selected-icon"></dma-icon>
+                <dma-icon icon="star" ngProjectAs="selected-icon"></dma-icon>
+            </button>
+        `,
     })
     class ToggleTestComponent {
         buttonType: DmaIconButtonType = 'standard';
@@ -69,6 +80,7 @@ describe('DmaIconButtonComponent', () => {
         return {
             component: fixture.componentInstance as T,
             harness: await harnessLoader.getHarness(DmaIconButtonHarness),
+            fixture: fixture,
         };
     }
 
@@ -142,5 +154,25 @@ describe('DmaIconButtonComponent', () => {
 
         expect(component.isSelected).toBeFalse();
         expect(await harness.isSelected()).toBeFalse();
+    });
+
+    it('should not show the tooltip when disabled', async () => {
+        const { fixture, component, harness } = await setupTestEnvironment();
+
+        component.disabled = true;
+        fixture.detectChanges();
+
+        await harness.hover();
+
+        expect(await harness.isLabelVisible()).toBeFalse();
+    });
+
+    it('should set selected', async () => {
+        const { component, harness } = await setupTestEnvironment();
+
+        expect(await harness.isSelected()).toBeFalse();
+
+        component.selected = true;
+        expect(await harness.isSelected()).toBeTrue();
     });
 });

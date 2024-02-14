@@ -1,9 +1,10 @@
 @if (!toggle) {
-    <ng-content select="dma-icon:not(.dma-icon-button-unselected):not(.dma-icon-button-selected)"></ng-content>
+    <ng-content select="dma-icon"></ng-content>
 } @else {
     @if (_selected) {
-        <ng-content select="dma-icon.dma-icon-button-selected"></ng-content>
-    } @else {
-        <ng-content select="dma-icon.dma-icon-button-unselected"></ng-content>
+        <ng-content select="selected-icon"></ng-content>
+    } @else if (!_selected) {
+        <ng-content select="unselected-icon"></ng-content>
     }
+    <ng-content select="toggle-icon"></ng-content>
 }

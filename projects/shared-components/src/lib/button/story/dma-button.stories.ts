@@ -60,7 +60,7 @@ export const InteractiveWithIcon: Story = {
         props: args,
         template: `
             <button [dma-button]="dmaButtonType" [disabled]="disabled">
-                <dma-icon dma-plus-so-icon />
+                <dma-icon icon="plus" />
                 Button
             </button>`,
     }),

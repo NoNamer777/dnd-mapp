@@ -1,4 +1,4 @@
-@use '../styling/theme-variables' as *;
+@use '../../assets/styles/theme-variables' as *;
 
 :host {
     display: flex;
@@ -55,4 +55,13 @@
             color: $primary;
         }
     }
+}
+
+:host-context(dma-navigation-bar-button) {
+    width: 4rem;
+    height: 2rem;
+}
+
+:host-context(dma-navigation-bar-button.active) {
+    background-color: $secondary-container !important;
 }

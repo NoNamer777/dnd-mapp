@@ -30,7 +30,7 @@ After that, you'll be able to use it in your component's template like so:
 
 ```html
 <button dma-icon-button="filled" dmaIconButtonLabel="Button action">
-    <dma-icon dma-plus-so-icon></dma-icon>
+    <dma-icon icon="plus"></dma-icon>
 </button>
 ```
 
@@ -44,15 +44,25 @@ on it: `selected` and `unselected`. The button will get a `selected` attribute a
 in the `selected` state. The difference will be most notable in appearance.
 
 When the icon button is in toggle mode, the layout will be a bit different. In toggle mode, the icon button will look for
-two icons within the bounds of the icon button with the `dma-icon-button-selected` or `dma-icon-button-unselected` classes.
-Which one will be shown will depend on the selected state of the button.
+two icons within the bounds of the icon button. Use the content projection alias (`ngProjectAs`) with the values `selected-icon` or
+`unselected-icon` to determine which icon to show when the button toggles between the selected and unselected state.
+Usually, a regular icon is used for the unselected state, while a solid icon is used for the selected state.
 
 We advise to use regular icons for the unselected state and solid icons for the selected state.
 
 ```html
 <button dma-icon-button toggle dmaIconButtonLabel="Button action">
-    <dma-icon class="dma-icon-button-unselected" dma-star-re-icon></dma-icon>
-    <dma-icon class="dma-icon-button-selected" dma-star-so-icon></dma-icon>
+    <dma-icon icon="star" iconType="regular" ngProjectAs="unselected-icon"></dma-icon>
+    <dma-icon icon="star" ngProjectAs="selected-icon"></dma-icon>
+</button>
+```
+
+Alternatively, you can provide just 1 icon with even when the button is in toggle mode. This is useful for when there is no
+regular or solid alternative of the icon you would like to use for the button.
+
+```html
+<button dma-icon-button toggle dmaIconButtonLabel="Button action">
+    <dma-icon icon="plus" ngProjectAs="toggle-icon"></dma-icon>
 </button>
 ```
 

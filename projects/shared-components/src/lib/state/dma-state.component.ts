@@ -54,7 +54,7 @@ export class DmaStateComponent {
     protected baseColor = 'transparent';
     protected layerColor = 'transparent';
 
-    constructor(private elementRef: ElementRef) {}
+    constructor(private readonly elementRef: ElementRef) {}
 
     @HostBinding('style.backgroundColor')
     get backgroundColor() {

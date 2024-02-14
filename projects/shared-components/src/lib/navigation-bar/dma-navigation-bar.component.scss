@@ -1,0 +1,14 @@
+@use '../../assets/styles/theme-variables' as *;
+
+:host {
+    display: flex;
+    min-width: max-content;
+    flex: 1 0 auto;
+    flex-wrap: nowrap;
+    gap: 0.5em;
+    justify-content: space-between;
+    align-items: center;
+    background-color: $surface-container;
+    padding-bottom: 1em;
+    padding-top: 0.75em;
+}

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import {
     ChangeDetectionStrategy,
     Component,
+    ElementRef,
     EventEmitter,
     HostBinding,
     HostListener,
@@ -58,40 +59,42 @@ const containerColorsPerButtonType = new Map<DmaIconButtonType, DmaButtonColorPe
 
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
-    selector: 'button[dma-icon-button][dmaIconButtonLabel]',
+    selector: 'button[dma-icon-button]',
     templateUrl: './dma-icon-button.component.html',
     styleUrls: ['./dma-icon-button.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     hostDirectives: [
         {
             directive: DmaTooltipDirective,
-            inputs: ['dmaTooltip: dmaIconButtonLabel', 'dmaTooltipPosition: dmaIconButtonLabelPosition'],
+            inputs: [
+                'dmaTooltip: dmaIconButtonLabel',
+                'dmaTooltipPosition: dmaIconButtonLabelPosition',
+                'disabled: dmaDisableTooltip',
+            ],
         },
     ],
     standalone: true,
     imports: [CommonModule, DmaStateComponent, DmaTooltipModule],
 })
 export class DmaIconButtonComponent extends DmaStateComponent implements OnInit {
-    @Output() selectedChange = new EventEmitter<boolean>();
-
-    @HostBinding('attr.selected')
-    get isSelected() {
-        return this._selected ? '' : undefined;
+    get selected() {
+        return this._selected;
+    }
+    @Input() set selected(selected: boolean | string) {
+        this._selected = coerceBooleanProperty(selected);
     }
     protected _selected = false;
 
-    @Input() set toggle(toggle: unknown) {
-        this._toggle = coerceBooleanProperty(toggle);
-    }
+    @Output() selectedChange = new EventEmitter<boolean>();
+
     get toggle() {
         return this._toggle;
     }
-    private _toggle = false;
-
-    @HostBinding('attr.toggle')
-    get isToggled() {
-        return this.toggle ? '' : undefined;
+    @Input() set toggle(toggle: boolean | string) {
+        this._toggle = coerceBooleanProperty(toggle);
+        this.updateRenderedAttribute();
     }
+    private _toggle = false;
 
     @Input('dma-icon-button') set dmaButtonType(buttonType: DmaIconButtonType | string) {
         if (buttonType === '') return;
@@ -99,13 +102,42 @@ export class DmaIconButtonComponent extends DmaStateComponent implements OnInit 
         this.buttonType = buttonType as DmaIconButtonType;
         this.updateRenderedAttribute();
     }
-
     @HostBinding('attr.dma-icon-button')
     private buttonType: DmaIconButtonType = 'standard';
 
-    @Input({ required: true })
+    get disabled(): boolean {
+        return this._disabled;
+    }
+    @Input() set disabled(value: string | unknown) {
+        this._disabled = coerceBooleanProperty(value);
+        this.tooltip.disabled = this._disabled;
+    }
+    private _disabled = false;
+
+    @Input()
     @HostBinding('attr.dmaIconButtonLabel')
-    dmaIconButtonLabel!: string;
+    dmaIconButtonLabel?: string;
+
+    @HostBinding('attr.selected') get isSelected() {
+        return this.selected ? '' : undefined;
+    }
+
+    @HostBinding('attr.toggle') get isToggled() {
+        return this.toggle ? '' : undefined;
+    }
+
+    @HostBinding('attr.dmaDisableTooltip')
+    @HostBinding('attr.disabled')
+    get IsDisabled() {
+        return this.disabled ? '' : undefined;
+    }
+
+    constructor(
+        elementRef: ElementRef,
+        private readonly tooltip: DmaTooltipDirective
+    ) {
+        super(elementRef);
+    }
 
     ngOnInit() {
         this.updateRenderedAttribute();
@@ -122,7 +154,6 @@ export class DmaIconButtonComponent extends DmaStateComponent implements OnInit 
     }
 
     private updateRenderedAttribute() {
-        /* eslint-disable @typescript-eslint/no-non-null-assertion */
         this.baseColor = this.getLayerColor('base');
         this.layerColor = this.getLayerColor('state');
     }

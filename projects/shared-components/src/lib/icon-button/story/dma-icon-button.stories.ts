@@ -39,7 +39,6 @@ const meta: Meta<DmaIconButtonComponent> = {
             description: 'The label of the icon button which should provide context of what the button does.',
             type: {
                 name: 'string',
-                required: true,
             },
         },
         dmaIconButtonLabelPosition: {
@@ -56,7 +55,7 @@ const meta: Meta<DmaIconButtonComponent> = {
         dmaButtonType: 'standard',
         dmaIconButtonLabel: 'My icon button label',
         dmaIconButtonLabelPosition: 'after',
-    } as Partial<DmaIconButtonComponent> & Partial<HTMLButtonElement>,
+    } as Partial<DmaIconButtonComponent>,
 };
 
 export default meta;
@@ -66,16 +65,16 @@ export const Common: Story = {
         template: `
             <article class="row">
                 <button dma-icon-button="filled" dmaIconButtonLabel="Filled">
-                    <dma-icon dma-plus-so-icon></dma-icon>                
+                    <dma-icon icon="plus"></dma-icon>                
                 </button>
                 <button dma-icon-button="tonal" dmaIconButtonLabel="Tonal">
-                    <dma-icon dma-plus-so-icon></dma-icon>
+                    <dma-icon icon="plus"></dma-icon>
                 </button>
                 <button dma-icon-button="outlined" dmaIconButtonLabel="Outlined">
-                    <dma-icon dma-plus-so-icon></dma-icon>
+                    <dma-icon icon="plus"></dma-icon>
                 </button>
                 <button dma-icon-button dmaIconButtonLabel="Standard (Default)">
-                    <dma-icon dma-plus-so-icon></dma-icon>
+                    <dma-icon icon="plus"></dma-icon>
                 </button>
             </article>
         `,
@@ -85,7 +84,7 @@ export const Common: Story = {
 export const StandardInteractive: Story = {
     render: (args: DmaIconButtonComponent) => ({
         props: args,
-        template: `<button [dmaIconButtonLabel]="dmaIconButtonLabel" [dmaIconButtonLabelPosition]="dmaIconButtonLabelPosition" [dma-icon-button]="dmaButtonType" [disabled]="disabled"><dma-icon dma-plus-so-icon /></button>`,
+        template: `<button [dmaIconButtonLabel]="dmaIconButtonLabel" [dmaIconButtonLabelPosition]="dmaIconButtonLabelPosition" [dma-icon-button]="dmaButtonType" [disabled]="disabled"><dma-icon icon="plus"></dma-icon></button>`,
     }),
 };
 
@@ -94,8 +93,8 @@ export const ToggleInteractive: Story = {
         props: args,
         template: `
             <button toggle [dmaIconButtonLabel]="dmaIconButtonLabel" [dmaIconButtonLabelPosition]="dmaIconButtonLabelPosition" [dma-icon-button]="dmaButtonType" [disabled]="disabled">
-                <dma-icon dma-star-re-icon class="dma-icon-button-unselected" />
-                <dma-icon dma-star-so-icon class="dma-icon-button-selected" />
+                <dma-icon icon="star" iconType="regular" ngProjectAs="unselected-icon" />
+                <dma-icon icon="star" ngProjectAs="selected-icon" />
             </button>`,
     }),
 };

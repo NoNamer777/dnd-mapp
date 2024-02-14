@@ -28,7 +28,7 @@
             "executor": "@angular-devkit/build-angular:karma",
             "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
             "options": {
-                "assets": [],
+                "assets": ["projects/shared-components/src/assets"],
                 "codeCoverage": true,
                 "codeCoverageExclude": ["**/testing/**/*", "**/*.module.ts", "**/index.ts"],
                 "inlineStyleLanguage": "scss",
@@ -36,8 +36,8 @@
                 "polyfills": ["zone.js", "zone.js/testing"],
                 "scripts": [],
                 "styles": [
-                    "projects/shared-components/src/lib/styling/theme-variables.scss",
-                    "projects/shared-components/src/lib/styling/font.scss"
+                    "projects/shared-components/src/assets/styles/theme-variables.scss",
+                    "projects/shared-components/src/assets/styles/font.scss"
                 ],
                 "tsConfig": "projects/shared-components/tsconfig.spec.json",
                 "watch": false
@@ -59,20 +59,22 @@
             "executor": "@storybook/angular:build-storybook",
             "outputs": ["{options.outputDir}"],
             "options": {
-                "assets": [],
+                "assets": ["projects/shared-components/src/assets"],
                 "browserTarget": "shared-components:build-storybook",
                 "compodoc": false,
                 "configDir": "projects/shared-components/.storybook",
-                "outputDir": "dist/storybook/shared-components",
+                "outputDir": "dist/shared-components-sb",
                 "styles": ["projects/shared-components/.storybook/styling.scss"]
             }
         },
         "storybook": {
             "executor": "@storybook/angular:start-storybook",
             "options": {
+                "assets": ["projects/shared-components/src/assets"],
                 "browserTarget": "shared-components:build-storybook",
                 "compodoc": false,
                 "configDir": "projects/shared-components/.storybook",
+                "enableProdMode": true,
                 "host": "0.0.0.0",
                 "open": false,
                 "port": 4300

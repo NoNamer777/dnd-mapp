@@ -1,5 +1,5 @@
 @use 'sass:color';
-@use '../styling/theme-variables' as *;
+@use '../../assets/styles/theme-variables' as *;
 
 :host {
     display: flex;

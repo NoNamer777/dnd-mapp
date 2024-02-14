@@ -1,18 +1,17 @@
 :host {
-    display: inline-block;
-    flex-shrink: 0;
-
-    svg {
-        display: block;
-        width: 100%;
-        height: 100%;
-    }
+    display: block;
+    flex: 0 0 auto;
 }
 
 :host-context(button[dma-button]) {
     height: 1.1em;
     width: 1.1em;
     margin-right: 0.5em;
+}
+
+:host-context(dma-navigation-bar-button button[dma-icon-button]) {
+    height: 1.5rem;
+    width: 1.5rem;
 }
 
 :host-context(button[dma-icon-button]) {

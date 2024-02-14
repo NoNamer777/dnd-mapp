@@ -1,4 +1,4 @@
-@use '../styling/theme-variables' as *;
+@use '../../assets/styles/theme-variables' as *;
 
 :host {
     background-color: $inverse-surface;

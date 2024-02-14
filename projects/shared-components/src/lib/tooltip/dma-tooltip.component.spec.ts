@@ -7,10 +7,12 @@ import { DmaTooltipModule } from './dma-tooltip.module';
 
 describe('DmaTooltipComponent', () => {
     @Component({
-        template: '<p dmaTooltip="My Tooltip" [dmaTooltipPosition]="position">Hover over me</p>',
+        template: '<p dmaTooltip="My Tooltip" [dmaTooltipPosition]="position" [disabled]="disabled">Hover over me</p>',
     })
     class TestComponent {
         position: DmaTooltipPosition = 'above';
+
+        disabled = false;
     }
 
     async function setupTestEnvironment() {
@@ -71,5 +73,16 @@ describe('DmaTooltipComponent', () => {
 
         await harness.hover();
         expect(await harness.getTooltipPosition()).toEqual('after');
+    });
+
+    it(`should not show the tooltip when it's disabled`, async () => {
+        const { fixture, component, harness } = await setupTestEnvironment();
+
+        component.disabled = true;
+        fixture.detectChanges();
+
+        await harness.hover();
+
+        expect(await harness.isTooltipVisible()).toBeFalse();
     });
 });
