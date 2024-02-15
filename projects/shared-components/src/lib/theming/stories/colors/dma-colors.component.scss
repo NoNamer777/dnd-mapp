@@ -1,0 +1,58 @@
+@use '../../../../assets/styles/colors' as *;
+@use 'sass:map';
+@use 'sass:color';
+
+@mixin color-per-id($map) {
+    @each $name, $color in $map {
+        ##{$name} {
+            background-color: $color;
+
+            @if color.lightness($color) < 55% {
+                color: $white;
+            }
+        }
+    }
+}
+@include color-per-id($red-colors);
+
+:host {
+    section {
+        h1 {
+            font-size: 2rem;
+        }
+
+        .box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 4rem;
+            height: 4rem;
+            border: 1px solid $black;
+            border-radius: 0.5rem;
+
+            &.base {
+                border-width: 2px;
+                font-weight: bolder;
+            }
+        }
+
+        .row {
+            border-bottom: 1px solid $black;
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .colors-wrapper {
+            border-bottom: 1px solid $black;
+            padding-bottom: 0.5rem;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+    }
+
+    #red {
+        background-color: $red;
+    }
+}

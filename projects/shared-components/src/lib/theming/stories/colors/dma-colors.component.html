@@ -1,0 +1,11 @@
+<section>
+    <div class="row">
+        <h1>Red</h1>
+        <div class="box base" id="red"></div>
+    </div>
+    <div class="colors-wrapper">
+        @for (percentage of red; track percentage) {
+            <div class="box" [id]="'red' + percentage">{{ percentage }}%</div>
+        }
+    </div>
+</section>
