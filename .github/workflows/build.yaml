@@ -31,7 +31,7 @@ jobs:
               with:
                   node-version: 18
             - name: Start up Nx Cloud agents
-              run: npx nx-cloud start-ci-run --distribute-on "3 linus-medium-js" --stop-agents-after "test"
+              run: npx nx-cloud start-ci-run --stop-agents-after "test"
             - name: Install dependencies
               run: npm ci
             - name: Cache npm dependencies
@@ -47,16 +47,16 @@ jobs:
             - name: Check formatting
               run: npx nx-cloud record -- nx format:check
             - name: Check linting
-              run: npx nx affected -t lint
+              run: npx nx affected -t lint --no-agents
             - name: Create font-end client production environment file
               run: echo "${{ vars.CLIENT_ENV_VARIABLES_PROD }}" > projects/front-end/src/environments/environment.prod.ts
             - name: Create builds
-              run: npx nx affected -t build
+              run: npx nx affected -t build --no-agents
               env:
                   JWT_SECRET: ${{ vars.JWT_SECRET }}
                   COOKIE_SECRET: ${{ vars.COOKIE_SECRET }}
             - name: Run tests
-              run: npx nx affected -t test
+              run: npx nx affected -t test --no-agents
               env:
                   JWT_SECRET: ${{ vars.JWT_SECRET }}
                   COOKIE_SECRET: ${{ vars.COOKIE_SECRET }}
