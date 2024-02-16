@@ -1,0 +1,76 @@
+@use '../../../../assets/styles/colors' as *;
+@use 'sass:map';
+@use 'sass:color';
+
+@mixin color-per-id($map) {
+    @each $name, $color in $map {
+        ##{$name} {
+            background-color: $color;
+        }
+    }
+}
+@include color-per-id($red-colors);
+@include color-per-id($orange-colors);
+@include color-per-id($yellow-colors);
+@include color-per-id($lime-colors);
+@include color-per-id($green-colors);
+@include color-per-id($cyan-colors);
+@include color-per-id($light-blue-colors);
+@include color-per-id($blue-colors);
+@include color-per-id($purple-colors);
+@include color-per-id($magenta-colors);
+@include color-per-id($pink-colors);
+@include color-per-id($white-colors);
+@include color-per-id($light-gray-colors);
+@include color-per-id($gray-colors);
+@include color-per-id($black-colors);
+@include color-per-id($brown-colors);
+
+:host {
+    section {
+        h1 {
+            font-size: 2rem;
+        }
+
+        .box-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            code {
+                text-align: center;
+            }
+        }
+
+        .box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 4rem;
+            height: 4rem;
+            border: 1px solid $black;
+            border-radius: 0.5rem;
+
+            &.base {
+                border-width: 2px;
+                border-color: $yellow50;
+                font-weight: bolder;
+            }
+        }
+
+        .row {
+            border-bottom: 1px solid $black;
+            padding-bottom: 0.5rem;
+            margin: 0.5rem 0;
+        }
+
+        .colors-wrapper {
+            border-bottom: 1px solid $black;
+            padding-bottom: 0.5rem;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+    }
+}
