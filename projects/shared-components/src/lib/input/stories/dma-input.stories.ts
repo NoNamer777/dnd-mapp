@@ -11,6 +11,7 @@ const meta: Meta<DmaInputComponent> = {
         value: 'Hello',
         disabled: false,
         readonly: false,
+        invalid: false,
     },
     argTypes: {
         value: {
@@ -43,7 +44,7 @@ export const Common: Story = {
         props: args,
         template: `
             <article>
-                <input type="text" dma-input [disabled]="disabled" [readonly]="readonly" [value]="value">
+                <input type="text" dma-input [disabled]="disabled" [readonly]="readonly" [value]="value" [class.ng-invalid]="invalid">
             </article>        
         `,
     }),
