@@ -20,15 +20,26 @@ jobs:
               uses: actions/checkout@v4
               with:
                   fetch-depth: 0
+            - name: Restore cache
+              uses: actions/cache/restore@v3
+              with:
+                  key: npm-dependencies-${{ hashFiles('package-lock.json') }}
+                  path: |
+                      node_modules
             - name: Setup Node
               uses: actions/setup-node@v3
               with:
                   node-version: 18
-                  cache: npm
             - name: Start up Nx Cloud agents
               run: npx nx-cloud start-ci-run --distribute-on "3 linus-medium-js" --stop-agents-after "test"
             - name: Install dependencies
               run: npm ci
+            - name: Cache npm dependencies
+              uses: actions/cache/save@v3
+              with:
+                  key: npm-dependencies-${{ hashFiles('package-lock.json') }}
+                  path: |
+                      node_modules
             - name: Set Nx branch references
               uses: nrwl/nx-set-shas@v3
             - name: Track main branch
