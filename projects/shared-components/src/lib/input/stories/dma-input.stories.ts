@@ -10,6 +10,7 @@ const meta: Meta<DmaInputComponent> = {
     args: {
         value: 'Hello',
         disabled: false,
+        readonly: false,
     },
     argTypes: {
         value: {
@@ -25,7 +26,7 @@ const meta: Meta<DmaInputComponent> = {
             },
             description: 'Determines whether the input is enabled',
         },
-        readOnly: {
+        readonly: {
             controls: 'boolean',
             defaultValue: {
                 summary: false,
@@ -42,7 +43,7 @@ export const Common: Story = {
         props: args,
         template: `
             <article>
-                <input type="text" dma-input [disabled]="disabled" [readOnly]="readOnly" [value]="value">
+                <input type="text" dma-input [disabled]="disabled" [readonly]="readonly" [value]="value">
             </article>        
         `,
     }),
