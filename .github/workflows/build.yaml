@@ -12,35 +12,51 @@ on:
         branches:
             - main
 jobs:
-    main:
-        name: Nx Cloud - Main Job
-        uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.14.0
-        with:
-            main-branch-name: main
-            node-version: 18
-            npm-version: 9
-            number-of-agents: 3
-            install-commands: |
-                echo "${{ vars.CLIENT_ENV_VARIABLES_PROD }}" > projects/front-end/src/environments/environment.prod.ts
-                npm ci
-            init-commands: |
-                npx nx-cloud start-ci-run --stop-agents-after "build" --agent-count 3
-            parallel-commands: |
-                npx nx-cloud record -- npx nx format:check
-            parallel-commands-on-agents: |
-                npx nx affected -t lint 
-                npx nx affected -t test 
-                npx nx affected -t build
-    agents:
-        name: Nx Cloud - Agents
-        uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.14.0
-        with:
-            number-of-agents: 3
-            node-version: 18
-            npm-version: 9
-            install-commands: |
-                echo "${{ vars.CLIENT_ENV_VARIABLES_PROD }}" > projects/front-end/src/environments/environment.prod.ts
-                npm ci
-            environment-variables: |
-                JWT_SECRET=${{ vars.JWT_SECRET }}
-                COOKIE_SECRET=${{ vars.COOKIE_SECRET }}
+    build-and-test:
+        name: Build & Test
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+            - name: Restore cache
+              uses: actions/cache/restore@v3
+              with:
+                  key: npm-dependencies-${{ hashFiles('package-lock.json') }}
+                  path: |
+                      node_modules
+            - name: Setup Node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 18
+            - name: Install dependencies
+              run: npm ci
+            - name: Cache npm dependencies
+              uses: actions/cache/save@v3
+              with:
+                  key: npm-dependencies-${{ hashFiles('package-lock.json') }}
+                  path: |
+                      node_modules
+            - name: Start up Nx Cloud agents
+              run: npx nx-cloud start-ci-run --stop-agents-after "test"
+            - name: Set Nx branch references
+              uses: nrwl/nx-set-shas@v3
+            - name: Track main branch
+              run: git branch --track main origin/main
+            - name: Check formatting
+              run: npx nx-cloud record -- nx format:check
+            - name: Check linting
+              run: npx nx affected -t lint --no-agents
+            - name: Create font-end client production environment file
+              run: echo "${{ vars.CLIENT_ENV_VARIABLES_PROD }}" > projects/front-end/src/environments/environment.prod.ts
+            - name: Create builds
+              run: npx nx affected -t build --no-agents
+              env:
+                  JWT_SECRET: ${{ vars.JWT_SECRET }}
+                  COOKIE_SECRET: ${{ vars.COOKIE_SECRET }}
+            - name: Run tests
+              run: npx nx affected -t test --no-agents
+              env:
+                  JWT_SECRET: ${{ vars.JWT_SECRET }}
+                  COOKIE_SECRET: ${{ vars.COOKIE_SECRET }}
