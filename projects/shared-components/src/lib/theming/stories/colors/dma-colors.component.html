@@ -1,11 +1,19 @@
 <section>
-    <div class="row">
-        <h1>Red</h1>
-        <div class="box base" id="red"></div>
-    </div>
-    <div class="colors-wrapper">
-        @for (percentage of red; track percentage) {
-            <div class="box" [id]="'red' + percentage">{{ percentage }}%</div>
-        }
-    </div>
+    @for (color of colors; track color.name) {
+        <div class="row">
+            <h1>{{ color.name | titlecase }}</h1>
+            <div class="box base" [id]="getBoxId(color.name, color.matrix.base)"></div>
+        </div>
+        <div class="colors-wrapper">
+            @for (percentage of color.matrix.values; track percentage) {
+                <div
+                    class="box"
+                    [id]="getBoxId(color.name, percentage)"
+                    [class.base]="color.matrix.base === percentage"
+                >
+                    {{ percentage }}%
+                </div>
+            }
+        </div>
+    }
 </section>

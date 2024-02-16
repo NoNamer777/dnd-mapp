@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { red } from '@dnd-mapp/shared-components';
+import { colors } from '../../colors';
 
 @Component({
     selector: 'dma-colors',
@@ -11,5 +11,9 @@ import { red } from '@dnd-mapp/shared-components';
     imports: [CommonModule],
 })
 export class DmaColorsComponent {
-    protected readonly red = red;
+    protected readonly colors = colors;
+
+    getBoxId(colorName: string, percentage: number) {
+        return colorName.replace(' ', '-') + `${percentage}`;
+    }
 }

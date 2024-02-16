@@ -14,6 +14,21 @@
     }
 }
 @include color-per-id($red-colors);
+@include color-per-id($orange-colors);
+@include color-per-id($yellow-colors);
+@include color-per-id($lime-colors);
+@include color-per-id($green-colors);
+@include color-per-id($cyan-colors);
+@include color-per-id($light-blue-colors);
+@include color-per-id($blue-colors);
+@include color-per-id($purple-colors);
+@include color-per-id($magenta-colors);
+@include color-per-id($pink-colors);
+@include color-per-id($white-colors);
+@include color-per-id($light-gray-colors);
+@include color-per-id($gray-colors);
+@include color-per-id($black-colors);
+@include color-per-id($brown-colors);
 
 :host {
     section {
@@ -51,9 +66,5 @@
             flex-wrap: wrap;
             gap: 1rem;
         }
-    }
-
-    #red {
-        background-color: $red;
     }
 }
