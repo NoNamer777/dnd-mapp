@@ -6,12 +6,13 @@
         </div>
         <div class="colors-wrapper">
             @for (percentage of color.matrix.values; track percentage) {
-                <div
-                    class="box"
-                    [id]="getBoxId(color.name, percentage)"
-                    [class.base]="color.matrix.base === percentage"
-                >
-                    {{ percentage }}%
+                <div class="box-wrapper">
+                    <div
+                        class="box"
+                        [id]="getBoxId(color.name, percentage)"
+                        [class.base]="color.matrix.base === percentage"
+                    ></div>
+                    <code>${{ getBoxId(color.name, percentage) }}</code>
                 </div>
             }
         </div>
