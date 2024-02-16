@@ -7,7 +7,7 @@
         ##{$name} {
             background-color: $color;
 
-            @if color.lightness($color) < 55% {
+            @if color.lightness($color) < 44% {
                 color: $white;
             }
         }
