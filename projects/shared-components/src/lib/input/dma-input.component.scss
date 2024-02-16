@@ -2,8 +2,56 @@
 @use '../../assets/styles/colors' as *;
 
 :host {
-    font-size: 1rem;
-    padding: 0.5rem 0 0.5rem 1rem;
-    border-radius: 0.3rem;
-    border: 1px solid $black;
+    &[type='text'],
+    &[type='password'],
+    &[type='email'],
+    &[type='search'],
+    &[type='tel'] {
+        font-size: 1rem;
+        padding: 0.6rem 0 0.6rem 1rem;
+        border-radius: 0.3rem;
+        border: 1px solid $outline;
+        color: $on-surface;
+        caret-color: $primary;
+        outline: 1px solid transparent;
+
+        &:invalid,
+        &.ng-invalid {
+            outline-color: $error;
+            caret-color: $error;
+            border-color: $error;
+        }
+
+        &:hover {
+            border-color: $on-surface;
+
+            &:invalid,
+            &.ng-invalid {
+                border-color: $on-error-container;
+                outline-color: $on-error-container;
+            }
+        }
+
+        &:focus:not([readonly]) {
+            outline: 1px solid $primary;
+            border-color: $primary;
+
+            &:invalid,
+            &.ng-invalid {
+                outline-color: $error;
+                border-color: $error;
+                caret-color: $error;
+            }
+        }
+
+        &:disabled {
+            opacity: $opacity-disabled;
+            border-color: $on-surface;
+        }
+
+        &[readonly] {
+            outline: none;
+            cursor: default;
+        }
+    }
 }
