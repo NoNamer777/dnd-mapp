@@ -21,7 +21,7 @@ jobs:
               with:
                   fetch-depth: 0
             - name: Restore cache
-              uses: actions/cache/restore@v4
+              uses: actions/cache@v4
               with:
                   key: npm-dependencies-${{ hashFiles('package-lock.json') }}
                   path: |
@@ -32,12 +32,6 @@ jobs:
                   node-version: 20
             - name: Install dependencies
               run: npm ci
-            - name: Cache npm dependencies
-              uses: actions/cache/save@v4
-              with:
-                  key: npm-dependencies-${{ hashFiles('package-lock.json') }}
-                  path: |
-                      node_modules
             - name: Start up Nx Cloud agents
               run: npx nx-cloud start-ci-run --stop-agents-after "test"
             - name: Set Nx branch references
