@@ -43,6 +43,7 @@ jobs:
             - name: Set Nx branch references
               uses: nrwl/nx-set-shas@v3
             - name: Track main branch
+              if: ${{ github.event_name == 'pull_request' }}
               run: git branch --track main origin/main
             - name: Check formatting
               run: npx nx-cloud record -- nx format:check
