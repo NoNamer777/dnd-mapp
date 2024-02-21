@@ -2,55 +2,75 @@
 @use '../../assets/styles/colors' as *;
 
 :host {
-    &[type='text'],
-    &[type='password'],
-    &[type='email'],
-    &[type='search'],
-    &[type='tel'] {
-        font-size: 1rem;
-        padding: 0.6rem 0 0.6rem 1rem;
-        border-radius: 0.3rem;
-        border: 1px solid $outline;
+    display: inline-block;
+    position: relative;
+    font-size: inherit;
+    border-radius: 0.3rem;
+    border: 1px solid $outline;
+    outline: 1px solid transparent;
+    padding: 0.6rem 0 0.6rem 1rem;
+
+    .input-border-breaker {
+        position: absolute;
+        top: -0.1rem;
+        left: 0.75rem;
+        height: 0.1rem;
+        background-color: #fff;
+    }
+
+    label {
+        color: $on-surface-variant;
+        position: absolute;
+        user-select: none;
+    }
+
+    input {
+        font-size: inherit;
         color: $on-surface;
         caret-color: $primary;
-        outline: 1px solid transparent;
+        outline: none;
+        padding: 0;
+        border: 0;
+    }
 
-        &:invalid,
-        &.ng-invalid {
-            outline-color: $error;
-            caret-color: $error;
-            border-color: $error;
+    &:hover:not(.readonly):not(.disabled):not(.focused) {
+        border-color: $on-surface;
+        outline-color: $on-surface;
+        cursor: text;
+
+        label {
+            color: $on-surface-variant;
+        }
+    }
+
+    &.focused {
+        border-color: $primary;
+        outline-color: $primary;
+
+        label {
+            color: $primary;
+        }
+    }
+
+    &.disabled {
+        opacity: $opacity-disabled;
+        border-color: $on-surface;
+        color: $on-surface;
+
+        label {
+            color: $on-surface;
         }
 
-        &:hover {
-            border-color: $on-surface;
-
-            &:invalid,
-            &.ng-invalid {
-                border-color: $on-error-container;
-                outline-color: $on-error-container;
-            }
+        input:disabled {
+            background-color: transparent;
+            color: $on-surface;
         }
+    }
 
-        &:focus:not([readonly]) {
-            outline: 1px solid $primary;
-            border-color: $primary;
+    &.readonly {
+        cursor: default;
 
-            &:invalid,
-            &.ng-invalid {
-                outline-color: $error;
-                border-color: $error;
-                caret-color: $error;
-            }
-        }
-
-        &:disabled {
-            opacity: $opacity-disabled;
-            border-color: $on-surface;
-        }
-
-        &[readonly] {
-            outline: none;
+        input:read-only {
             cursor: default;
         }
     }
