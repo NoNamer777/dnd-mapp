@@ -1,5 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    ElementRef,
+    EventEmitter,
+    HostBinding,
+    HostListener,
+    Input,
+    OnInit,
+    Output,
+    ViewChild,
+} from '@angular/core';
+import { inputBorderAnimation } from './input-border.animation';
+import { inputLabelAnimation } from './input-label.animation';
 
 type DmaInputType = 'text' | 'password' | 'email' | 'search' | 'tel';
 
@@ -61,27 +74,67 @@ type AutoComplete =
     | 'photo'
     | 'webauthn';
 
+type AnimationState = 'populated' | 'unpopulated';
+
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
     selector: 'dma-input',
     templateUrl: './dma-input.component.html',
     styleUrl: './dma-input.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
+    animations: [inputLabelAnimation, inputBorderAnimation],
     standalone: true,
     imports: [CommonModule],
 })
-export class DmaInputComponent {
-    @Input() label: string;
-
+export class DmaInputComponent implements OnInit {
     @Input() @HostBinding('class.disabled') disabled = false;
 
     @Input() @HostBinding('class.readonly') readonly = false;
-
-    @Input() value: string;
 
     @Input() inputType: DmaInputType = 'text';
 
     @Input() autocomplete: AutoComplete = 'off';
 
     @Input() autofocus = false;
+
+    @Input() label?: string;
+
+    @Input() value: string;
+
+    @Output() valueChange = new EventEmitter<string>();
+
+    @HostBinding('class.focused') protected focus = false;
+
+    protected animationState: AnimationState;
+
+    @ViewChild('input') protected inputElement: ElementRef<HTMLInputElement>;
+
+    ngOnInit() {
+        this.animationState = this.value ? 'populated' : 'unpopulated';
+    }
+
+    @HostListener('click')
+    protected onClick() {
+        this.inputElement.nativeElement.focus();
+    }
+
+    protected onFocus() {
+        if (this.disabled || this.readonly) return;
+        this.focus = true;
+        this.animationState = 'populated';
+    }
+
+    protected blur() {
+        this.animationState = this.value ? 'populated' : 'unpopulated';
+        this.focus = false;
+    }
+
+    protected getLabelWidth(width: number) {
+        return `${width}px`;
+    }
+
+    protected onValueChange(changeEvent: Event) {
+        this.value = (changeEvent.target as HTMLInputElement).value;
+        this.valueChange.emit(this.value);
+    }
 }

@@ -1,4 +1,5 @@
-import { ArgTypes, Meta, moduleMetadata, StoryObj } from '@storybook/angular';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { applicationConfig, ArgTypes, Meta, moduleMetadata, StoryObj } from '@storybook/angular';
 import { DmaInputComponent } from '../dma-input.component';
 
 type Story = StoryObj<DmaInputComponent>;
@@ -6,7 +7,10 @@ type Story = StoryObj<DmaInputComponent>;
 const meta: Meta<DmaInputComponent> = {
     title: 'DmaInput',
     component: DmaInputComponent,
-    decorators: [moduleMetadata({ imports: [DmaInputComponent] })],
+    decorators: [
+        applicationConfig({ providers: [provideAnimationsAsync()] }),
+        moduleMetadata({ imports: [DmaInputComponent] }),
+    ],
     args: {
         label: 'Label text',
         disabled: false,

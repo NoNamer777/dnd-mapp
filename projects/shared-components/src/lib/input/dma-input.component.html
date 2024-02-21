@@ -1,9 +1,20 @@
-<label>{{ label }}</label>
+@if (label) {
+    <div
+        class="input-border-breaker"
+        [style.width]="getLabelWidth(labelElement.clientWidth)"
+        [@inputBorder]="animationState"
+    ></div>
+    <label [@inputLabel]="animationState" #labelElement>{{ label }}</label>
+}
 <input
+    #input
     [type]="inputType"
     [disabled]="disabled"
     [readOnly]="readonly"
     [value]="value"
     [autocomplete]="autocomplete"
     [autofocus]="autofocus"
+    (change)="onValueChange($event)"
+    (focus)="onFocus()"
+    (blur)="blur()"
 />
