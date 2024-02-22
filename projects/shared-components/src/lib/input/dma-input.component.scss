@@ -3,37 +3,47 @@
 
 :host {
     display: inline-block;
-    position: relative;
-    font-size: inherit;
-    border-radius: 0.3rem;
-    border: 1px solid $outline;
-    outline: 1px solid transparent;
-    padding: 0.6rem 0 0.6rem 1rem;
 
-    .input-border-breaker {
-        position: absolute;
-        top: -0.1rem;
-        left: 0.75rem;
-        height: 0.1rem;
-        background-color: #fff;
-    }
-
-    label {
-        color: $on-surface-variant;
-        position: absolute;
-        user-select: none;
-    }
-
-    input {
+    .input-container {
+        position: relative;
         font-size: inherit;
-        color: $on-surface;
-        caret-color: $primary;
-        outline: none;
-        padding: 0;
-        border: 0;
+        border-radius: 0.3rem;
+        border: 1px solid $outline;
+        outline: 1px solid transparent;
+        padding: 0.6rem 0 0.6rem 1rem;
+
+        .input-border-breaker {
+            position: absolute;
+            top: -0.1rem;
+            left: 0.75rem;
+            height: 0.1rem;
+            background-color: #fff;
+        }
+
+        label {
+            color: $on-surface-variant;
+            position: absolute;
+            user-select: none;
+        }
+
+        input {
+            font-size: inherit;
+            color: $on-surface;
+            caret-color: $primary;
+            outline: none;
+            padding: 0;
+            border: 0;
+        }
     }
 
-    &:hover:not(.readonly):not(.disabled):not(.focused) {
+    .input-supporting-text {
+        min-height: 0.938rem;
+        color: $on-surface-variant;
+        padding: 0.25rem 1rem;
+        font-size: 0.75rem;
+    }
+
+    &:not(.readonly):not(.disabled):not(.focused) > .input-container:hover {
         border-color: $on-surface;
         outline-color: $on-surface;
         cursor: text;
@@ -43,7 +53,7 @@
         }
     }
 
-    &.focused {
+    &.focused .input-container {
         border-color: $primary;
         outline-color: $primary;
 
@@ -54,16 +64,19 @@
 
     &.disabled {
         opacity: $opacity-disabled;
-        border-color: $on-surface;
-        color: $on-surface;
 
-        label {
+        .input-container {
+            border-color: $on-surface;
             color: $on-surface;
-        }
 
-        input:disabled {
-            background-color: transparent;
-            color: $on-surface;
+            label {
+                color: $on-surface;
+            }
+
+            input:disabled {
+                background-color: transparent;
+                color: $on-surface;
+            }
         }
     }
 

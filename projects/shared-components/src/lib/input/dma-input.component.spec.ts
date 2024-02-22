@@ -8,16 +8,31 @@ import { DmaInputComponent } from './dma-input.component';
 describe('DmaInputComponent', () => {
     @Component({
         template: `
-            <dma-input label="Label text" [disabled]="disabled" [readonly]="readonly" [value]="value"></dma-input>
+            <dma-input
+                label="Label text"
+                [disabled]="disabled"
+                [readonly]="readonly"
+                [value]="value"
+                [supportingText]="supportingText"
+            ></dma-input>
         `,
     })
     class TestComponent {
         disabled: boolean;
         readonly: boolean;
         value: string;
+
+        supportingText: string;
     }
 
-    async function setupTestEnvironment(params?: { disabled?: boolean; readonly?: boolean; value?: string }) {
+    interface TestParams {
+        disabled?: boolean;
+        readonly?: boolean;
+        value?: string;
+        supportingText?: string;
+    }
+
+    async function setupTestEnvironment(params?: TestParams) {
         TestBed.configureTestingModule({
             imports: [DmaInputComponent, NoopAnimationsModule],
             declarations: [TestComponent],
@@ -34,6 +49,9 @@ describe('DmaInputComponent', () => {
         }
         if (params?.value) {
             fixture.componentInstance.value = params.value;
+        }
+        if (params?.supportingText) {
+            fixture.componentInstance.supportingText = params.supportingText;
         }
         return {
             harness: await harnessLoader.getHarness(DmaInputHarness),
@@ -106,5 +124,16 @@ describe('DmaInputComponent', () => {
         const { harness } = await setupTestEnvironment({ value: 'Test' });
 
         expect(await harness.hasLabelMovedUp()).toBeTrue();
+    });
+
+    it('should render supporting text when set', async () => {
+        const { harness, testComponent } = await setupTestEnvironment();
+
+        expect(await harness.hasSupportingText()).toBeFalse();
+
+        testComponent.supportingText = 'Supporting text';
+
+        expect(await harness.hasSupportingText()).toBeTrue();
+        expect(await harness.supportingText()).toEqual('Supporting text');
     });
 });

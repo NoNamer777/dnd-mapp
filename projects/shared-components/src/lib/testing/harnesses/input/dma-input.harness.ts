@@ -5,13 +5,26 @@ export class DmaInputHarness extends ComponentHarness {
 
     private labelLocator = this.locatorForOptional('label');
     private inputLocator = this.locatorFor('input');
+    private supportingTextLocator = this.locatorForOptional('.input-support .text');
 
     async hasLabel() {
         return Boolean(await this.labelLocator());
     }
 
+    async label() {
+        return await (await this.labelLocator()).text();
+    }
+
     async hasLabelMovedUp() {
         return (await (await this.labelLocator()).getProperty<number>('offsetTop')) < 0;
+    }
+
+    async hasSupportingText() {
+        return Boolean(await this.supportingTextLocator());
+    }
+
+    async supportingText() {
+        return await (await this.supportingTextLocator()).text();
     }
 
     async isDisabled() {
@@ -20,10 +33,6 @@ export class DmaInputHarness extends ComponentHarness {
 
     async isFocused() {
         return await (await this.host()).hasClass('focused');
-    }
-
-    async label() {
-        return await (await this.labelLocator()).text();
     }
 
     async value() {
