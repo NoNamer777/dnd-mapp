@@ -101,6 +101,8 @@ export class DmaInputComponent implements OnInit {
 
     @Input() value: string;
 
+    @Input() supportingText: string;
+
     @Output() valueChange = new EventEmitter<string>();
 
     @HostBinding('class.focused') protected focus = false;

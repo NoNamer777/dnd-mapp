@@ -3,67 +3,124 @@
 
 :host {
     display: inline-block;
-    position: relative;
-    font-size: inherit;
-    border-radius: 0.3rem;
-    border: 1px solid $outline;
-    outline: 1px solid transparent;
-    padding: 0.6rem 0 0.6rem 1rem;
 
-    .input-border-breaker {
-        position: absolute;
-        top: -0.1rem;
-        left: 0.75rem;
-        height: 0.1rem;
-        background-color: #fff;
-    }
-
-    label {
-        color: $on-surface-variant;
-        position: absolute;
-        user-select: none;
-    }
-
-    input {
+    .input-container {
+        position: relative;
         font-size: inherit;
-        color: $on-surface;
-        caret-color: $primary;
-        outline: none;
-        padding: 0;
-        border: 0;
-    }
+        border-radius: 0.3rem;
+        border: 1px solid $outline;
+        outline: 1px solid transparent;
+        padding: 0.6rem 0 0.6rem 1rem;
 
-    &:hover:not(.readonly):not(.disabled):not(.focused) {
-        border-color: $on-surface;
-        outline-color: $on-surface;
-        cursor: text;
+        .input-border-breaker {
+            position: absolute;
+            top: -0.1rem;
+            left: 0.75rem;
+            height: 0.1rem;
+            background-color: #fff;
+        }
 
         label {
             color: $on-surface-variant;
+            position: absolute;
+            user-select: none;
+        }
+
+        input {
+            font-size: inherit;
+            color: $on-surface;
+            caret-color: $primary;
+            outline: none;
+            padding: 0;
+            border: 0;
+        }
+    }
+
+    .input-support {
+        min-height: 0.938rem;
+        color: $on-surface-variant;
+        padding: 0.25rem 1rem;
+        font-size: 0.75rem;
+    }
+
+    &.ng-invalid {
+        .input-container {
+            border-color: $error;
+
+            label {
+                color: $error;
+            }
+        }
+
+        .input-support {
+            color: $error;
+        }
+    }
+
+    &:not(.readonly):not(.disabled):not(.focused) {
+        > .input-container:hover {
+            border-color: $on-surface;
+            outline-color: $on-surface;
+            cursor: text;
+
+            label {
+                color: $on-surface-variant;
+            }
+        }
+
+        &.ng-invalid {
+            > .input-container:hover {
+                border-color: $on-error-container;
+                outline-color: $on-error-container;
+
+                label {
+                    color: $on-error-container;
+                }
+            }
         }
     }
 
     &.focused {
-        border-color: $primary;
-        outline-color: $primary;
+        .input-container {
+            border-color: $primary;
+            outline-color: $primary;
 
-        label {
-            color: $primary;
+            label {
+                color: $primary;
+            }
+        }
+
+        &.ng-invalid {
+            .input-container {
+                border-color: $error;
+                outline-color: $error;
+
+                label {
+                    color: $error;
+                }
+            }
+
+            .input-support {
+                color: $error;
+            }
         }
     }
 
     &.disabled {
         opacity: $opacity-disabled;
-        border-color: $on-surface;
-        color: $on-surface;
 
-        label {
+        .input-container {
+            border-color: $on-surface;
             color: $on-surface;
-        }
 
-        input:disabled {
-            background-color: transparent;
-            color: $on-surface;
+            label {
+                color: $on-surface;
+            }
+
+            input:disabled {
+                background-color: transparent;
+                color: $on-surface;
+            }
         }
     }
 

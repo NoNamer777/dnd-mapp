@@ -13,38 +13,45 @@ const meta: Meta<DmaInputComponent> = {
     ],
     args: {
         label: 'Label text',
+        supportingText: 'Supporting text',
         disabled: false,
         readonly: false,
-        invalid: false,
         value: '',
+        invalid: false,
     } as Partial<DmaInputComponent>,
     argTypes: {
         value: {
             defaultValue: {
                 summary: undefined,
             },
-            description: 'The value of the input field',
+            description: 'The value of the input field.',
         },
         label: {
             defaultValue: {
                 summary: undefined,
             },
             description:
-                'The label of the input field. This is also shown as placeholder while the input has no actual value',
+                'The label of the input field. This is also shown as placeholder while the input has no actual value.',
+        },
+        supportingText: {
+            defaultValue: {
+                summary: undefined,
+            },
+            description: 'Text gives extra hints about the input fields.',
         },
         disabled: {
             controls: 'boolean',
             defaultValue: {
                 summary: false,
             },
-            description: 'Determines whether the input is enabled',
+            description: 'Determines whether the input is enabled.',
         },
         readonly: {
             controls: 'boolean',
             defaultValue: {
                 summary: false,
             },
-            description: `Determines whether allows changing its current value`,
+            description: `Determines whether it is allowed to change the input field's current value.`,
         },
     } as Partial<ArgTypes<DmaInputComponent>>,
 };
@@ -56,7 +63,7 @@ export const Common: Story = {
         props: args,
         template: `
             <article>
-                <dma-input inputType="text"  [disabled]="disabled" [readonly]="readonly" [value]="value" [label]="label"></dma-input>
+                <dma-input inputType="text"  [disabled]="disabled" [readonly]="readonly" [value]="value" [label]="label" [supportingText]="supportingText" [class.ng-invalid]="invalid"></dma-input>
             </article>        
         `,
     }),
