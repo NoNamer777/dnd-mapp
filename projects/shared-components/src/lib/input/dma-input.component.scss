@@ -36,29 +36,73 @@
         }
     }
 
-    .input-supporting-text {
+    .input-support {
         min-height: 0.938rem;
         color: $on-surface-variant;
         padding: 0.25rem 1rem;
         font-size: 0.75rem;
     }
 
-    &:not(.readonly):not(.disabled):not(.focused) > .input-container:hover {
-        border-color: $on-surface;
-        outline-color: $on-surface;
-        cursor: text;
+    &.ng-invalid {
+        .input-container {
+            border-color: $error;
 
-        label {
-            color: $on-surface-variant;
+            label {
+                color: $error;
+            }
+        }
+
+        .input-support {
+            color: $error;
         }
     }
 
-    &.focused .input-container {
-        border-color: $primary;
-        outline-color: $primary;
+    &:not(.readonly):not(.disabled):not(.focused) {
+        > .input-container:hover {
+            border-color: $on-surface;
+            outline-color: $on-surface;
+            cursor: text;
 
-        label {
-            color: $primary;
+            label {
+                color: $on-surface-variant;
+            }
+        }
+
+        &.ng-invalid {
+            > .input-container:hover {
+                border-color: $on-error-container;
+                outline-color: $on-error-container;
+
+                label {
+                    color: $on-error-container;
+                }
+            }
+        }
+    }
+
+    &.focused {
+        .input-container {
+            border-color: $primary;
+            outline-color: $primary;
+
+            label {
+                color: $primary;
+            }
+        }
+
+        &.ng-invalid {
+            .input-container {
+                border-color: $error;
+                outline-color: $error;
+
+                label {
+                    color: $error;
+                }
+            }
+
+            .input-support {
+                color: $error;
+            }
         }
     }
 
