@@ -7,6 +7,7 @@
         ></div>
         <label #labelElement [@inputLabel]="animationState">{{ label }}</label>
     }
+    <ng-content select="dma-icon.leading-icon"></ng-content>
     <input
         #input
         [type]="inputType"

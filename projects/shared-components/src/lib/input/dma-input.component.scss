@@ -5,6 +5,9 @@
     display: inline-block;
 
     .input-container {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
         position: relative;
         font-size: inherit;
         border-radius: 0.3rem;
@@ -29,12 +32,19 @@
         }
 
         input {
+            flex: 1 1 auto;
             font-size: inherit;
             color: $on-surface;
             caret-color: $primary;
             outline: none;
             padding: 0;
             border: 0;
+        }
+    }
+
+    &.with-leading-icon {
+        .input-container label {
+            left: 3rem;
         }
     }
 

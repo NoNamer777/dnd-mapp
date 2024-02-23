@@ -1,15 +1,19 @@
 import { CommonModule } from '@angular/common';
 import {
+    AfterContentInit,
     ChangeDetectionStrategy,
     Component,
+    ContentChildren,
     ElementRef,
     EventEmitter,
     HostBinding,
     Input,
     OnInit,
     Output,
+    QueryList,
     ViewChild,
 } from '@angular/core';
+import { DmaIconComponent, DmaIconsModule } from '@dnd-mapp/shared-components';
 import { inputBorderAnimation } from './input-border.animation';
 import { inputLabelAnimation } from './input-label.animation';
 
@@ -83,9 +87,9 @@ type AnimationState = 'populated' | 'unpopulated';
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [inputLabelAnimation, inputBorderAnimation],
     standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule, DmaIconsModule],
 })
-export class DmaInputComponent implements OnInit {
+export class DmaInputComponent implements OnInit, AfterContentInit {
     @Input() @HostBinding('class.disabled') disabled = false;
 
     @Input() @HostBinding('class.readonly') readonly = false;
@@ -109,6 +113,10 @@ export class DmaInputComponent implements OnInit {
     protected animationState: AnimationState;
 
     @ViewChild('input') protected inputElement: ElementRef<HTMLInputElement>;
+
+    @ContentChildren(DmaIconComponent, { read: ElementRef }) private readonly icons: QueryList<ElementRef<HTMLElement>>;
+
+    @HostBinding('class.with-leading-icon') protected isContainingLeadingIcon = false;
 
     ngOnInit() {
         this.animationState = this.value ? 'populated' : 'unpopulated';
@@ -140,5 +148,11 @@ export class DmaInputComponent implements OnInit {
     protected onValueChange(changeEvent: Event) {
         this.value = (changeEvent.target as HTMLInputElement).value;
         this.valueChange.emit(this.value);
+    }
+
+    private containsIcon() {
+        this.isContainingLeadingIcon = this.icons.some((iconElem) =>
+            iconElem.nativeElement.className.includes('leading-icon')
+        );
     }
 }

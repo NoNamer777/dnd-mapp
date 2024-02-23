@@ -1,3 +1,5 @@
+@use '../../assets/styles/theme-variables' as *;
+
 :host {
     display: block;
     flex: 0 0 auto;
@@ -17,4 +19,9 @@
 :host-context(button[dma-icon-button]) {
     height: 1.35em;
     width: 1.35em;
+}
+
+:host-context(dma-input) {
+    color: $on-surface-variant;
+    height: 1rem;
 }

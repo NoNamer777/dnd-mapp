@@ -8,6 +8,10 @@ export class DmaInputHarness extends ComponentHarness {
     private inputLocator = this.locatorFor('input');
     private supportingTextLocator = this.locatorForOptional('.input-support .text');
 
+    async containsLeadingIcon() {
+        return await (await this.host()).hasClass('with-leading-icon');
+    }
+
     async hasLabel() {
         return Boolean(await this.labelLocator());
     }

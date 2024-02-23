@@ -1,5 +1,6 @@
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { applicationConfig, ArgTypes, Meta, moduleMetadata, StoryObj } from '@storybook/angular';
+import { DmaIconsModule } from '../../icons';
 import { DmaInputComponent } from '../dma-input.component';
 
 type Story = StoryObj<DmaInputComponent>;
@@ -9,7 +10,7 @@ const meta: Meta<DmaInputComponent> = {
     component: DmaInputComponent,
     decorators: [
         applicationConfig({ providers: [provideAnimationsAsync()] }),
-        moduleMetadata({ imports: [DmaInputComponent] }),
+        moduleMetadata({ imports: [DmaInputComponent, DmaIconsModule] }),
     ],
     args: {
         label: 'Label text',
@@ -63,7 +64,36 @@ export const Common: Story = {
         props: args,
         template: `
             <article>
-                <dma-input inputType="text"  [disabled]="disabled" [readonly]="readonly" [value]="value" [label]="label" [supportingText]="supportingText" [class.ng-invalid]="invalid"></dma-input>
+                <dma-input
+                    inputType="text" 
+                    [disabled]="disabled"
+                    [readonly]="readonly"
+                    [value]="value"
+                    [label]="label"
+                    [supportingText]="supportingText"
+                    [class.ng-invalid]="invalid"
+                ></dma-input>
+            </article>        
+        `,
+    }),
+};
+
+export const LeadingIcon: Story = {
+    render: (args) => ({
+        props: args,
+        template: `
+            <article>
+                <dma-input
+                    inputType="text"
+                    label="Label text" 
+                    [disabled]="disabled"
+                    [readonly]="readonly"
+                    [value]="value"
+                    [supportingText]="supportingText"
+                    [class.ng-invalid]="invalid"
+                >
+                    <dma-icon icon="magnifying-glass" class="leading-icon"></dma-icon>                
+                </dma-input>
             </article>        
         `,
     }),
