@@ -1,4 +1,4 @@
-<div class="input-container">
+<div class="input-container" (click)="onClick()">
     @if (label) {
         <div
             class="input-border-breaker"
@@ -7,6 +7,7 @@
         ></div>
         <label #labelElement [@inputLabel]="animationState">{{ label }}</label>
     }
+    <ng-content select="dma-icon.leading-icon"></ng-content>
     <input
         #input
         [type]="inputType"

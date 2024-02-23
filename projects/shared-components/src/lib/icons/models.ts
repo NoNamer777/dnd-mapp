@@ -5,6 +5,7 @@ export enum DmaIcons {
     STAR = 'star',
     USERS = 'users',
     WAND_SPARKLES = 'wand-sparkles',
+    MAGNIFYING_GLASS = 'magnifying-glass',
 }
 
 export enum DmaIconTypes {

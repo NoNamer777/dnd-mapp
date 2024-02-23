@@ -1,7 +1,8 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { Component } from '@angular/core';
+import { Component, Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { DmaIconsModule } from '@dnd-mapp/shared-components';
 import { DmaInputHarness } from '../testing';
 import { DmaInputComponent } from './dma-input.component';
 
@@ -25,33 +26,47 @@ describe('DmaInputComponent', () => {
         supportingText: string;
     }
 
-    interface TestParams {
+    @Component({
+        template: `
+            <dma-input label="Label text">
+                <dma-icon class="leading-icon" icon="magnifying-glass"></dma-icon>
+            </dma-input>
+        `,
+    })
+    class LeadingIconTestComponent {}
+
+    interface TestParams<T> {
+        component: Type<T>;
         disabled?: boolean;
         readonly?: boolean;
         value?: string;
         supportingText?: string;
     }
 
-    async function setupTestEnvironment(params?: TestParams) {
+    async function setupTestEnvironment<T = TestComponent>(
+        params: TestParams<T> = { component: TestComponent as Type<T> }
+    ) {
         TestBed.configureTestingModule({
-            imports: [DmaInputComponent, NoopAnimationsModule],
-            declarations: [TestComponent],
+            imports: [DmaInputComponent, NoopAnimationsModule, DmaIconsModule],
+            declarations: [TestComponent, LeadingIconTestComponent],
         });
 
-        const fixture = TestBed.createComponent(TestComponent);
+        const fixture = TestBed.createComponent(params.component);
         const harnessLoader = TestbedHarnessEnvironment.loader(fixture);
 
-        if (params?.disabled) {
-            fixture.componentInstance.disabled = params.disabled;
-        }
-        if (params?.readonly) {
-            fixture.componentInstance.readonly = params.readonly;
-        }
-        if (params?.value) {
-            fixture.componentInstance.value = params.value;
-        }
-        if (params?.supportingText) {
-            fixture.componentInstance.supportingText = params.supportingText;
+        if (params.component === TestComponent) {
+            if (params?.disabled) {
+                (fixture.componentInstance as TestComponent).disabled = params.disabled;
+            }
+            if (params?.readonly) {
+                (fixture.componentInstance as TestComponent).readonly = params.readonly;
+            }
+            if (params?.value) {
+                (fixture.componentInstance as TestComponent).value = params.value;
+            }
+            if (params?.supportingText) {
+                (fixture.componentInstance as TestComponent).supportingText = params.supportingText;
+            }
         }
         return {
             harness: await harnessLoader.getHarness(DmaInputHarness),
@@ -103,7 +118,7 @@ describe('DmaInputComponent', () => {
     });
 
     it('should not focus when disabled', async () => {
-        const { harness } = await setupTestEnvironment({ disabled: true });
+        const { harness } = await setupTestEnvironment({ disabled: true, component: TestComponent });
 
         expect(await harness.isFocused()).toBeFalse();
 
@@ -112,7 +127,7 @@ describe('DmaInputComponent', () => {
     });
 
     it('should not focus when readonly', async () => {
-        const { harness } = await setupTestEnvironment({ readonly: true });
+        const { harness } = await setupTestEnvironment({ readonly: true, component: TestComponent });
 
         expect(await harness.isFocused()).toBeFalse();
 
@@ -121,7 +136,7 @@ describe('DmaInputComponent', () => {
     });
 
     it('should apply label state on initialization', async () => {
-        const { harness } = await setupTestEnvironment({ value: 'Test' });
+        const { harness } = await setupTestEnvironment({ value: 'Test', component: TestComponent });
 
         expect(await harness.hasLabelMovedUp()).toBeTrue();
     });
@@ -135,5 +150,11 @@ describe('DmaInputComponent', () => {
 
         expect(await harness.hasSupportingText()).toBeTrue();
         expect(await harness.supportingText()).toEqual('Supporting text');
+    });
+
+    it('should set when the input field contains a leading icon', async () => {
+        const { harness } = await setupTestEnvironment({ component: LeadingIconTestComponent });
+
+        expect(await harness.containsLeadingIcon()).toBeTrue();
     });
 });

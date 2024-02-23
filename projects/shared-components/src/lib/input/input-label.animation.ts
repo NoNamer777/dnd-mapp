@@ -1,13 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
 export const inputLabelAnimation = trigger('inputLabel', [
-    state(
-        'unpopulated',
-        style({
-            left: '1rem',
-            top: '0.6rem',
-        })
-    ),
+    state('unpopulated', style({})),
     state(
         'populated',
         style({
