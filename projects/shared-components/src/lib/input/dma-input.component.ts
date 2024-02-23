@@ -5,7 +5,6 @@ import {
     ElementRef,
     EventEmitter,
     HostBinding,
-    HostListener,
     Input,
     OnInit,
     Output,
@@ -115,7 +114,10 @@ export class DmaInputComponent implements OnInit {
         this.animationState = this.value ? 'populated' : 'unpopulated';
     }
 
-    @HostListener('click')
+    ngAfterContentInit() {
+        this.containsIcon();
+    }
+
     protected onClick() {
         this.inputElement.nativeElement.focus();
     }

@@ -3,6 +3,7 @@ import { ComponentHarness } from '@angular/cdk/testing';
 export class DmaInputHarness extends ComponentHarness {
     static hostSelector = 'dma-input';
 
+    private inputContainerLocator = this.locatorFor('.input-container');
     private labelLocator = this.locatorForOptional('label');
     private inputLocator = this.locatorFor('input');
     private supportingTextLocator = this.locatorForOptional('.input-support .text');
@@ -45,7 +46,7 @@ export class DmaInputHarness extends ComponentHarness {
     }
 
     async focus() {
-        await (await this.host()).click();
+        await (await this.inputContainerLocator()).click();
     }
 
     async blur() {
