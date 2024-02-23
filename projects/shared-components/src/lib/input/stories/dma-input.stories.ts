@@ -86,13 +86,34 @@ export const LeadingIcon: Story = {
                 <dma-input
                     inputType="text"
                     label="Label text" 
+                    supportingText="Supporting text"
                     [disabled]="disabled"
                     [readonly]="readonly"
                     [value]="value"
-                    [supportingText]="supportingText"
                     [class.ng-invalid]="invalid"
                 >
                     <dma-icon icon="magnifying-glass" class="leading-icon"></dma-icon>                
+                </dma-input>
+            </article>        
+        `,
+    }),
+};
+
+export const TrailingIcon: Story = {
+    render: (args) => ({
+        props: args,
+        template: `
+            <article>
+                <dma-input
+                    inputType="text"
+                    label="Label text" 
+                    supportingText="Supporting text"
+                    [disabled]="disabled"
+                    [readonly]="readonly"
+                    [value]="value"
+                    [class.ng-invalid]="invalid"
+                >
+                    <dma-icon icon="microphone" class="trailing-icon"></dma-icon>                
                 </dma-input>
             </article>        
         `,
