@@ -21,9 +21,11 @@
         }
 
         label {
-            color: $on-surface-variant;
             position: absolute;
+            left: 1rem;
+            top: 0.6rem;
             user-select: none;
+            color: $on-surface-variant;
         }
 
         input {
