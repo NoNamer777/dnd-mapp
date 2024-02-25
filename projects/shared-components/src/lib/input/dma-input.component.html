@@ -20,7 +20,11 @@
         (focus)="onFocus()"
         (blur)="blur()"
     />
-    <ng-content select="dma-icon.trailing-icon"></ng-content>
+    @if (invalid) {
+        <dma-icon icon="circle-exclamation" class="trailing-icon"></dma-icon>
+    } @else {
+        <ng-content select="dma-icon.trailing-icon"></ng-content>
+    }
 </div>
 <p class="input-support">
     @if (supportingText) {
