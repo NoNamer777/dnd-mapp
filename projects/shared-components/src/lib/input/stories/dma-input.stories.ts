@@ -15,6 +15,7 @@ const meta: Meta<DmaInputComponent> = {
     args: {
         label: 'Label text',
         supportingText: 'Supporting text',
+        errorMessage: '',
         disabled: false,
         readonly: false,
         value: '',
@@ -39,6 +40,12 @@ const meta: Meta<DmaInputComponent> = {
                 summary: undefined,
             },
             description: 'Text gives extra hints about the input fields.',
+        },
+        errorMessage: {
+            defaultValue: {
+                summary: undefined,
+            },
+            description: 'Message shown when the input field is in error state indicating what the problem is.',
         },
         disabled: {
             controls: 'boolean',
@@ -78,6 +85,7 @@ export const Common: Story = {
                     [value]="value"
                     [label]="label"
                     [supportingText]="supportingText"
+                    [errorMessage]="errorMessage"
                     [invalid]="invalid"
                 ></dma-input>
             </article>        
@@ -94,6 +102,7 @@ export const LeadingIcon: Story = {
                     inputType="text"
                     label="Label text" 
                     supportingText="Supporting text"
+                    errorMessage="Error message"
                     [disabled]="disabled"
                     [readonly]="readonly"
                     [value]="value"
@@ -115,6 +124,7 @@ export const TrailingIcon: Story = {
                     inputType="text"
                     label="Label text" 
                     supportingText="Supporting text"
+                    errorMessage="Error message"
                     [disabled]="disabled"
                     [readonly]="readonly"
                     [value]="value"

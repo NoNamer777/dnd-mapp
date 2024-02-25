@@ -108,6 +108,8 @@ export class DmaInputComponent implements OnInit, AfterContentInit {
 
     @Input() @HostBinding('class.invalid') invalid = false;
 
+    @Input() errorMessage: string;
+
     @Output() valueChange = new EventEmitter<string>();
 
     @HostBinding('class.focused') protected focus = false;

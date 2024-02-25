@@ -27,7 +27,9 @@
     }
 </div>
 <p class="input-support">
-    @if (supportingText) {
+    @if (invalid && errorMessage) {
+        <span class="text">{{ errorMessage }}</span>
+    } @else if (supportingText) {
         <span class="text">{{ supportingText }}</span>
     }
 </p>
