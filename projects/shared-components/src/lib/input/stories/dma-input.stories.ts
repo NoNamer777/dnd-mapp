@@ -47,6 +47,13 @@ const meta: Meta<DmaInputComponent> = {
             },
             description: 'Determines whether the input is enabled.',
         },
+        invalid: {
+            controls: 'boolean',
+            defaultValue: {
+                summary: false,
+            },
+            description: 'Determines whether the inputted value is invalid.',
+        },
         readonly: {
             controls: 'boolean',
             defaultValue: {
@@ -71,7 +78,7 @@ export const Common: Story = {
                     [value]="value"
                     [label]="label"
                     [supportingText]="supportingText"
-                    [class.ng-invalid]="invalid"
+                    [invalid]="invalid"
                 ></dma-input>
             </article>        
         `,
@@ -90,7 +97,7 @@ export const LeadingIcon: Story = {
                     [disabled]="disabled"
                     [readonly]="readonly"
                     [value]="value"
-                    [class.ng-invalid]="invalid"
+                    [invalid]="invalid"
                 >
                     <dma-icon icon="magnifying-glass" class="leading-icon"></dma-icon>                
                 </dma-input>
@@ -111,7 +118,7 @@ export const TrailingIcon: Story = {
                     [disabled]="disabled"
                     [readonly]="readonly"
                     [value]="value"
-                    [class.ng-invalid]="invalid"
+                    [invalid]="invalid"
                 >
                     <dma-icon icon="microphone" class="trailing-icon"></dma-icon>                
                 </dma-input>
