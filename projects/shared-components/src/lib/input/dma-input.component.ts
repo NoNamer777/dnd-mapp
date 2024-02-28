@@ -16,7 +16,14 @@ import {
 import { ControlValueAccessor } from '@angular/forms';
 import { isInvalid } from '../forms';
 import { DmaIconComponent } from '../icons';
-import { AnimationState, AutoComplete, DmaInputType, dmaInputValueAccessorProvider } from './dma-input.models';
+import {
+    AnimationState,
+    AutoComplete,
+    DmaInputType,
+    DmaInputTypes,
+    dmaInputTypeAttribute,
+    dmaInputValueAccessorProvider,
+} from './dma-input.models';
 import { inputBorderAnimation } from './input-border.animation';
 import { inputLabelAnimation } from './input-label.animation';
 
@@ -36,7 +43,7 @@ export class DmaInputComponent implements OnInit, AfterContentInit, ControlValue
 
     @Input() @HostBinding('class.readonly') readonly = false;
 
-    @Input() inputType: DmaInputType = 'text';
+    @Input({ transform: dmaInputTypeAttribute, required: true }) inputType: DmaInputType = DmaInputTypes.TEXT;
 
     @Input() autocomplete: AutoComplete = 'off';
 
@@ -46,7 +53,7 @@ export class DmaInputComponent implements OnInit, AfterContentInit, ControlValue
 
     @Input() label?: string;
 
-    @Input() forLabel?: string;
+    @Input({ required: true }) forLabel: string;
 
     @Input() value: string = null;
 
@@ -62,9 +69,9 @@ export class DmaInputComponent implements OnInit, AfterContentInit, ControlValue
 
     @ViewChild('input') protected inputElement: ElementRef<HTMLInputElement>;
 
-    @ContentChildren(DmaIconComponent, { read: ElementRef }) private readonly icons: QueryList<ElementRef<HTMLElement>>;
-
     @HostBinding('class.with-leading-icon') protected isContainingLeadingIcon = false;
+
+    @ContentChildren(DmaIconComponent, { read: ElementRef }) private readonly icons: QueryList<ElementRef<HTMLElement>>;
 
     constructor(private readonly elementRef: ElementRef<HTMLElement>) {}
 
