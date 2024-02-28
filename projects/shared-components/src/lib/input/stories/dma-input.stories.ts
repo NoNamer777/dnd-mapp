@@ -2,6 +2,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { ArgTypes, Meta, StoryObj, applicationConfig, moduleMetadata } from '@storybook/angular';
 import { DmaIconComponent } from '../../icons';
 import { DmaInputComponent } from '../dma-input.component';
+import { DmaInputTypes } from '../dma-input.models';
 
 type Story = StoryObj<DmaInputComponent>;
 
@@ -26,23 +27,20 @@ const meta: Meta<DmaInputComponent> = {
     argTypes: {
         inputType: {
             control: 'select',
-            options: ['text', 'password', 'email', 'search', 'tel', '0'],
+            options: Object.values(DmaInputTypes),
             defaultValue: { summary: 'text' },
             type: { name: 'string', required: true },
             description: 'Determines the type of input field',
         },
-        value: {
+        forLabel: {
             defaultValue: { summary: undefined },
-            description: 'The value of the input field.',
+            type: { name: 'string', required: true },
+            description: 'Sets the `for` attribute on the floating label as well as the `id` of the input field.',
         },
         label: {
             defaultValue: { summary: undefined },
             description:
                 'The label of the input field. This is also shown as placeholder while the input has no actual value.',
-        },
-        forLabel: {
-            defaultValue: { summary: undefined },
-            description: 'Sets the `for` attribute on the floating label as well as the `name` of the input field.',
         },
         supportingText: {
             defaultValue: { summary: undefined },
@@ -61,6 +59,10 @@ const meta: Meta<DmaInputComponent> = {
             control: 'boolean',
             defaultValue: { summary: false },
             description: `Determines whether it is allowed to change the input field's current value.`,
+        },
+        value: {
+            defaultValue: { summary: undefined },
+            description: 'The value of the input field.',
         },
         size: {
             control: { type: 'number', min: 1 },

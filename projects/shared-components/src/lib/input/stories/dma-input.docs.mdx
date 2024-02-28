@@ -5,7 +5,30 @@ import * as DmaInputStories from './dma-input.stories';
 
 # DmaInput
 
-The DmaInput
+The DmaInput is an input field which supports a number of text related input types.
+
+## Using the component
+
+To use the component, simply add the component to your imports like so:
+
+```typescript
+import { Component } from '@angular/core';
+import { DmaInputComponent } from '@dnd-mapp/shared-components';
+
+@Component({
+    templateUrl: './my.component.html',
+    standalone: true,
+    imports: [DmaInputComponent]
+})
+class MyComponent {}
+```
+After that you can start using the DmaInputComponent in your template like so:
+
+```html
+<dma-input inputType="text" label="label Text" forLabel="input-field" />
+```
+
+Find the Common input field example below and it's controls to find out more about the inputs of the component.
 
 ## Common input field
 
