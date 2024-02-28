@@ -71,6 +71,11 @@ export class DmaInputComponent implements OnInit, AfterContentInit {
         this.containsIcon();
     }
 
+    protected onBlur() {
+        this.animationState = this.value ? 'populated' : 'unpopulated';
+        this.focus = false;
+    }
+
     protected onClick() {
         this.inputElement.nativeElement.focus();
     }
@@ -79,11 +84,6 @@ export class DmaInputComponent implements OnInit, AfterContentInit {
         if (this.disabled || this.readonly) return;
         this.focus = true;
         this.animationState = 'populated';
-    }
-
-    protected blur() {
-        this.animationState = this.value ? 'populated' : 'unpopulated';
-        this.focus = false;
     }
 
     protected getLabelWidth(width: number) {
