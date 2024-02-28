@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input } from '@angular/core';
-import { DmaIconName, DmaIconType, DmaIconTypes } from './models';
+import { DmaIconName, DmaIconType, DmaIconTypes, dmaIconNameAttribute, dmaIconTypeAttribute } from './models';
 
 @Component({
     selector: 'dma-icon',
@@ -14,7 +14,7 @@ export class DmaIconComponent {
     get icon() {
         return this._icon;
     }
-    @Input() set icon(icon: DmaIconName) {
+    @Input({ transform: dmaIconNameAttribute }) set icon(icon: DmaIconName) {
         this._icon = icon;
         this.getIconTemplate();
     }
@@ -23,7 +23,7 @@ export class DmaIconComponent {
     get iconType() {
         return this._iconType;
     }
-    @Input() set iconType(type: DmaIconType) {
+    @Input({ transform: dmaIconTypeAttribute }) set iconType(type: DmaIconType) {
         this._iconType = type;
         this.getIconTemplate();
     }

@@ -2,18 +2,21 @@
 @use '../../assets/styles/colors' as *;
 
 :host {
-    display: inline-block;
+    display: block;
+    padding: 0.5rem 0;
 
     .input-container {
         display: flex;
-        align-items: center;
+        height: 1.2rem;
+        line-height: 1.2rem;
+        align-items: baseline;
         gap: 1rem;
         position: relative;
         font-size: inherit;
         border-radius: 0.3rem;
         border: 1px solid $outline;
         outline: 1px solid transparent;
-        padding: 0.6rem 0 0.6rem 1rem;
+        padding: 0.6rem 1rem 0.6rem 1rem;
 
         .input-border-breaker {
             position: absolute;
@@ -55,12 +58,16 @@
         font-size: 0.75rem;
     }
 
-    &.ng-invalid {
+    &.invalid {
         .input-container {
             border-color: $error;
 
             label {
                 color: $error;
+            }
+
+            input {
+                caret-color: $error;
             }
         }
 
@@ -80,7 +87,7 @@
             }
         }
 
-        &.ng-invalid {
+        &.invalid {
             > .input-container:hover {
                 border-color: $on-error-container;
                 outline-color: $on-error-container;
@@ -100,9 +107,13 @@
             label {
                 color: $primary;
             }
+
+            input {
+                caret-color: $primary;
+            }
         }
 
-        &.ng-invalid {
+        &.invalid {
             .input-container {
                 border-color: $error;
                 outline-color: $error;

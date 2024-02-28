@@ -24,4 +24,17 @@
 :host-context(dma-input) {
     color: $on-surface-variant;
     height: 1rem;
+    width: 1rem;
+}
+
+:host-context(dma-input.invalid) {
+    &.trailing-icon {
+        color: $error;
+    }
+}
+
+:host-context(dma-input.invalid:not(.focused) .input-container:hover) {
+    &.trailing-icon {
+        color: $on-error-container;
+    }
 }

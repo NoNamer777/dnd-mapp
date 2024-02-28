@@ -1,7 +1,7 @@
 import { importProvidersFrom } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { applicationConfig, Meta, moduleMetadata, StoryObj } from '@storybook/angular';
-import { DmaIconsModule } from '../../icons';
+import { DmaIconComponent } from '../../icons';
 import { DmaNavigationBarButtonComponent } from '../button';
 import { DmaNavigationBarModule } from '../dma-navigation-bar.module';
 
@@ -11,7 +11,7 @@ const meta: Meta<DmaNavigationBarButtonComponent> = {
     component: DmaNavigationBarButtonComponent,
     decorators: [
         applicationConfig({ providers: [importProvidersFrom(RouterTestingModule.withRoutes([{ path: 'page-a' }]))] }),
-        moduleMetadata({ imports: [DmaNavigationBarModule, DmaIconsModule] }),
+        moduleMetadata({ imports: [DmaNavigationBarModule, DmaIconComponent] }),
     ],
     args: {
         active: false,

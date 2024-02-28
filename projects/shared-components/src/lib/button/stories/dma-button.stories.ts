@@ -1,5 +1,5 @@
 import { ArgTypes, Meta, moduleMetadata, StoryObj } from '@storybook/angular';
-import { DmaIconsModule } from '../../icons';
+import { DmaIconComponent } from '../../icons';
 import { DmaButtonComponent } from '../dma-button.component';
 
 type Story = StoryObj<DmaButtonComponent>;
@@ -7,7 +7,7 @@ type Story = StoryObj<DmaButtonComponent>;
 const meta: Meta<DmaButtonComponent> = {
     title: 'DmaButton',
     component: DmaButtonComponent,
-    decorators: [moduleMetadata({ imports: [DmaButtonComponent, DmaIconsModule] })],
+    decorators: [moduleMetadata({ imports: [DmaButtonComponent, DmaIconComponent] })],
     args: {
         disabled: false,
         dmaButtonType: 'elevated',

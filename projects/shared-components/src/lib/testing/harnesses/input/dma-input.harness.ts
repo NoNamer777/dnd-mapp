@@ -32,6 +32,30 @@ export class DmaInputHarness extends ComponentHarness {
         return await (await this.supportingTextLocator()).text();
     }
 
+    async isTouched() {
+        return await (await this.host()).hasClass('ng-touched');
+    }
+
+    async isUntouched() {
+        return await (await this.host()).hasClass('ng-untouched');
+    }
+
+    async isValid() {
+        return await (await this.host()).hasClass('ng-valid');
+    }
+
+    async isInvalid() {
+        return await (await this.host()).hasClass('ng-invalid');
+    }
+
+    async isDirty() {
+        return await (await this.host()).hasClass('ng-dirty');
+    }
+
+    async isPristine() {
+        return await (await this.host()).hasClass('ng-pristine');
+    }
+
     async isDisabled() {
         return await (await this.host()).hasClass('disabled');
     }
@@ -45,8 +69,14 @@ export class DmaInputHarness extends ComponentHarness {
     }
 
     async setValue(value: string) {
-        await (await this.inputLocator()).sendKeys(value);
-        await (await this.inputLocator()).dispatchEvent('change', { value: value });
+        const inputTestElem = await this.inputLocator();
+
+        await this.focus();
+
+        await inputTestElem.clear();
+        await inputTestElem.sendKeys(value);
+
+        await this.blur();
     }
 
     async focus() {

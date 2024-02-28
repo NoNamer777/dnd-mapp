@@ -13,71 +13,19 @@ import {
     QueryList,
     ViewChild,
 } from '@angular/core';
-import { DmaIconComponent, DmaIconsModule } from '@dnd-mapp/shared-components';
+import { ControlValueAccessor } from '@angular/forms';
+import { isInvalid } from '../forms';
+import { DmaIconComponent } from '../icons';
+import {
+    AnimationState,
+    AutoComplete,
+    DmaInputType,
+    DmaInputTypes,
+    dmaInputTypeAttribute,
+    dmaInputValueAccessorProvider,
+} from './dma-input.models';
 import { inputBorderAnimation } from './input-border.animation';
 import { inputLabelAnimation } from './input-label.animation';
-
-type DmaInputType = 'text' | 'password' | 'email' | 'search' | 'tel';
-
-type AutoComplete =
-    | 'off'
-    | 'on'
-    | 'name'
-    | 'honorific-prefix'
-    | 'given-name'
-    | 'additional-name'
-    | 'family-name'
-    | 'honorific-suffix'
-    | 'nickname'
-    | 'email'
-    | 'username'
-    | 'new-password'
-    | 'current-password'
-    | 'one-time-code'
-    | 'organization-title'
-    | 'organization'
-    | 'street-address'
-    | 'shipping'
-    | 'billing'
-    | 'address-line1'
-    | 'address-line2'
-    | 'address-line3'
-    | 'address-level4'
-    | 'address-level3'
-    | 'address-level2'
-    | 'address-level1'
-    | 'country'
-    | 'country-name'
-    | 'postal-code'
-    | 'cc-name'
-    | 'cc-given-name'
-    | 'cc-family-name'
-    | 'cc-number'
-    | 'cc-exp'
-    | 'cc-exp-month'
-    | 'cc-exp-year'
-    | 'cc-csc'
-    | 'cc-type'
-    | 'transaction-currency'
-    | 'transaction-amount'
-    | 'language'
-    | 'bday'
-    | 'bday-day'
-    | 'bday-month'
-    | 'bday-year'
-    | 'sex'
-    | 'tel'
-    | 'tel-country-code'
-    | 'tel-national'
-    | 'tel-area-code'
-    | 'tel-local'
-    | 'tel-extension'
-    | 'impp'
-    | 'url'
-    | 'photo'
-    | 'webauthn';
-
-type AnimationState = 'populated' | 'unpopulated';
 
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
@@ -87,24 +35,31 @@ type AnimationState = 'populated' | 'unpopulated';
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [inputLabelAnimation, inputBorderAnimation],
     standalone: true,
-    imports: [CommonModule, DmaIconsModule],
+    imports: [CommonModule, DmaIconComponent],
+    providers: [dmaInputValueAccessorProvider],
 })
-export class DmaInputComponent implements OnInit, AfterContentInit {
+export class DmaInputComponent implements OnInit, AfterContentInit, ControlValueAccessor {
     @Input() @HostBinding('class.disabled') disabled = false;
 
     @Input() @HostBinding('class.readonly') readonly = false;
 
-    @Input() inputType: DmaInputType = 'text';
+    @Input({ transform: dmaInputTypeAttribute, required: true }) inputType: DmaInputType = DmaInputTypes.TEXT;
 
     @Input() autocomplete: AutoComplete = 'off';
 
     @Input() autofocus = false;
 
+    @Input() size = 1;
+
     @Input() label?: string;
 
-    @Input() value: string;
+    @Input({ required: true }) forLabel: string;
+
+    @Input() value: string = null;
 
     @Input() supportingText: string;
+
+    @Input() errorMessage: string;
 
     @Output() valueChange = new EventEmitter<string>();
 
@@ -114,9 +69,15 @@ export class DmaInputComponent implements OnInit, AfterContentInit {
 
     @ViewChild('input') protected inputElement: ElementRef<HTMLInputElement>;
 
+    @HostBinding('class.with-leading-icon') protected isContainingLeadingIcon = false;
+
     @ContentChildren(DmaIconComponent, { read: ElementRef }) private readonly icons: QueryList<ElementRef<HTMLElement>>;
 
-    @HostBinding('class.with-leading-icon') protected isContainingLeadingIcon = false;
+    constructor(private readonly elementRef: ElementRef<HTMLElement>) {}
+
+    @HostBinding('class.invalid') get invalid() {
+        return isInvalid(this.elementRef.nativeElement.className);
+    }
 
     ngOnInit() {
         this.animationState = this.value ? 'populated' : 'unpopulated';
@@ -124,6 +85,38 @@ export class DmaInputComponent implements OnInit, AfterContentInit {
 
     ngAfterContentInit() {
         this.containsIcon();
+    }
+
+    onChange = (_value: string) => {
+        // Do nothing
+    };
+
+    onTouched = () => {
+        // Do nothing
+    };
+
+    registerOnChange(fn: (value: string) => void) {
+        this.onChange = fn;
+    }
+
+    registerOnTouched(fn: () => void) {
+        this.onTouched = fn;
+    }
+
+    setDisabledState(isDisabled: boolean) {
+        this.disabled = isDisabled;
+    }
+
+    writeValue(value: string) {
+        this.value = value;
+        this.onChange(value);
+    }
+
+    protected onBlur() {
+        this.animationState = this.value ? 'populated' : 'unpopulated';
+        this.focus = false;
+
+        this.onTouched();
     }
 
     protected onClick() {
@@ -136,11 +129,6 @@ export class DmaInputComponent implements OnInit, AfterContentInit {
         this.animationState = 'populated';
     }
 
-    protected blur() {
-        this.animationState = this.value ? 'populated' : 'unpopulated';
-        this.focus = false;
-    }
-
     protected getLabelWidth(width: number) {
         return `${width}px`;
     }
@@ -148,6 +136,7 @@ export class DmaInputComponent implements OnInit, AfterContentInit {
     protected onValueChange(changeEvent: Event) {
         this.value = (changeEvent.target as HTMLInputElement).value;
         this.valueChange.emit(this.value);
+        this.writeValue(this.value);
     }
 
     private containsIcon() {

@@ -5,24 +5,33 @@
             [style.width]="getLabelWidth(labelElement.clientWidth)"
             [@inputBorder]="animationState"
         ></div>
-        <label #labelElement [@inputLabel]="animationState">{{ label }}</label>
+        <label #labelElement [for]="forLabel" [@inputLabel]="animationState">{{ label }}</label>
     }
     <ng-content select="dma-icon.leading-icon"></ng-content>
     <input
         #input
+        [size]="size"
+        [id]="forLabel"
         [type]="inputType"
         [disabled]="disabled"
         [readOnly]="readonly"
         [value]="value"
         [autocomplete]="autocomplete"
         [autofocus]="autofocus"
-        (change)="onValueChange($event)"
+        (input)="onValueChange($event)"
         (focus)="onFocus()"
-        (blur)="blur()"
+        (blur)="onBlur()"
     />
+    @if (invalid) {
+        <dma-icon icon="circle-exclamation" class="trailing-icon"></dma-icon>
+    } @else {
+        <ng-content select="dma-icon.trailing-icon"></ng-content>
+    }
 </div>
 <p class="input-support">
-    @if (supportingText) {
+    @if (invalid && errorMessage) {
+        <span class="text">{{ errorMessage }}</span>
+    } @else if (supportingText) {
         <span class="text">{{ supportingText }}</span>
     }
 </p>
