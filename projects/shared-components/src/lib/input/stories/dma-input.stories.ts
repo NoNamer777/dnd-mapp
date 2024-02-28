@@ -21,7 +21,6 @@ const meta: Meta<DmaInputComponent> = {
         disabled: false,
         readonly: false,
         value: '',
-        invalid: false,
         size: 1,
     } as Partial<DmaInputComponent>,
     argTypes: {
@@ -58,13 +57,6 @@ const meta: Meta<DmaInputComponent> = {
             defaultValue: { summary: false },
             description: 'Determines whether the input is enabled.',
         },
-        invalid: {
-            controls: 'boolean',
-            defaultValue: {
-                summary: false,
-            },
-            description: 'Determines whether the inputted value is invalid.',
-        },
         readonly: {
             control: 'boolean',
             defaultValue: { summary: false },
@@ -95,7 +87,6 @@ export const Common: Story = {
                     [readonly]="readonly"
                     [supportingText]="supportingText"
                     [errorMessage]="errorMessage"
-                    [invalid]="invalid"
                 />
             </article>        
         `,

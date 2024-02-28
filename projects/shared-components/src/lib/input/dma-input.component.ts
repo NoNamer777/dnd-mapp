@@ -13,6 +13,8 @@ import {
     QueryList,
     ViewChild,
 } from '@angular/core';
+import { ControlValueAccessor } from '@angular/forms';
+import { isInvalid } from '../forms';
 import { DmaIconComponent } from '../icons';
 import { AnimationState, AutoComplete, DmaInputType, dmaInputValueAccessorProvider } from './dma-input.models';
 import { inputBorderAnimation } from './input-border.animation';
@@ -27,8 +29,9 @@ import { inputLabelAnimation } from './input-label.animation';
     animations: [inputLabelAnimation, inputBorderAnimation],
     standalone: true,
     imports: [CommonModule, DmaIconComponent],
+    providers: [dmaInputValueAccessorProvider],
 })
-export class DmaInputComponent implements OnInit, AfterContentInit {
+export class DmaInputComponent implements OnInit, AfterContentInit, ControlValueAccessor {
     @Input() @HostBinding('class.disabled') disabled = false;
 
     @Input() @HostBinding('class.readonly') readonly = false;
@@ -47,7 +50,6 @@ export class DmaInputComponent implements OnInit, AfterContentInit {
 
     @Input() value: string = null;
 
-    @Input() @HostBinding('class.invalid') invalid = false;
     @Input() supportingText: string;
 
     @Input() errorMessage: string;
@@ -64,6 +66,12 @@ export class DmaInputComponent implements OnInit, AfterContentInit {
 
     @HostBinding('class.with-leading-icon') protected isContainingLeadingIcon = false;
 
+    constructor(private readonly elementRef: ElementRef<HTMLElement>) {}
+
+    @HostBinding('class.invalid') get invalid() {
+        return isInvalid(this.elementRef.nativeElement.className);
+    }
+
     ngOnInit() {
         this.animationState = this.value ? 'populated' : 'unpopulated';
     }
@@ -72,9 +80,36 @@ export class DmaInputComponent implements OnInit, AfterContentInit {
         this.containsIcon();
     }
 
+    onChange = (_value: string) => {
+        // Do nothing
+    };
+
+    onTouched = () => {
+        // Do nothing
+    };
+
+    registerOnChange(fn: (value: string) => void) {
+        this.onChange = fn;
+    }
+
+    registerOnTouched(fn: () => void) {
+        this.onTouched = fn;
+    }
+
+    setDisabledState(isDisabled: boolean) {
+        this.disabled = isDisabled;
+    }
+
+    writeValue(value: string) {
+        this.value = value;
+        this.onChange(value);
+    }
+
     protected onBlur() {
         this.animationState = this.value ? 'populated' : 'unpopulated';
         this.focus = false;
+
+        this.onTouched();
     }
 
     protected onClick() {
@@ -94,6 +129,7 @@ export class DmaInputComponent implements OnInit, AfterContentInit {
     protected onValueChange(changeEvent: Event) {
         this.value = (changeEvent.target as HTMLInputElement).value;
         this.valueChange.emit(this.value);
+        this.writeValue(this.value);
     }
 
     private containsIcon() {

@@ -1,3 +1,13 @@
+import { ExistingProvider, forwardRef } from '@angular/core';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { DmaInputComponent } from './dma-input.component';
+
+export const dmaInputValueAccessorProvider: ExistingProvider = {
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => DmaInputComponent),
+    multi: true,
+};
+
 export type DmaInputType = 'text' | 'password' | 'email' | 'search' | 'tel';
 
 export type AnimationState = 'populated' | 'unpopulated';

@@ -1,8 +1,10 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { CommonModule } from '@angular/common';
 import { Component, Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { FormControl, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { DmaIconsModule } from '@dnd-mapp/shared-components';
+import { DmaIconComponent } from '@dnd-mapp/shared-components';
 import { DmaInputHarness } from '../testing';
 import { DmaInputComponent } from './dma-input.component';
 
@@ -17,6 +19,8 @@ describe('DmaInputComponent', () => {
                 [supportingText]="supportingText"
             ></dma-input>
         `,
+        standalone: true,
+        imports: [DmaInputComponent],
     })
     class TestComponent {
         disabled: boolean;
@@ -32,8 +36,29 @@ describe('DmaInputComponent', () => {
                 <dma-icon class="leading-icon" icon="magnifying-glass"></dma-icon>
             </dma-input>
         `,
+        standalone: true,
+        imports: [DmaInputComponent, DmaIconComponent],
     })
     class LeadingIconTestComponent {}
+
+    @Component({
+        template: `
+            <form [formGroup]="form">
+                <dma-input formControlName="inputField"></dma-input>
+            </form>
+        `,
+        standalone: true,
+        imports: [CommonModule, ReactiveFormsModule, DmaInputComponent],
+    })
+    class FormTestComponent {
+        protected form = new FormGroup({
+            inputField: new FormControl<string>(null),
+        });
+
+        addValidator(validator: ValidatorFn) {
+            this.form.controls.inputField.addValidators(validator);
+        }
+    }
 
     interface TestParams<T> {
         component: Type<T>;
@@ -41,6 +66,7 @@ describe('DmaInputComponent', () => {
         readonly?: boolean;
         value?: string;
         supportingText?: string;
+        formControlValidator?: ValidatorFn;
     }
 
     async function setupTestEnvironment<T = TestComponent>(
@@ -52,6 +78,7 @@ describe('DmaInputComponent', () => {
                 NoopAnimationsModule,
                 TestComponent,
                 LeadingIconTestComponent,
+                FormTestComponent,
             ],
         });
 
@@ -70,6 +97,11 @@ describe('DmaInputComponent', () => {
             }
             if (params?.supportingText) {
                 (fixture.componentInstance as TestComponent).supportingText = params.supportingText;
+            }
+        }
+        if (params.component === FormTestComponent) {
+            if (params.formControlValidator) {
+                (fixture.componentInstance as FormTestComponent).addValidator(params.formControlValidator);
             }
         }
         return {
@@ -160,5 +192,68 @@ describe('DmaInputComponent', () => {
         const { harness } = await setupTestEnvironment({ component: LeadingIconTestComponent });
 
         expect(await harness.containsLeadingIcon()).toBeTrue();
+    });
+
+    describe('Form support', () => {
+        it('should mark as touched when blurring', async () => {
+            const { harness } = await setupTestEnvironment({ component: FormTestComponent });
+
+            expect(await harness.isTouched()).toBeFalse();
+            expect(await harness.isUntouched()).toBeTrue();
+
+            await harness.focus();
+            await harness.blur();
+
+            expect(await harness.isTouched()).toBeTrue();
+            expect(await harness.isUntouched()).toBeFalse();
+        });
+
+        it('should mark as touched and changed when changing value and blurring', async () => {
+            const { harness } = await setupTestEnvironment({ component: FormTestComponent });
+
+            expect(await harness.isTouched()).toBeFalse();
+            expect(await harness.isUntouched()).toBeTrue();
+
+            expect(await harness.isDirty()).toBeFalse();
+            expect(await harness.isPristine()).toBeTrue();
+
+            await harness.setValue('Value');
+
+            expect(await harness.isTouched()).toBeTrue();
+            expect(await harness.isUntouched()).toBeFalse();
+
+            expect(await harness.isDirty()).toBeTrue();
+            expect(await harness.isPristine()).toBeFalse();
+        });
+
+        it('should mark as invalid or valid when validating as form control', async () => {
+            const { harness } = await setupTestEnvironment({
+                component: FormTestComponent,
+                formControlValidator: Validators.required,
+            });
+
+            expect(await harness.isValid()).toBeFalse();
+            expect(await harness.isInvalid()).toBeTrue();
+
+            await harness.setValue('Value');
+
+            expect(await harness.isValid()).toBeTrue();
+            expect(await harness.isInvalid()).toBeFalse();
+        });
+
+        it('should only mark as valid when touched and changed', async () => {
+            const { harness } = await setupTestEnvironment({
+                component: FormTestComponent,
+                formControlValidator: Validators.required,
+            });
+
+            expect(await harness.isValid()).toBeFalse();
+            expect(await harness.isInvalid()).toBeTrue();
+
+            await harness.setValue('Value');
+
+            expect(await harness.isValid()).toBeTrue();
+            expect(await harness.isInvalid()).toBeFalse();
+        });
     });
 });
