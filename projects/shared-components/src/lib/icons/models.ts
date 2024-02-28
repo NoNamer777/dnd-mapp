@@ -20,4 +20,12 @@ export enum DmaIconTypes {
 
 export type DmaIconName = (typeof DmaIcons)[keyof typeof DmaIcons];
 
+export function dmaIconNameAttribute(input: string | DmaIconName) {
+    return Object.values(DmaIcons as unknown as string[]).includes(input) ? (input as DmaIconName) : undefined;
+}
+
 export type DmaIconType = (typeof DmaIconTypes)[keyof typeof DmaIconTypes];
+
+export function dmaIconTypeAttribute(input: string | DmaIconType) {
+    return Object.values(DmaIconTypes as unknown as string[]).includes(input) ? (input as DmaIconType) : undefined;
+}
