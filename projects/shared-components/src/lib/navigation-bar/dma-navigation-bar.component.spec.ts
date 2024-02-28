@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DmaIconsModule } from '../icons';
+import { DmaIconComponent } from '../icons';
 import { DmaNavigationBarHarness } from '../testing';
 import { DmaNavigationBarButtonComponent } from './button';
 import { DmaNavigationBarModule } from './dma-navigation-bar.module';
@@ -34,7 +34,7 @@ describe('DmaNavigationBar', () => {
         TestBed.configureTestingModule({
             imports: [
                 DmaNavigationBarModule,
-                DmaIconsModule,
+                DmaIconComponent,
                 DmaNavigationBarButtonComponent,
                 RouterTestingModule.withRoutes(routes),
             ],
