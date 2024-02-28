@@ -13,7 +13,7 @@ import {
     QueryList,
     ViewChild,
 } from '@angular/core';
-import { DmaIconComponent, DmaIconsModule } from '@dnd-mapp/shared-components';
+import { DmaIconComponent } from '../icons';
 import { inputBorderAnimation } from './input-border.animation';
 import { inputLabelAnimation } from './input-label.animation';
 
@@ -87,7 +87,7 @@ type AnimationState = 'populated' | 'unpopulated';
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [inputLabelAnimation, inputBorderAnimation],
     standalone: true,
-    imports: [CommonModule, DmaIconsModule],
+    imports: [CommonModule, DmaIconComponent],
 })
 export class DmaInputComponent implements OnInit, AfterContentInit {
     @Input() @HostBinding('class.disabled') disabled = false;

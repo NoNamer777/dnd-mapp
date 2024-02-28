@@ -1,7 +1,7 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component, Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { DmaIconsModule } from '../icons';
+import { DmaIconComponent } from '../icons';
 import { DmaIconButtonHarness } from '../testing';
 import { DmaIconButtonComponent, DmaIconButtonType } from './dma-icon-button.component';
 
@@ -70,7 +70,7 @@ describe('DmaIconButtonComponent', () => {
         params: { component: Type<T> } = { component: StandardTestComponent as Type<T> }
     ) {
         TestBed.configureTestingModule({
-            imports: [DmaIconButtonComponent, DmaIconsModule],
+            imports: [DmaIconButtonComponent, DmaIconComponent],
             declarations: [MinimalTestComponent, StandardTestComponent, ToggleTestComponent],
         });
 

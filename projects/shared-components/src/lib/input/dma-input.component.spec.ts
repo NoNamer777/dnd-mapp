@@ -47,8 +47,12 @@ describe('DmaInputComponent', () => {
         params: TestParams<T> = { component: TestComponent as Type<T> }
     ) {
         TestBed.configureTestingModule({
-            imports: [DmaInputComponent, NoopAnimationsModule, DmaIconsModule],
-            declarations: [TestComponent, LeadingIconTestComponent],
+            imports: [
+                DmaInputComponent,
+                NoopAnimationsModule,
+                TestComponent,
+                LeadingIconTestComponent,
+            ],
         });
 
         const fixture = TestBed.createComponent(params.component);
