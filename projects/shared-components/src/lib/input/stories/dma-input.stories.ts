@@ -14,6 +14,7 @@ const meta: Meta<DmaInputComponent> = {
     ],
     args: {
         inputType: 'text',
+        forLabel: 'common-input-field',
         label: 'Label text',
         supportingText: 'Supporting text',
         errorMessage: '',
@@ -39,6 +40,10 @@ const meta: Meta<DmaInputComponent> = {
             defaultValue: { summary: undefined },
             description:
                 'The label of the input field. This is also shown as placeholder while the input has no actual value.',
+        },
+        forLabel: {
+            defaultValue: { summary: undefined },
+            description: 'Sets the `for` attribute on the floating label as well as the `name` of the input field.',
         },
         supportingText: {
             defaultValue: { summary: undefined },
@@ -83,6 +88,7 @@ export const Common: Story = {
                 <dma-input
                     [inputType]="inputType"
                     [size]="size"
+                    [forLabel]="forLabel"
                     [label]="label"
                     [value]="value"
                     [disabled]="disabled"
@@ -113,6 +119,7 @@ export const LeadingIcon: Story = {
             <article>
                 <dma-input
                     inputType="text"
+                    forLabel="leading-icon-input-field"
                     label="Label text"
                     supportingText="Supporting text"
                 >
@@ -129,6 +136,7 @@ export const TrailingIcon: Story = {
             <article>
                 <dma-input
                     inputType="text"
+                    forLabel="trailing-icon-input-field"
                     label="Label text"
                     supportingText="Supporting text"
                 >

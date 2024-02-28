@@ -43,11 +43,12 @@ export class DmaInputComponent implements OnInit, AfterContentInit {
 
     @Input() label?: string;
 
-    @Input() value: string;
+    @Input() forLabel?: string;
 
-    @Input() supportingText: string;
+    @Input() value: string = null;
 
     @Input() @HostBinding('class.invalid') invalid = false;
+    @Input() supportingText: string;
 
     @Input() errorMessage: string;
 
