@@ -1,5 +1,5 @@
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { applicationConfig, ArgTypes, Meta, moduleMetadata, StoryObj } from '@storybook/angular';
+import { ArgTypes, Meta, StoryObj, applicationConfig, moduleMetadata } from '@storybook/angular';
 import { DmaIconComponent } from '../../icons';
 import { DmaInputComponent } from '../dma-input.component';
 
@@ -13,6 +13,7 @@ const meta: Meta<DmaInputComponent> = {
         moduleMetadata({ imports: [DmaInputComponent, DmaIconComponent] }),
     ],
     args: {
+        inputType: 'text',
         label: 'Label text',
         supportingText: 'Supporting text',
         errorMessage: '',
@@ -23,6 +24,13 @@ const meta: Meta<DmaInputComponent> = {
         size: 1,
     } as Partial<DmaInputComponent>,
     argTypes: {
+        inputType: {
+            control: 'select',
+            options: ['text', 'password', 'email', 'search', 'tel', '0'],
+            defaultValue: { summary: 'text' },
+            type: { name: 'string', required: true },
+            description: 'Determines the type of input field',
+        },
         value: {
             defaultValue: { summary: undefined },
             description: 'The value of the input field.',
@@ -53,10 +61,8 @@ const meta: Meta<DmaInputComponent> = {
             description: 'Determines whether the inputted value is invalid.',
         },
         readonly: {
-            controls: 'boolean',
-            defaultValue: {
-                summary: false,
-            },
+            control: 'boolean',
+            defaultValue: { summary: false },
             description: `Determines whether it is allowed to change the input field's current value.`,
         },
         size: {
@@ -75,7 +81,7 @@ export const Common: Story = {
         template: `
             <article>
                 <dma-input
-                    inputType="text" 
+                    [inputType]="inputType"
                     [size]="size"
                     [label]="label"
                     [value]="value"
@@ -90,22 +96,27 @@ export const Common: Story = {
     }),
 };
 
+export const ExternalLabel: Story = {
+    render: () => ({
+        template: `
+            <article>
+                <label for="external-label-input-field">Label text</label>
+                <dma-input inputType="text" forLabel="external-label-input-field" />
+            </article>
+        `,
+    }),
+};
+
 export const LeadingIcon: Story = {
-    render: (args) => ({
-        props: args,
+    render: () => ({
         template: `
             <article>
                 <dma-input
                     inputType="text"
-                    label="Label text" 
+                    label="Label text"
                     supportingText="Supporting text"
-                    errorMessage="Error message"
-                    [disabled]="disabled"
-                    [readonly]="readonly"
-                    [value]="value"
-                    [invalid]="invalid"
                 >
-                    <dma-icon icon="magnifying-glass" class="leading-icon"></dma-icon>                
+                    <dma-icon icon="magnifying-glass" class="leading-icon" />                
                 </dma-input>
             </article>        
         `,
@@ -113,21 +124,15 @@ export const LeadingIcon: Story = {
 };
 
 export const TrailingIcon: Story = {
-    render: (args) => ({
-        props: args,
+    render: () => ({
         template: `
             <article>
                 <dma-input
                     inputType="text"
-                    label="Label text" 
+                    label="Label text"
                     supportingText="Supporting text"
-                    errorMessage="Error message"
-                    [disabled]="disabled"
-                    [readonly]="readonly"
-                    [value]="value"
-                    [invalid]="invalid"
                 >
-                    <dma-icon icon="microphone" class="trailing-icon"></dma-icon>                
+                    <dma-icon icon="microphone" class="trailing-icon" />                
                 </dma-input>
             </article>        
         `,
