@@ -39,6 +39,8 @@ export class DmaInputComponent implements OnInit, AfterContentInit {
 
     @Input() autofocus = false;
 
+    @Input() size = 1;
+
     @Input() label?: string;
 
     @Input() value: string;

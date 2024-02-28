@@ -2,10 +2,13 @@
 @use '../../assets/styles/colors' as *;
 
 :host {
-    display: inline-block;
+    display: block;
+    padding: 0.5rem 0;
 
     .input-container {
         display: flex;
+        height: 1.2rem;
+        line-height: 1.2rem;
         align-items: baseline;
         gap: 1rem;
         position: relative;

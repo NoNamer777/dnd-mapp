@@ -20,38 +20,29 @@ const meta: Meta<DmaInputComponent> = {
         readonly: false,
         value: '',
         invalid: false,
+        size: 1,
     } as Partial<DmaInputComponent>,
     argTypes: {
         value: {
-            defaultValue: {
-                summary: undefined,
-            },
+            defaultValue: { summary: undefined },
             description: 'The value of the input field.',
         },
         label: {
-            defaultValue: {
-                summary: undefined,
-            },
+            defaultValue: { summary: undefined },
             description:
                 'The label of the input field. This is also shown as placeholder while the input has no actual value.',
         },
         supportingText: {
-            defaultValue: {
-                summary: undefined,
-            },
+            defaultValue: { summary: undefined },
             description: 'Text gives extra hints about the input fields.',
         },
         errorMessage: {
-            defaultValue: {
-                summary: undefined,
-            },
+            defaultValue: { summary: undefined },
             description: 'Message shown when the input field is in error state indicating what the problem is.',
         },
         disabled: {
-            controls: 'boolean',
-            defaultValue: {
-                summary: false,
-            },
+            control: 'boolean',
+            defaultValue: { summary: false },
             description: 'Determines whether the input is enabled.',
         },
         invalid: {
@@ -68,6 +59,11 @@ const meta: Meta<DmaInputComponent> = {
             },
             description: `Determines whether it is allowed to change the input field's current value.`,
         },
+        size: {
+            control: { type: 'number', min: 1 },
+            defaultValue: { summary: 1 },
+            description: `The number of characters will be shown (at a minimum).`,
+        },
     } as Partial<ArgTypes<DmaInputComponent>>,
 };
 
@@ -80,14 +76,15 @@ export const Common: Story = {
             <article>
                 <dma-input
                     inputType="text" 
+                    [size]="size"
+                    [label]="label"
+                    [value]="value"
                     [disabled]="disabled"
                     [readonly]="readonly"
-                    [value]="value"
-                    [label]="label"
                     [supportingText]="supportingText"
                     [errorMessage]="errorMessage"
                     [invalid]="invalid"
-                ></dma-input>
+                />
             </article>        
         `,
     }),
