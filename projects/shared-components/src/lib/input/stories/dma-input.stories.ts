@@ -15,7 +15,6 @@ const meta: Meta<DmaInputComponent> = {
     ],
     args: {
         inputType: 'text',
-        forLabel: 'common-input-field',
         label: 'Label text',
         supportingText: 'Supporting text',
         errorMessage: '',
@@ -80,9 +79,9 @@ export const Common: Story = {
         template: `
             <article>
                 <dma-input
+                    forLabel="common-input-field"
                     [inputType]="inputType"
                     [size]="size"
-                    [forLabel]="forLabel"
                     [label]="label"
                     [value]="value"
                     [disabled]="disabled"
