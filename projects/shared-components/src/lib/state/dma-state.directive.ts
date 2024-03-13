@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, HostListener } from '@angular/core';
+import { Directive, ElementRef, HostBinding, HostListener, inject } from '@angular/core';
 
 type State = 'focussed' | 'hovered' | 'pressed' | 'dragging';
 
@@ -11,21 +10,17 @@ export interface StateColors {
 }
 
 const opacityPerState = new Map<State, number>([
-    ['focussed', 12],
+    ['focussed', 10],
     ['hovered', 8],
-    ['pressed', 12],
+    ['pressed', 10],
     ['dragging', 16],
 ]);
 
-@Component({
-    // eslint-disable-next-line @angular-eslint/component-selector
-    selector: '[dma-state]',
-    template: '',
-    changeDetection: ChangeDetectionStrategy.OnPush,
+@Directive({
+    selector: '[dmaState]',
     standalone: true,
-    imports: [CommonModule],
 })
-export class DmaStateComponent {
+export class DmaStateDirective {
     @HostBinding('attr.dma-focussed')
     get focussed() {
         return this.isFocussed ? '' : undefined;
@@ -50,22 +45,30 @@ export class DmaStateComponent {
     }
     protected isDragging = false;
 
-    protected opacity = 0;
+    protected stateLayerOpacity = 0;
     protected baseColor = 'transparent';
     protected layerColor = 'transparent';
 
     constructor(private readonly elementRef: ElementRef) {}
 
+    resetStateLayer() {
+        this.stateLayerOpacity = 0;
+        this.isDragging = false;
+        this.isFocussed = false;
+        this.isPressed = false;
+        this.isHovered = false;
+    }
+
     @HostBinding('style.backgroundColor')
     get backgroundColor() {
-        return `color-mix(in srgb, ${this.baseColor} ${100 - this.opacity}%, ${this.layerColor})`;
+        return `color-mix(in srgb, ${this.baseColor} ${100 - this.stateLayerOpacity}%, ${this.layerColor})`;
     }
 
     @HostListener('focus')
     onStartFocussing() {
         if (this.isDisabled) return;
 
-        this.opacity += opacityPerState.get('focussed');
+        this.stateLayerOpacity += opacityPerState.get('focussed');
         this.isFocussed = true;
     }
 
@@ -73,7 +76,7 @@ export class DmaStateComponent {
     onStopFocussing() {
         if (!this.isFocussed) return;
 
-        this.opacity -= opacityPerState.get('focussed');
+        this.stateLayerOpacity -= opacityPerState.get('focussed');
         this.isFocussed = false;
     }
 
@@ -81,7 +84,7 @@ export class DmaStateComponent {
     onStartHovering() {
         if (this.isDisabled || this.isHovered) return;
 
-        this.opacity += opacityPerState.get('hovered');
+        this.stateLayerOpacity += opacityPerState.get('hovered');
         this.isHovered = true;
     }
 
@@ -89,7 +92,7 @@ export class DmaStateComponent {
     onStopHovering() {
         if (!this.isHovered) return;
 
-        this.opacity -= opacityPerState.get('hovered');
+        this.stateLayerOpacity -= opacityPerState.get('hovered');
         this.isHovered = false;
     }
 
@@ -97,7 +100,7 @@ export class DmaStateComponent {
     onStartClicking(button: number) {
         if (this.isDisabled || button !== 0) return;
 
-        this.opacity += opacityPerState.get('pressed');
+        this.stateLayerOpacity += opacityPerState.get('pressed');
         this.isPressed = true;
     }
 
@@ -106,7 +109,7 @@ export class DmaStateComponent {
     onStopClicking() {
         if (!this.isPressed) return;
 
-        this.opacity -= opacityPerState.get('pressed');
+        this.stateLayerOpacity -= opacityPerState.get('pressed');
         this.isPressed = false;
     }
 
@@ -114,7 +117,7 @@ export class DmaStateComponent {
     onStartDragging() {
         if (this.isDisabled) return;
 
-        this.opacity += opacityPerState.get('dragging');
+        this.stateLayerOpacity += opacityPerState.get('dragging');
         this.isDragging = true;
     }
 
@@ -122,7 +125,7 @@ export class DmaStateComponent {
     onStopDragging() {
         if (!this.isDragging) return;
 
-        this.opacity -= opacityPerState.get('dragging');
+        this.stateLayerOpacity -= opacityPerState.get('dragging');
         this.isDragging = false;
     }
 

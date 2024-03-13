@@ -11,7 +11,7 @@ import {
     OnInit,
     Output,
 } from '@angular/core';
-import { DmaStateComponent, StateColors } from '../state';
+import { DmaStateDirective, StateColors } from '../state';
 import { DmaTooltipDirective, DmaTooltipModule } from '../tooltip';
 
 export type DmaIconButtonType = 'filled' | 'tonal' | 'outlined' | 'standard';
@@ -64,6 +64,7 @@ const containerColorsPerButtonType = new Map<DmaIconButtonType, DmaButtonColorPe
     styleUrls: ['./dma-icon-button.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     hostDirectives: [
+        DmaStateDirective,
         {
             directive: DmaTooltipDirective,
             inputs: [
@@ -74,9 +75,9 @@ const containerColorsPerButtonType = new Map<DmaIconButtonType, DmaButtonColorPe
         },
     ],
     standalone: true,
-    imports: [CommonModule, DmaStateComponent, DmaTooltipModule],
+    imports: [CommonModule, DmaStateDirective, DmaTooltipModule],
 })
-export class DmaIconButtonComponent extends DmaStateComponent implements OnInit {
+export class DmaIconButtonComponent extends DmaStateDirective {
     get selected() {
         return this._selected;
     }

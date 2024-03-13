@@ -18,10 +18,10 @@ const containerColorsPerButtonType = new Map<DmaButtonType, StateColors>([
     templateUrl: './dma-button.component.html',
     styleUrls: ['./dma-button.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    hostDirectives: [DmaStateDirective],
     standalone: true,
-    imports: [CommonModule, DmaStateComponent],
+    imports: [CommonModule, DmaStateDirective],
 })
-export class DmaButtonComponent extends DmaStateComponent implements OnInit {
     @Input('dma-button') set dmaButtonType(buttonType: DmaButtonType | string) {
         if (buttonType === '') return;
 
@@ -30,6 +30,7 @@ export class DmaButtonComponent extends DmaStateComponent implements OnInit {
         this.updateRenderedAttribute();
     }
 
+export class DmaButtonComponent extends DmaStateDirective {
     @HostBinding('attr.dma-button')
     private buttonType: DmaButtonType = 'text';
 

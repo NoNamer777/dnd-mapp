@@ -1,7 +1,7 @@
 import { ComponentHarness } from '@angular/cdk/testing';
 
 export class StateHarness extends ComponentHarness {
-    static hostSelector = '[dma-state]';
+    static hostSelector = '[dmaState]';
 
     async isFocussed() {
         return (await (await this.host()).getAttribute('dma-focussed')) === '';

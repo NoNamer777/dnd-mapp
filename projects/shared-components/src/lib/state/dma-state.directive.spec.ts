@@ -1,14 +1,14 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { StateHarness } from '../testing';
-import { DmaStateComponent } from './dma-state.component';
+import { DmaStateDirective } from './dma-state.directive';
 
-describe('DmaStateComponent', () => {
+describe('DmaStateDirective', () => {
     @Component({
-        template: `<button dma-state [disabled]="disabled">Button</button>`,
+        template: `<button dmaState [disabled]="disabled">Button</button>`,
     })
-    class TestComponent extends DmaStateComponent implements OnInit {
+    class TestComponent {
         disabled = false;
 
         ngOnInit() {
@@ -19,7 +19,7 @@ describe('DmaStateComponent', () => {
 
     async function setupTestEnvironment(params?: { disabled?: boolean }) {
         TestBed.configureTestingModule({
-            imports: [DmaStateComponent],
+            imports: [DmaStateDirective],
             declarations: [TestComponent],
         });
 
@@ -32,7 +32,7 @@ describe('DmaStateComponent', () => {
         fixture.detectChanges();
 
         return {
-            element: fixture.nativeElement.querySelector('[dma-state]') as HTMLElement,
+            element: fixture.nativeElement.querySelector('[dmaState]') as HTMLElement,
             harness: await harnessLoader.getHarness(StateHarness),
         };
     }
