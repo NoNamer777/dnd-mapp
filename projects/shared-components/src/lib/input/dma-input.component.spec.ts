@@ -4,7 +4,7 @@ import { Component, Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { DmaIconComponent } from '@dnd-mapp/shared-components';
+import { DmaIconComponent } from '../icons';
 import { DmaInputHarness } from '../testing';
 import { DmaInputComponent } from './dma-input.component';
 
@@ -12,12 +12,14 @@ describe('DmaInputComponent', () => {
     @Component({
         template: `
             <dma-input
+                inputType="text"
                 label="Label text"
+                forLabel="text-input"
                 [disabled]="disabled"
                 [readonly]="readonly"
                 [value]="value"
                 [supportingText]="supportingText"
-            ></dma-input>
+            />
         `,
         standalone: true,
         imports: [DmaInputComponent],
@@ -32,8 +34,8 @@ describe('DmaInputComponent', () => {
 
     @Component({
         template: `
-            <dma-input label="Label text">
-                <dma-icon class="leading-icon" icon="magnifying-glass"></dma-icon>
+            <dma-input inputType="text" label="Label text" forLabel="text-input">
+                <dma-icon class="leading-icon" icon="magnifying-glass" />
             </dma-input>
         `,
         standalone: true,
@@ -44,7 +46,7 @@ describe('DmaInputComponent', () => {
     @Component({
         template: `
             <form [formGroup]="form">
-                <dma-input formControlName="inputField"></dma-input>
+                <dma-input inputType="text" label="Label text" forLabel="text-input" formControlName="inputField" />
             </form>
         `,
         standalone: true,
