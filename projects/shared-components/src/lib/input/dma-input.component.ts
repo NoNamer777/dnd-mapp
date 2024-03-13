@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import {
     AfterContentInit,
+    booleanAttribute,
     ChangeDetectionStrategy,
     Component,
     ContentChildren,
@@ -9,6 +10,7 @@ import {
     HostBinding,
     Input,
     OnInit,
+    numberAttribute,
     Output,
     QueryList,
     ViewChild,
@@ -19,9 +21,11 @@ import { DmaIconComponent } from '../icons';
 import {
     AnimationState,
     AutoComplete,
+    AutoCompleteValues,
+    dmaAutoCompleteAttribute,
     DmaInputType,
-    DmaInputTypes,
     dmaInputTypeAttribute,
+    DmaInputTypes,
     dmaInputValueAccessorProvider,
 } from './dma-input.models';
 import { inputBorderAnimation } from './input-border.animation';
@@ -39,17 +43,17 @@ import { inputLabelAnimation } from './input-label.animation';
     providers: [dmaInputValueAccessorProvider],
 })
 export class DmaInputComponent implements OnInit, AfterContentInit, ControlValueAccessor {
-    @Input() @HostBinding('class.disabled') disabled = false;
+    @Input({ transform: booleanAttribute }) @HostBinding('class.disabled') disabled = false;
 
-    @Input() @HostBinding('class.readonly') readonly = false;
+    @Input({ transform: booleanAttribute }) @HostBinding('class.readonly') readonly = false;
 
     @Input({ transform: dmaInputTypeAttribute, required: true }) inputType: DmaInputType = DmaInputTypes.TEXT;
 
-    @Input() autocomplete: AutoComplete = 'off';
+    @Input({ transform: dmaAutoCompleteAttribute }) autocomplete: AutoComplete = AutoCompleteValues.OFF;
 
-    @Input() autofocus = false;
+    @Input({ transform: booleanAttribute }) autofocus = false;
 
-    @Input() size = 1;
+    @Input({ transform: numberAttribute }) size = 1;
 
     @Input() label?: string;
 
