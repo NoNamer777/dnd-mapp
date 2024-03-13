@@ -10,11 +10,6 @@ describe('DmaStateDirective', () => {
     })
     class TestComponent {
         disabled = false;
-
-        ngOnInit() {
-            this.baseColor = '#ffffff';
-            this.layerColor = '#000000';
-        }
     }
 
     async function setupTestEnvironment(params?: { disabled?: boolean }) {
@@ -60,7 +55,7 @@ describe('DmaStateDirective', () => {
         expect(await harness.isFocussed()).toBeFalse();
         expect(await harness.isHovered()).toBeTrue();
         expect(await harness.isPressed()).toBeTrue();
-        expect(await harness.getAppliedBackgroundStyle()).toContain('80%');
+        expect(await harness.getAppliedBackgroundStyle()).toContain('82%');
 
         // Simulate focussing by clicking on the element
         element.dispatchEvent(new MouseEvent('mouseup'));
@@ -69,7 +64,7 @@ describe('DmaStateDirective', () => {
         expect(await harness.isFocussed()).toBeTrue();
         expect(await harness.isHovered()).toBeTrue();
         expect(await harness.isPressed()).toBeFalse();
-        expect(await harness.getAppliedBackgroundStyle()).toContain('80%');
+        expect(await harness.getAppliedBackgroundStyle()).toContain('82%');
 
         // Simulate moving the mouse away from the element
         element.dispatchEvent(new MouseEvent('mouseleave'));
@@ -77,7 +72,7 @@ describe('DmaStateDirective', () => {
         expect(await harness.isFocussed()).toBeTrue();
         expect(await harness.isHovered()).toBeFalse();
         expect(await harness.isPressed()).toBeFalse();
-        expect(await harness.getAppliedBackgroundStyle()).toContain('88%');
+        expect(await harness.getAppliedBackgroundStyle()).toContain('90%');
 
         // Simulate clicking outside the element to lose focus
         document.documentElement.dispatchEvent(new MouseEvent('click'));
@@ -96,7 +91,7 @@ describe('DmaStateDirective', () => {
         expect(await harness.isHovered()).toBeTrue();
         expect(await harness.isPressed()).toBeTrue();
         expect(await harness.isDragging()).toBeTrue();
-        expect(await harness.getAppliedBackgroundStyle()).toContain('64%');
+        expect(await harness.getAppliedBackgroundStyle()).toContain('66%');
 
         // simulate stop dragging
         element.dispatchEvent(new DragEvent('dragend'));
@@ -107,7 +102,7 @@ describe('DmaStateDirective', () => {
         expect(await harness.isHovered()).toBeTrue();
         expect(await harness.isPressed()).toBeFalse();
         expect(await harness.isDragging()).toBeFalse();
-        expect(await harness.getAppliedBackgroundStyle()).toContain('80%');
+        expect(await harness.getAppliedBackgroundStyle()).toContain('82%');
     });
 
     it('should not remove states when not applied', async () => {

@@ -21,115 +21,111 @@ const opacityPerState = new Map<State, number>([
     standalone: true,
 })
 export class DmaStateDirective {
+    private readonly elementRef = inject(ElementRef);
+
     @HostBinding('attr.dma-focussed')
-    get focussed() {
+    protected get focussed() {
         return this.isFocussed ? '' : undefined;
     }
     protected isFocussed = false;
 
     @HostBinding('attr.dma-hovered')
-    get hovered() {
+    protected get hovered() {
         return this.isHovered ? '' : undefined;
     }
     protected isHovered = false;
 
     @HostBinding('attr.dma-pressed')
-    get pressed() {
+    protected get pressed() {
         return this.isPressed ? '' : undefined;
     }
     protected isPressed = false;
 
     @HostBinding('attr.dma-dragging')
-    get dragging() {
+    protected get dragging() {
         return this.isDragging ? '' : undefined;
     }
     protected isDragging = false;
 
-    protected stateLayerOpacity = 0;
-    protected baseColor = 'transparent';
-    protected layerColor = 'transparent';
-
-    constructor(private readonly elementRef: ElementRef) {}
-
-    resetStateLayer() {
-        this.stateLayerOpacity = 0;
-        this.isDragging = false;
-        this.isFocussed = false;
-        this.isPressed = false;
-        this.isHovered = false;
+    protected get baseLayerColor() {
+        return 'transparent';
+    }
+    protected get stateLayerColor() {
+        return 'transparent';
     }
 
     @HostBinding('style.backgroundColor')
-    get backgroundColor() {
-        return `color-mix(in srgb, ${this.baseColor} ${100 - this.stateLayerOpacity}%, ${this.layerColor})`;
+    protected get backgroundColor() {
+        return `color-mix(in srgb, ${this.baseLayerColor} ${100 - this.stateLayerOpacity}%, ${this.stateLayerColor})`;
     }
 
     @HostListener('focus')
-    onStartFocussing() {
+    protected onStartFocussing() {
         if (this.isDisabled) return;
-
-        this.stateLayerOpacity += opacityPerState.get('focussed');
         this.isFocussed = true;
     }
 
     @HostListener('blur')
-    onStopFocussing() {
+    protected onStopFocussing() {
         if (!this.isFocussed) return;
-
-        this.stateLayerOpacity -= opacityPerState.get('focussed');
         this.isFocussed = false;
     }
 
     @HostListener('mouseenter')
-    onStartHovering() {
+    protected onStartHovering() {
         if (this.isDisabled || this.isHovered) return;
-
-        this.stateLayerOpacity += opacityPerState.get('hovered');
         this.isHovered = true;
     }
 
     @HostListener('mouseleave')
-    onStopHovering() {
+    protected onStopHovering() {
         if (!this.isHovered) return;
-
-        this.stateLayerOpacity -= opacityPerState.get('hovered');
         this.isHovered = false;
     }
 
     @HostListener('mousedown', ['$event.button'])
-    onStartClicking(button: number) {
+    protected onStartClicking(button: number) {
         if (this.isDisabled || button !== 0) return;
-
-        this.stateLayerOpacity += opacityPerState.get('pressed');
         this.isPressed = true;
     }
 
     @HostListener('document:mouseup')
     @HostListener('mouseup')
-    onStopClicking() {
+    protected onStopClicking() {
         if (!this.isPressed) return;
-
-        this.stateLayerOpacity -= opacityPerState.get('pressed');
         this.isPressed = false;
     }
 
     @HostListener('dragstart')
-    onStartDragging() {
+    protected onStartDragging() {
         if (this.isDisabled) return;
-
-        this.stateLayerOpacity += opacityPerState.get('dragging');
         this.isDragging = true;
     }
 
     @HostListener('dragend')
-    onStopDragging() {
+    protected onStopDragging() {
         if (!this.isDragging) return;
-
-        this.stateLayerOpacity -= opacityPerState.get('dragging');
         this.isDragging = false;
+    }
+
+    resetStateLayer() {
+        this.isDragging = false;
+        this.isFocussed = false;
+        this.isPressed = false;
+        this.isHovered = false;
     }
 
     private get isDisabled() {
         return this.elementRef.nativeElement.getAttribute('disabled') === '';
+    }
+
+    private get stateLayerOpacity() {
+        let opacity = 0;
+
+        for (const [state, stateOpacity] of opacityPerState.entries()) {
+            if (this[state] === undefined) continue;
+            opacity += stateOpacity;
+        }
+        return opacity;
     }
 }

@@ -3,12 +3,11 @@ import { CommonModule } from '@angular/common';
 import {
     ChangeDetectionStrategy,
     Component,
-    ElementRef,
     EventEmitter,
     HostBinding,
     HostListener,
+    inject,
     Input,
-    OnInit,
     Output,
 } from '@angular/core';
 import { DmaStateDirective, StateColors } from '../state';
@@ -64,7 +63,6 @@ const containerColorsPerButtonType = new Map<DmaIconButtonType, DmaButtonColorPe
     styleUrls: ['./dma-icon-button.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     hostDirectives: [
-        DmaStateDirective,
         {
             directive: DmaTooltipDirective,
             inputs: [
@@ -78,6 +76,8 @@ const containerColorsPerButtonType = new Map<DmaIconButtonType, DmaButtonColorPe
     imports: [CommonModule, DmaStateDirective, DmaTooltipModule],
 })
 export class DmaIconButtonComponent extends DmaStateDirective {
+    private readonly tooltip = inject(DmaTooltipDirective);
+
     get selected() {
         return this._selected;
     }
@@ -93,7 +93,6 @@ export class DmaIconButtonComponent extends DmaStateDirective {
     }
     @Input() set toggle(toggle: boolean | string) {
         this._toggle = coerceBooleanProperty(toggle);
-        this.updateRenderedAttribute();
     }
     private _toggle = false;
 
@@ -101,7 +100,6 @@ export class DmaIconButtonComponent extends DmaStateDirective {
         if (buttonType === '') return;
 
         this.buttonType = buttonType as DmaIconButtonType;
-        this.updateRenderedAttribute();
     }
     @HostBinding('attr.dma-icon-button')
     private buttonType: DmaIconButtonType = 'standard';
@@ -133,15 +131,12 @@ export class DmaIconButtonComponent extends DmaStateDirective {
         return this.disabled ? '' : undefined;
     }
 
-    constructor(
-        elementRef: ElementRef,
-        private readonly tooltip: DmaTooltipDirective
-    ) {
-        super(elementRef);
+    override get baseLayerColor() {
+        return this.getLayerColor('base');
     }
 
-    ngOnInit() {
-        this.updateRenderedAttribute();
+    override get stateLayerColor() {
+        return this.getLayerColor('state');
     }
 
     @HostListener('click')
@@ -150,13 +145,6 @@ export class DmaIconButtonComponent extends DmaStateDirective {
 
         this._selected = !this._selected;
         this.selectedChange.emit(this._selected);
-
-        this.updateRenderedAttribute();
-    }
-
-    private updateRenderedAttribute() {
-        this.baseColor = this.getLayerColor('base');
-        this.layerColor = this.getLayerColor('state');
     }
 
     private getLayerColor(layer: 'base' | 'state') {

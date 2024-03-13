@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit } from '@angular/core';
-import { DmaStateComponent, StateColors } from '../state';
+import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
+import { DmaStateDirective, StateColors } from '../state';
 
 export enum DmaButtonTypes {
     ELEVATED = 'elevated',
@@ -32,7 +32,6 @@ function dmaButtonTypeAttribute(buttonType: string | DmaButtonType) {
     templateUrl: './dma-button.component.html',
     styleUrls: ['./dma-button.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    hostDirectives: [DmaStateDirective],
     standalone: true,
     imports: [CommonModule, DmaStateDirective],
 })
@@ -41,14 +40,12 @@ export class DmaButtonComponent extends DmaStateDirective {
     @Input({ alias: 'dma-button', transform: dmaButtonTypeAttribute })
     private buttonType: DmaButtonType;
 
-    ngOnInit() {
-        this.updateRenderedAttribute();
+    override get baseLayerColor() {
+        return this.getBackgroundColorsForType(this.buttonType, 'base');
     }
 
-    private updateRenderedAttribute() {
-        /* eslint-disable @typescript-eslint/no-non-null-assertion */
-        this.baseColor = this.getBackgroundColorsForType(this.buttonType, 'base');
-        this.layerColor = this.getBackgroundColorsForType(this.buttonType, 'state');
+    override get stateLayerColor() {
+        return this.getBackgroundColorsForType(this.buttonType, 'state');
     }
 
     private getBackgroundColorsForType(type: DmaButtonType, layer: 'base' | 'state') {

@@ -73,7 +73,7 @@ export class DmaInputComponent implements OnInit, AfterContentInit, ControlValue
 
     @ContentChildren(DmaIconComponent, { read: ElementRef }) private readonly icons: QueryList<ElementRef<HTMLElement>>;
 
-    constructor(private readonly elementRef: ElementRef<HTMLElement>) {}
+    private readonly elementRef = inject(ElementRef);
 
     @HostBinding('class.invalid') get invalid() {
         return isInvalid(this.elementRef.nativeElement.className);
