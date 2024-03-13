@@ -3,13 +3,14 @@ import {
     AfterContentInit,
     booleanAttribute,
     ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     ContentChildren,
     ElementRef,
     EventEmitter,
     HostBinding,
+    inject,
     Input,
-    OnInit,
     numberAttribute,
     Output,
     QueryList,
@@ -42,7 +43,7 @@ import { inputLabelAnimation } from './input-label.animation';
     imports: [CommonModule, DmaIconComponent],
     providers: [dmaInputValueAccessorProvider],
 })
-export class DmaInputComponent implements OnInit, AfterContentInit, ControlValueAccessor {
+export class DmaInputComponent implements AfterContentInit, ControlValueAccessor {
     @Input({ transform: booleanAttribute }) @HostBinding('class.disabled') disabled = false;
 
     @Input({ transform: booleanAttribute }) @HostBinding('class.readonly') readonly = false;
@@ -59,7 +60,18 @@ export class DmaInputComponent implements OnInit, AfterContentInit, ControlValue
 
     @Input({ required: true }) forLabel: string;
 
-    @Input() value: string = null;
+    @Input() set value(value: string) {
+        this._value = value;
+
+        this.valueChange.emit(this.value);
+
+        this.onChange(value);
+        this.changeDetectorRef.markForCheck();
+    }
+    get value() {
+        return this._value;
+    }
+    protected _value: string = null;
 
     @Input() supportingText: string;
 
@@ -69,8 +81,6 @@ export class DmaInputComponent implements OnInit, AfterContentInit, ControlValue
 
     @HostBinding('class.focused') protected focus = false;
 
-    protected animationState: AnimationState;
-
     @ViewChild('input') protected inputElement: ElementRef<HTMLInputElement>;
 
     @HostBinding('class.with-leading-icon') protected isContainingLeadingIcon = false;
@@ -79,12 +89,14 @@ export class DmaInputComponent implements OnInit, AfterContentInit, ControlValue
 
     private readonly elementRef = inject(ElementRef);
 
-    @HostBinding('class.invalid') get invalid() {
-        return isInvalid(this.elementRef.nativeElement.className);
+    private readonly changeDetectorRef = inject(ChangeDetectorRef);
+
+    protected get animationState(): AnimationState {
+        return this.value || this.focus ? 'populated' : 'unpopulated';
     }
 
-    ngOnInit() {
-        this.animationState = this.value ? 'populated' : 'unpopulated';
+    @HostBinding('class.invalid') get invalid() {
+        return isInvalid(this.elementRef.nativeElement.className);
     }
 
     ngAfterContentInit() {
@@ -113,11 +125,9 @@ export class DmaInputComponent implements OnInit, AfterContentInit, ControlValue
 
     writeValue(value: string) {
         this.value = value;
-        this.onChange(value);
     }
 
     protected onBlur() {
-        this.animationState = this.value ? 'populated' : 'unpopulated';
         this.focus = false;
 
         this.onTouched();
@@ -130,7 +140,6 @@ export class DmaInputComponent implements OnInit, AfterContentInit, ControlValue
     protected onFocus() {
         if (this.disabled || this.readonly) return;
         this.focus = true;
-        this.animationState = 'populated';
     }
 
     protected getLabelWidth(width: number) {
@@ -139,8 +148,6 @@ export class DmaInputComponent implements OnInit, AfterContentInit, ControlValue
 
     protected onValueChange(changeEvent: Event) {
         this.value = (changeEvent.target as HTMLInputElement).value;
-        this.valueChange.emit(this.value);
-        this.writeValue(this.value);
     }
 
     private containsIcon() {
