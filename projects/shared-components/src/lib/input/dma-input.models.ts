@@ -1,6 +1,5 @@
 import { ExistingProvider, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { DmaIconTypes } from '../icons';
 import { DmaInputComponent } from './dma-input.component';
 
 export const dmaInputValueAccessorProvider: ExistingProvider = {
@@ -20,7 +19,7 @@ export enum DmaInputTypes {
 export type DmaInputType = (typeof DmaInputTypes)[keyof typeof DmaInputTypes];
 
 export function dmaInputTypeAttribute(input: string | DmaInputType) {
-    return Object.values(DmaIconTypes as unknown as string[]).includes(input) ? (input as DmaInputType) : undefined;
+    return Object.values(DmaInputTypes as unknown as string[]).includes(input) ? (input as DmaInputType) : undefined;
 }
 
 export type AnimationState = 'populated' | 'unpopulated';
