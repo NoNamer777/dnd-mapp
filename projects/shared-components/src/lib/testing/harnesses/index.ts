@@ -1,5 +1,6 @@
 export * from './button/dma-button.harness';
 export * from './icon-button/dma-icon-button.harness';
+export * from './icon/dma-icon.harness';
 export * from './input/dma-input.harness';
 export * from './navigation-bar';
 export * from './state/state.harness';
