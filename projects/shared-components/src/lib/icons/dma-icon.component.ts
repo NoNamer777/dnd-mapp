@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, Input } from '@angular/core';
 import { DmaIconName, DmaIconType, DmaIconTypes, dmaIconNameAttribute, dmaIconTypeAttribute } from './models';
 
 @Component({
@@ -18,6 +18,7 @@ export class DmaIconComponent {
         this._icon = icon;
         this.getIconTemplate();
     }
+    @HostBinding('attr.icon')
     private _icon: DmaIconName;
 
     get iconType() {
@@ -27,6 +28,7 @@ export class DmaIconComponent {
         this._iconType = type;
         this.getIconTemplate();
     }
+    @HostBinding('attr.icon-type')
     private _iconType: DmaIconType = DmaIconTypes.SOLID;
 
     constructor(
