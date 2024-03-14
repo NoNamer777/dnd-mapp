@@ -65,7 +65,7 @@ export class DmaInputHarness extends ComponentHarness {
     }
 
     async value() {
-        return await (await this.inputLocator()).getProperty<string>('value');
+        return await (await this.inputLocator()).getProperty<unknown>('value');
     }
 
     async setValue(value: string) {
