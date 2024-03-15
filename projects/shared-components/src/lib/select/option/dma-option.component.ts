@@ -10,8 +10,8 @@ import {
     OnInit,
     Output,
 } from '@angular/core';
-import { DmaSelectComponent } from '@dnd-mapp/shared-components';
 import { DmaStateDirective } from '../../state';
+import { DmaSelectComponent } from '../dma-select.component';
 
 @Component({
     selector: 'dma-option',
