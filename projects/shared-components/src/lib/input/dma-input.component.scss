@@ -156,3 +156,10 @@
         }
     }
 }
+
+:host-context(dma-select:not([disabled])) {
+    .input-container:hover,
+    .input-container:hover > input:read-only {
+        cursor: pointer;
+    }
+}
