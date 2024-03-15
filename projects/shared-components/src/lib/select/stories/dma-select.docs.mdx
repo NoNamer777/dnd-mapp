@@ -1,0 +1,75 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs';
+import * as DmaSelectStories from './dma-select.stories';
+
+<Meta of={DmaSelectStories} />
+
+# DmaSelect
+
+The DmaSelectComponent is a similar to an `<select>` element, but with custom styling following the DnD Mapp style
+definition.
+
+## Usage
+
+In order to use this component you first need to import its module like so:
+
+```typescript
+import { Component } from '@angular/core';
+import { DmaSelectModule } from '@dnd-mapp/shared-components';
+
+@Component({
+    ...
+    imports: [DmaSelectModule],
+    ...
+})
+class MyComponent {}
+```
+
+After that, you'll be able to use the DmaSelectComponent and the DmaOptionComponents to build to option picker like so:
+
+```html
+<dma-select>
+    <dma-option value="1" label="Option 1" />
+    <dma-option value="2" label="Option 2" />
+    <dma-option value="3" label="Option 3" />
+    <dma-option value="4" label="Option 4" />
+</dma-select>
+```
+
+You can find a live example below with a list of properties that you can set on the DmaSelectComponent.
+
+<Canvas of={DmaSelectStories.Common} />
+<Controls of={DmaSelectStories.Common} />
+
+A couple notes on the usage of the DmaSelectComponent:
+
+- The only component that it allows as child components is the DmaOptionComponent
+
+# DmaOption
+
+The DmaOptionComponent is the child component with which you provide options to a User can they can select. This
+component has the following attributes:
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Default</th>
+            <th>Required</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>label</td>
+            <td>The visual display value that is rendered</td>
+            <td>-</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td>value</td>
+            <td>The technical value of the options which can be of any type. This should be unique among the other options in one select</td>
+            <td>-</td>
+            <td>Yes</td>
+        </tr>
+    </tbody>
+</table>

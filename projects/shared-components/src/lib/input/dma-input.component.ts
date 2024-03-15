@@ -1,14 +1,17 @@
 import { CommonModule } from '@angular/common';
 import {
     AfterContentInit,
+    booleanAttribute,
     ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     ContentChildren,
     ElementRef,
     EventEmitter,
     HostBinding,
+    inject,
     Input,
-    OnInit,
+    numberAttribute,
     Output,
     QueryList,
     ViewChild,
@@ -19,9 +22,11 @@ import { DmaIconComponent } from '../icons';
 import {
     AnimationState,
     AutoComplete,
+    AutoCompleteValues,
+    dmaAutoCompleteAttribute,
     DmaInputType,
-    DmaInputTypes,
     dmaInputTypeAttribute,
+    DmaInputTypes,
     dmaInputValueAccessorProvider,
 } from './dma-input.models';
 import { inputBorderAnimation } from './input-border.animation';
@@ -38,24 +43,35 @@ import { inputLabelAnimation } from './input-label.animation';
     imports: [CommonModule, DmaIconComponent],
     providers: [dmaInputValueAccessorProvider],
 })
-export class DmaInputComponent implements OnInit, AfterContentInit, ControlValueAccessor {
-    @Input() @HostBinding('class.disabled') disabled = false;
+export class DmaInputComponent implements AfterContentInit, ControlValueAccessor {
+    @Input({ transform: booleanAttribute }) @HostBinding('class.disabled') disabled = false;
 
-    @Input() @HostBinding('class.readonly') readonly = false;
+    @Input({ transform: booleanAttribute }) @HostBinding('class.readonly') readonly = false;
 
     @Input({ transform: dmaInputTypeAttribute, required: true }) inputType: DmaInputType = DmaInputTypes.TEXT;
 
-    @Input() autocomplete: AutoComplete = 'off';
+    @Input({ transform: dmaAutoCompleteAttribute }) autocomplete: AutoComplete = AutoCompleteValues.OFF;
 
-    @Input() autofocus = false;
+    @Input({ transform: booleanAttribute }) autofocus = false;
 
-    @Input() size = 1;
+    @Input({ transform: numberAttribute }) size = 1;
 
     @Input() label?: string;
 
     @Input({ required: true }) forLabel: string;
 
-    @Input() value: string = null;
+    @Input() set value(value: string) {
+        this._value = value;
+
+        this.valueChange.emit(this.value);
+
+        this.onChange(value);
+        this.changeDetectorRef.markForCheck();
+    }
+    get value() {
+        return this._value;
+    }
+    protected _value: string = null;
 
     @Input() supportingText: string;
 
@@ -65,22 +81,22 @@ export class DmaInputComponent implements OnInit, AfterContentInit, ControlValue
 
     @HostBinding('class.focused') protected focus = false;
 
-    protected animationState: AnimationState;
-
     @ViewChild('input') protected inputElement: ElementRef<HTMLInputElement>;
 
     @HostBinding('class.with-leading-icon') protected isContainingLeadingIcon = false;
 
     @ContentChildren(DmaIconComponent, { read: ElementRef }) private readonly icons: QueryList<ElementRef<HTMLElement>>;
 
-    constructor(private readonly elementRef: ElementRef<HTMLElement>) {}
+    private readonly elementRef = inject(ElementRef);
+
+    private readonly changeDetectorRef = inject(ChangeDetectorRef);
+
+    protected get animationState(): AnimationState {
+        return this.value || this.focus ? 'populated' : 'unpopulated';
+    }
 
     @HostBinding('class.invalid') get invalid() {
         return isInvalid(this.elementRef.nativeElement.className);
-    }
-
-    ngOnInit() {
-        this.animationState = this.value ? 'populated' : 'unpopulated';
     }
 
     ngAfterContentInit() {
@@ -109,11 +125,9 @@ export class DmaInputComponent implements OnInit, AfterContentInit, ControlValue
 
     writeValue(value: string) {
         this.value = value;
-        this.onChange(value);
     }
 
     protected onBlur() {
-        this.animationState = this.value ? 'populated' : 'unpopulated';
         this.focus = false;
 
         this.onTouched();
@@ -126,7 +140,6 @@ export class DmaInputComponent implements OnInit, AfterContentInit, ControlValue
     protected onFocus() {
         if (this.disabled || this.readonly) return;
         this.focus = true;
-        this.animationState = 'populated';
     }
 
     protected getLabelWidth(width: number) {
@@ -135,8 +148,6 @@ export class DmaInputComponent implements OnInit, AfterContentInit, ControlValue
 
     protected onValueChange(changeEvent: Event) {
         this.value = (changeEvent.target as HTMLInputElement).value;
-        this.valueChange.emit(this.value);
-        this.writeValue(this.value);
     }
 
     private containsIcon() {

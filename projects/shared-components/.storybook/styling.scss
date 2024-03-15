@@ -25,18 +25,18 @@ section {
         display: flex;
         flex-direction: column;
         height: 100%;
+    }
+}
 
-        main {
-            background-color: $background;
-            color: $on-background;
-            flex-grow: 1;
+main {
+    background-color: $background;
+    color: $on-background;
+    flex-grow: 1;
 
-            section {
-                background-color: $surface;
-                color: $on-surface;
-                padding: 1em;
-            }
-        }
+    section {
+        background-color: $surface;
+        color: $on-surface;
+        padding: 1em;
     }
 }
 

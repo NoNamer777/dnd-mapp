@@ -35,6 +35,7 @@
         }
 
         input {
+            background-color: $background;
             flex: 1 1 auto;
             font-size: inherit;
             color: $on-surface;
@@ -153,5 +154,12 @@
         input:read-only {
             cursor: default;
         }
+    }
+}
+
+:host-context(dma-select:not([disabled])) {
+    .input-container:hover,
+    .input-container:hover > input:read-only {
+        cursor: pointer;
     }
 }

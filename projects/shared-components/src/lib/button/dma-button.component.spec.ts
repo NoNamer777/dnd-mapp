@@ -2,7 +2,7 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component, Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { DmaButtonHarness } from '../testing';
-import { DmaButtonComponent, DmaButtonType } from './dma-button.component';
+import { DmaButtonComponent, DmaButtonTypes } from './dma-button.component';
 
 describe('DmaButtonComponent', () => {
     @Component({
@@ -14,7 +14,7 @@ describe('DmaButtonComponent', () => {
         template: '<button [dma-button]="buttonType" [disabled]="disabled" (click)="onClick()">Button</button>',
     })
     class TestComponent {
-        buttonType: DmaButtonType = 'elevated';
+        buttonType = DmaButtonTypes.ELEVATED;
 
         clicked = false;
         disabled = false;
@@ -49,16 +49,16 @@ describe('DmaButtonComponent', () => {
 
         expect(await harness.getButtonType()).toEqual('elevated');
 
-        component.buttonType = 'tonal';
+        component.buttonType = DmaButtonTypes.TONAL;
         expect(await harness.getButtonType()).toEqual('tonal');
 
-        component.buttonType = 'text';
+        component.buttonType = DmaButtonTypes.TEXT;
         expect(await harness.getButtonType()).toEqual('text');
 
-        component.buttonType = 'filled';
+        component.buttonType = DmaButtonTypes.FILLED;
         expect(await harness.getButtonType()).toEqual('filled');
 
-        component.buttonType = 'outlined';
+        component.buttonType = DmaButtonTypes.OUTLINED;
         expect(await harness.getButtonType()).toEqual('outlined');
     });
 

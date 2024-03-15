@@ -3,15 +3,14 @@ import { CommonModule } from '@angular/common';
 import {
     ChangeDetectionStrategy,
     Component,
-    ElementRef,
     EventEmitter,
     HostBinding,
     HostListener,
+    inject,
     Input,
-    OnInit,
     Output,
 } from '@angular/core';
-import { DmaStateComponent, StateColors } from '../state';
+import { DmaStateDirective, StateColors } from '../state';
 import { DmaTooltipDirective, DmaTooltipModule } from '../tooltip';
 
 export type DmaIconButtonType = 'filled' | 'tonal' | 'outlined' | 'standard';
@@ -74,9 +73,11 @@ const containerColorsPerButtonType = new Map<DmaIconButtonType, DmaButtonColorPe
         },
     ],
     standalone: true,
-    imports: [CommonModule, DmaStateComponent, DmaTooltipModule],
+    imports: [CommonModule, DmaStateDirective, DmaTooltipModule],
 })
-export class DmaIconButtonComponent extends DmaStateComponent implements OnInit {
+export class DmaIconButtonComponent extends DmaStateDirective {
+    private readonly tooltip = inject(DmaTooltipDirective);
+
     get selected() {
         return this._selected;
     }
@@ -92,7 +93,6 @@ export class DmaIconButtonComponent extends DmaStateComponent implements OnInit 
     }
     @Input() set toggle(toggle: boolean | string) {
         this._toggle = coerceBooleanProperty(toggle);
-        this.updateRenderedAttribute();
     }
     private _toggle = false;
 
@@ -100,7 +100,6 @@ export class DmaIconButtonComponent extends DmaStateComponent implements OnInit 
         if (buttonType === '') return;
 
         this.buttonType = buttonType as DmaIconButtonType;
-        this.updateRenderedAttribute();
     }
     @HostBinding('attr.dma-icon-button')
     private buttonType: DmaIconButtonType = 'standard';
@@ -132,15 +131,12 @@ export class DmaIconButtonComponent extends DmaStateComponent implements OnInit 
         return this.disabled ? '' : undefined;
     }
 
-    constructor(
-        elementRef: ElementRef,
-        private readonly tooltip: DmaTooltipDirective
-    ) {
-        super(elementRef);
+    override get baseLayerColor() {
+        return this.getLayerColor('base');
     }
 
-    ngOnInit() {
-        this.updateRenderedAttribute();
+    override get stateLayerColor() {
+        return this.getLayerColor('state');
     }
 
     @HostListener('click')
@@ -149,13 +145,6 @@ export class DmaIconButtonComponent extends DmaStateComponent implements OnInit 
 
         this._selected = !this._selected;
         this.selectedChange.emit(this._selected);
-
-        this.updateRenderedAttribute();
-    }
-
-    private updateRenderedAttribute() {
-        this.baseColor = this.getLayerColor('base');
-        this.layerColor = this.getLayerColor('state');
     }
 
     private getLayerColor(layer: 'base' | 'state') {
