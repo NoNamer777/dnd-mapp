@@ -1,7 +1,5 @@
 {
     "extends": "../../tsconfig.base.json",
-    "files": [],
-    "include": [],
     "references": [
         {
             "path": "./tsconfig.lib.json"
@@ -10,6 +8,8 @@
             "path": "./.storybook/tsconfig.json"
         }
     ],
+    "files": [],
+    "include": [],
     "compilerOptions": {
         "forceConsistentCasingInFileNames": true,
         "noFallthroughCasesInSwitch": true,
