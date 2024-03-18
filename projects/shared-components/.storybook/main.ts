@@ -10,6 +10,9 @@ export default {
         autodocs: false,
         defaultName: 'docs',
     },
+    env: {
+        NODE_ENV: 'development',
+    },
     framework: {
         name: '@storybook/angular',
         options: {},
