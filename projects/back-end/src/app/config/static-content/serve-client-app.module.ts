@@ -1,8 +1,10 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ServeStaticModule, ServeStaticModuleOptions } from '@nestjs/serve-static';
+import helmet from 'helmet';
 import { join } from 'path';
+import { HashCollectorMiddleware, helmetConfig } from '../security';
 
-const serveStaticOptions: ServeStaticModuleOptions = {
+const serveClientBundle: ServeStaticModuleOptions = {
     rootPath: join(...[__dirname, '..', 'front-end', 'browser']),
     serveRoot: '/app',
     exclude: ['/back-end/(.*)'],
@@ -12,7 +14,11 @@ const serveStaticOptions: ServeStaticModuleOptions = {
 };
 
 @Module({
-    imports: [ServeStaticModule.forRoot(serveStaticOptions)],
+    imports: [ServeStaticModule.forRoot(serveClientBundle)],
     exports: [ServeStaticModule],
 })
-export class ServeClientAppModule {}
+export class ServeClientAppModule implements NestModule {
+    configure(consumer: MiddlewareConsumer) {
+        consumer.apply(HashCollectorMiddleware, helmet(helmetConfig)).forRoutes('/');
+    }
+}

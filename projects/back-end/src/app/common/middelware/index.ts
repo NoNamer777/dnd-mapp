@@ -1,1 +1,1 @@
-export * from './client-id-header.middleware';
+export * from './session-cookie.middleware';

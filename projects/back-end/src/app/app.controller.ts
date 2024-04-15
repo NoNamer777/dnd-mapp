@@ -1,13 +1,11 @@
 import { Controller, Get, Redirect } from '@nestjs/common';
 import { backEndServerAddress } from './common';
 
-@Controller({ path: '' })
+@Controller()
 export class AppController {
-    @Get('')
-    @Redirect('app', 301)
+    @Get()
+    @Redirect('app/', 301)
     getRoot() {
-        return {
-            url: `${backEndServerAddress}/app`,
-        };
+        return { url: `${backEndServerAddress}/app/` };
     }
 }
