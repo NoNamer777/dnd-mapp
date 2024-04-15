@@ -1,0 +1,51 @@
+services:
+    dnd-mapp:
+        image: nonamer777/dnd-mapp:latest
+        container_name: dnd-mapp
+        env_file: .env
+        restart: unless-stopped
+        ports:
+            - '8080:80/tcp'
+        volumes:
+            - ./assets:/usr/app/front-end/browser/assets
+        depends_on:
+            db:
+                condition: service_healthy
+        networks:
+            - private-network
+            - public-network
+    db-web-client:
+        image: adminer:4
+        container_name: mysql-web-client
+        restart: always
+        ports:
+            - '8888:8080/tcp'
+        depends_on:
+            db:
+                condition: service_healthy
+        networks:
+            - private-network
+            - public-network
+    db:
+        image: mysql:8
+        container_name: mysql-database
+        restart: always
+        ports:
+            - '3306:3306/tcp'
+        environment:
+            MYSQL_ROOT_PASSWORD: cmt8ScFv4U9AmbmSpJN9uFjJ
+            MYSQL_DATABASE: dnd_mapp_db
+            MYSQL_USER: dnd_mapp_db_user
+            MYSQL_PASSWORD: YUW495pjztRhNrin
+        networks:
+            - private-network
+        healthcheck:
+            test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+            timeout: 10s
+            interval: 5s
+            retries: 10
+networks:
+    private-network:
+        external: true
+    public-network:
+        external: true
