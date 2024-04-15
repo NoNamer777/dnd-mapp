@@ -8,7 +8,7 @@ import { readFile } from 'fs/promises';
 import { createServer as createHttpServer } from 'http';
 import { createServer as createHttpsServer } from 'https';
 import { AppModule } from './app/app.module';
-import { LoggerService, backEndServerAddress, buildServerUrl } from './app/common';
+import { HttpExceptionFilter, LoggerService, backEndServerAddress, buildServerUrl } from './app/common';
 import { ServerConfig, corsConfig } from './app/config';
 
 const validationOptions: ValidationPipeOptions = {
@@ -41,6 +41,7 @@ async function bootstrap() {
     nestApp.setGlobalPrefix('/server', { exclude: [''] });
 
     nestApp.useGlobalPipes(new ValidationPipe(validationOptions));
+    nestApp.useGlobalFilters(new HttpExceptionFilter());
 
     nestApp.enableCors(corsConfig(backEndServerAddress));
 
