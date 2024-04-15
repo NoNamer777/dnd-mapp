@@ -1,9 +1,8 @@
-import { RaceModel } from '@dnd-mapp/data';
+import { CreateRaceData, RaceModel } from '@dnd-mapp/data';
 import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
 import { IsAdminGuard } from '../../authentication/guards';
 import { LoggerService } from '../../common';
-import { CreateRaceData } from './race.entity';
 import { RaceService } from './race.service';
 
 @Controller('api/race')
@@ -29,21 +28,21 @@ export class RaceController {
     }
 
     @Get(':id')
-    async getById(@Param('id') raceId: number) {
+    async getById(@Param('id') raceId: string) {
         this.logger.log('Received request for returning a Race');
         return await this.raceService.findById(raceId);
     }
 
     @UseGuards(IsAdminGuard)
     @Delete(':id')
-    async delete(@Param('id') raceId: number) {
+    async delete(@Param('id') raceId: string) {
         this.logger.log('Received a request for removing a Race');
         return await this.raceService.remove(raceId);
     }
 
     @UseGuards(IsAdminGuard)
     @Put(':id')
-    async update(@Param('id') raceId: number, @Body() requestBody: RaceModel, @Req() request: Request) {
+    async update(@Param('id') raceId: string, @Body() requestBody: RaceModel, @Req() request: Request) {
         this.logger.log('Received a request for updating a Race');
         const requestPath = request.url;
 

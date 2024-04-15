@@ -38,7 +38,7 @@ export class AbilityBuilder {
         return this.ability;
     }
 
-    withId(id: number) {
+    withId(id: string) {
         this.ability.id = id;
 
         return this;

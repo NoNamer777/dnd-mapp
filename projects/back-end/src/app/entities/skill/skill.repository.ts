@@ -1,35 +1,107 @@
-import { SkillModel, SkillName } from '@dnd-mapp/data';
+import { CreateSkillData, SkillModel, SkillName } from '@dnd-mapp/data';
 import { Injectable } from '@nestjs/common';
-import { DataSource, Repository } from 'typeorm';
-import { SkillEntity } from './skill.entity';
+import { createId } from '@paralleldrive/cuid2';
+import { plainToInstance } from 'class-transformer';
+import { DatabaseService } from '../../config';
 
 @Injectable()
-export class SkillRepository extends Repository<SkillModel> {
-    constructor(datasource: DataSource) {
-        super(SkillEntity, datasource.createEntityManager());
-    }
+export class SkillRepository {
+    constructor(private readonly databaseService: DatabaseService) {}
 
     async findAll() {
-        return await this.find({ order: { id: 'ASC' }, relations: ['ability'] });
+        return plainToInstance(
+            SkillModel,
+            (await this.databaseService.skill.findMany({
+                orderBy: { name: 'asc' },
+                select: {
+                    id: true,
+                    name: true,
+                    ability: true,
+                },
+            })) as unknown[]
+        );
     }
 
-    async findAllByAbility(id: number) {
-        return this.find({
-            order: { id: 'ASC' },
-            relations: ['ability'],
-            where: { ability: { id } },
-        });
+    async findAllByAbility(abilityId: string) {
+        return plainToInstance(
+            SkillModel,
+            (await this.databaseService.skill.findMany({
+                where: { ability: { id: abilityId } },
+                orderBy: { name: 'asc' },
+                select: {
+                    id: true,
+                    name: true,
+                    ability: true,
+                },
+            })) as unknown[]
+        );
     }
 
-    async findOneById(id: number) {
-        return await this.findOne({ where: { id }, relations: ['ability'] });
+    async findOneById(id: string) {
+        return plainToInstance(
+            SkillModel,
+            await this.databaseService.skill.findUnique({
+                where: { id },
+                select: {
+                    id: true,
+                    name: true,
+                    ability: true,
+                },
+            })
+        );
     }
 
     async findOneByName(name: SkillName) {
-        return await this.findOne({ where: { name }, relations: ['ability'] });
+        return plainToInstance(
+            SkillModel,
+            await this.databaseService.skill.findUnique({
+                where: { name },
+                select: {
+                    id: true,
+                    name: true,
+                    ability: true,
+                },
+            })
+        );
     }
 
-    async deleteById(id: number) {
-        await this.delete({ id });
+    async update(skill: SkillModel) {
+        return plainToInstance(
+            SkillModel,
+            await this.databaseService.skill.update({
+                where: { id: skill.id },
+                data: {
+                    ...skill,
+                    ability: { connect: { id: skill.ability.id } },
+                },
+                select: {
+                    id: true,
+                    name: true,
+                    ability: true,
+                },
+            })
+        );
+    }
+
+    async create(skill: CreateSkillData) {
+        return plainToInstance(
+            SkillModel,
+            await this.databaseService.skill.create({
+                data: {
+                    ...skill,
+                    id: createId(),
+                    ability: { connect: { id: skill.ability.id } },
+                },
+                select: {
+                    id: true,
+                    name: true,
+                    ability: true,
+                },
+            })
+        );
+    }
+
+    async remove(id: string) {
+        await this.databaseService.skill.delete({ where: { id } });
     }
 }

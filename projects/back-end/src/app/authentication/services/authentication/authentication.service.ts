@@ -1,9 +1,9 @@
-import { ClientModel, UserModel } from '@dnd-mapp/data';
+import { SessionModel } from '@dnd-mapp/data';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { compare } from 'bcryptjs';
 import { LoggerService } from '../../../common';
 import { LoginRequest, SignUpRequest } from '../../models';
-import { ClientService } from '../client';
+import { SessionService } from '../session';
 import { TokenService } from '../token';
 import { UserService } from '../user';
 
@@ -11,30 +11,30 @@ import { UserService } from '../user';
 export class AuthenticationService {
     constructor(
         private readonly userService: UserService,
-        private readonly clientService: ClientService,
+        private readonly sessionService: SessionService,
         private readonly tokenService: TokenService,
         private readonly logger: LoggerService
     ) {
         logger.setContext(AuthenticationService.name);
     }
 
-    async generateAuthorizationCode(clientId: string) {
-        return await this.clientService.generateAuthorizationCodeForClient(clientId);
+    async generateAuthorizationCode(session: SessionModel) {
+        return await this.sessionService.generateAuthorizationCode(session);
     }
 
-    async getTokensForClient(client: ClientModel, codeVerifier: string, authorizationCode: string, username: string) {
-        await this.clientService.verifyCodeChallengeForClient(client, codeVerifier);
-        await this.clientService.verifyAuthorizationCode(client, authorizationCode);
-
-        // Reset the authorization for a Client once everything has been validated
-        await this.clientService.resetClientAuthorization(client);
+    async getTokensForSession(
+        session: SessionModel,
+        username: string,
+        codeVerifier?: string,
+        authorizationCode?: string
+    ) {
 
         const user = await this.userService.findByUsername(username);
 
-        return await this.tokenService.getEncodedTokensUserOnForClient(user, client);
+        return await this.tokenService.getEncodedTokensForUserSession(user.id, session.id);
     }
 
-    async login(user: LoginRequest, client: ClientModel) {
+    async login(user: LoginRequest, session: SessionModel) {
         this.logger.log(`Authenticating User with username: ${user.username}`);
         const byUsername = await this.userService.findByUsername(user.username, false);
 
@@ -42,23 +42,21 @@ export class AuthenticationService {
             this.logger.warn(`Invalid username or password for User with username: ${user.username}`);
             throw new UnauthorizedException('Invalid username/password');
         }
-        await this.tokenService.generateTokensForUser(byUsername, client);
+        await this.tokenService.generateTokensForUser(byUsername, session);
     }
 
-    async logout(user: UserModel, client: ClientModel) {
-        await this.tokenService.revokedTokensForUserOnClient(user, client);
+    async logout(userId: string, sessionId: string) {
+        await this.tokenService.revokeTokensForUserSession(userId, sessionId);
     }
 
     async signup(user: SignUpRequest) {
         this.logger.log('Registering a new User');
-        return await this.userService.create(user);
+        return await this.userService.create({ ...user, roles: [] });
     }
 
-    async storeClientChallenge(clientId: string, codeChallenge: string) {
-        const client = await this.clientService.findById(clientId);
+    async storeCodeChallenge(session: SessionModel, codeChallenge: string) {
+        session.codeChallenge = codeChallenge;
 
-        client.codeChallenge = codeChallenge;
-
-        await this.clientService.update(client);
+        await this.sessionService.update(session);
     }
 }

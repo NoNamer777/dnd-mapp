@@ -26,12 +26,12 @@ export class SkillService implements EntityApiService<SkillModel>, OnModuleInit 
         return this.skillRepository.findAll();
     }
 
-    async findAllOfAbility(abilityId: number) {
+    async findAllOfAbility(abilityId: string) {
         this.logger.log('Finding all Skills of an Ability');
         return this.skillRepository.findAllByAbility(abilityId);
     }
 
-    async findById(id: number, throwsError = true) {
+    async findById(id: string, throwsError = true) {
         this.logger.log('Finding a Skill by ID');
         const byId = await this.skillRepository.findOneById(id);
 
@@ -63,7 +63,7 @@ export class SkillService implements EntityApiService<SkillModel>, OnModuleInit 
         if (byName && byName.id !== skill.id) {
             throw new BadRequestException(`Cannot update Skill because the name '${byName.name}' is already used`);
         }
-        return await this.skillRepository.save(skill);
+        return await this.skillRepository.update(skill);
     }
 
     async create(skill: CreateSkillData) {
@@ -73,16 +73,16 @@ export class SkillService implements EntityApiService<SkillModel>, OnModuleInit 
         if (byName) {
             throw new BadRequestException(`Cannot create Skill because the name '${byName.name}' is already used`);
         }
-        return await this.skillRepository.save(skill);
+        return await this.skillRepository.create(skill);
     }
 
-    async remove(id: number) {
+    async remove(id: string) {
         this.logger.log('Removing a Skill by ID');
         const byId = await this.findById(id, false);
 
         if (!byId) {
             throw new NotFoundException(`Could not remove Skill with ID: '${id}' because it does not exist`);
         }
-        await this.skillRepository.deleteById(id);
+        await this.skillRepository.remove(id);
     }
 }

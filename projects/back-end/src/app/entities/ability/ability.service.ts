@@ -26,7 +26,7 @@ export class AbilityService implements EntityApiService<AbilityModel>, OnModuleI
         return this.abilityRepository.findAll();
     }
 
-    async findById(id: number, throwsError = true) {
+    async findById(id: string, throwsError = true) {
         this.logger.log('Finding an Ability by ID');
         const byId = await this.abilityRepository.findOneById(id);
 
@@ -58,7 +58,7 @@ export class AbilityService implements EntityApiService<AbilityModel>, OnModuleI
         if (byName && byName.id !== ability.id) {
             throw new BadRequestException(`Cannot update Ability because the name '${byName.name}' is already used`);
         }
-        return await this.abilityRepository.save(ability);
+        return await this.abilityRepository.update(ability);
     }
 
     async create(ability: CreateAbilityData) {
@@ -68,17 +68,17 @@ export class AbilityService implements EntityApiService<AbilityModel>, OnModuleI
         if (byName) {
             throw new BadRequestException(`Cannot create Ability because the name '${byName.name}' is already used`);
         }
-        await this.abilityRepository.save(ability);
+        await this.abilityRepository.create(ability);
         return await this.findByName(ability.name);
     }
 
-    async remove(id: number) {
+    async remove(id: string) {
         this.logger.log('Removing an Ability by ID');
         const byId = await this.findById(id, false);
 
         if (!byId) {
             throw new NotFoundException(`Could not remove Ability with ID: '${id}' because it does not exist`);
         }
-        await this.abilityRepository.deleteById(byId.id);
+        await this.abilityRepository.remove(byId.id);
     }
 }

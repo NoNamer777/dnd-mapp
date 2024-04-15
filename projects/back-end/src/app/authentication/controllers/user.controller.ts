@@ -1,3 +1,4 @@
+import { CreateUserData, UserModel } from '@dnd-mapp/data';
 import {
     BadRequestException,
     Body,
@@ -14,7 +15,6 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { LoggerService } from '../../common';
-import { CreateUserData, UpdateUserData } from '../entities';
 import { IsOwnerOrAdminGuard } from '../guards';
 import { UserService } from '../services';
 
@@ -43,19 +43,13 @@ export class UserController {
     }
 
     @Get(':id')
-    async getById(@Param('id') id: number) {
+    async getById(@Param('id') id: string) {
         this.logger.log('Received request for returning a User');
         return await this.userService.findById(id);
     }
 
-    @Delete(':id')
-    async delete(@Param('id') id: number) {
-        this.logger.log('Received a request for removing a User');
-        return await this.userService.remove(id);
-    }
-
     @Put(':id')
-    async update(@Param('id') id: number, @Body() data: UpdateUserData, @Req() request: Request) {
+    async update(@Param('id') id: string, @Body() data: UserModel, @Req() request: Request) {
         this.logger.log('Received a request for updating a User');
         const requestPath = request.url;
 
@@ -65,5 +59,11 @@ export class UserController {
             );
         }
         return await this.userService.update(data);
+    }
+
+    @Delete(':id')
+    async remove(@Param('id') id: string) {
+        this.logger.log('Received a request for removing a User');
+        return await this.userService.remove(id);
     }
 }

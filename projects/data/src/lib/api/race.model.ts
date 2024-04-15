@@ -32,7 +32,7 @@ export class RaceBuilder {
         return this.race;
     }
 
-    withId(id: number) {
+    withId(id: string) {
         this.race.id = id;
 
         return this;

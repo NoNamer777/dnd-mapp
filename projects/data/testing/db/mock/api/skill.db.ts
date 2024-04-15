@@ -1,4 +1,4 @@
-import { plainToInstance } from 'class-transformer';
+import { createId } from '@paralleldrive/cuid2';
 import { CreateSkillData, SkillBuilder, SkillModel, SkillName, Skills } from '../../../../src';
 import { defaultAbility } from './ability.db';
 
@@ -8,44 +8,25 @@ interface SkillDB {
 
 class MockSkillDB {
     private db: SkillDB;
-    private nextId: number;
 
     constructor() {
         this.reset();
     }
 
     findAll() {
-        return plainToInstance(SkillModel, Object.values(this.db));
+        return Object.values(this.db).sort((current, next) => current.name.localeCompare(next.name));
     }
 
-    findAllByAbility(abilityId: number) {
-        return plainToInstance(
-            SkillModel,
-            Object.values(this.db).filter((skill) => skill.ability?.id === abilityId)
-        );
+    findAllByAbility(abilityId: string) {
+        return Object.values(this.db).filter((skill) => skill.ability?.id === abilityId);
     }
 
-    findOneById(id: number) {
-        return plainToInstance(SkillModel, Object.values(this.db).find((skill) => skill.id === id) ?? null);
+    findOneById(id: string) {
+        return Object.values(this.db).find((skill) => skill.id === id) ?? null;
     }
 
     findOneByName(name: SkillName) {
-        return plainToInstance(SkillModel, Object.values(this.db).find((skill) => skill.name === name) ?? null);
-    }
-
-    save(skill: SkillModel) {
-        return skill.id ? this.update(skill) : this.insert(skill);
-    }
-
-    insert(skill: CreateSkillData) {
-        const newSkill = new SkillBuilder()
-            .withId(this.nextId++)
-            .withName(skill.name)
-            .fallsUnder(skill.ability)
-            .build();
-
-        this.db[newSkill.id] = newSkill;
-        return newSkill;
+        return Object.values(this.db).find((skill) => skill.name === name) ?? null;
     }
 
     update(skill: SkillModel) {
@@ -56,7 +37,14 @@ class MockSkillDB {
         return skill;
     }
 
-    deleteById(id: number) {
+    create(skill: CreateSkillData) {
+        const newSkill = new SkillBuilder().withId(createId()).withName(skill.name).fallsUnder(skill.ability).build();
+
+        this.db[newSkill.id] = newSkill;
+        return newSkill;
+    }
+
+    remove(id: string) {
         if (!this.db[id]) {
             throw new Error(`Cannot delete Skill with ID: '${id}' because it does not exist.`);
         }
@@ -64,9 +52,12 @@ class MockSkillDB {
     }
 
     reset() {
-        defaultSkill = new SkillBuilder().withId(1).withName(Skills.ACROBATICS).fallsUnder(defaultAbility).build();
+        defaultSkill = new SkillBuilder()
+            .withId(createId())
+            .withName(Skills.ACROBATICS)
+            .fallsUnder(defaultAbility)
+            .build();
         this.db = { [defaultSkill.id]: defaultSkill };
-        this.nextId = 2;
     }
 }
 

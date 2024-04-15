@@ -1,3 +1,4 @@
+import { createId } from '@paralleldrive/cuid2';
 import { CreateUserData, UserBuilder, UserModel } from '../../../../src';
 import { defaultRole } from './role.db';
 
@@ -7,39 +8,21 @@ interface UserDB {
 
 class MockUserDB {
     private db: UserDB;
-    private nextId: number;
 
     constructor() {
         this.reset();
     }
 
     findAll() {
-        return Object.values(this.db).sort((r1, r2) => r1.id - r2.id);
+        return Object.values(this.db).sort((current, next) => current.username.localeCompare(next.username));
     }
 
-    findOneById(userId: number) {
+    findOneById(userId: string) {
         return Object.values(this.db).find((user) => user.id === userId) ?? null;
     }
 
     findOneByUsername(username: string) {
         return Object.values(this.db).find((user) => user.username === username) ?? null;
-    }
-
-    save(userData: UserModel) {
-        return userData.id ? this.update(userData) : this.insert(userData);
-    }
-
-    insert(userData: CreateUserData) {
-        const newUser = new UserBuilder()
-            .withId(this.nextId++)
-            .withUsername(userData.username)
-            .withPassword(userData.password)
-            .withEmailAddress(userData.emailAddress)
-            .withRoles([defaultRole])
-            .build();
-
-        this.db[newUser.id] = newUser;
-        return newUser;
     }
 
     update(userData: UserModel) {
@@ -50,7 +33,20 @@ class MockUserDB {
         return userData;
     }
 
-    deleteById(userId: number) {
+    create(userData: CreateUserData) {
+        const newUser = new UserBuilder()
+            .withId(createId())
+            .withUsername(userData.username)
+            .withPassword(userData.password)
+            .withEmailAddress(userData.emailAddress)
+            .withRoles([defaultRole])
+            .build();
+
+        this.db[newUser.id] = newUser;
+        return newUser;
+    }
+
+    remove(userId: number) {
         if (!this.db[userId]) {
             throw new Error(`Cannot delete User with ID: '${userId}' because it does not exist.`);
         }
@@ -59,7 +55,7 @@ class MockUserDB {
 
     reset() {
         defaultUser = new UserBuilder()
-            .withId(1)
+            .withId(createId())
             .withUsername('User1')
             .withPassword('$2b$12$CU2n8T1reHQ24urHR3HFFO.LMmw6zGEHKtfkwuiTyemO1Mz.68Psa')
             .withEmailAddress('user1@domain.com')
@@ -67,7 +63,6 @@ class MockUserDB {
             .build();
 
         this.db = { [defaultUser.id]: defaultUser };
-        this.nextId = 2;
     }
 }
 

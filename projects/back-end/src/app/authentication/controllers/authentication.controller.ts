@@ -1,4 +1,4 @@
-import { TokenTypes } from '@dnd-mapp/data';
+import { TokenType, TokenTypes } from '@dnd-mapp/data';
 import {
     Body,
     ClassSerializerInterceptor,
@@ -40,13 +40,11 @@ export class AuthenticationController {
     @Post('/authorize')
     async authorize(
         @Body() requestBody: StateRequest,
-        @Req() request: DmaClientRequest
+        @Req() request: DmaSessionRequest
     ): Promise<AuthorizationCodeResponse> {
-        this.logger.log(
-            `Received request to generate authorization code for Client with ID: '${request.dmaClient?.id}'`
-        );
+        this.logger.log(`Received request to generate authorization code for Session: '${request.dmaSession.id}'`);
+        const authorizationCode = await this.authenticationService.generateAuthorizationCode(request.dmaSession);
 
-        const authorizationCode = await this.authenticationService.generateAuthorizationCode(request.dmaClient?.id);
 
         return { state: requestBody.state, authorizationCode: authorizationCode };
     }
@@ -54,13 +52,12 @@ export class AuthenticationController {
     @Post('/challenge')
     async codeChallenge(
         @Body() requestBody: CodeChallengeRequest,
-        @Req() request: DmaClientRequest
+        @Req() request: DmaSessionRequest
     ): Promise<StateResponse> {
+        this.logger.log(`Received request to persist code challenge for Session: '${request.dmaSession.id}'`);
         const { codeChallenge, state } = requestBody;
 
-        this.logger.log(`Received request to persist code challenge for Client with ID: '${request.dmaClient?.id}'`);
-
-        await this.authenticationService.storeClientChallenge(request.dmaClient?.id, codeChallenge);
+        await this.authenticationService.storeCodeChallenge(request.dmaSession, codeChallenge);
 
         return {
             state: state,
@@ -68,10 +65,9 @@ export class AuthenticationController {
     }
 
     @Post('/login')
-    async login(@Body() user: LoginRequest, @Req() request: DmaClientRequest) {
+    async login(@Body() user: LoginRequest, @Req() request: DmaSessionRequest) {
         this.logger.log(`Received a request to authenticate User with username: '${user.username}'`);
-
-        await this.authenticationService.login(user, request.dmaClient);
+        await this.authenticationService.login(user, request.dmaSession);
     }
 
     @UseGuards(IsAuthenticatedGuard)
@@ -91,7 +87,6 @@ export class AuthenticationController {
     @UseInterceptors(ClassSerializerInterceptor)
     async signup(@Body() userData: SignUpRequest, @Res({ passthrough: true }) response: Response) {
         this.logger.log('Received a request to register a new User');
-
         const user = await this.authenticationService.signup(userData);
 
         response.header('Location', `${backEndServerAddress}/server/api/user/${user.id}`);
@@ -102,11 +97,11 @@ export class AuthenticationController {
     @Post('/token')
     async token(
         @Body() requestBody: TokenRequest,
-        @Req() request: DmaClientRequest,
         @Res({ passthrough: true }) response: Response
+        @Req() request: DmaSessionRequest,
     ) {
-        this.logger.log(`Received request for JWT tokens for Client with ID: '${request.dmaClient?.id}'`);
-        const { authorizationCode, codeVerifier, username } = requestBody;
+        this.logger.log(`Received request for JWT tokens for Session ${request.dmaSession.id}`);
+        const { authorizationCode, codeVerifier } = requestBody;
 
         const tokens = await this.authenticationService.getTokensForClient(
             request.dmaClient,

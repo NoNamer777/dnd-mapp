@@ -1,14 +1,11 @@
 import { Global, Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { DndMappJwtModule } from '../config';
-import { AuthenticationController, ClientController, RoleController, UserController } from './controllers';
-import { ClientEntity, RoleEntity, TokenEntity, UserEntity } from './entities';
-import { ClientRepository, RoleRepository, UserRepository } from './repositories';
-import { TokenRepository } from './repositories/token.repository';
+import { AuthenticationController, RoleController, SessionController, UserController } from './controllers';
+import { RoleRepository, SessionRepository, TokenRepository, UserRepository } from './repositories';
 import {
     AuthenticationService,
-    ClientService,
     RoleService,
+    SessionService,
     TokenService,
     UserService,
     maxTokensProvider,
@@ -16,20 +13,20 @@ import {
 
 @Global()
 @Module({
-    imports: [DndMappJwtModule, TypeOrmModule.forFeature([ClientEntity, UserEntity, RoleEntity, TokenEntity])],
-    controllers: [AuthenticationController, UserController, RoleController, ClientController],
+    imports: [DndMappJwtModule],
+    controllers: [AuthenticationController, UserController, RoleController, SessionController],
     providers: [
         AuthenticationService,
-        UserService,
-        UserRepository,
         RoleService,
         RoleRepository,
-        ClientService,
-        ClientRepository,
+        UserService,
+        UserRepository,
         TokenService,
         TokenRepository,
         maxTokensProvider,
+        SessionService,
+        SessionRepository,
     ],
-    exports: [AuthenticationService, ClientService, UserService],
+    exports: [AuthenticationService, SessionService, UserService, TokenService],
 })
 export class AuthenticationModule {}

@@ -28,7 +28,7 @@ export class UserModel extends EntityModel {
     }
 }
 
-export type CreateUserData = Omit<UserModel, 'id' | 'roles' | 'hasRole'>;
+export type CreateUserData = Omit<UserModel, 'id' | 'hasRole'>;
 
 export class UserBuilder {
     private readonly user = new UserModel();
@@ -43,7 +43,7 @@ export class UserBuilder {
         return this;
     }
 
-    withId(id: number) {
+    withId(id: string) {
         this.user.id = id;
 
         return this;

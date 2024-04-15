@@ -1,3 +1,4 @@
+import { createId } from '@paralleldrive/cuid2';
 import { CreateRoleData, RoleBuilder, RoleModel, Roles } from '../../../../src';
 
 interface RoleDb {
@@ -6,33 +7,21 @@ interface RoleDb {
 
 class MockRoleDB {
     private db: RoleDb;
-    private nextId: number;
 
     constructor() {
         this.reset();
     }
 
     findAll() {
-        return Object.values(this.db).sort((r1, r2) => r1.id - r2.id);
+        return Object.values(this.db).sort((current, next) => current.name.localeCompare(next.name));
     }
 
-    findOneById(id: number) {
+    findOneById(id: string) {
         return Object.values(this.db).find((role) => role.id === id) ?? null;
     }
 
     findOneByName(name: string) {
         return Object.values(this.db).find((role) => role.name === name) ?? null;
-    }
-
-    save(role: RoleModel) {
-        return role.id ? this.update(role) : this.insert(role);
-    }
-
-    insert(role: CreateRoleData) {
-        const newRole = new RoleBuilder().withId(this.nextId).withName(role.name).build();
-
-        this.db[newRole.id] = new RoleBuilder().withId(this.nextId).withName(role.name).build();
-        return newRole;
     }
 
     update(role: RoleModel) {
@@ -43,7 +32,14 @@ class MockRoleDB {
         return role;
     }
 
-    deleteById(id: number) {
+    create(role: CreateRoleData) {
+        const newRole = new RoleBuilder().withId(createId()).withName(role.name).build();
+
+        this.db[newRole.id] = newRole;
+        return newRole;
+    }
+
+    remove(id: string) {
         if (!this.db[id]) {
             throw new Error(`Cannot delete Role with ID: '${id}' because it does not exist.`);
         }
@@ -51,9 +47,8 @@ class MockRoleDB {
     }
 
     reset() {
-        defaultRole = new RoleBuilder().withId(1).withName(Roles.PLAYER).build();
+        defaultRole = new RoleBuilder().withId(createId()).withName(Roles.PLAYER).build();
         this.db = { [defaultRole.id]: defaultRole };
-        this.nextId = 2;
     }
 }
 

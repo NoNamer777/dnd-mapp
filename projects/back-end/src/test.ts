@@ -1,15 +1,15 @@
 import {
     mockAbilityDB,
-    mockClientDB,
     mockRaceDB,
     mockRoleDB,
+    mockSessionDB,
     mockSkillDB,
     mockTokenDB,
     mockUserDB,
 } from '@dnd-mapp/data/testing';
 
 beforeEach(() => {
-    mockClientDB.reset();
+    mockSessionDB.reset();
     mockUserDB.reset();
     mockRoleDB.reset();
     mockTokenDB.reset();

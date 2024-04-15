@@ -90,6 +90,20 @@
                 }
             }
         },
+        "prisma": {
+            "executor": "nx:run-commands",
+            "options": {
+                "args": ["--schema prisma/schema.prisma"]
+            },
+            "configurations": {
+                "generate-client": {
+                    "command": "npx prisma generate client"
+                },
+                "run-migrations": {
+                    "command": "npx prisma migrate dev"
+                }
+            }
+        },
         "lint": {
             "executor": "@nx/eslint:lint",
             "outputs": ["{options.outputFile}"]

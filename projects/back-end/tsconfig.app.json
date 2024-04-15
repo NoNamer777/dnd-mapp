@@ -1,10 +1,10 @@
 {
     "extends": "./tsconfig.json",
-    "include": ["src/**/*.ts", "db/**/*.ts"],
+    "include": ["src/**/*.ts", "prisma/**/*.ts"],
     "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/test.ts"],
     "compilerOptions": {
         "emitDecoratorMetadata": true,
-        "module": "commonjs",
+        "module": "CommonJS",
         "moduleResolution": "Node",
         "outDir": "../../dist/out-tsc",
         "target": "ES2022",

@@ -17,7 +17,7 @@ export class RoleService {
         return this.userRoleRepository.findAll();
     }
 
-    async findById(id: number, throwsError = true) {
+    async findById(id: string, throwsError = true) {
         this.logger.log('Finding a Role by ID');
         const byId = await this.userRoleRepository.findOneById(id);
 
@@ -49,7 +49,7 @@ export class RoleService {
         if (byName && byName.id !== role.id) {
             throw new BadRequestException(`Cannot update Role because the name '${byName.name}' is already used`);
         }
-        return await this.userRoleRepository.save(role);
+        return await this.userRoleRepository.update(role);
     }
 
     async create(role: CreateRoleData) {
@@ -59,16 +59,16 @@ export class RoleService {
         if (byName) {
             throw new BadRequestException(`Cannot create Role because the name '${byName.name}' is already used`);
         }
-        return await this.userRoleRepository.save(role);
+        return await this.userRoleRepository.create(role);
     }
 
-    async remove(id: number) {
+    async remove(id: string) {
         this.logger.log('Removing a Role by ID');
         const byId = await this.findById(id, false);
 
         if (!byId) {
             throw new NotFoundException(`Could not remove Role with ID: '${id}' because it does not exist`);
         }
-        await this.userRoleRepository.deleteById(id);
+        await this.userRoleRepository.remove(id);
     }
 }

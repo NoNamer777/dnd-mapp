@@ -1,8 +1,8 @@
-import { ClientModel, TokenModelBuilder, TokenTypes, UserModel } from '@dnd-mapp/data';
+import { SessionModel, TokenModelBuilder, TokenType, TokenTypes, UserModel } from '@dnd-mapp/data';
 import { Inject, Injectable, ValueProvider } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { LoggerService, backEndServerAddress } from '../../../common';
-import { TokenRepository } from '../../repositories/token.repository';
+import { TokenRepository } from '../../repositories';
 
 const MAX_TOKENS_PER_USER = 201;
 
@@ -22,16 +22,19 @@ export class TokenService {
         this.loggerService.setContext(TokenService.name);
     }
 
-    // TODO: Don't generate tokens if there's no code challenge stored for a client
-    async generateTokensForUser(user: UserModel, client: ClientModel) {
-        await this.revokedTokensForUserOnClient(user, client);
+    async getByJti(jti: string) {
+        return await this.tokenRepository.findOneByJti(jti);
+    }
+
+    async generateTokensForUser(user: UserModel, session: SessionModel) {
+        await this.revokeTokensForUserSession(user.id, session.id);
 
         const now = new Date();
 
         const accessToken = new TokenModelBuilder()
             .notBefore(now)
             .assignToUser(user)
-            .forClient(client)
+            .forSession(session)
             .withId()
             .withType(TokenTypes.ACCESS)
             .isIssuedAt(now)
@@ -40,7 +43,7 @@ export class TokenService {
         const refreshToken = new TokenModelBuilder()
             .notBefore(now)
             .assignToUser(user)
-            .forClient(client)
+            .forSession(session)
             .withId()
             .withType(TokenTypes.REFRESH)
             .isIssuedAt(now)
@@ -55,16 +58,17 @@ export class TokenService {
             .isIssuedAt(now)
             .build();
 
-        await this.tokenRepository.save(accessToken);
-        await this.tokenRepository.save(refreshToken);
         await this.tokenRepository.save(identityToken);
+        await this.tokenRepository.create(accessToken);
+        await this.tokenRepository.create(refreshToken);
 
         await this.cleanUpUserTokens(user);
     }
 
-    async getEncodedTokensUserOnForClient(user: UserModel, client: ClientModel) {
-        const tokens = await this.tokenRepository.findActiveTokensForUserOnClient(user.id, client.id);
-        const signedTokens: Map<TokenTypes, { token: string; expiresAt: Date }> = new Map();
+    async getEncodedTokensForUserSession(userId: string, sessionId: string) {
+        this.loggerService.log(`Retrieving JWT encoded tokens for User ${userId} for Session ${sessionId}`);
+        const tokens = await this.tokenRepository.findActiveTokensForUserOnSession(userId, sessionId);
+        const signedTokens = {} as Record<TokenType, string>;
 
         for (const token of tokens) {
             signedTokens.set(token.type, {
@@ -81,17 +85,19 @@ export class TokenService {
         return signedTokens;
     }
 
-    async revokedTokensForUserOnClient(user: UserModel, client: ClientModel) {
-        const userTokens = await this.tokenRepository.findActiveTokensForUserOnClient(user.id, client.id);
+    async revokeTokensForUserSession(userId: string, sessionId: string) {
+        this.loggerService.log(`Revoking JWT tokens for User ${userId} on Session ${sessionId}`);
+        const userTokens = await this.tokenRepository.findActiveTokensForUserOnSession(userId, sessionId);
 
         for (const token of userTokens) {
             token.revoked = true;
 
-            await this.tokenRepository.save(token);
+            await this.tokenRepository.update(token);
         }
     }
 
     private async cleanUpUserTokens(user: UserModel) {
+        this.loggerService.log(`Removing excess JWT tokens for User ${user.id}`);
         const userTokens = await this.tokenRepository.findAllTokensForUser(user.id);
 
         if (userTokens.length < this.maxTokens) return;
@@ -99,7 +105,7 @@ export class TokenService {
         while (userTokens.length > this.maxTokens) {
             const token = userTokens.shift();
 
-            await this.tokenRepository.remove(token);
+            await this.tokenRepository.remove(token.jti);
         }
     }
 }

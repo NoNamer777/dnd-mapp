@@ -15,13 +15,13 @@ class MockTokenDB {
         this.db = {};
     }
 
-    findAllTokensForUser(userId: number) {
-        return Object.values(this.db).filter((token) => token.user.id === userId);
+    findAllTokensForUser(userId: string) {
+        return Object.values(this.db).filter((token) => token.subject === userId);
     }
 
-    findActiveTokensForUserOnClient(userId: number, clientId: string) {
+    findActiveTokensForUserSession(userId: string, sessionId: string) {
         return Object.values(this.db).filter(
-            (token) => token.user.id === userId && token.client.id === clientId && !token.revoked
+            (token) => token.subject === userId && token.sessionId === sessionId && !token.revoked
         );
     }
 
@@ -29,7 +29,7 @@ class MockTokenDB {
         return Object.values(this.db).find((token) => token.jti === jti);
     }
 
-    save(token: TokenModel) {
+    create(token: TokenModel) {
         this.db[token.jti] = token;
 
         return token;

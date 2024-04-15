@@ -1,6 +1,6 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
-import { IsInt, IsNotEmpty, IsOptional, IsString, Min } from 'class-validator';
 import { IsAdminGuard } from '../authentication/guards';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { EntityService } from './entity.service';
 
 class AllByTypeQueryParams {
@@ -8,10 +8,10 @@ class AllByTypeQueryParams {
     @IsNotEmpty()
     type: string;
 
-    @IsInt()
-    @Min(1)
+    @IsString()
+    @IsNotEmpty()
     @IsOptional()
-    id?: number;
+    id?: string;
 }
 
 @UseGuards(IsAdminGuard)

@@ -1,9 +1,8 @@
-import { AbilityModel } from '@dnd-mapp/data';
+import { AbilityModel, CreateAbilityData } from '@dnd-mapp/data';
 import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
 import { IsAdminGuard } from '../../authentication/guards';
 import { LoggerService } from '../../common';
-import { CreateAbilityData } from './ability.entity';
 import { AbilityService } from './ability.service';
 
 @Controller('/api/ability')
@@ -29,21 +28,21 @@ export class AbilityController {
     }
 
     @Get('/:id')
-    async getById(@Param('id') id: number) {
+    async getById(@Param('id') id: string) {
         this.logger.log('Received request for returning a Ability');
         return await this.abilityService.findById(id);
     }
 
     @UseGuards(IsAdminGuard)
     @Delete('/:id')
-    async deleteById(@Param('id') id: number) {
+    async deleteById(@Param('id') id: string) {
         this.logger.log('Received a request for removing a Ability');
         await this.abilityService.remove(id);
     }
 
     @UseGuards(IsAdminGuard)
     @Put('/:id')
-    async update(@Req() request: Request, @Body() data: AbilityModel, @Param('id') id: number) {
+    async update(@Req() request: Request, @Body() data: AbilityModel, @Param('id') id: string) {
         this.logger.log('Received a request for updating a Ability', 'AbilityController');
         const requestPath = request.path;
 

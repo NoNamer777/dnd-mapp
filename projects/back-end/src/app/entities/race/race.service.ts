@@ -26,7 +26,7 @@ export class RaceService implements EntityApiService<RaceModel>, OnModuleInit {
         return this.raceRepository.findAll();
     }
 
-    async findById(raceId: number, throwsError = true) {
+    async findById(raceId: string, throwsError = true) {
         this.logger.log('Finding a Race by ID');
         const byId = await this.raceRepository.findOneById(raceId);
 
@@ -57,7 +57,7 @@ export class RaceService implements EntityApiService<RaceModel>, OnModuleInit {
         if (byName && byName.id !== race.id) {
             throw new BadRequestException(`Cannot update Race because the name '${byName.name}' is already used`);
         }
-        return await this.raceRepository.save(race);
+        return await this.raceRepository.update(race);
     }
 
     async create(race: CreateRaceData) {
@@ -67,16 +67,16 @@ export class RaceService implements EntityApiService<RaceModel>, OnModuleInit {
         if (byName) {
             throw new BadRequestException(`Cannot create Race because the name '${byName.name}' is already used`);
         }
-        return await this.raceRepository.save(race);
+        return await this.raceRepository.create(race);
     }
 
-    async remove(raceId: number) {
+    async remove(raceId: string) {
         this.logger.log('Removing a Race by ID');
         const byId = await this.findById(raceId, false);
 
         if (!byId) {
             throw new NotFoundException(`Could not remove Race with ID: '${raceId}' because it does not exist`);
         }
-        await this.raceRepository.deleteById(raceId);
+        await this.raceRepository.remove(raceId);
     }
 }

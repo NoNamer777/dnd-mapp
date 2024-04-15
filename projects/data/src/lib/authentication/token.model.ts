@@ -1,26 +1,43 @@
-import { IsBoolean, IsDate, IsEnum, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
-import { nanoid } from 'nanoid';
-import { ClientModel } from './client.model';
+import { createId } from '@paralleldrive/cuid2';
+import { IsBoolean, IsDate, IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { SessionModel } from './session.model';
 import { UserModel } from './user.model';
 
 export enum TokenTypes {
     ACCESS = 'Access',
     REFRESH = 'Refresh',
-    IDENTITY = 'Identity',
 }
 
 const TOKEN_EXPIRATION_TIME_PER_TYPE: Record<TokenTypes, number> = {
     [TokenTypes.ACCESS]: 15 * 60 * 1_000, // Valid for 15 minutes
     [TokenTypes.REFRESH]: 7 * 24 * 60 * 60 * 1_000, // Valid for 7 days
-    [TokenTypes.IDENTITY]: 10 * 60 * 60 * 1_000, // Valid for 10 hours
 };
 
 export type TokenType = (typeof TokenTypes)[keyof typeof TokenTypes];
+
+export interface TokenData {
+    jti: string;
+    sub: string;
+    ses: string;
+    nbf: number;
+    iat: number;
+    exp: number;
+    iss: string;
+    aud: string[];
+}
 
 export class TokenModel {
     @IsString()
     @IsNotEmpty()
     jti: string;
+
+    @IsString()
+    @IsNotEmpty()
+    subject: string;
+
+    @IsString()
+    @IsNotEmpty()
+    sessionId: string;
 
     @IsString()
     @IsNotEmpty()
@@ -39,12 +56,6 @@ export class TokenModel {
     @IsDate()
     expiresAt: Date;
 
-    @ValidateNested()
-    client: ClientModel;
-
-    @ValidateNested()
-    user: UserModel;
-
     setExpiresAtBasedOnType() {
         if (!this.type || !this.issuedAt) return;
 
@@ -53,21 +64,11 @@ export class TokenModel {
 
     getJwtPayload = () => ({
         jti: this.jti,
-        sub: this.user.id,
-        clt: this.client.id,
+        sub: this.subject,
+        ses: this.sessionId,
         nbf: Math.floor(this.notBefore.getTime() / 1_000),
         iat: Math.floor(this.issuedAt.getTime() / 1_000),
         exp: Math.floor(this.expiresAt.getTime() / 1_000),
-        ...(this.type !== TokenTypes.IDENTITY
-            ? {}
-            : {
-                  user: {
-                      id: this.user.id,
-                      username: this.user.username,
-                      emailAddress: this.user.emailAddress,
-                      roles: this.user.roles,
-                  },
-              }),
     });
 }
 
@@ -75,7 +76,7 @@ export class TokenModelBuilder {
     private readonly token = new TokenModel();
 
     assignToUser(user: UserModel) {
-        this.token.user = user;
+        this.token.subject = user.id;
 
         return this;
     }
@@ -84,8 +85,8 @@ export class TokenModelBuilder {
         return this.token;
     }
 
-    forClient(client: ClientModel) {
-        this.token.client = client;
+    forSession(session: SessionModel) {
+        this.token.sessionId = session.id;
 
         return this;
     }
@@ -105,7 +106,7 @@ export class TokenModelBuilder {
     }
 
     withId() {
-        this.token.jti = nanoid(16);
+        this.token.jti = createId();
 
         return this;
     }

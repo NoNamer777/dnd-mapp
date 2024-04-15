@@ -50,7 +50,7 @@ export class SkillBuilder {
         return this;
     }
 
-    withId(id: number) {
+    withId(id: string) {
         this.skill.id = id;
 
         return this;

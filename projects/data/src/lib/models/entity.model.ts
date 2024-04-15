@@ -1,9 +1,9 @@
-import { IsNotEmpty, IsNumber, IsPositive, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class EntityModel {
-    @IsNumber({ allowNaN: false, allowInfinity: false })
-    @IsPositive()
-    id: number;
+    @IsString()
+    @IsNotEmpty()
+    id: string;
 }
 
 export class NameableModel extends EntityModel {

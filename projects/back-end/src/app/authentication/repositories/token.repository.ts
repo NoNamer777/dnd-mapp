@@ -1,32 +1,73 @@
 import { TokenModel } from '@dnd-mapp/data';
 import { Injectable } from '@nestjs/common';
-import { DataSource, Repository } from 'typeorm';
+import { plainToInstance } from 'class-transformer';
+import { DatabaseService } from '../../config';
 
 @Injectable()
-export class TokenRepository extends Repository<TokenModel> {
-    constructor(readonly dataSource: DataSource) {
-        super('Token', dataSource.createEntityManager());
+export class TokenRepository {
+    constructor(private readonly databaseService: DatabaseService) {}
+
+    async findActiveTokensForUserOnSession(userId: string, sessionId: string) {
+        return plainToInstance(
+            TokenModel,
+            await this.databaseService.token.findMany({
+                where: { revoked: false, subject: userId, sessionId: sessionId },
+                include: { user: true, session: true },
+            })
+        );
     }
 
-    async findActiveTokensForUserOnClient(userId: number, clientId: string) {
-        return await this.find({
-            where: {
-                revoked: false,
-                user: { id: userId },
-                client: { id: clientId },
-            },
-            relations: ['client', 'user'],
-        });
+    async findAllTokensForUser(userId: string) {
+        return plainToInstance(
+            TokenModel,
+            await this.databaseService.token.findMany({
+                where: { subject: userId },
+                orderBy: { issuedAt: 'desc' },
+            })
+        );
     }
 
-    async findAllTokensForUser(userId: number) {
-        return await this.find({
-            where: {
-                user: { id: userId },
-            },
-            order: {
-                issuedAt: 'DESC',
-            },
-        });
+    async findOneByJti(jti: string) {
+        return plainToInstance(TokenModel, await this.databaseService.token.findUnique({ where: { jti } }));
+    }
+
+    async create(token: TokenModel) {
+        return plainToInstance(
+            TokenModel,
+            await this.databaseService.token.create({
+                data: {
+                    jti: token.jti,
+                    subject: token.subject,
+                    sessionId: token.sessionId,
+                    type: token.type,
+                    issuedAt: token.issuedAt,
+                    notBefore: token.notBefore,
+                    expiresAt: token.expiresAt,
+                },
+            })
+        );
+    }
+
+    async update(token: TokenModel) {
+        return plainToInstance(
+            TokenModel,
+            await this.databaseService.token.update({
+                where: { jti: token.jti },
+                data: {
+                    jti: token.jti,
+                    subject: token.subject,
+                    sessionId: token.sessionId,
+                    type: token.type,
+                    issuedAt: token.issuedAt,
+                    notBefore: token.notBefore,
+                    expiresAt: token.expiresAt,
+                    revoked: token.revoked,
+                },
+            })
+        );
+    }
+
+    async remove(jti: string) {
+        await this.databaseService.token.delete({ where: { jti } });
     }
 }

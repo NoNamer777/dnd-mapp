@@ -9,7 +9,6 @@ import {
     NestConfigModule,
     RateLimitModule,
     ServeClientAppModule,
-    TypeOrmConfigModule,
     helmetConfig,
 } from './config';
 import { AbilityModule } from './entities/ability';
@@ -20,7 +19,7 @@ import { SkillModule } from './entities/skill';
 @Module({
     imports: [
         NestConfigModule,
-        TypeOrmConfigModule,
+        DatabaseModule,
         AssetsModule,
         ServeClientAppModule,
         LoggingModule,

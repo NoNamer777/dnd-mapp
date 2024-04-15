@@ -32,7 +32,7 @@ export class EntityService {
         return await this.getService(type).findAll();
     }
 
-    async getOneOfTypeById(type: string, id: number) {
+    async getOneOfTypeById(type: string, id: string) {
         return await this.getService(type).findById(id);
     }
 

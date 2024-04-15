@@ -1,9 +1,8 @@
-import { SkillModel } from '@dnd-mapp/data';
+import { CreateSkillData, SkillModel } from '@dnd-mapp/data';
 import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
 import { IsAdminGuard } from '../../authentication/guards';
 import { LoggerService } from '../../common';
-import { CreateSkillData } from './skill.entity';
 import { SkillService } from './skill.service';
 
 @Controller('/api/skill')
@@ -29,21 +28,21 @@ export class SkillController {
     }
 
     @Get('/:id')
-    async getById(@Param('id') id: number) {
+    async getById(@Param('id') id: string) {
         this.logger.log('Received request for returning a Skill');
         return await this.skillService.findById(id);
     }
 
     @UseGuards(IsAdminGuard)
     @Delete('/:id')
-    async deleteById(@Param('id') id: number) {
+    async deleteById(@Param('id') id: string) {
         this.logger.log('Received a request for removing a Skill');
         await this.skillService.remove(id);
     }
 
     @UseGuards(IsAdminGuard)
     @Put(':/id')
-    async update(@Req() request: Request, @Param('id') id: number, @Body() data: SkillModel) {
+    async update(@Req() request: Request, @Param('id') id: string, @Body() data: SkillModel) {
         this.logger.log('Received a request for updating a Skill');
         const requestPath = request.path;
 

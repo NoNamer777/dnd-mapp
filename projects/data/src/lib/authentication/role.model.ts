@@ -25,7 +25,7 @@ export class RoleBuilder {
         return this.role;
     }
 
-    withId(id: number) {
+    withId(id: string) {
         this.role.id = id;
 
         return this;

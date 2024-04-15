@@ -1,8 +1,7 @@
-import { RoleModel } from '@dnd-mapp/data';
+import { CreateRoleData, RoleModel } from '@dnd-mapp/data';
 import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
 import { LoggerService } from '../../common';
-import { CreateRoleData } from '../entities';
 import { IsAdminGuard } from '../guards';
 import { RoleService } from '../services';
 
@@ -29,19 +28,19 @@ export class RoleController {
     }
 
     @Get('/:id')
-    async getById(@Param('id') id: number) {
+    async getById(@Param('id') id: string) {
         this.logger.log('Received request for returning a Role');
         return await this.roleService.findById(id);
     }
 
     @Delete('/:id')
-    async deleteById(@Param('id') id: number) {
+    async deleteById(@Param('id') id: string) {
         this.logger.log('Received a request for removing a Role');
         await this.roleService.remove(id);
     }
 
     @Put(':/id')
-    async update(@Req() request: Request, @Param('id') id: number, @Body() data: RoleModel) {
+    async update(@Req() request: Request, @Param('id') id: string, @Body() data: RoleModel) {
         this.logger.log('Received a request for updating a Role');
         const requestPath = request.path;
 
