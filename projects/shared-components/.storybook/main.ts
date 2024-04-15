@@ -1,7 +1,7 @@
 import type { StorybookConfig } from '@storybook/angular';
 
 export default {
-    addons: ['@storybook/addon-styling', '@storybook/addon-controls', '@storybook/addon-docs'],
+    addons: ['@storybook/addon-controls', '@storybook/addon-docs'],
     core: {
         disableTelemetry: true,
     },
