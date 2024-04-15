@@ -29,7 +29,7 @@ export interface ServerConfig {
 
 export default registerAs('server', () => ({
     production: Boolean(process.env.PRODUCTION) || false,
-    host: process.env.HOST || '127.0.0.1',
+    host: process.env.HOST || '0.0.0.0',
     port: Number(process.env.PORT) || (process.env.USE_SSL === 'true' || Boolean(getSslConfig().ssl) ? 443 : 80),
     useSsl: process.env.USE_SSL === 'true' || Boolean(getSslConfig().ssl),
     address: process.env.ADDRESS || 'localhost.dndmapp.net',
