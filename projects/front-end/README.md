@@ -11,30 +11,30 @@ The available commands are:
 -   **To build the application**
 
 ```shell
-nx run client:build
+npx nx build front-end
 ```
 
 To build it in development (watch) mode:
 
 ```shell
-nx run client:build:dev
+npx nx build front-end -c dev
 ```
 
 -   **To serve the development application**
 
 ```shell
-nx run client:serve
+npx nx serve front-end
 ```
 
 -   **To run the tests**
 
 ```shell
-nx run client:test
+npx nx test front-end
 ```
 
 To run the test in watch mode:
 
 ```shell
 # This will rerun all the tests after changes are detected.
-nx run client:test:dev
+npx nx test front-end -c dev
 ```

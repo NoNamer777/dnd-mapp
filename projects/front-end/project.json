@@ -1,9 +1,9 @@
 {
-    "name": "front-end",
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "name": "front-end",
     "projectType": "application",
-    "sourceRoot": "projects/front-end/src",
     "tags": ["@dnd-mapp/front-end"],
+    "sourceRoot": "projects/front-end/src",
     "prefix": "dma",
     "targets": {
         "build": {

@@ -1,9 +1,9 @@
 {
-    "name": "back-end",
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
-    "sourceRoot": "projects/back-end/src",
+    "name": "back-end",
     "projectType": "application",
     "tags": ["@dnd-mapp/back-end"],
+    "sourceRoot": "projects/back-end/src",
     "targets": {
         "build": {
             "executor": "@nx/webpack:webpack",

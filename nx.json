@@ -74,12 +74,12 @@
         },
         "@nx/angular:component": {
             "changeDetection": "OnPush",
-            "project": "client",
+            "project": "front-end",
             "style": "scss"
         },
         "@nx/angular:directive": {
-            "project": "client",
-            "flat": false
+            "flat": false,
+            "project": "front-end"
         }
     }
 }
