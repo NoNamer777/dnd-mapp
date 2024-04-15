@@ -8,37 +8,15 @@
         "build": {
             "executor": "@nx/webpack:webpack",
             "outputs": ["{options.outputPath}"],
-            "options": {
-                "assets": ["projects/back-end/src/assets"],
-                "baseHref": "/",
-                "buildLibsFromSource": false,
-                "compiler": "tsc",
-                "extractLicenses": true,
-                "inspect": false,
-                "main": "projects/back-end/src/main.ts",
-                "outputPath": "dist/back-end",
-                "scripts": [],
-                "styles": [],
-                "target": "node",
-                "tsConfig": "projects/back-end/tsconfig.app.json",
-                "vendor": true,
-                "webpackConfig": "projects/back-end/webpack.config.js"
-            },
+            "dependsOn": ["data"],
             "defaultConfiguration": "prod",
+            "options": {
+                "outputPath": "dist/back-end",
+                "webpackConfig": "projects/back-end/webpack.config.ts"
+            },
             "configurations": {
-                "prod": {
-                    "generatePackageJson": true,
-                    "memoryLimit": 1024,
-                    "namedChunks": false,
-                    "optimization": true,
-                    "sourceMap": false
-                },
-                "dev": {
-                    "namedChunks": true,
-                    "optimization": false,
-                    "sourceMap": true,
-                    "watch": true
-                }
+                "prod": {},
+                "dev": {}
             }
         },
         "serve": {
@@ -53,15 +31,19 @@
             "options": {
                 "commands": [
                     {
-                        "command": "npx nx build data -c dev",
+                        "command": "nx build data --watch",
                         "prefix": "[data]:\t\t"
                     },
                     {
-                        "command": "npx nx build front-end --watch",
+                        "command": "nx build shared-components --watch",
+                        "prefix": "[shared-components]:\t\t"
+                    },
+                    {
+                        "command": "nx build front-end --watch",
                         "prefix": "[front-end]:\t"
                     },
                     {
-                        "command": "npx nx serve back-end",
+                        "command": "nx serve back-end",
                         "prefix": "[back-end]:\t"
                     }
                 ],
