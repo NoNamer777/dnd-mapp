@@ -1,4 +1,4 @@
-import { HttpStatus, Logger, ValidationPipe, ValidationPipeOptions } from '@nestjs/common';
+import { BadRequestException, Logger, ValidationPipe, ValidationPipeOptions } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
@@ -12,7 +12,6 @@ import { LoggerService, backEndServerAddress, buildServerUrl } from './app/commo
 import { ServerConfig, corsConfig } from './app/config';
 
 const validationOptions: ValidationPipeOptions = {
-    errorHttpStatusCode: HttpStatus.BAD_REQUEST,
     forbidNonWhitelisted: true,
     stopAtFirstError: true,
     transform: true,
@@ -21,6 +20,7 @@ const validationOptions: ValidationPipeOptions = {
         enableImplicitConversion: true,
     },
     whitelist: true,
+    exceptionFactory: (errors) => new BadRequestException(Object.values(errors[0].constraints)[0]),
 };
 
 async function bootstrap() {

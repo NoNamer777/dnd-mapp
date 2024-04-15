@@ -1,3 +1,4 @@
+import { BadRequestException } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { validateSync } from 'class-validator';
 import { ServerEnvironmentVariables } from './interfaces';
@@ -14,7 +15,7 @@ export function validate(config: Record<string, unknown>) {
     });
 
     if (errors.length > 0) {
-        throw new Error(errors.toString());
+        throw new BadRequestException(errors[0]);
     }
     return validatedConfig;
 }
