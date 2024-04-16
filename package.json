@@ -6,7 +6,7 @@
     "scripts": {
         "nx": "nx",
         "typeorm": "typeorm-ts-node-esm",
-        "docker:build": "docker build . -t nonamer777/dnd-mapp"
+        "docker:build": "docker build . -t nonamer777/dnd-mapp -f .docker/Dockerfile"
     },
     "workspaces": [
         "projects/*"
