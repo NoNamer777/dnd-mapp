@@ -67,6 +67,11 @@
                         "input": "projects/shared-components/src/assets",
                         "output": "./"
                     },
+                    {
+                        "glob": "*",
+                        "input": "projects/front-end/.msw",
+                        "output": "./"
+                    }
                 ],
                 "codeCoverage": true,
                 "codeCoverageExclude": ["**/testing/**", "**/*.module.ts", "**/index.ts", "**/environments/**"],
