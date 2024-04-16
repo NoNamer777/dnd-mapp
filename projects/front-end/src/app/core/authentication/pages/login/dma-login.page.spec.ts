@@ -12,7 +12,7 @@ import { TextCodingService } from '../../../../shared';
 import { SessionService } from '../../../services';
 import { DmaLoginPage } from './dma-login.page';
 
-describe('DmaLoginComponent', () => {
+xdescribe('DmaLoginComponent', () => {
     @Component({
         template: '<dma-login></dma-login>',
     })

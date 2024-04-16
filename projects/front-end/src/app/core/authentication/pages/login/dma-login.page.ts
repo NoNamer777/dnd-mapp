@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, OnDestroy, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, ViewChild } from '@angular/core';
 import {
     FormControl,
     FormGroup,
@@ -10,9 +10,9 @@ import {
     ValidationErrors,
     Validators,
 } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { BehaviorSubject, Subject, finalize, takeUntil } from 'rxjs';
-import { DmaIconsModule } from '../../../../shared';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { DmaButtonComponent, DmaIconComponent, DmaInputComponent } from '@dnd-mapp/shared-components';
+import { BehaviorSubject, finalize, map, merge, Observable, Subject, takeUntil } from 'rxjs';
 import { DmaAuthenticationService } from '../../services';
 
 const INVALID_CREDENTIALS_STATUS_CODE = [400, 404];
@@ -23,9 +23,21 @@ const INVALID_CREDENTIALS_STATUS_CODE = [400, 404];
     styleUrls: ['./dma-login.page.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, DmaIconsModule],
+    imports: [
+        CommonModule,
+        RouterModule,
+        ReactiveFormsModule,
+        FormsModule,
+        DmaIconComponent,
+        DmaInputComponent,
+        DmaButtonComponent,
+    ],
 })
 export class DmaLoginPage implements OnDestroy {
+    private readonly authenticationService = inject(DmaAuthenticationService);
+    private readonly router = inject(Router);
+    private readonly route = inject(ActivatedRoute);
+
     form = new FormGroup({
         username: new FormControl<string | null>(null, [Validators.required]),
         password: new FormControl<string | null>(null, [Validators.required]),
@@ -34,12 +46,16 @@ export class DmaLoginPage implements OnDestroy {
     @ViewChild(FormGroupDirective, { static: true }) private readonly formGroup: FormGroupDirective;
 
     loading$ = new BehaviorSubject(false);
-    error$ = new BehaviorSubject<string | null>(null);
-    success$ = new BehaviorSubject<string | null>(null);
+
+    private readonly error$ = new BehaviorSubject<string | null>(null);
+    private readonly success$ = new BehaviorSubject<string | null>(null);
+
+    protected readonly message$: Observable<{ type: 'error' | 'success'; message: string }> = merge(
+        this.error$.pipe(map((message) => ({ type: 'error' as const, message: message }))),
+        this.success$.pipe(map((message) => ({ type: 'success' as const, message: message })))
+    );
 
     private destroy$ = new Subject<void>();
-
-    constructor(private authenticationService: DmaAuthenticationService) {}
 
     get isFormInvalid() {
         return this.form.invalid;
@@ -90,9 +106,11 @@ export class DmaLoginPage implements OnDestroy {
     private onLoginSuccess() {
         this.success$.next('Login successful');
 
-        this.formGroup.resetForm();
         (document.activeElement as HTMLElement)?.blur();
+        this.formGroup.resetForm();
 
-        // TODO: Redirect to the next page
+        const redirectTo = this.route.snapshot.queryParams['redirectTo'];
+
+        this.router.navigateByUrl(redirectTo ? redirectTo : '/characters');
     }
 }

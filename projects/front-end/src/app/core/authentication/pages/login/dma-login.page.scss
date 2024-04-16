@@ -1,8 +1,31 @@
+@use 'assets/styles/theme-variables' as *;
+
 :host {
     display: block;
     height: 100%;
 
     article {
         height: 100%;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+
+        form {
+            width: 40rem;
+
+            h2 {
+                margin-bottom: 0.5rem;
+            }
+
+            .message {
+                &.success {
+                    color: $success;
+                }
+
+                &.error {
+                    color: $error;
+                }
+            }
+        }
     }
 }
