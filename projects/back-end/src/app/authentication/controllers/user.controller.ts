@@ -15,10 +15,10 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { LoggerService } from '../../common';
-import { IsOwnerOrAdminGuard } from '../guards';
+import { HasSessionGuard, IsOwnerOrAdminGuard } from '../guards';
 import { UserService } from '../services';
 
-@UseGuards(IsOwnerOrAdminGuard)
+@UseGuards(HasSessionGuard, IsOwnerOrAdminGuard)
 @Controller('api/user')
 export class UserController {
     constructor(

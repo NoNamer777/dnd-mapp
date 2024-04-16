@@ -1,10 +1,11 @@
 import { CreateSkillData, SkillModel } from '@dnd-mapp/data';
 import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
-import { IsAdminGuard } from '../../authentication/guards';
+import { HasSessionGuard } from '../../authentication/guards';
 import { LoggerService } from '../../common';
 import { SkillService } from './skill.service';
 
+@UseGuards(HasSessionGuard)
 @Controller('/api/skill')
 export class SkillController {
     constructor(

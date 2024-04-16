@@ -2,10 +2,10 @@ import { CreateRoleData, RoleModel } from '@dnd-mapp/data';
 import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
 import { LoggerService } from '../../common';
-import { IsAdminGuard } from '../guards';
+import { HasSessionGuard, IsAdminGuard } from '../guards';
 import { RoleService } from '../services';
 
-@UseGuards(IsAdminGuard)
+@UseGuards(HasSessionGuard, IsAdminGuard)
 @Controller('/api/role')
 export class RoleController {
     constructor(

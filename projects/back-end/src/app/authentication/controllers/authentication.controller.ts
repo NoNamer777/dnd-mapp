@@ -14,8 +14,7 @@ import {
 import { Throttle } from '@nestjs/throttler';
 import { Response } from 'express';
 import { DmaClientRequest, LoggerService, backEndServerAddress } from '../../common';
-import { IsAuthenticatedGuard } from '../guards';
-import { AuthenticatedRequest } from '../guards/methods';
+import { AuthenticatedRequest, HasSessionGuard, IsAuthenticatedGuard } from '../guards';
 import {
     AuthorizationCodeResponse,
     CodeChallengeRequest,
@@ -28,6 +27,7 @@ import {
 import { AuthenticationService } from '../services';
 
 @Throttle({ default: { limit: 15, ttl: 60_000 } })
+@UseGuards(HasSessionGuard)
 @Controller({ path: '/authentication' })
 export class AuthenticationController {
     constructor(
@@ -94,6 +94,7 @@ export class AuthenticationController {
         return user;
     }
 
+    @UseGuards(IsAuthenticatedGuard)
     @Post('/token')
     async token(
         @Body() requestBody: TokenRequest,

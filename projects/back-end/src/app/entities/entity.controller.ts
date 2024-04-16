@@ -1,6 +1,6 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
-import { IsAdminGuard } from '../authentication/guards';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { HasSessionGuard, IsAdminGuard } from '../authentication/guards';
 import { EntityService } from './entity.service';
 
 class AllByTypeQueryParams {
@@ -14,7 +14,7 @@ class AllByTypeQueryParams {
     id?: string;
 }
 
-@UseGuards(IsAdminGuard)
+@UseGuards(HasSessionGuard, IsAdminGuard)
 @Controller('/api/entity')
 export class EntityController {
     constructor(private readonly entityService: EntityService) {}

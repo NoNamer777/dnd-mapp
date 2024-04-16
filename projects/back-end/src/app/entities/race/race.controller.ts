@@ -1,10 +1,11 @@
 import { CreateRaceData, RaceModel } from '@dnd-mapp/data';
 import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
-import { IsAdminGuard } from '../../authentication/guards';
+import { HasSessionGuard, IsAdminGuard } from '../../authentication/guards';
 import { LoggerService } from '../../common';
 import { RaceService } from './race.service';
 
+@UseGuards(HasSessionGuard)
 @Controller('api/race')
 export class RaceController {
     constructor(
