@@ -6,7 +6,7 @@ import { UserResponse } from '../models';
 export class UserService {
     constructor(private readonly requestService: DmaHttpRequestService) {}
 
-    getById(id: number) {
-        return this.requestService.get<UserResponse>(`/api/user/${id}`);
+    getById(userId: string) {
+        return this.requestService.get<UserResponse>(`/api/user/${userId}`);
     }
 }

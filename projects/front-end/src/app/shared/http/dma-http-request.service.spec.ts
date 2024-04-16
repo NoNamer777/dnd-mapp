@@ -1,95 +1,86 @@
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
+import { getMockServiceWorker } from '@dnd-mapp/front-end/testing';
+import { HttpResponse, http } from 'msw';
+import { PathParams } from 'msw/lib/core/utils/matching/matchRequestUrl';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../environments';
-import { provideDmaHttpTesting } from '../../../testing';
 import { DmaHttpRequestService } from './dma-http-request.service';
 
 describe('DmaHttpRequestService', () => {
     function setupTestEnvironment() {
         TestBed.configureTestingModule({
-            providers: [provideDmaHttpTesting(), provideHttpClientTesting()],
+            providers: [provideHttpClient()],
         });
 
         return {
             service: TestBed.inject(DmaHttpRequestService),
-            testingController: TestBed.inject(HttpTestingController),
         };
     }
 
-    afterEach(() => {
-        TestBed.inject(HttpTestingController).verify();
-    });
-
     it('should send a GET request', async () => {
-        const { service, testingController } = setupTestEnvironment();
+        getMockServiceWorker().use(
+            http.get(environment.baseBackEndURL + '/example', () => HttpResponse.json({ example: 'hi' }))
+        );
 
-        const response = firstValueFrom(service.get('/example'));
+        const { service } = setupTestEnvironment();
 
-        const request = testingController.expectOne(environment.baseBackEndURL + '/example');
-        request.flush({ example: 'hi' });
-
-        expect(await response).toEqual({ example: 'hi' });
-        expect(request.request.method).toEqual('GET');
+        expect(await firstValueFrom(service.get('/example'))).toEqual({ example: 'hi' });
     });
 
     it('should send an request with a state in the body', async () => {
-        const { service, testingController } = setupTestEnvironment();
+        getMockServiceWorker().use(
+            http.post<PathParams, { state: string }>(environment.baseBackEndURL + '/example', async ({ request }) => {
+                const { state } = await request.json();
 
-        const response = firstValueFrom(service.post('/example', { attribute2: false }, { withState: true }));
+                return HttpResponse.json({ attribute: true, state: state });
+            })
+        );
 
-        const request = testingController.expectOne(environment.baseBackEndURL + '/example');
-        request.flush({ state: request.request.body.state, attribute: true });
+        const { service } = setupTestEnvironment();
 
-        expect(await response).toEqual(jasmine.objectContaining({ attribute: true }));
+        expect(await firstValueFrom(service.post('/example', { attribute2: false }, { withState: true }))).toEqual(
+            jasmine.objectContaining({ attribute: true })
+        );
     });
 
     it('should throw an error when state is not returned response', async () => {
-        const { service, testingController } = setupTestEnvironment();
+        getMockServiceWorker().use(
+            http.get(environment.baseBackEndURL + '/example', () => HttpResponse.json({ attribute: true }))
+        );
 
-        const response = firstValueFrom(service.get('/example', { withState: true }));
+        const { service } = setupTestEnvironment();
 
-        const request = testingController.expectOne(environment.baseBackEndURL + '/example');
-        request.flush({ attribute: true });
-
-        await expectAsync(response).toBeRejectedWithError('State validation error');
+        await expectAsync(firstValueFrom(service.get('/example', { withState: true }))).toBeRejectedWithError(
+            'State validation error'
+        );
     });
 
     it('should send a POST request', async () => {
-        const { service, testingController } = setupTestEnvironment();
+        getMockServiceWorker().use(
+            http.post(environment.baseBackEndURL + '/example', () => HttpResponse.json({ name: 'user1' }))
+        );
 
-        const response = firstValueFrom(service.post('/example', { name: 'user' }));
+        const { service } = setupTestEnvironment();
 
-        const request = testingController.expectOne(environment.baseBackEndURL + '/example');
-        request.flush({ name: 'user1' });
-
-        expect(await response).toEqual({ name: 'user1' });
-        expect(request.request.method).toEqual('POST');
-        expect(request.request.body).toEqual({ name: 'user' });
+        expect(await firstValueFrom(service.post('/example', { name: 'user' }))).toEqual({ name: 'user1' });
     });
 
     it('should send a DELETE request', async () => {
-        const { service, testingController } = setupTestEnvironment();
+        getMockServiceWorker().use(http.delete(environment.baseBackEndURL + '/example', () => HttpResponse.json(null)));
 
-        const response = firstValueFrom(service.delete('/example'));
+        const { service } = setupTestEnvironment();
 
-        const request = testingController.expectOne(environment.baseBackEndURL + '/example');
-        request.flush(null);
-
-        await response;
-
-        expect(request.request.method).toEqual('DELETE');
+        await expectAsync(firstValueFrom(service.delete('/example'))).not.toBeRejected();
     });
 
     it('should send a PUT request', async () => {
-        const { service, testingController } = setupTestEnvironment();
+        getMockServiceWorker().use(
+            http.put(environment.baseBackEndURL + '/example', () => HttpResponse.json({ name: 'user1' }))
+        );
 
-        const response = firstValueFrom(service.put('/example', { name: 'user1' }));
+        const { service } = setupTestEnvironment();
 
-        const request = testingController.expectOne(environment.baseBackEndURL + '/example');
-        request.flush({ name: 'user1' });
-
-        expect(await response).toEqual({ name: 'user1' });
-        expect(request.request.method).toEqual('PUT');
+        expect(await firstValueFrom(service.put('/example', { name: 'user1' }))).toEqual({ name: 'user1' });
     });
 });

@@ -1,8 +1,6 @@
 import { FactoryProvider, InjectionToken } from '@angular/core';
 
-export enum StorageKey {
-    CLIENT_ID = 'clientId',
-}
+export enum StorageKey {}
 
 export const STORAGE = new InjectionToken('storage location', {
     providedIn: 'root',

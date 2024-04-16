@@ -1,7 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, HostListener } from '@angular/core';
-import { ConfigService } from '../../services/config.service';
-import { DmaThemeDirective, DmaThemeModule } from '../../theming';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { DmaThemeDirective } from '@dnd-mapp/shared-components';
 import { DmaCenterComponent } from '../center';
 import { DmaHeaderComponent } from '../header';
 
@@ -12,13 +10,6 @@ import { DmaHeaderComponent } from '../header';
     changeDetection: ChangeDetectionStrategy.OnPush,
     hostDirectives: [DmaThemeDirective],
     standalone: true,
-    imports: [CommonModule, DmaHeaderComponent, DmaCenterComponent, DmaThemeModule],
+    imports: [DmaHeaderComponent, DmaCenterComponent],
 })
-export class DmaRootComponent {
-    constructor(private configService: ConfigService) {}
-
-    @HostListener('window:beforeunload')
-    beforeunloadHandler() {
-        this.configService.storeConfig();
-    }
-}
+export class DmaRootComponent {}
