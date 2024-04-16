@@ -1,4 +1,4 @@
-import { defaultClient, defaultUser, mockTokenDB } from '@dnd-mapp/data/testing';
+import { defaultSession, defaultUser, mockTokenDB } from '@dnd-mapp/data/testing';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
@@ -25,10 +25,10 @@ describe('TokenService', () => {
         };
     }
 
-    it('should generate tokens for a User on a particular Client', async () => {
+    it('should generate tokens for a UserSession', async () => {
         const { tokenService } = await setupEnvironment();
 
-        await expect(tokenService.generateTokensForUser(defaultUser, defaultClient)).resolves.not.toThrow();
+        await expect(tokenService.generateTokensForUser(defaultUser, defaultSession)).resolves.not.toThrow();
 
         expect(mockTokenDB.findAllTokensForUser(defaultUser.id)).toHaveLength(3);
     });
@@ -36,26 +36,26 @@ describe('TokenService', () => {
     it('should clean up tokens for a User after max tokens have been reached', async () => {
         const { tokenService } = await setupEnvironment();
 
-        await tokenService.generateTokensForUser(defaultUser, defaultClient);
+        await tokenService.generateTokensForUser(defaultUser, defaultSession);
         expect(mockTokenDB.findAllTokensForUser(defaultUser.id)).toHaveLength(3);
 
-        await tokenService.generateTokensForUser(defaultUser, defaultClient);
+        await tokenService.generateTokensForUser(defaultUser, defaultSession);
         expect(mockTokenDB.findAllTokensForUser(defaultUser.id)).toHaveLength(6);
 
-        await tokenService.generateTokensForUser(defaultUser, defaultClient);
+        await tokenService.generateTokensForUser(defaultUser, defaultSession);
         expect(mockTokenDB.findAllTokensForUser(defaultUser.id)).toHaveLength(6);
     });
 
-    it('should revoke active tokens when generating new tokens for a User on a Client', async () => {
+    it('should revoke active tokens when generating new tokens for a UserSession', async () => {
         const { tokenService } = await setupEnvironment();
 
-        await tokenService.generateTokensForUser(defaultUser, defaultClient);
+        await tokenService.generateTokensForUser(defaultUser, defaultSession);
 
-        const previouslyActiveTokens = mockTokenDB.findActiveTokensForUserOnClient(defaultUser.id, defaultClient.id);
+        const previouslyActiveTokens = mockTokenDB.findActiveTokensForUserSession(defaultUser.id, defaultSession.id);
 
-        await tokenService.generateTokensForUser(defaultUser, defaultClient);
+        await tokenService.generateTokensForUser(defaultUser, defaultSession);
 
-        const currentlyActiveTokens = mockTokenDB.findActiveTokensForUserOnClient(defaultUser.id, defaultClient.id);
+        const currentlyActiveTokens = mockTokenDB.findActiveTokensForUserSession(defaultUser.id, defaultSession.id);
 
         expect(currentlyActiveTokens).not.toContain(expect.arrayContaining(previouslyActiveTokens));
     });
@@ -63,10 +63,10 @@ describe('TokenService', () => {
     it('should return encoded token data', async () => {
         const { tokenService, jwtService } = await setupEnvironment();
 
-        await tokenService.generateTokensForUser(defaultUser, defaultClient);
+        await tokenService.generateTokensForUser(defaultUser, defaultSession);
 
-        const tokenData = await tokenService.getEncodedTokensUserOnForClient(defaultUser, defaultClient);
-        const tokens = mockTokenDB.findActiveTokensForUserOnClient(defaultUser.id, defaultClient.id);
+        const tokenData = await tokenService.getEncodedTokensForUserSession(defaultUser, defaultSession);
+        const tokens = mockTokenDB.findActiveTokensForUserSession(defaultUser.id, defaultSession.id);
 
         for (const data of tokenData) {
             const token = tokens.find((token) => token.type === data[0]);
@@ -74,7 +74,7 @@ describe('TokenService', () => {
 
             expect(token.jti).toEqual(decodedToken.jti);
             expect(token.user.id).toEqual(decodedToken.sub);
-            expect(token.client.id).toEqual(decodedToken.clt);
+            expect(token.session.id).toEqual(decodedToken.ses);
             expect(Math.floor(token.issuedAt.getTime() / 1_000)).toEqual(decodedToken.iat);
             expect(Math.floor(token.notBefore.getTime() / 1_000)).toEqual(decodedToken.nbf);
             expect(Math.floor(token.expiresAt.getTime() / 1_000)).toEqual(decodedToken.exp);

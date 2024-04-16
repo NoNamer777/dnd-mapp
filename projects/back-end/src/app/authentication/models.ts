@@ -1,4 +1,18 @@
-import { IsBase64, IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { IsBase64, IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
+
+const tokenGrantType = {
+    AUTHORIZATION: 'authorizationCode',
+    REFRESH_TOKEN: 'refreshToken',
+} as const;
+
+type TokenGrantType = (typeof tokenGrantType)[keyof typeof tokenGrantType];
+
+export class TokenQueryParams {
+    @IsString()
+    @IsNotEmpty()
+    @IsEnum(tokenGrantType)
+    grantType: TokenGrantType;
+}
 
 export class LoginRequest {
     @IsString()
@@ -36,10 +50,6 @@ export class StateResponse {
     state: string;
 }
 
-export class ClientIdResponse extends StateResponse {
-    id: string;
-}
-
 export class CodeChallengeRequest extends StateRequest {
     @IsString()
     @IsNotEmpty()
@@ -48,20 +58,25 @@ export class CodeChallengeRequest extends StateRequest {
 }
 
 export class AuthorizationCodeResponse extends StateResponse {
-    authorizationCode: string;
+    data: {
+        authorizationCode: string;
+    };
 }
 
 export class TokenRequest {
     @IsString()
     @IsNotEmpty()
-    codeVerifier: string;
+    @IsOptional()
+    codeVerifier?: string;
 
     @IsString()
     @IsNotEmpty()
     @IsBase64()
-    authorizationCode: string;
+    @IsOptional()
+    authorizationCode?: string;
 
     @IsString()
     @IsNotEmpty()
-    username: string;
+    @IsOptional()
+    username?: string;
 }

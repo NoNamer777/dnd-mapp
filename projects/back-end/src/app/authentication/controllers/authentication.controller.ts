@@ -6,6 +6,7 @@ import {
     HttpCode,
     HttpStatus,
     Post,
+    Query,
     Req,
     Res,
     UseGuards,
@@ -13,7 +14,7 @@ import {
 } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import { Response } from 'express';
-import { DmaClientRequest, LoggerService, backEndServerAddress } from '../../common';
+import { DmaSessionRequest, LoggerService, backEndServerAddress } from '../../common';
 import { AuthenticatedRequest, HasSessionGuard, IsAuthenticatedGuard } from '../guards';
 import {
     AuthorizationCodeResponse,
@@ -22,9 +23,10 @@ import {
     SignUpRequest,
     StateRequest,
     StateResponse,
+    TokenQueryParams,
     TokenRequest,
 } from '../models';
-import { AuthenticationService } from '../services';
+import { AuthenticationService, TokenService } from '../services';
 
 @Throttle({ default: { limit: 15, ttl: 60_000 } })
 @UseGuards(HasSessionGuard)
@@ -32,6 +34,7 @@ import { AuthenticationService } from '../services';
 export class AuthenticationController {
     constructor(
         private readonly authenticationService: AuthenticationService,
+        private readonly tokenService: TokenService,
         private readonly logger: LoggerService
     ) {
         logger.setContext(AuthenticationController.name);
@@ -45,8 +48,7 @@ export class AuthenticationController {
         this.logger.log(`Received request to generate authorization code for Session: '${request.dmaSession.id}'`);
         const authorizationCode = await this.authenticationService.generateAuthorizationCode(request.dmaSession);
 
-
-        return { state: requestBody.state, authorizationCode: authorizationCode };
+        return { state: requestBody.state, data: { authorizationCode } };
     }
 
     @Post('/challenge')
@@ -72,14 +74,9 @@ export class AuthenticationController {
 
     @UseGuards(IsAuthenticatedGuard)
     @Post('/sign-out')
-    async logout(@Req() request: AuthenticatedRequest, @Res({ passthrough: true }) response: Response) {
+    async logout(@Req() request: AuthenticatedRequest) {
         this.logger.log('Receiving a request to log out a User');
-
-        await this.authenticationService.logout(request.authenticatedUser, request.dmaClient);
-
-        response.clearCookie('access-token');
-        response.clearCookie('refresh-token');
-        response.clearCookie('identity-token');
+        await this.authenticationService.logout(request.user.id, request.dmaSession.id);
     }
 
     @Post('/sign-up')
@@ -97,32 +94,34 @@ export class AuthenticationController {
     @UseGuards(IsAuthenticatedGuard)
     @Post('/token')
     async token(
-        @Body() requestBody: TokenRequest,
-        @Res({ passthrough: true }) response: Response
+        @Query() queryParams: TokenQueryParams,
         @Req() request: DmaSessionRequest,
+        @Body() requestBody?: TokenRequest
     ) {
         this.logger.log(`Received request for JWT tokens for Session ${request.dmaSession.id}`);
         const { authorizationCode, codeVerifier } = requestBody;
+        const { grantType } = queryParams;
 
-        const tokens = await this.authenticationService.getTokensForClient(
-            request.dmaClient,
-            codeVerifier,
-            authorizationCode,
-            username
-        );
+        let tokens: Record<TokenType, string>;
 
-        this.setResponseCookies(tokens, response);
-    }
+        if (grantType === 'authorizationCode') {
+            tokens = await this.authenticationService.getTokensForSession(
+                request.dmaSession,
+                requestBody.username,
+                codeVerifier,
+                authorizationCode
+            );
+        } else if (grantType === 'refreshToken') {
+            const user = (request as AuthenticatedRequest).user;
 
-    private setResponseCookies(tokens: Map<TokenTypes, { token: string; expiresAt: Date }>, response: Response) {
-        tokens.forEach((data, type) =>
-            response.cookie(`${type.toLowerCase()}-token`, data.token, {
-                secure: true,
-                signed: type !== TokenTypes.IDENTITY,
-                httpOnly: type !== TokenTypes.IDENTITY,
-                sameSite: 'strict',
-                expires: data.expiresAt,
-            })
-        );
+            await this.tokenService.generateTokensForUser(user, request.dmaSession);
+
+            tokens = await this.authenticationService.getTokensForSession(request.dmaSession, user.username);
+        }
+
+        return {
+            [TokenTypes.ACCESS.toLowerCase()]: tokens[TokenTypes.ACCESS],
+            [TokenTypes.REFRESH.toLowerCase()]: tokens[TokenTypes.REFRESH],
+        };
     }
 }

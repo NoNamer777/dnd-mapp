@@ -1,17 +1,15 @@
 import { Roles } from '@dnd-mapp/data';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { UserService } from '../services';
-import { getAuthenticatedUser, hasRole } from './methods';
+import { AuthenticatedRequest, IsAuthenticatedGuard } from './is-authenticated.guard';
 
 @Injectable()
-export class IsAdminGuard implements CanActivate {
-    constructor(
-        private readonly jwtService: JwtService,
-        private readonly userService: UserService
-    ) {}
+export class IsAdminGuard extends IsAuthenticatedGuard implements CanActivate {
+    protected override readonly loggerContextName = IsAdminGuard.name;
 
     async canActivate(context: ExecutionContext) {
-        return hasRole(await getAuthenticatedUser(context, this.jwtService, this.userService), Roles.ADMIN);
+        const isAuthenticated = await super.canActivate(context);
+        const request = context.switchToHttp().getRequest<AuthenticatedRequest>();
+
+        return isAuthenticated && request.user.hasRole(Roles.ADMIN);
     }
 }

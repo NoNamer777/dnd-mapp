@@ -28,7 +28,10 @@ export class AuthenticationService {
         codeVerifier?: string,
         authorizationCode?: string
     ) {
-
+        if (codeVerifier && authorizationCode) {
+            await this.sessionService.verifyCodeChallenge(session, codeVerifier);
+            await this.sessionService.verifyAuthorizationCode(session, authorizationCode);
+        }
         const user = await this.userService.findByUsername(username);
 
         return await this.tokenService.getEncodedTokensForUserSession(user.id, session.id);

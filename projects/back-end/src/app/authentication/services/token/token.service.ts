@@ -1,5 +1,5 @@
 import { SessionModel, TokenModelBuilder, TokenType, TokenTypes, UserModel } from '@dnd-mapp/data';
-import { Inject, Injectable, ValueProvider } from '@nestjs/common';
+import { ForbiddenException, Inject, Injectable, ValueProvider } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { LoggerService, backEndServerAddress } from '../../../common';
 import { TokenRepository } from '../../repositories';
@@ -27,6 +27,9 @@ export class TokenService {
     }
 
     async generateTokensForUser(user: UserModel, session: SessionModel) {
+        if (!session.authorizationCode) {
+            throw new ForbiddenException(`You're not allowed to generate tokens. Login required`);
+        }
         await this.revokeTokensForUserSession(user.id, session.id);
 
         const now = new Date();
@@ -49,16 +52,6 @@ export class TokenService {
             .isIssuedAt(now)
             .build();
 
-        const identityToken = new TokenModelBuilder()
-            .notBefore(now)
-            .assignToUser(user)
-            .forClient(client)
-            .withId()
-            .withType(TokenTypes.IDENTITY)
-            .isIssuedAt(now)
-            .build();
-
-        await this.tokenRepository.save(identityToken);
         await this.tokenRepository.create(accessToken);
         await this.tokenRepository.create(refreshToken);
 
@@ -71,16 +64,13 @@ export class TokenService {
         const signedTokens = {} as Record<TokenType, string>;
 
         for (const token of tokens) {
-            signedTokens.set(token.type, {
-                expiresAt: token.expiresAt,
-                token: await this.jwtService.signAsync(
-                    { ...token.getJwtPayload() },
-                    {
-                        audience: [backEndServerAddress],
-                        issuer: backEndServerAddress,
-                    }
-                ),
-            });
+            signedTokens[token.type] = await this.jwtService.signAsync(
+                { ...token.getJwtPayload() },
+                {
+                    audience: [backEndServerAddress],
+                    issuer: backEndServerAddress,
+                }
+            );
         }
         return signedTokens;
     }

@@ -1,26 +1,15 @@
 import { Roles } from '@dnd-mapp/data';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { Request } from 'express';
-import { UserService } from '../services';
-import { getAuthenticatedUser, hasRole } from './methods';
+import { AuthenticatedRequest, IsAuthenticatedGuard } from './is-authenticated.guard';
 
 @Injectable()
-export class IsOwnerOrAdminGuard implements CanActivate {
-    constructor(
-        private readonly jwtService: JwtService,
-        private readonly userService: UserService
-    ) {}
+export class IsOwnerOrAdminGuard extends IsAuthenticatedGuard implements CanActivate {
+    protected override readonly loggerContextName = IsOwnerOrAdminGuard.name;
 
     async canActivate(context: ExecutionContext) {
-        const request: Request = context.switchToHttp().getRequest();
-        const requestPath = request.path.match(/\/[1-9]+/);
+        const request = context.switchToHttp().getRequest<AuthenticatedRequest>();
+        const isAuthenticated = await super.canActivate(context);
 
-        const authenticatedUser = await getAuthenticatedUser(context, this.jwtService, this.userService);
-
-        if (!requestPath) {
-            return hasRole(authenticatedUser, Roles.ADMIN);
-        }
-        return hasRole(authenticatedUser, Roles.ADMIN) || Number(requestPath[0].substring(1)) === authenticatedUser.id;
+        return isAuthenticated && (request.user.hasRole(Roles.ADMIN) || request.url.includes(request.user.id));
     }
 }

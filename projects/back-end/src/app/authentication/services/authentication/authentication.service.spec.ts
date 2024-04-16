@@ -1,12 +1,12 @@
 import { UserBuilder } from '@dnd-mapp/data';
-import { defaultClient, defaultUser, mockClientDB, mockTokenDB, mockUserDB } from '@dnd-mapp/data/testing';
+import { defaultSession, defaultUser, mockSessionDB, mockTokenDB, mockUserDB } from '@dnd-mapp/data/testing';
 import { ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
 import crypto from 'crypto';
 import {
-    mockClientModuleProviders,
     mockLoggingServiceProvider,
     mockRoleModuleProviders,
+    mockSessionProviders,
     mockUserModuleProviders,
 } from '../../../../../testing';
 import { mockTokenModuleProviders } from '../../../../../testing/mock/entities/authentication/mock-token-module.provider';
@@ -24,7 +24,7 @@ describe('AuthenticationService', () => {
                 ...mockUserModuleProviders,
                 ...mockRoleModuleProviders,
                 ...mockTokenModuleProviders,
-                ...mockClientModuleProviders,
+                ...mockSessionProviders,
             ],
         }).compile();
 
@@ -37,31 +37,31 @@ describe('AuthenticationService', () => {
         };
     }
 
-    it('should return the active Client tokens for a User', async () => {
-        defaultClient.codeChallenge = crypto.createHash('sha256').update('code_challenge').digest().toString('base64');
+    it('should return the active Session tokens for a User', async () => {
+        defaultSession.codeChallenge = crypto.createHash('sha256').update('code_challenge').digest().toString('base64');
 
-        defaultClient.authorizationCode = 'authorization_code';
-        defaultClient.codeGeneratedAt = new Date();
+        defaultSession.authorizationCode = 'authorization_code';
+        defaultSession.authCodeGeneratedAt = new Date();
 
         const { service } = await setupTestEnvironment();
 
         // Generate the tokens
-        await service.login({ username: defaultUser.username, password: 'secure_password' }, defaultClient);
+        await service.login({ username: defaultUser.username, password: 'secure_password' }, defaultSession);
 
-        const tokens = await service.getTokensForClient(
-            defaultClient,
+        const tokens = await service.getTokensForSession(
+            defaultSession,
+            defaultUser.username,
             'code_challenge',
-            'authorization_code',
-            defaultUser.username
+            'authorization_code'
         );
 
         expect(tokens.size).toEqual(3);
     });
 
-    it('should generate an authorization code for a client', async () => {
+    it('should generate an authorization code for a Session', async () => {
         const { service } = await setupTestEnvironment();
 
-        await expect(service.generateAuthorizationCode(defaultClient.id)).resolves.not.toThrow();
+        await expect(service.generateAuthorizationCode(defaultSession.id)).resolves.not.toThrow();
     });
 
     it('should handle sign up requests', async () => {
@@ -79,25 +79,25 @@ describe('AuthenticationService', () => {
         expect(mockUserDB.findOneByUsername('User2')).toEqual(expect.objectContaining(user));
     });
 
-    it('should store a code challenge for a Client', async () => {
+    it('should store a code challenge for a Session', async () => {
         const { service } = await setupTestEnvironment();
-        const { id } = defaultClient;
+        const { id } = defaultSession;
 
-        await service.storeClientChallenge(id, 'code_challenge');
+        await service.storeCodeChallenge(id, 'code_challenge');
 
-        expect(mockClientDB.findOneById(id).codeChallenge).toEqual('code_challenge');
+        expect(mockSessionDB.findOneById(id).codeChallenge).toEqual('code_challenge');
     });
 
     it('should revoke active tokens on log out', async () => {
         const { service } = await setupTestEnvironment();
 
-        await service.login({ username: defaultUser.username, password: 'secure_password' }, defaultClient);
+        await service.login({ username: defaultUser.username, password: 'secure_password' }, defaultSession);
 
         expect(mockTokenDB.findAllTokensForUser(defaultUser.id)).toHaveLength(3);
 
-        await service.logout(defaultUser, defaultClient);
+        await service.logout(defaultUser, defaultSession);
 
-        expect(mockTokenDB.findActiveTokensForUserOnClient(defaultUser.id, defaultClient.id)).toHaveLength(0);
+        expect(mockTokenDB.findActiveTokensForUserSession(defaultUser.id, defaultSession.id)).toHaveLength(0);
     });
 
     describe('login', () => {
@@ -105,7 +105,7 @@ describe('AuthenticationService', () => {
             const { service } = await setupTestEnvironment();
 
             await expect(
-                service.login({ username: defaultUser.username, password: 'secure_password' }, defaultClient)
+                service.login({ username: defaultUser.username, password: 'secure_password' }, defaultSession)
             ).resolves.not.toThrow();
 
             expect(mockTokenDB.findAllTokensForUser(defaultUser.id)).toHaveLength(3);
@@ -115,7 +115,7 @@ describe('AuthenticationService', () => {
             const { service } = await setupTestEnvironment();
 
             await expect(
-                service.login({ username: defaultUser.username, password: 'incorrect_password' }, defaultClient)
+                service.login({ username: defaultUser.username, password: 'incorrect_password' }, defaultSession)
             ).rejects.toThrow('Invalid username/password');
 
             expect(mockTokenDB.findAllTokensForUser(defaultUser.id)).toHaveLength(0);
@@ -125,7 +125,7 @@ describe('AuthenticationService', () => {
             const { service } = await setupTestEnvironment();
 
             await expect(
-                service.login({ username: 'Bob', password: defaultUser.password }, defaultClient)
+                service.login({ username: 'Bob', password: defaultUser.password }, defaultSession)
             ).rejects.toThrow('Invalid username/password');
 
             expect(mockTokenDB.findAllTokensForUser(defaultUser.id)).toHaveLength(0);

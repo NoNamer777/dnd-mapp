@@ -11,8 +11,7 @@ const jwtModuleOptions: JwtModuleAsyncOptions = {
             algorithm: 'HS512',
         },
         verifyOptions: {
-            ignoreExpiration: false,
-            ignoreNotBefore: false,
+            ignoreExpiration: true,
         },
         secret: configService.get<string>('server.jwtSecret'),
     }),
