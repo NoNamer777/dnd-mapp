@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { nanoid } from 'nanoid';
-import { tap } from 'rxjs';
-import { environment } from '../../../environments';
+import { map, switchMap, tap } from 'rxjs';
+import { ConfigService } from '../config';
 
 interface RequestOptions {
     withState: true;
@@ -12,29 +12,29 @@ type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 @Injectable({ providedIn: 'root' })
 export class DmaHttpRequestService {
-    private readonly baseURL = environment.baseBackEndURL;
+    private readonly configService = inject(ConfigService);
 
-    constructor(private httpClient: HttpClient) {}
+    private readonly httpClient = inject(HttpClient);
 
     post<R, B = null>(endPoint: string, data: B, options?: RequestOptions) {
-        return this.makeRequest<R, B>('POST', this.baseURL + endPoint, data, options);
+        return this.makeRequest<R, B>('POST', endPoint, data, options);
     }
 
     get<R, B = null>(endPoint: string, options?: RequestOptions) {
-        return this.makeRequest<R, B>('GET', this.baseURL + endPoint, null, options);
+        return this.makeRequest<R, B>('GET', endPoint, null, options);
     }
 
     delete(endPoint: string) {
-        return this.makeRequest('DELETE', this.baseURL + endPoint);
+        return this.makeRequest('DELETE', endPoint);
     }
 
     put<R, B>(endPoint: string, data: B) {
-        return this.makeRequest<R, B>('PUT', this.baseURL + endPoint, data);
+        return this.makeRequest<R, B>('PUT', endPoint, data);
     }
 
     private makeRequest<R, B = null>(
         method: RequestMethod,
-        url: string,
+        endPoint: string,
         body: B | (B & { state: string }) | { state: string } | null = null,
         options?: RequestOptions
     ) {
@@ -46,14 +46,24 @@ export class DmaHttpRequestService {
             } else {
                 body = { state: state };
             }
-            return this.httpClient.request<R & { state: string }>(method, url, { body: body }).pipe(
+            return this.configService.config$.pipe(
+                switchMap(({ baseBackEndURL }) =>
+                    this.httpClient.request<{ state: string; data: R }>(method, baseBackEndURL + endPoint, {
+                        body: body,
+                    })
+                ),
                 tap((response) => {
                     if (!response || response.state !== state) {
                         throw new Error('State validation error');
                     }
-                })
+                }),
+                map((response) => response.data)
             );
         }
-        return this.httpClient.request<R>(method, url, { body: body });
+        return this.configService.config$.pipe(
+            switchMap(({ baseBackEndURL }) =>
+                this.httpClient.request<R>(method, baseBackEndURL + endPoint, { body: body })
+            )
+        );
     }
 }
