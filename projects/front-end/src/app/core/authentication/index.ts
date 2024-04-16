@@ -1,1 +1,1 @@
-export * from './services/dma-authentication.service';
+export * from './services';

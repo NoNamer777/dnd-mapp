@@ -1,9 +1,9 @@
-import { Inject, Injectable } from '@angular/core';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import { CreateUserData, UserModel } from '@dnd-mapp/data';
+import { inject, Injectable } from '@angular/core';
+import { CreateUserData, TokenData, UserModel } from '@dnd-mapp/data';
 import { nanoid } from 'nanoid';
-import { BehaviorSubject, from, map, switchMap, tap } from 'rxjs';
-import { CookieService, DmaHttpRequestService, JWT_HELPER_SERVICE, TextCodingService } from '../../../shared';
+import { BehaviorSubject, from, iif, map, switchMap, tap } from 'rxjs';
+import { DmaHttpRequestService, JWT_HELPER_SERVICE, SessionService, TextCodingService } from '../../../shared';
+import { UserService } from '../../../user';
 
 interface AuthorizeResponse {
     authorizationCode: string;
@@ -17,29 +17,20 @@ interface TokenRequestBody {
 
 type SignUpResponse = Omit<UserModel, 'roles'>;
 
-interface IdentityTokenData {
-    jti: string;
-    sub: number;
-    clt: string;
-    nbf: number;
-    iat: number;
-    exp: number;
-    user: UserModel;
-}
-
 @Injectable({ providedIn: 'root' })
 export class DmaAuthenticationService {
     authenticatedUser$ = new BehaviorSubject<UserModel | null>(null);
 
+    private readonly requestService = inject(DmaHttpRequestService);
+    private readonly textCodingService = inject(TextCodingService);
+    private readonly jwtService = inject(JWT_HELPER_SERVICE);
+    private readonly sessionService = inject(SessionService);
+    private readonly userService = inject(UserService);
+
     private codeVerifier: string | null = null;
 
-    constructor(
-        private readonly requestService: DmaHttpRequestService,
-        private readonly textCodingService: TextCodingService,
-        private readonly cookieService: CookieService,
-        @Inject(JWT_HELPER_SERVICE) private readonly jwtService: JwtHelperService
-    ) {
-        this.setAuthentication();
+    initialize(accessToken: string) {
+        return this.setAuthentication(accessToken);
     }
 
     /**
@@ -55,26 +46,38 @@ export class DmaAuthenticationService {
                     withState: true,
                 })
             ),
-            map((response) => response.authorizationCode),
-            switchMap((authorizationCode) =>
-                this.requestService.post<void, TokenRequestBody>('/authentication/token', {
-                    codeVerifier: this.codeVerifier!,
-                    authorizationCode: authorizationCode,
-                    username: username,
-                })
-            ),
-            tap(() => this.setAuthentication())
+            switchMap(({ authorizationCode }) => this.token(false, authorizationCode, username)),
+            switchMap(({ access }) => this.setAuthentication(access))
         );
     }
 
     signOut() {
-        return this.requestService
-            .post<void>('/authentication/sign-out', null)
-            .pipe(tap(() => this.setAuthentication()));
+        return this.requestService.post<void>('/authentication/sign-out', null).pipe(
+            switchMap(() => this.sessionService.retrieveSession$),
+            tap(() => this.authenticatedUser$.next(null))
+        );
     }
 
     signUp(userData: CreateUserData) {
         return this.requestService.post<SignUpResponse, CreateUserData>('/authentication/sign-up', userData);
+    }
+
+    token(refresh = false, authorizationCode?: string, username?: string) {
+        return iif(
+            () => refresh,
+            this.requestService.post<{ access: string; refresh: string }, TokenRequestBody>(
+                '/authentication/token?grantType=refreshToken',
+                null
+            ),
+            this.requestService.post<{ access: string; refresh: string }, TokenRequestBody>(
+                '/authentication/token?grantType=authorizationCode',
+                {
+                    codeVerifier: this.codeVerifier,
+                    authorizationCode: authorizationCode,
+                    username: username,
+                }
+            )
+        ).pipe(switchMap((tokens) => this.sessionService.retrieveSession$.pipe(map(() => tokens))));
     }
 
     private generateCodeChallenge() {
@@ -91,18 +94,11 @@ export class DmaAuthenticationService {
         );
     }
 
-    private setAuthentication() {
-        const token = this.cookieService.getCookie('identity-token');
-        try {
-            const decodedToken = this.jwtService.decodeToken<IdentityTokenData>(token);
+    private setAuthentication(accessToken: string) {
+        const decodedToken = this.jwtService.decodeToken<TokenData>(accessToken);
 
-            if (decodedToken) {
-                this.authenticatedUser$.next(decodedToken.user);
-                return;
-            }
-        } catch (error) {
-            console.error('Something unexpected went wrong while parsing the Identity token from the cookie', error);
-        }
-        this.authenticatedUser$.next(null);
+        return this.userService
+            .getById(decodedToken.sub)
+            .pipe(tap((user) => this.authenticatedUser$.next(user as unknown as UserModel)));
     }
 }
