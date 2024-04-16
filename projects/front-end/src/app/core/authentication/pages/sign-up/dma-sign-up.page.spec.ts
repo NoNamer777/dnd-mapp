@@ -1,12 +1,13 @@
 import { TestKey } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
+import { DmaSignUpHarness } from '@dnd-mapp/front-end/testing';
 import { environment } from '../../../../../environments';
-import { DmaSignUpHarness, provideDmaHttpTesting } from '../../../../../testing';
 import { DmaSignUpPage } from './dma-sign-up.page';
 
 describe('DmaSignUpPage', () => {
@@ -17,8 +18,8 @@ describe('DmaSignUpPage', () => {
 
     async function initializeTestEnvironment() {
         TestBed.configureTestingModule({
-            imports: [DmaSignUpPage, RouterTestingModule, NoopAnimationsModule],
-            providers: [provideDmaHttpTesting()],
+            imports: [DmaSignUpPage, NoopAnimationsModule],
+            providers: [provideHttpClient(), provideRouter([])],
             declarations: [TestComponent],
         });
 

@@ -2,7 +2,7 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { PasswordFromControlHarness } from '../../../../../testing';
+import { PasswordFromControlHarness } from '@dnd-mapp/front-end/testing';
 import { PasswordFormControlComponent } from './password-form-control.component';
 
 describe('PasswordFormControlComponent', () => {

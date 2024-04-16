@@ -1,14 +1,15 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { defaultUser } from '@dnd-mapp/data/testing';
+import { DmaLoginHarness } from '@dnd-mapp/front-end/testing';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../../../environments';
-import { DmaLoginHarness, provideDmaHttpTesting } from '../../../../../testing';
 import { TextCodingService } from '../../../../shared';
-import { ConfigService } from '../../../services/config.service';
+import { SessionService } from '../../../services';
 import { DmaLoginPage } from './dma-login.page';
 
 describe('DmaLoginComponent', () => {
@@ -19,8 +20,8 @@ describe('DmaLoginComponent', () => {
 
     async function initializeTestEnvironment() {
         TestBed.configureTestingModule({
-            imports: [DmaLoginPage, RouterTestingModule],
-            providers: [provideDmaHttpTesting()],
+            imports: [DmaLoginPage],
+            providers: [provideHttpClient(), provideRouter([])],
             declarations: [TestComponent],
         });
 
@@ -42,7 +43,7 @@ describe('DmaLoginComponent', () => {
     }
 
     async function initializeConfigService(testingController: HttpTestingController) {
-        const configService = TestBed.inject(ConfigService);
+        const configService = TestBed.inject(SessionService);
 
         const configInit = firstValueFrom(configService.initialize());
         const request = testingController.expectOne(environment.baseBackEndURL + '/api/client');

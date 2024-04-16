@@ -68,6 +68,7 @@
                 "codeCoverageExclude": ["**/testing/**", "**/*.module.ts", "**/index.ts", "**/environments/**"],
                 "inlineStyleLanguage": "scss",
                 "karmaConfig": "projects/front-end/karma.conf.js",
+                "main": "projects/front-end/src/test.ts",
                 "polyfills": ["zone.js", "zone.js/testing"],
                 "scripts": [],
                 "styles": ["projects/front-end/src/styles.scss"],
