@@ -27,6 +27,11 @@ export const appRoutes: Route[] = [
         canActivate: [authenticationGuard(true)],
     },
     {
+        path: 'stories',
+        loadChildren: async () => (await import('../../story')).DmaStoryModule,
+        canActivate: [authenticationGuard()],
+    },
+    {
         path: '**',
         redirectTo: 'not-found',
     },
