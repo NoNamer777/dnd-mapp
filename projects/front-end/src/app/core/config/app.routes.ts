@@ -18,8 +18,16 @@ export const appRoutes: Route[] = [
         canActivate: [authenticationGuard(true)],
     },
     {
+        path: 'not-found',
+        loadComponent: async () => (await import('../pages')).DmaNotFoundPage,
+    },
+    {
         path: 'sign-up',
         loadComponent: async () => (await import('../authentication')).DmaSignUpPage,
         canActivate: [authenticationGuard(true)],
+    },
+    {
+        path: '**',
+        redirectTo: 'not-found',
     },
 ];
