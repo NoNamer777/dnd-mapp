@@ -8,6 +8,11 @@ export const appRoutes: Route[] = [
         pathMatch: 'full',
     },
     {
+        path: 'characters',
+        loadChildren: async () => (await import('../../character')).DmaCharacterModule,
+        canActivate: [authenticationGuard()],
+    },
+    {
         path: 'login',
         loadComponent: async () => (await import('../authentication')).DmaLoginPage,
         canActivate: [authenticationGuard(true)],
