@@ -27,6 +27,7 @@ Thumbs.db
 
 # Configurations, environments and certificates
 .env*
+!.env.example
 **/environment.*.ts
 certificate*.pem
 server-config.yaml

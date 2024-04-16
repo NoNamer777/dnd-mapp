@@ -1,0 +1,20 @@
+@use 'assets/styles/theme-variables' as *;
+
+:host {
+    button {
+        display: flex;
+        align-content: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 0 0.5em;
+        height: 100%;
+        background-color: $surface;
+        color: $on-surface;
+        font-size: 1rem;
+        border: 1px solid $surface;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}

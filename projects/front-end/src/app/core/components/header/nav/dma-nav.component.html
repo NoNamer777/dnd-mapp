@@ -1,0 +1,32 @@
+<nav>
+    <dma-navbar-brand />
+
+    <dma-navbar-menu label="Compendium">
+        <dma-nav-link label="Rules of the Game" path="/compendium/rules" />
+        <dma-nav-link label="Spells" path="/compendium/spells" />
+        <dma-nav-link label="Monsters & Creatures" path="/compendium/creatures" />
+    </dma-navbar-menu>
+    @if (authenticatedUser$ | async) {
+        <dma-navbar-menu label="Characters">
+            <dma-nav-link label="My Characters" path="/characters" />
+            <dma-nav-link label="Builder" path="/characters/new" />
+        </dma-navbar-menu>
+        <dma-nav-link label="Stories" path="/stories" />
+    }
+
+    <div class="end">
+        @if (authenticatedUser$ | async; as user) {
+            <dma-navbar-menu [label]="user.username">
+                <dma-nav-link label="My Profile" path="/me">
+                    <dma-icon icon="user" />
+                </dma-nav-link>
+                <dma-nav-button id="log-out-btn" label="Log out" (click)="onSignOut()">
+                    <dma-icon icon="arrow-right-from-bracket" />
+                </dma-nav-button>
+            </dma-navbar-menu>
+        } @else {
+            <dma-nav-link label="Sign Up" path="/sign-up" />
+            <dma-nav-link label="Log In" path="/login" />
+        }
+    </div>
+</nav>

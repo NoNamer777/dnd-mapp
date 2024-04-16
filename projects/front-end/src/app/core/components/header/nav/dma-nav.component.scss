@@ -1,0 +1,20 @@
+@use 'assets/styles/theme-variables' as *;
+
+:host {
+    nav {
+        display: flex;
+        align-items: stretch;
+        background-color: $surface;
+        padding: 0 1em;
+
+        .end {
+            margin-left: auto;
+            display: flex;
+            gap: 1em;
+        }
+    }
+}
+
+#log-out-btn {
+    color: $danger;
+}

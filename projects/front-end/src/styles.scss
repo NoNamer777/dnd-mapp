@@ -3,4 +3,13 @@
 
 @import 'assets/styles/main';
 
+.dma-nav-menu-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4em;
+    background-color: $surface;
+    padding: 0 0.4em 0.2em;
+    border-bottom-right-radius: 0.2em;
+    border-bottom-left-radius: 0.2em;
+    box-shadow: $shadow;
 }

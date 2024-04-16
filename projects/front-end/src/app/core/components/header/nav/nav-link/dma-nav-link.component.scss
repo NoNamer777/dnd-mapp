@@ -1,0 +1,19 @@
+@use 'assets/styles/theme-variables' as *;
+
+:host {
+    display: flex;
+    align-items: center;
+
+    a {
+        display: flex;
+        gap: 0.5rem;
+        color: $on-surface;
+        padding: 0.7em 0;
+        width: 100%;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}

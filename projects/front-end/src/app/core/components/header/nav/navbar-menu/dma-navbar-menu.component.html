@@ -1,0 +1,15 @@
+<button type="button" cdkOverlayOrigin #origin="cdkOverlayOrigin" (click)="onMenuToggle()">
+    {{ label }}
+    <dma-icon [icon]="menuIcon" />
+</button>
+
+<ng-template
+    cdkConnectedOverlay
+    [cdkConnectedOverlayOrigin]="origin"
+    [cdkConnectedOverlayOpen]="open"
+    (overlayOutsideClick)="onClickOutsideOverlay()"
+>
+    <div class="dma-nav-menu-content">
+        <ng-content />
+    </div>
+</ng-template>
