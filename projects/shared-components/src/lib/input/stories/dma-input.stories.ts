@@ -14,7 +14,7 @@ const meta: Meta<DmaInputComponent> = {
         moduleMetadata({ imports: [DmaInputComponent, DmaIconComponent] }),
     ],
     args: {
-        inputType: 'text',
+        inputType: DmaInputTypes.TEXT,
         label: 'Label text',
         supportingText: 'Supporting text',
         errorMessage: '',
@@ -22,7 +22,7 @@ const meta: Meta<DmaInputComponent> = {
         readonly: false,
         value: '',
         size: 1,
-    } as Partial<DmaInputComponent>,
+    },
     argTypes: {
         inputType: {
             control: 'select',

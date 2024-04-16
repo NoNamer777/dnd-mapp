@@ -1,8 +1,9 @@
 @use '../../assets/styles/theme-variables' as *;
+@use '../../assets/styles/theme-variables' as *;
 
 :host {
-    background-color: $inverse-surface;
-    color: $on-inverse-surface;
+    //background-color: $inverse-surface;
+    //color: $on-inverse-surface;
     padding: 0.3em 0.5em;
     border-radius: 0.2em;
 

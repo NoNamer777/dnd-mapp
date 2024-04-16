@@ -15,7 +15,7 @@
                         "depConstraints": [
                             {
                                 "sourceTag": "@dnd-mapp/front-end",
-                                "onlyDependOnLibsWithTags": ["@dnd-mapp/data"],
+                                "onlyDependOnLibsWithTags": ["@dnd-mapp/data", "@dnd-mapp/shared-components"],
                                 "bannedExternalImports": [
                                     "@nestjs/*",
                                     "typeorm",

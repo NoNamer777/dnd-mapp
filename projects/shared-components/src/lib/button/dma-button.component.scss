@@ -1,5 +1,6 @@
 @use 'sass:color';
 @use '../../assets/styles/theme-variables' as *;
+@use '../../assets/styles/theme-variables' as *;
 
 :host {
     display: flex;
@@ -49,7 +50,7 @@
     }
 
     &[dma-button='tonal'] {
-        color: $on-secondary-container;
+        //color: $on-secondary-container;
 
         &:disabled {
             background-color: color.change(#1c1b1f, $alpha: 0.12) !important;
@@ -57,7 +58,7 @@
     }
 
     &[dma-button='outlined'] {
-        border-color: $outline;
+        //border-color: $outline;
 
         &:disabled {
             border-color: color.change(#1c1b1f, $alpha: 0.12);

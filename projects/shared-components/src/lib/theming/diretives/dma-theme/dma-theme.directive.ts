@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Directive, HostBinding, Inject, Input, OnInit } from '@angular/core';
-import { DmaTheme, isDmaTheme } from '../../models';
+import { DmaTheme, DmaThemes, dmaThemeAttribute } from '../../models';
 import { DmaThemeService } from '../../services/dma-theme/dma-theme.service';
 
 @Directive({
@@ -9,14 +9,12 @@ import { DmaThemeService } from '../../services/dma-theme/dma-theme.service';
     standalone: true,
 })
 export class DmaThemeDirective implements OnInit {
-    @Input() set dmaTheme(theme: DmaTheme) {
-        if (!isDmaTheme(theme)) return;
-
+    @Input({ transform: dmaThemeAttribute }) set dmaTheme(theme: DmaTheme) {
         this._theme = theme;
     }
 
     @HostBinding('attr.dmaTheme')
-    private _theme: DmaTheme = 'light';
+    private _theme: DmaTheme = DmaThemes.DARK;
 
     constructor(
         private dmaThemeService: DmaThemeService,

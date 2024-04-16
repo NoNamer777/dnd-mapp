@@ -54,8 +54,10 @@ const meta: Meta<DmaIconButtonComponent> = {
         disabled: false,
         dmaButtonType: 'standard',
         dmaIconButtonLabel: 'My icon button label',
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
         dmaIconButtonLabelPosition: 'after',
-    } as Partial<DmaIconButtonComponent>,
+    },
 };
 
 export default meta;
@@ -82,14 +84,14 @@ export const Common: Story = {
 };
 
 export const StandardInteractive: Story = {
-    render: (args: DmaIconButtonComponent) => ({
+    render: (args) => ({
         props: args,
         template: `<button [dmaIconButtonLabel]="dmaIconButtonLabel" [dmaIconButtonLabelPosition]="dmaIconButtonLabelPosition" [dma-icon-button]="dmaButtonType" [disabled]="disabled"><dma-icon icon="plus"></dma-icon></button>`,
     }),
 };
 
 export const ToggleInteractive: Story = {
-    render: (args: DmaIconButtonComponent) => ({
+    render: (args) => ({
         props: args,
         template: `
             <button toggle [dmaIconButtonLabel]="dmaIconButtonLabel" [dmaIconButtonLabelPosition]="dmaIconButtonLabelPosition" [dma-icon-button]="dmaButtonType" [disabled]="disabled">

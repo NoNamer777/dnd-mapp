@@ -1,13 +1,40 @@
 import { dmaLightTheme } from './themes';
+import { dmaDarkTheme } from './themes/dark';
 
-const dmaTheme = ['light'];
-
-export type DmaTheme = (typeof dmaTheme)[number];
-
-export function isDmaTheme(value: string): value is DmaTheme {
-    return dmaTheme.includes(value);
+export enum DmaThemes {
+    LIGHT = 'light',
+    DARK = 'dark',
 }
 
-export type DmaThemeMap = Record<string, string>;
+export type DmaTheme = (typeof DmaThemes)[keyof typeof DmaThemes];
 
-export const dmaThemes = new Map<DmaTheme, DmaThemeMap>([['light', dmaLightTheme]]);
+export function dmaThemeAttribute(theme: string | DmaThemes) {
+    return Object.values(DmaThemes as unknown as string[]).includes(theme) ? (theme as DmaThemes) : undefined;
+}
+
+export type ThemeVariables =
+    | '--background'
+    | '--on-background'
+    | '--surface'
+    | '--on-surface'
+    | '--primary'
+    | '--on-primary'
+    | '--secondary'
+    | '--on-secondary'
+    | '--success'
+    | '--on-success'
+    | '--error'
+    | '--on-error'
+    | '--shadow'
+    | '--font-family'
+    | '--font-size'
+    | '--fw-regular'
+    | '--fw-bold'
+    | '--opacity-disabled';
+
+export type DmaThemeMap = Record<ThemeVariables, string>;
+
+export const dmaThemes = new Map<DmaTheme, DmaThemeMap>([
+    [DmaThemes.LIGHT, dmaLightTheme],
+    [DmaThemes.DARK, dmaDarkTheme],
+]);

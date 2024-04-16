@@ -14,16 +14,17 @@
         position: relative;
         font-size: inherit;
         border-radius: 0.3rem;
-        border: 1px solid $outline;
+        border: 1px solid $border;
         outline: 1px solid transparent;
         padding: 0.6rem 1rem 0.6rem 1rem;
 
         .input-border-breaker {
             position: absolute;
-            top: -0.1rem;
+            top: -0.11rem;
             left: 0.75rem;
-            height: 0.1rem;
-            background-color: #fff;
+            height: 0.12rem;
+            background-color: $background;
+            outline: $background;
         }
 
         label {
@@ -31,7 +32,7 @@
             left: 1rem;
             top: 0.6rem;
             user-select: none;
-            color: $on-surface-variant;
+            color: $placeholder;
         }
 
         input {
@@ -54,7 +55,7 @@
 
     .input-support {
         min-height: 0.938rem;
-        color: $on-surface-variant;
+        color: $placeholder;
         padding: 0.25rem 1rem;
         font-size: 0.75rem;
     }
@@ -84,20 +85,20 @@
             cursor: text;
 
             label {
-                color: $on-surface-variant;
+                color: $placeholder;
             }
         }
 
-        &.invalid {
-            > .input-container:hover {
-                border-color: $on-error-container;
-                outline-color: $on-error-container;
-
-                label {
-                    color: $on-error-container;
-                }
-            }
-        }
+        //&.invalid {
+        //    > .input-container:hover {
+        //        border-color: $on-error-container;
+        //        outline-color: $on-error-container;
+        //
+        //        label {
+        //            color: $on-error-container;
+        //        }
+        //    }
+        //}
     }
 
     &.focused {

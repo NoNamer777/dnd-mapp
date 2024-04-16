@@ -1,14 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @use 'assets/styles/theme-variables' as *;
 
-html,
-body {
-    height: 100%;
-    font-family: $font-family;
-    font-size: $font-size;
-    font-weight: $font-weight;
-}
+@import 'assets/styles/main';
 
-* {
-    margin: 0;
 }

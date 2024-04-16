@@ -37,7 +37,7 @@ export class DmaIconComponent {
     ) {}
 
     private async getIconTemplate() {
-        const response = await fetch(`./assets/icons/${this.iconType}/dma-${this.icon}.icon.svg`);
+        const response = await fetch(`../icons/${this.iconType}/dma-${this.icon}.icon.svg`);
 
         this.elementRef.nativeElement.innerHTML = await response.text();
         this.changeDetectorRef.markForCheck();

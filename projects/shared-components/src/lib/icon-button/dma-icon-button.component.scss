@@ -1,4 +1,5 @@
 @use '../../assets/styles/theme-variables' as *;
+@use '../../assets/styles/theme-variables' as *;
 
 :host {
     display: flex;
@@ -27,29 +28,29 @@
     }
 
     &[dma-icon-button='tonal'] {
-        color: $on-secondary-container;
+        //color: $on-secondary-container;
 
         &[toggle]:not([selected]) {
-            color: $on-surface-variant;
+            //color: $on-surface-variant;
         }
     }
 
     &[dma-icon-button='outlined'] {
-        border-color: $inverse-surface;
-        color: $inverse-surface;
+        //border-color: $inverse-surface;
+        //color: $inverse-surface;
 
         &[toggle] {
-            border-color: $outline;
-            color: $on-surface-variant;
+            //border-color: $outline;
+            //color: $on-surface-variant;
 
             &[selected] {
-                color: $on-inverse-surface;
+                //color: $on-inverse-surface;
             }
         }
     }
 
     &[dma-icon-button='standard'] {
-        color: $on-surface-variant;
+        //color: $on-surface-variant;
 
         &[toggle][selected] {
             color: $primary;
@@ -63,5 +64,5 @@
 }
 
 :host-context(dma-navigation-bar-button.active) {
-    background-color: $secondary-container !important;
+    //background-color: $secondary-container !important;
 }

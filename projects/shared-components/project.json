@@ -1,11 +1,10 @@
 {
-    "name": "shared-components",
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "name": "shared-components",
+    "tags": ["@dnd-mapp/shared-components"],
+    "projectType": "library",
     "sourceRoot": "projects/shared-components/src",
     "prefix": "dma",
-    "tags": ["@dnd-mapp/shared-components"],
-    "implicitDependencies": ["data"],
-    "projectType": "library",
     "targets": {
         "build": {
             "executor": "@nx/angular:ng-packagr-lite",

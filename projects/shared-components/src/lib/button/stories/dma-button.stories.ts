@@ -49,14 +49,14 @@ export const Common: Story = {
 };
 
 export const Interactive: Story = {
-    render: (args: DmaButtonComponent) => ({
+    render: (args) => ({
         props: args,
         template: `<button [dma-button]="dmaButtonType" [disabled]="disabled">Button</button>`,
     }),
 };
 
 export const InteractiveWithIcon: Story = {
-    render: (args: DmaButtonComponent) => ({
+    render: (args) => ({
         props: args,
         template: `
             <button [dma-button]="dmaButtonType" [disabled]="disabled">

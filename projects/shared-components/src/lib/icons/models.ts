@@ -1,14 +1,17 @@
 export enum DmaIcons {
+    ARROW_RIGHT_FROM_BRACKET = 'arrow-right-from-bracket',
     BARS = 'bars',
     BOOK = 'book',
     CARET_DOWN = 'caret-down',
     CARET_UP = 'caret-up',
     CIRCLE_EXCLAMATION = 'circle-exclamation',
     CIRCLE_XMARK = 'circle-xmark',
+    LOCK = 'lock',
     MAGNIFYING_GLASS = 'magnifying-glass',
     MICROPHONE = 'microphone',
     PLUS = 'plus',
     STAR = 'star',
+    USER = 'user',
     USERS = 'users',
     WAND_SPARKLES = 'wand-sparkles',
 }
