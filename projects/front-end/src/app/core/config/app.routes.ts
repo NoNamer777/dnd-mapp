@@ -18,6 +18,11 @@ export const appRoutes: Route[] = [
         canActivate: [authenticationGuard(true)],
     },
     {
+        path: 'me',
+        loadComponent: async () => (await import('../../user')).DmaMyProfilePage,
+        canActivate: [authenticationGuard()],
+    },
+    {
         path: 'not-found',
         loadComponent: async () => (await import('../pages')).DmaNotFoundPage,
     },
