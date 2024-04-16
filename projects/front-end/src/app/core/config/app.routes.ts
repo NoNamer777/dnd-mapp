@@ -13,6 +13,10 @@ export const appRoutes: Route[] = [
         canActivate: [authenticationGuard()],
     },
     {
+        path: 'compendium',
+        loadChildren: async () => (await import('../../compendium')).DmaCompendiumModule,
+    },
+    {
         path: 'login',
         loadComponent: async () => (await import('../authentication')).DmaLoginPage,
         canActivate: [authenticationGuard(true)],
