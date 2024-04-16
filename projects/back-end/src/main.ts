@@ -44,6 +44,7 @@ async function bootstrap() {
     nestApp.useGlobalFilters(new HttpExceptionFilter());
 
     nestApp.enableCors(corsConfig(backEndServerAddress));
+    nestApp.enableShutdownHooks(['SIGINT', 'SIGBREAK', 'SIGHUP', 'SIGTERM']);
 
     nestApp.use(cookieParser(cookieSecret));
 
