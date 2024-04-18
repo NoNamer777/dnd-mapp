@@ -19,7 +19,7 @@ export class HashCollectorMiddleware implements NestMiddleware {
     }
 
     private getHashes() {
-        const file = readFileSync(join(...[__dirname, '..', 'front-end', 'browser', 'index.html']), {
+        const file = readFileSync(join(...[__dirname, '..', 'front-end', 'index.html']), {
             encoding: 'utf-8',
         });
         const hashes = file.match(/sha384-([A-Za-z0-9/+])*/g);

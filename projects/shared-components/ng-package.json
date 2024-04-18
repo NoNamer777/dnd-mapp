@@ -1,9 +1,10 @@
 {
     "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
     "assets": [
+        "./styles/**/*",
         {
-            "glob": "**",
-            "input": "src/assets",
+            "input": "./src/assets",
+            "glob": "**/*",
             "output": "assets"
         }
     ],

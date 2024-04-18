@@ -1,6 +1,6 @@
 @use 'sass:map';
 @use 'sass:color';
-@use '../../../../assets/styles/colors' as *;
+@use '../../../../../styles/colors' as *;
 
 @mixin color-per-id($map) {
     @each $name, $color in $map {

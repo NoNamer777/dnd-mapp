@@ -1,12 +1,8 @@
-@use '../src/assets/styles/theme-variables' as *;
-
-@import '../src/assets/styles/main';
+@use '../styles/theme-variables' as *;
+@import '../styles/main';
 
 html,
 body {
-    font-family: $font-family;
-    font-size: $font-size;
-    font-weight: $fw-regular;
     height: 100%;
 }
 

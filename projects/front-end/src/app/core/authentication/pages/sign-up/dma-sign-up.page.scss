@@ -1,5 +1,4 @@
-@import 'bootstrap/scss/functions';
-@import 'bootstrap/scss/variables';
+@use '@dnd-mapp/shared-components/styles/theme-variables' as *;
 
 :host {
     display: block;

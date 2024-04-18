@@ -1,7 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
-@use 'assets/styles/theme-variables' as *;
-
-@import 'assets/styles/main';
+@use '@dnd-mapp/shared-components/styles/theme-variables' as *;
+@import '@dnd-mapp/shared-components/styles/main';
 
 .dma-nav-menu-content {
     display: flex;

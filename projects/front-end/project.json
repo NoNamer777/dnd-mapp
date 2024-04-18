@@ -7,15 +7,20 @@
     "prefix": "dma",
     "targets": {
         "build": {
-            "executor": "@nx/angular:application",
+            "executor": "@angular-builders/custom-webpack:browser",
             "outputs": ["{options.outputPath}"],
             "dependsOn": ["data", "shared-components"],
             "options": {
                 "allowedCommonJsDependencies": ["validator", "@paralleldrive/cuid2"],
                 "assets": ["projects/front-end/src/favicon.ico", "projects/front-end/src/assets"],
                 "baseHref": "/app/",
-                "browser": "projects/front-end/src/main.ts",
-                "buildLibsFromSource": true,
+                "main": "projects/front-end/src/main.ts",
+                "customWebpackConfig": {
+                    "path": "projects/front-end/webpack.config.ts",
+                    "mergeRules": {
+                        "resolve": "append"
+                    }
+                },
                 "deleteOutputPath": true,
                 "index": "projects/front-end/src/index.html",
                 "inlineStyleLanguage": "scss",
@@ -23,14 +28,12 @@
                 "polyfills": ["zone.js"],
                 "scripts": [],
                 "styles": ["projects/front-end/src/styles.scss"],
-                "stylePreprocessorOptions": {
-                    "includePaths": ["projects/shared-components/src"]
-                },
                 "tsConfig": "projects/front-end/tsconfig.app.json"
             },
             "defaultConfiguration": "prod",
             "configurations": {
                 "dev": {
+                    "buildOptimizer": false,
                     "namedChunks": true,
                     "outputHashing": "none",
                     "optimization": false,

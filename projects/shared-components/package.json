@@ -1,5 +1,13 @@
 {
     "name": "@dnd-mapp/shared-components",
     "version": "0.0.1",
-    "sideEffects": false
+    "sideEffects": false,
+    "exports": {
+        ".": {
+            "default": "./src/index.ts"
+        },
+        "./styles/*": {
+            "sass": "./styles/*"
+        }
+    }
 }

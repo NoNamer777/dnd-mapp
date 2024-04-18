@@ -34,10 +34,7 @@
                 "karmaConfig": "projects/shared-components/karma.conf.js",
                 "polyfills": ["zone.js", "zone.js/testing"],
                 "scripts": [],
-                "styles": [
-                    "projects/shared-components/src/assets/styles/theme-variables.scss",
-                    "projects/shared-components/src/assets/styles/font.scss"
-                ],
+                "styles": ["projects/shared-components/styles/main.scss"],
                 "tsConfig": "projects/shared-components/tsconfig.spec.json",
                 "watch": false
             },

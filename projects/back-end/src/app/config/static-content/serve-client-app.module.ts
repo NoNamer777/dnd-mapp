@@ -5,7 +5,7 @@ import { join } from 'path';
 import { HashCollectorMiddleware, helmetConfig } from '../security';
 
 const serveClientBundle: ServeStaticModuleOptions = {
-    rootPath: join(...[__dirname, '..', 'front-end', 'browser']),
+    rootPath: join(...[__dirname, '..', 'front-end']),
     serveRoot: '/app',
     exclude: ['/back-end/(.*)'],
     serveStaticOptions: {

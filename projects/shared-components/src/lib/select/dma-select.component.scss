@@ -1,5 +1,5 @@
 @use 'sass:color';
-@use '../../assets/styles/theme-variables' as *;
+@use '../../../styles/theme-variables' as *;
 
 :host {
     &[disabled] {
