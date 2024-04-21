@@ -1,10 +1,9 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRoute, Routes } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, provideRouter, Routes } from '@angular/router';
+import { DmaNavigationBarHarness } from '../../../testing';
 import { DmaIconComponent } from '../icons';
-import { DmaNavigationBarHarness } from '../testing';
 import { DmaNavigationBarButtonComponent } from './button';
 import { DmaNavigationBarModule } from './dma-navigation-bar.module';
 
@@ -12,13 +11,9 @@ describe('DmaNavigationBar', () => {
     @Component({
         template: `
             <footer dma-navigation-bar>
-                <dma-navigation-bar-button path="/page-a">
-                    <dma-icon icon="star"></dma-icon>Label A
-                </dma-navigation-bar-button>
-                <dma-navigation-bar-button path="/page-b">
-                    <dma-icon icon="star"></dma-icon>Label B
-                </dma-navigation-bar-button>
-                <dma-navigation-bar-button><dma-icon icon="star"></dma-icon>Label C</dma-navigation-bar-button>
+                <dma-navigation-bar-button path="/page-a"> <dma-icon icon="star" /> Label A </dma-navigation-bar-button>
+                <dma-navigation-bar-button path="/page-b"> <dma-icon icon="star" /> Label B </dma-navigation-bar-button>
+                <dma-navigation-bar-button><dma-icon icon="star" /> Label C </dma-navigation-bar-button>
             </footer>
         `,
     })
@@ -32,13 +27,9 @@ describe('DmaNavigationBar', () => {
 
     async function setupTestEnvironment(params: { activeRoute?: string } = {}) {
         TestBed.configureTestingModule({
-            imports: [
-                DmaNavigationBarModule,
-                DmaIconComponent,
-                DmaNavigationBarButtonComponent,
-                RouterTestingModule.withRoutes(routes),
-            ],
+            imports: [DmaNavigationBarModule, DmaIconComponent, DmaNavigationBarButtonComponent],
             declarations: [TestComponent],
+            providers: [provideRouter(routes)],
         });
 
         if (params.activeRoute) {

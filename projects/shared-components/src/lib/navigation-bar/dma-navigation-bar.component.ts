@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
     AfterViewInit,
     ChangeDetectionStrategy,
@@ -18,7 +17,7 @@ import { DmaNavigationBarButtonComponent } from './button';
     styleUrl: './dma-navigation-bar.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [CommonModule, DmaNavigationBarButtonComponent],
+    imports: [DmaNavigationBarButtonComponent],
 })
 export class DmaNavigationBarComponent implements AfterViewInit, OnDestroy {
     @ContentChildren(DmaNavigationBarButtonComponent) buttons: QueryList<DmaNavigationBarButtonComponent>;

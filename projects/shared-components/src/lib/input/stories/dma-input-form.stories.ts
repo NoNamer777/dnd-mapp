@@ -10,7 +10,13 @@ import { DmaInputComponent } from '../dma-input.component';
     selector: 'dma-form',
     template: `
         <form [formGroup]="form">
-            <dma-input formControlName="inputField" label="Label text*" supportingText="*required" />
+            <dma-input
+                inputType="text"
+                forLabel="input-label"
+                formControlName="inputField"
+                label="Label text*"
+                supportingText="*required"
+            />
         </form>
         <br />
         <hr />

@@ -1,11 +1,10 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { CommonModule } from '@angular/common';
 import { Component, Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { DmaInputHarness } from '../../../testing';
 import { DmaIconComponent } from '../icons';
-import { DmaInputHarness } from '../testing';
 import { DmaInputComponent } from './dma-input.component';
 
 describe('DmaInputComponent', () => {
@@ -21,8 +20,6 @@ describe('DmaInputComponent', () => {
                 [supportingText]="supportingText"
             />
         `,
-        standalone: true,
-        imports: [DmaInputComponent],
     })
     class TestComponent {
         disabled: boolean;
@@ -38,8 +35,6 @@ describe('DmaInputComponent', () => {
                 <dma-icon class="leading-icon" icon="magnifying-glass" />
             </dma-input>
         `,
-        standalone: true,
-        imports: [DmaInputComponent, DmaIconComponent],
     })
     class LeadingIconTestComponent {}
 
@@ -49,8 +44,6 @@ describe('DmaInputComponent', () => {
                 <dma-input inputType="text" label="Label text" forLabel="text-input" formControlName="inputField" />
             </form>
         `,
-        standalone: true,
-        imports: [CommonModule, ReactiveFormsModule, DmaInputComponent],
     })
     class FormTestComponent {
         protected form = new FormGroup({
@@ -75,13 +68,8 @@ describe('DmaInputComponent', () => {
         params: TestParams<T> = { component: TestComponent as Type<T> }
     ) {
         TestBed.configureTestingModule({
-            imports: [
-                DmaInputComponent,
-                NoopAnimationsModule,
-                TestComponent,
-                LeadingIconTestComponent,
-                FormTestComponent,
-            ],
+            declarations: [TestComponent, LeadingIconTestComponent, FormTestComponent],
+            imports: [DmaInputComponent, NoopAnimationsModule, ReactiveFormsModule, DmaIconComponent],
         });
 
         const fixture = TestBed.createComponent(params.component);

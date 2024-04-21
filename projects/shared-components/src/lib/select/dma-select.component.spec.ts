@@ -2,7 +2,7 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { DmaSelectHarness } from '../testing';
+import { DmaSelectHarness } from '../../../testing';
 import { DmaSelectModule } from './dma-select.module';
 
 describe('DmaSelect', () => {

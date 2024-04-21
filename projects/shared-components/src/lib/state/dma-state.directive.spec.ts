@@ -1,7 +1,7 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { StateHarness } from '../testing';
+import { StateHarness } from '../../../testing';
 import { DmaStateDirective } from './dma-state.directive';
 
 describe('DmaStateDirective', () => {

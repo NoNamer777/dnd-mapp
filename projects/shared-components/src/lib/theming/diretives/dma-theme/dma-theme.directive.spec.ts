@@ -1,7 +1,7 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { DmaThemeHarness } from '../../../testing';
+import { DmaThemeHarness } from '../../../../../testing';
 import { DmaThemeDirective } from './dma-theme.directive';
 
 describe('DmaThemeDirective', () => {

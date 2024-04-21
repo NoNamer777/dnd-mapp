@@ -1,8 +1,8 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component, Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { DmaIconButtonHarness } from '../../../testing';
 import { DmaIconComponent } from '../icons';
-import { DmaIconButtonHarness } from '../testing';
 import { DmaIconButtonComponent, DmaIconButtonType } from './dma-icon-button.component';
 
 describe('DmaIconButtonComponent', () => {

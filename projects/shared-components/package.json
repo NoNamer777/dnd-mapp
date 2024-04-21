@@ -3,9 +3,6 @@
     "version": "0.0.1",
     "sideEffects": false,
     "exports": {
-        ".": {
-            "default": "./src/index.ts"
-        },
         "./styles/*": {
             "sass": "./styles/*"
         }
