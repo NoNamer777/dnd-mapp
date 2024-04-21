@@ -27,7 +27,13 @@
             "executor": "@angular-devkit/build-angular:karma",
             "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
             "options": {
-                "assets": ["projects/shared-components/src/assets"],
+                "assets": [
+                    {
+                        "input": "projects/shared-components/src/assets",
+                        "glob": "**/*",
+                        "output": "./"
+                    }
+                ],
                 "codeCoverage": true,
                 "codeCoverageExclude": ["**/testing/**/*", "**/*.module.ts", "**/index.ts"],
                 "inlineStyleLanguage": "scss",
