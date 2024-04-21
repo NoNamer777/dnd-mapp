@@ -42,7 +42,7 @@ describe('DmaThemeDirective', () => {
 
         component.theme = 'myAwesomeFont';
 
-        expect(await harness.getTheme()).toEqual('light');
+        expect(await harness.getTheme()).toEqual('dark');
         expect(await harness.getStyling()).toEqual(styling);
     });
 });

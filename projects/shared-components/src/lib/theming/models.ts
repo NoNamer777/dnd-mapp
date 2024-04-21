@@ -9,7 +9,7 @@ export enum DmaThemes {
 export type DmaTheme = (typeof DmaThemes)[keyof typeof DmaThemes];
 
 export function dmaThemeAttribute(theme: string | DmaThemes) {
-    return Object.values(DmaThemes as unknown as string[]).includes(theme) ? (theme as DmaThemes) : undefined;
+    return Object.values(DmaThemes as unknown as string[]).includes(theme) ? (theme as DmaThemes) : DmaThemes.DARK;
 }
 
 export type ThemeVariables =
