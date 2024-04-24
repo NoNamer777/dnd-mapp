@@ -1,15 +1,16 @@
+import { createId } from '@paralleldrive/cuid2';
 import { ArrayMinSize, IsArray, IsEnum, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
 import { EntityModel } from '../models';
 import { SkillModel } from './skill.model';
 
-export enum Abilities {
-    STRENGTH = 'Strength',
-    DEXTERITY = 'Dexterity',
-    CONSTITUTION = 'Constitution',
-    INTELLIGENCE = 'Intelligence',
-    WISDOM = 'Wisdom',
-    CHARISMA = 'Charisma',
-}
+export const Abilities = {
+    STRENGTH: 'Strength',
+    DEXTERITY: 'Dexterity',
+    CONSTITUTION: 'Constitution',
+    INTELLIGENCE: 'Intelligence',
+    WISDOM: 'Wisdom',
+    CHARISMA: 'Charisma',
+} as const;
 
 export type AbilityName = (typeof Abilities)[keyof typeof Abilities];
 
@@ -38,21 +39,18 @@ export class AbilityBuilder {
         return this.ability;
     }
 
-    withId(id: string) {
-        this.ability.id = id;
-
+    withId(id?: string) {
+        this.ability.id = id ?? createId();
         return this;
     }
 
     withName(name: AbilityName) {
         this.ability.name = name;
-
         return this;
     }
 
     withSkills(skills: SkillModel[]) {
         this.ability.skills = skills;
-
         return this;
     }
 }

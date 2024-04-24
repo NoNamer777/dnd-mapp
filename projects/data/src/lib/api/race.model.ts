@@ -1,18 +1,19 @@
+import { createId } from '@paralleldrive/cuid2';
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import { EntityModel } from '../models';
 
-export enum Races {
-    DWARF = 'Dwarf',
-    ELF = 'Elf',
-    HALFLING = 'Halfling',
-    HUMAN = 'Human',
-    HUMAN_VARIANT = 'Human (Variant)',
-    DRAGONBORN = 'Dragonborn',
-    GNOME = 'Gnome',
-    HALF_ELF = 'Half-Elf',
-    HALF_ORC = 'Half-Orc',
-    TIEFLING = 'Tiefling',
-}
+export const Races = {
+    DWARF: 'Dwarf',
+    ELF: 'Elf',
+    HALFLING: 'Halfling',
+    HUMAN: 'Human',
+    HUMAN_VARIANT: 'Human (Variant)',
+    DRAGONBORN: 'Dragonborn',
+    GNOME: 'Gnome',
+    HALF_ELF: 'Half-Elf',
+    HALF_ORC: 'Half-Orc',
+    TIEFLING: 'Tiefling',
+} as const;
 
 export type RaceName = (typeof Races)[keyof typeof Races];
 
@@ -32,15 +33,13 @@ export class RaceBuilder {
         return this.race;
     }
 
-    withId(id: string) {
-        this.race.id = id;
-
+    withId(id?: string) {
+        this.race.id = id ?? createId();
         return this;
     }
 
     withName(name: RaceName) {
         this.race.name = name;
-
         return this;
     }
 }

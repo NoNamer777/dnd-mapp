@@ -1,11 +1,12 @@
+import { createId } from '@paralleldrive/cuid2';
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import { EntityModel } from '../models';
 
-export enum Roles {
-    ADMIN = 'Admin',
-    PLAYER = 'Player',
-    DUNGEON_MASTER = 'Dungeon Master',
-}
+export const Roles = {
+    ADMIN: 'Admin',
+    PLAYER: 'Player',
+    DUNGEON_MASTER: 'Dungeon Master',
+} as const;
 
 export type RoleName = (typeof Roles)[keyof typeof Roles];
 
@@ -25,8 +26,8 @@ export class RoleBuilder {
         return this.role;
     }
 
-    withId(id: string) {
-        this.role.id = id;
+    withId(id?: string) {
+        this.role.id = id ?? createId();
 
         return this;
     }

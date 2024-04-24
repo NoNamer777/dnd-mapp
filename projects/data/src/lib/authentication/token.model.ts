@@ -1,21 +1,19 @@
 import { createId } from '@paralleldrive/cuid2';
 import { IsBoolean, IsDate, IsEnum, IsNotEmpty, IsString } from 'class-validator';
-import { SessionModel } from './session.model';
-import { UserModel } from './user.model';
 
-export enum TokenTypes {
-    ACCESS = 'Access',
-    REFRESH = 'Refresh',
-}
-
-const TOKEN_EXPIRATION_TIME_PER_TYPE: Record<TokenTypes, number> = {
-    [TokenTypes.ACCESS]: 15 * 60 * 1_000, // Valid for 15 minutes
-    [TokenTypes.REFRESH]: 7 * 24 * 60 * 60 * 1_000, // Valid for 7 days
-};
+export const TokenTypes = {
+    ACCESS: 'Access',
+    REFRESH: 'Refresh',
+} as const;
 
 export type TokenType = (typeof TokenTypes)[keyof typeof TokenTypes];
 
-export interface TokenData {
+const TOKEN_EXPIRATION_TIME_PER_TYPE = {
+    Access: 15 * 60 * 1_000, // Valid for 15 minutes
+    Refresh: 7 * 24 * 60 * 60 * 1_000, // Valid for 7 days
+} as const;
+
+export class TokenData {
     jti: string;
     sub: string;
     ses: string;
@@ -75,9 +73,8 @@ export class TokenModel {
 export class TokenModelBuilder {
     private readonly token = new TokenModel();
 
-    assignToUser(user: UserModel) {
-        this.token.subject = user.id;
-
+    assignToUser(userId: string) {
+        this.token.subject = userId;
         return this;
     }
 
@@ -85,9 +82,8 @@ export class TokenModelBuilder {
         return this.token;
     }
 
-    forSession(session: SessionModel) {
-        this.token.sessionId = session.id;
-
+    forSession(sessionId: string) {
+        this.token.sessionId = sessionId;
         return this;
     }
 
@@ -95,25 +91,21 @@ export class TokenModelBuilder {
         this.token.issuedAt = when;
 
         this.token.setExpiresAtBasedOnType();
-
         return this;
     }
 
     notBefore(when: Date) {
         this.token.notBefore = when;
-
         return this;
     }
 
     withId() {
         this.token.jti = createId();
-
         return this;
     }
 
     withType(type: TokenType) {
         this.token.type = type;
-
         return this;
     }
 }

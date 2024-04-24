@@ -31,7 +31,6 @@ class MockTokenDB {
 
     create(token: TokenModel) {
         this.db[token.jti] = token;
-
         return token;
     }
 

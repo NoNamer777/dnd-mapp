@@ -1,5 +1,4 @@
-import { createId } from '@paralleldrive/cuid2';
-import { CreateSkillData, SkillBuilder, SkillModel, SkillName, Skills } from '../../../../src';
+import { CreateSkillData, SkillBuilder, SkillModel, SkillName } from '../../../../src';
 import { defaultAbility } from './ability.db';
 
 interface SkillDB {
@@ -18,7 +17,7 @@ class MockSkillDB {
     }
 
     findAllByAbility(abilityId: string) {
-        return Object.values(this.db).filter((skill) => skill.ability?.id === abilityId);
+        return Object.values(this.db).filter((skill) => skill.ability.id === abilityId);
     }
 
     findOneById(id: string) {
@@ -30,33 +29,23 @@ class MockSkillDB {
     }
 
     update(skill: SkillModel) {
-        if (!this.db[skill.id]) {
-            throw new Error(`Could not update Skill with ID: '${skill.id}' because it does not exist.`);
-        }
         this.db[skill.id] = skill;
         return skill;
     }
 
     create(skill: CreateSkillData) {
-        const newSkill = new SkillBuilder().withId(createId()).withName(skill.name).fallsUnder(skill.ability).build();
+        const newSkill = new SkillBuilder().withId().withName(skill.name).fallsUnder(skill.ability).build();
 
         this.db[newSkill.id] = newSkill;
         return newSkill;
     }
 
     remove(id: string) {
-        if (!this.db[id]) {
-            throw new Error(`Cannot delete Skill with ID: '${id}' because it does not exist.`);
-        }
         delete this.db[id];
     }
 
     reset() {
-        defaultSkill = new SkillBuilder()
-            .withId(createId())
-            .withName(Skills.ACROBATICS)
-            .fallsUnder(defaultAbility)
-            .build();
+        defaultSkill = new SkillBuilder().withId().withName('Acrobatics').fallsUnder(defaultAbility).build();
         this.db = { [defaultSkill.id]: defaultSkill };
     }
 }

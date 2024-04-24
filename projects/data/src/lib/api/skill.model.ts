@@ -1,27 +1,28 @@
+import { createId } from '@paralleldrive/cuid2';
 import { IsEnum, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
 import { EntityModel } from '../models';
 import { AbilityModel } from './ability.model';
 
-export enum Skills {
-    ATHLETICS = 'Athletics',
-    ACROBATICS = 'Acrobatics',
-    SLEIGHT_OF_HAND = 'Sleight of Hand',
-    STEALTH = 'Stealth',
-    ARCANA = 'Arcana',
-    HISTORY = 'History',
-    INVESTIGATION = 'Investigation',
-    NATURE = 'Nature',
-    RELIGION = 'Religion',
-    ANIMAL_HANDLING = 'Animal Handling',
-    INSIGHT = 'Insight',
-    MEDICINE = 'Medicine',
-    PERCEPTION = 'Perception',
-    SURVIVAL = 'Survival',
-    DECEPTION = 'Deception',
-    INTIMIDATION = 'Intimidation',
-    PERFORMANCE = 'Performance',
-    PERSUASION = 'Persuasion',
-}
+export const Skills = {
+    ATHLETICS: 'Athletics',
+    ACROBATICS: 'Acrobatics',
+    SLEIGHT_OF_HAND: 'Sleight of Hand',
+    STEALTH: 'Stealth',
+    ARCANA: 'Arcana',
+    HISTORY: 'History',
+    INVESTIGATION: 'Investigation',
+    NATURE: 'Nature',
+    RELIGION: 'Religion',
+    ANIMAL_HANDLING: 'Animal Handling',
+    INSIGHT: 'Insight',
+    MEDICINE: 'Medicine',
+    PERCEPTION: 'Perception',
+    SURVIVAL: 'Survival',
+    DECEPTION: 'Deception',
+    INTIMIDATION: 'Intimidation',
+    PERFORMANCE: 'Performance',
+    PERSUASION: 'Persuasion',
+} as const;
 
 export type SkillName = (typeof Skills)[keyof typeof Skills];
 
@@ -50,8 +51,8 @@ export class SkillBuilder {
         return this;
     }
 
-    withId(id: string) {
-        this.skill.id = id;
+    withId(id?: string) {
+        this.skill.id = id ?? createId();
 
         return this;
     }

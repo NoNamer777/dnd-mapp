@@ -1,3 +1,4 @@
+import { createId } from '@paralleldrive/cuid2';
 import { Exclude } from 'class-transformer';
 import { ArrayMinSize, ArrayNotEmpty, IsArray, IsEmail, IsNotEmpty, IsString } from 'class-validator';
 import { EntityModel } from '../models';
@@ -43,8 +44,8 @@ export class UserBuilder {
         return this;
     }
 
-    withId(id: string) {
-        this.user.id = id;
+    withId(id?: string) {
+        this.user.id = id ?? createId();
 
         return this;
     }

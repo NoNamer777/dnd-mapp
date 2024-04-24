@@ -1,4 +1,3 @@
-import { createId } from '@paralleldrive/cuid2';
 import { CreateUserData, UserBuilder, UserModel } from '../../../../src';
 import { defaultRole } from './role.db';
 
@@ -26,16 +25,13 @@ class MockUserDB {
     }
 
     update(userData: UserModel) {
-        if (!this.db[userData.id]) {
-            throw new Error(`Could not update User with ID: '${userData.id}' because it does not exist.`);
-        }
         this.db[userData.id] = userData;
         return userData;
     }
 
     create(userData: CreateUserData) {
         const newUser = new UserBuilder()
-            .withId(createId())
+            .withId()
             .withUsername(userData.username)
             .withPassword(userData.password)
             .withEmailAddress(userData.emailAddress)
@@ -46,16 +42,13 @@ class MockUserDB {
         return newUser;
     }
 
-    remove(userId: number) {
-        if (!this.db[userId]) {
-            throw new Error(`Cannot delete User with ID: '${userId}' because it does not exist.`);
-        }
+    remove(userId: string) {
         delete this.db[userId];
     }
 
     reset() {
         defaultUser = new UserBuilder()
-            .withId(createId())
+            .withId()
             .withUsername('User1')
             .withPassword('$2b$12$CU2n8T1reHQ24urHR3HFFO.LMmw6zGEHKtfkwuiTyemO1Mz.68Psa')
             .withEmailAddress('user1@domain.com')
