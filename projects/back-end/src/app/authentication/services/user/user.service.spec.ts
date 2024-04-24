@@ -1,8 +1,12 @@
+import {
+    mockLoggingServiceProvider,
+    mockRoleModuleProviders,
+    mockUserModuleProviders,
+} from '@dnd-mapp/back-end/testing';
 import { UserBuilder } from '@dnd-mapp/data';
 import { defaultUser, mockUserDB } from '@dnd-mapp/data/testing';
 import { NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { mockLoggingServiceProvider, mockRoleModuleProviders, mockUserModuleProviders } from '../../../../../testing';
 import { UserService } from './user.service';
 
 describe('UserService', () => {

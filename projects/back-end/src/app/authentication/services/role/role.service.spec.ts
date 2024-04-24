@@ -1,8 +1,8 @@
 import { CreateRoleData, RoleModel, Roles } from '@dnd-mapp/data';
+import { mockLoggingServiceProvider, mockRoleModuleProviders } from '@dnd-mapp/back-end/testing';
 import { defaultRole, mockRoleDB } from '@dnd-mapp/data/testing';
 import { NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { mockLoggingServiceProvider, mockRoleModuleProviders } from '../../../../../testing';
 import { RoleService } from './role.service';
 
 describe('RoleService', () => {

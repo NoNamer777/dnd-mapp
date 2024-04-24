@@ -1,8 +1,8 @@
 import { Abilities, AbilityBuilder, CreateAbilityData } from '@dnd-mapp/data';
+import { mockAbilityModuleProviders, mockLoggingServiceProvider } from '@dnd-mapp/back-end/testing';
 import { defaultAbility, mockAbilityDB } from '@dnd-mapp/data/testing';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { mockAbilityModuleProviders, mockLoggingServiceProvider } from '../../../../testing';
 import { EntityService } from '../entity.service';
 import { AbilityService } from './ability.service';
 import { abilityServiceProvider } from './providers';

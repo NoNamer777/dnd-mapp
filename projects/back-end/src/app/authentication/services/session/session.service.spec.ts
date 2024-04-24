@@ -1,16 +1,16 @@
 import { SessionModel } from '@dnd-mapp/data';
 import { defaultSession, mockSessionDB } from '@dnd-mapp/data/testing';
 import { ForbiddenException } from '@nestjs/common';
+import { mockLoggingServiceProvider, mockSessionProviders, mockTokenModuleProviders } from '@dnd-mapp/back-end/testing';
 import { Test } from '@nestjs/testing';
 import crypto from 'crypto';
 import { nanoid } from 'nanoid';
-import { mockLoggingServiceProvider, mockSessionProviders } from '../../../../../testing';
 import { SessionService } from './session.service';
 
 describe('SessionService', () => {
     async function setupTestEnvironment() {
         const module = await Test.createTestingModule({
-            providers: [mockLoggingServiceProvider, ...mockSessionProviders],
+            providers: [mockLoggingServiceProvider, ...mockSessionProviders, ...mockTokenModuleProviders],
         }).compile();
 
         return {

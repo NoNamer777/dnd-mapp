@@ -1,8 +1,8 @@
 import { Races } from '@dnd-mapp/data';
+import { mockLoggingServiceProvider, mockRaceModuleProviders } from '@dnd-mapp/back-end/testing';
 import { defaultRace, mockRaceDB } from '@dnd-mapp/data/testing';
 import { NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { mockLoggingServiceProvider, mockRaceModuleProviders } from '../../../../testing';
 import { EntityService } from '../entity.service';
 import { raceServiceProvider } from './providers';
 import { RaceService } from './race.service';

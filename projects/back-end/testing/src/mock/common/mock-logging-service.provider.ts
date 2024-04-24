@@ -1,4 +1,4 @@
-import { LoggerService } from '../../../src/app/common';
+import { LoggerService } from '../../../../src/app/common';
 
 class MockLoggingService extends LoggerService {
     logs: { [context: string]: string[] } = {};

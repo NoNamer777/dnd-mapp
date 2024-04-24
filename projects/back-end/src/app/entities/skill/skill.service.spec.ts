@@ -1,8 +1,8 @@
 import { CreateSkillData, SkillBuilder, Skills } from '@dnd-mapp/data';
 import { defaultAbility, defaultSkill, mockSkillDB } from '@dnd-mapp/data/testing';
+import { mockLoggingServiceProvider, mockSkillModuleProviders } from '@dnd-mapp/back-end/testing';
 import { NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { mockLoggingServiceProvider, mockSkillModuleProviders } from '../../../../testing';
 import { EntityService } from '../entity.service';
 import { skillServiceProvider } from './providers';
 import { SkillService } from './skill.service';

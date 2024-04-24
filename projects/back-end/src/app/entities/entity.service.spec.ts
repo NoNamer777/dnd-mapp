@@ -1,6 +1,6 @@
+import { mockAbilityModuleProviders, mockLoggingServiceProvider } from '@dnd-mapp/back-end/testing';
 import { defaultAbility } from '@dnd-mapp/data/testing';
 import { Test } from '@nestjs/testing';
-import { mockAbilityModuleProviders, mockLoggingServiceProvider } from '../../../testing';
 import { abilityServiceProvider } from './ability';
 import { EntityService } from './entity.service';
 

@@ -1,2 +1,2 @@
-export * from './mock/common';
-export * from './mock/entities';
+export * from './src/mock/common';
+export * from './src/mock/entities';

@@ -7,9 +7,9 @@ import {
     mockLoggingServiceProvider,
     mockRoleModuleProviders,
     mockSessionProviders,
+    mockTokenModuleProviders,
     mockUserModuleProviders,
-} from '../../../../../testing';
-import { mockTokenModuleProviders } from '../../../../../testing/mock/entities/authentication/mock-token-module.provider';
+} from '@dnd-mapp/back-end/testing';
 import { buildServerUrl } from '../../../common';
 import { DndMappJwtModule, NestConfigModule, ServerConfig } from '../../../config';
 import { AuthenticationService } from './authentication.service';

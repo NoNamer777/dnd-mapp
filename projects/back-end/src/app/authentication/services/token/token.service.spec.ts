@@ -1,9 +1,8 @@
 import { defaultSession, defaultUser, mockTokenDB } from '@dnd-mapp/data/testing';
+import { mockLoggingServiceProvider, mockTokenModuleProviders } from '@dnd-mapp/back-end/testing';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
-import { mockLoggingServiceProvider } from '../../../../../testing';
-import { mockTokenModuleProviders } from '../../../../../testing/mock/entities/authentication/mock-token-module.provider';
 import { buildServerUrl } from '../../../common';
 import { DndMappJwtModule, NestConfigModule, ServerConfig } from '../../../config';
 import { TokenService } from './token.service';

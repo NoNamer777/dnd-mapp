@@ -1,6 +1,5 @@
 import { mockTokenDB } from '@dnd-mapp/data/testing';
-import { TokenService } from '../../../../src/app/authentication';
-import { TokenRepository } from '../../../../src/app/authentication/repositories/token.repository';
+import { TokenRepository, TokenService } from '../../../../../src/app/authentication';
 
 export const mockTokenModuleProviders = [
     TokenService,

@@ -1,5 +1,5 @@
 import { mockRoleDB } from '@dnd-mapp/data/testing';
-import { RoleRepository, RoleService } from '../../../../src/app/authentication';
+import { RoleRepository, RoleService } from '../../../../../src/app/authentication';
 
 export const mockRoleModuleProviders = [
     RoleService,
