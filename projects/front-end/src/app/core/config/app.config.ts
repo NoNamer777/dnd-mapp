@@ -20,7 +20,7 @@ const initializeConfigServiceProvider: FactoryProvider = {
         async () => {
             await firstValueFrom(configService.initialize());
 
-            const session = await firstValueFrom(sessionService.retrieveSession$);
+            const session = await firstValueFrom(sessionService.retrieveSession());
 
             if (session.tokens) {
                 await firstValueFrom(authenticationService.initialize(session.tokens.access as string));
