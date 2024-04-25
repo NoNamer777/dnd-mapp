@@ -48,10 +48,7 @@ export class SessionController {
             expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1_000),
         });
 
-        return {
-            state: state,
-            data: session,
-        };
+        return { data: { ...session }, state: state };
     }
 
     @UseGuards(HasSessionGuard)
