@@ -82,9 +82,14 @@ export class UserRepository {
                     password: user.password,
                     emailAddress: user.emailAddress,
                     roles: {
-                        connect: user.roles.map((role) => ({
-                            userId_roleId: {
-                                userId: id,
+                        connectOrCreate: user.roles.map((role) => ({
+                            where: {
+                                userId_roleId: {
+                                    userId: id,
+                                    roleId: role.id,
+                                },
+                            },
+                            create: {
                                 roleId: role.id,
                             },
                         })),
