@@ -31,6 +31,10 @@ export const appRoutes: Route[] = [
         loadComponent: async () => (await import('../pages')).DmaNotFoundPage,
     },
     {
+        path: 'recover-password',
+        loadComponent: async () => (await import('../authentication')).RecoverPasswordPage,
+    },
+    {
         path: 'sign-up',
         loadComponent: async () => (await import('../authentication')).DmaSignUpPage,
         canActivate: [authenticationGuard(true)],
