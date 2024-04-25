@@ -1,1 +1,1 @@
-export * from './story-overview/dma-story-overview.page';
+export * from './story-overview/story-overview.page';
