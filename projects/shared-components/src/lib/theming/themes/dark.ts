@@ -19,7 +19,8 @@ export const dmaDarkTheme: DmaThemeMap = {
     '--error': '#d64a43;',
     '--on-error': '#0d0d0c;',
 
-    '--shadow': '#000000;',
+    '--shadow': '-1px 4px 4px 1px var(--shadow-color);',
+    '--shadow-color': '#0D0D0C54;',
 
     '--font-family': `'IBM Plex Sans', sans-serif;`,
     '--font-size': '16px;',

@@ -15,7 +15,23 @@ body {
 }
 
 * {
+    box-sizing: border-box;
     margin: 0;
+}
+
+a {
+    color: $blue70;
+    text-decoration: none;
+
+    &:hover {
+        color: $blue65;
+        text-decoration: underline;
+    }
+
+    &:active {
+        color: $blue60;
+        text-decoration: underline;
+    }
 }
 
 svg {

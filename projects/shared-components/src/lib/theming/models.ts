@@ -26,6 +26,7 @@ export type ThemeVariables =
     | '--error'
     | '--on-error'
     | '--shadow'
+    | '--shadow-color'
     | '--font-family'
     | '--font-size'
     | '--fw-regular'

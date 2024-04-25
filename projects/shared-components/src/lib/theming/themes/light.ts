@@ -20,6 +20,7 @@ export const dmaLightTheme: DmaThemeMap = {
     '--on-error': '#ffffff;',
 
     '--shadow': '#000000;',
+    '--shadow-color': '#000000;',
 
     '--font-family': `'IBM Plex Sans', sans-serif;`,
     '--font-size': '16px;',
