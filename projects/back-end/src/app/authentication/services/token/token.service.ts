@@ -36,8 +36,8 @@ export class TokenService {
 
         const accessToken = new TokenModelBuilder()
             .notBefore(now)
-            .assignToUser(user)
-            .forSession(session)
+            .assignToUser(user.id)
+            .forSession(session.id)
             .withId()
             .withType(TokenTypes.ACCESS)
             .isIssuedAt(now)
@@ -45,8 +45,8 @@ export class TokenService {
 
         const refreshToken = new TokenModelBuilder()
             .notBefore(now)
-            .assignToUser(user)
-            .forSession(session)
+            .assignToUser(user.id)
+            .forSession(session.id)
             .withId()
             .withType(TokenTypes.REFRESH)
             .isIssuedAt(now)
