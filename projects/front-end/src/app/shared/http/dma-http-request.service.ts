@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { nanoid } from 'nanoid';
+import { createId } from '@paralleldrive/cuid2';
 import { map, switchMap, tap } from 'rxjs';
 import { ConfigService } from '../config';
 
@@ -39,7 +39,7 @@ export class DmaHttpRequestService {
         options?: RequestOptions
     ) {
         if (options?.withState) {
-            const state = nanoid();
+            const state = createId();
 
             if (body) {
                 body = { ...body, state: state };
