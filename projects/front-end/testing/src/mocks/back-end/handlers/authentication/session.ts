@@ -10,28 +10,16 @@ const basePath = `${baseBackEndURL}/session`;
 export const sessionHandlers = [
     http.post<PathParams, { state: string }>(basePath, async ({ request }) => {
         const { state } = await request.json();
-        const { id } = mockSessionDB.save(new SessionBuilder().withId().build());
+        const session = mockSessionDB.create(new SessionBuilder().withId().build());
 
-        return HttpResponse.json({ id: id, state: state });
-    }),
-
-    http.post<PathParams, { state: string }>(basePath + '/:sessionId', async ({ request, params }) => {
-        const { state } = await request.json();
-        const idParam = params['sessionId'] as string;
-
-        const byId = mockSessionDB.findOneById(idParam);
-
-        if (!byId) {
-            throw errorResponse(404, 'Not Found', `Couldn't find Session: '${idParam}'`);
-        }
-        return HttpResponse.json({ state: state, id: byId.id });
+        return HttpResponse.json({ data: { ...session }, state: state });
     }),
 
     http.delete(basePath + '/:sessionId', ({ params }) => {
         const idParam = params['sessionId'] as string;
 
         try {
-            mockSessionDB.deleteById(idParam);
+            mockSessionDB.remove(idParam);
 
             return HttpResponse.json(null);
         } catch (error) {

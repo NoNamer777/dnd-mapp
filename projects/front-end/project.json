@@ -66,8 +66,13 @@
                     "projects/front-end/src/assets",
                     "projects/front-end/src/favicon.ico",
                     {
-                        "glob": "*",
-                        "input": "projects/shared-components/src/assets",
+                        "glob": "**/*",
+                        "input": "projects/shared-components/styles",
+                        "output": "./"
+                    },
+                    {
+                        "glob": "**/*",
+                        "input": "projects/shared-components/assets",
                         "output": "./"
                     },
                     {

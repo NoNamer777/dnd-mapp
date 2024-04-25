@@ -15,7 +15,7 @@ export function setupMockServiceWorker() {
                 quiet: true,
                 waitUntilReady: false,
                 onUnhandledRequest: (request, print) => {
-                    if (['assets', 'fonts.gstatic.com'].find((urlPart) => request.url.includes(urlPart))) return;
+                    if (['icons', 'fonts.gstatic.com'].find((urlPart) => request.url.includes(urlPart))) return;
                     print.warning();
                 },
             }),
