@@ -6,6 +6,7 @@ import { firstValueFrom } from 'rxjs';
 import { ConfigService, SessionService, backEndErrorInterceptor } from '../../shared';
 import { DmaAuthenticationService, authorizationInterceptor, refreshInterceptor } from '../authentication';
 import { appRoutes } from './app.routes';
+import { provideErrorHandler } from './dma-error-handler.service';
 
 const initializeConfigServiceProvider: FactoryProvider = {
     provide: APP_INITIALIZER,
@@ -31,6 +32,7 @@ const initializeConfigServiceProvider: FactoryProvider = {
 export const appConfig: ApplicationConfig = {
     providers: [
         provideAnimationsAsync(),
+        provideErrorHandler(),
         provideRouter(appRoutes),
         provideHttpClient(withInterceptors([refreshInterceptor, authorizationInterceptor, backEndErrorInterceptor])),
         initializeConfigServiceProvider,
