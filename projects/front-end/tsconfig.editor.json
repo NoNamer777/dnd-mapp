@@ -2,6 +2,7 @@
     "extends": "./tsconfig.json",
     "include": ["**/*.ts"],
     "compilerOptions": {
+        "resolveJsonModule": true,
         "types": ["jasmine", "node"]
     }
 }

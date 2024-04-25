@@ -1,11 +1,13 @@
 import { http, HttpResponse } from 'msw';
-import { environment } from '../../../../../../src/environments';
+import { baseBackEndURL } from '../../constants';
+
+const baseUrl = `${baseBackEndURL}/authentication`;
 
 export const authenticationHandlers = [
-    http.post(environment.baseBackEndURL + '/authentication/authorize', () => HttpResponse.json({})),
-    http.post(environment.baseBackEndURL + '/authentication/challenge', () => HttpResponse.json({})),
-    http.post(environment.baseBackEndURL + '/authentication/login', () => HttpResponse.json({})),
-    http.post(environment.baseBackEndURL + '/authentication/sign-out', () => HttpResponse.json({})),
-    http.post(environment.baseBackEndURL + '/authentication/sign-up', () => HttpResponse.json({})),
-    http.post(environment.baseBackEndURL + '/authentication/token', () => HttpResponse.json({})),
+    http.post(`${baseUrl}/authorize`, () => HttpResponse.json({})),
+    http.post(`${baseUrl}/challenge`, () => HttpResponse.json({})),
+    http.post(`${baseUrl}/login`, () => HttpResponse.json({})),
+    http.post(`${baseUrl}/sign-out`, () => HttpResponse.json({})),
+    http.post(`${baseUrl}/sign-up`, () => HttpResponse.json({})),
+    http.post(`${baseUrl}/token`, () => HttpResponse.json({})),
 ];

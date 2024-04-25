@@ -78,6 +78,12 @@
                 ],
                 "codeCoverage": true,
                 "codeCoverageExclude": ["**/testing/**", "**/*.module.ts", "**/index.ts", "**/environments/**"],
+                "fileReplacements": [
+                    {
+                        "replace": "projects/front-end/src/assets/config/config.json",
+                        "with": "projects/front-end/src/assets/config/config.test.json"
+                    }
+                ],
                 "inlineStyleLanguage": "scss",
                 "karmaConfig": "projects/front-end/karma.conf.js",
                 "main": "projects/front-end/src/test.ts",

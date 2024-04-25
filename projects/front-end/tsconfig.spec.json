@@ -4,6 +4,7 @@
     "include": ["**/*.spec.ts", "**/*.d.ts", "testing/**/*.ts"],
     "compilerOptions": {
         "outDir": "../../dist/out-tsc",
+        "resolveJsonModule": true,
         "types": ["jasmine", "node"]
     }
 }

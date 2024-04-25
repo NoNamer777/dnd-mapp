@@ -1,3 +1,10 @@
+import { HttpResponse, http } from 'msw';
+import configFile from '../../../../../src/assets/config/config.json';
 import { authenticationHandlers, sessionHandlers, userHandler } from './authentication';
 
-export const handlers = [...userHandler, ...authenticationHandlers, ...sessionHandlers];
+export const handlers = [
+    http.get('assets/config/config.json', () => HttpResponse.json(configFile)),
+    ...userHandler,
+    ...authenticationHandlers,
+    ...sessionHandlers,
+];

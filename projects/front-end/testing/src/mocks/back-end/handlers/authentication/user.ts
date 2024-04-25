@@ -2,10 +2,10 @@ import { UserModel } from '@dnd-mapp/data';
 import { mockUserDB } from '@dnd-mapp/data/testing';
 import { http, HttpResponse } from 'msw';
 import { PathParams } from 'msw/lib/core/utils/matching/matchRequestUrl';
-import { environment } from '../../../../../../src/environments';
 import { errorResponse, isPathParamValidId } from '../error';
+import { baseBackEndURL } from '../../constants';
 
-const baseUrl = environment.baseBackEndURL + '/api/user';
+const baseUrl = `${baseBackEndURL}/api/user`;
 
 export const userHandler = [
     http.get(baseUrl, () => HttpResponse.json(mockUserDB.findAll())),

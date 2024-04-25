@@ -2,10 +2,10 @@ import { SessionBuilder } from '@dnd-mapp/data';
 import { mockSessionDB } from '@dnd-mapp/data/testing';
 import { http, HttpResponse } from 'msw';
 import { PathParams } from 'msw/lib/core/utils/matching/matchRequestUrl';
-import { environment } from '../../../../../../src/environments';
+import { baseBackEndURL } from '../../constants';
 import { errorResponse } from '../error';
 
-const basePath = environment.baseBackEndURL + '/session';
+const basePath = `${baseBackEndURL}/session`;
 
 export const sessionHandlers = [
     http.post<PathParams, { state: string }>(basePath, async ({ request }) => {
