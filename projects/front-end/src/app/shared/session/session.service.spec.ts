@@ -1,17 +1,18 @@
 import { provideHttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { StorageService } from '../../shared';
+import { mockSessionDB } from '@dnd-mapp/data/testing';
+import { withInitializedConfig } from '@dnd-mapp/front-end/testing';
+import { firstValueFrom } from 'rxjs';
 import { SessionService } from './session.service';
 
 describe('SessionService', () => {
-    function setupTestEnvironment() {
+    function setupTest() {
         TestBed.configureTestingModule({
-            providers: [provideHttpClient(), SessionService],
+            providers: [withInitializedConfig(), provideHttpClient(), SessionService],
         });
 
         return {
             sessionService: TestBed.inject(SessionService),
-            storageService: TestBed.inject(StorageService),
         };
     }
 });
