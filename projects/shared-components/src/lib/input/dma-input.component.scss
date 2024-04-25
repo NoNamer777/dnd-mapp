@@ -6,7 +6,6 @@
 
     .input-container {
         display: flex;
-        height: 1.2rem;
         line-height: 1.2rem;
         align-items: baseline;
         gap: 1rem;
@@ -19,9 +18,9 @@
 
         .input-border-breaker {
             position: absolute;
-            top: -0.11rem;
+            top: -0.12rem;
             left: 0.75rem;
-            height: 0.12rem;
+            height: 0.13rem;
             background-color: $background;
             outline: $background;
         }

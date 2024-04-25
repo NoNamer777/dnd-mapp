@@ -1,6 +1,9 @@
 import { CommonModule } from '@angular/common';
 import {
     AfterContentInit,
+    afterRender,
+    AfterRenderPhase,
+    AfterViewInit,
     booleanAttribute,
     ChangeDetectionStrategy,
     ChangeDetectorRef,
@@ -43,7 +46,7 @@ import { inputLabelAnimation } from './input-label.animation';
     imports: [CommonModule, DmaIconComponent],
     providers: [dmaInputValueAccessorProvider],
 })
-export class DmaInputComponent implements AfterContentInit, ControlValueAccessor {
+export class DmaInputComponent implements AfterContentInit, AfterViewInit, ControlValueAccessor {
     @Input({ transform: booleanAttribute }) @HostBinding('class.disabled') disabled = false;
 
     @Input({ transform: booleanAttribute }) @HostBinding('class.readonly') readonly = false;
@@ -71,7 +74,7 @@ export class DmaInputComponent implements AfterContentInit, ControlValueAccessor
     get value() {
         return this._value;
     }
-    protected _value: string = null;
+    private _value: string = null;
 
     @Input() supportingText: string;
 
@@ -81,22 +84,43 @@ export class DmaInputComponent implements AfterContentInit, ControlValueAccessor
 
     @HostBinding('class.focused') protected focus = false;
 
-    @ViewChild('input') protected inputElement: ElementRef<HTMLInputElement>;
-
     @HostBinding('class.with-leading-icon') protected isContainingLeadingIcon = false;
 
+    protected labelWidth = '0px';
+
     @ContentChildren(DmaIconComponent, { read: ElementRef }) private readonly icons: QueryList<ElementRef<HTMLElement>>;
+
+    @ViewChild('input') private readonly inputElement: ElementRef<HTMLInputElement>;
+
+    @ViewChild('labelElement') private readonly labelElement: ElementRef<HTMLElement>;
 
     private readonly elementRef = inject(ElementRef);
 
     private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
+    @HostBinding('class.invalid')
+    protected invalid = false;
+
     protected get animationState(): AnimationState {
         return this.value || this.focus ? 'populated' : 'unpopulated';
     }
 
-    @HostBinding('class.invalid') get invalid() {
-        return isInvalid(this.elementRef.nativeElement.className);
+    constructor() {
+        afterRender(
+            () => {
+                const invalid = isInvalid(this.elementRef.nativeElement.className);
+
+                if (invalid === this.invalid) return;
+                this.invalid = invalid;
+                this.changeDetectorRef.markForCheck();
+            },
+            { phase: AfterRenderPhase.Write }
+        );
+    }
+
+    ngAfterViewInit() {
+        this.labelWidth = `${this.labelElement.nativeElement.clientWidth}px`;
+        this.changeDetectorRef.markForCheck();
     }
 
     ngAfterContentInit() {
@@ -129,7 +153,6 @@ export class DmaInputComponent implements AfterContentInit, ControlValueAccessor
 
     protected onBlur() {
         this.focus = false;
-
         this.onTouched();
     }
 
@@ -140,10 +163,6 @@ export class DmaInputComponent implements AfterContentInit, ControlValueAccessor
     protected onFocus() {
         if (this.disabled || this.readonly) return;
         this.focus = true;
-    }
-
-    protected getLabelWidth(width: number) {
-        return `${width}px`;
     }
 
     protected onValueChange(changeEvent: Event) {
