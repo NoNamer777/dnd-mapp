@@ -1,0 +1,34 @@
+@use '@dnd-mapp/shared-components/styles/theme-variables' as *;
+
+$lifetime-bar-border-radius: 1rem;
+
+:host {
+    max-width: 18rem;
+    box-shadow: $shadow;
+    border-radius: 0.8rem;
+    overflow-x: hidden;
+
+    &.error-notification {
+        background-color: $error;
+        color: $on-error;
+    }
+
+    &.success-notification {
+        background-color: $success;
+        color: $on-success;
+    }
+
+    .container {
+        display: flex;
+        flex-flow: column nowrap;
+        padding: 1rem;
+
+        p {
+            flex-grow: 0;
+
+            &.title {
+                font-weight: $fw-bolder;
+            }
+        }
+    }
+}
