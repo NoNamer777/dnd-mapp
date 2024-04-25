@@ -1,4 +1,4 @@
-import { Inject, Injectable, InjectionToken } from '@angular/core';
+import { inject, Injectable, InjectionToken } from '@angular/core';
 
 const TEXT_ENCODER = new InjectionToken('Text encoder', {
     providedIn: 'root',
@@ -7,7 +7,7 @@ const TEXT_ENCODER = new InjectionToken('Text encoder', {
 
 @Injectable({ providedIn: 'root' })
 export class TextCodingService {
-    constructor(@Inject(TEXT_ENCODER) private readonly textEncoder: TextEncoder) {}
+    private readonly textEncoder = inject(TEXT_ENCODER);
 
     /** Encodes a String value into a binary data buffer representation */
     encode(value: string) {
