@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { CreateUserData, TokenData, UserModel } from '@dnd-mapp/data';
-import { nanoid } from 'nanoid';
+import { createId } from '@paralleldrive/cuid2';
 import { BehaviorSubject, from, iif, map, switchMap, tap } from 'rxjs';
 import { DmaHttpRequestService, JWT_HELPER_SERVICE, SessionService, TextCodingService } from '../../../shared';
 import { UserService } from '../../../user';
@@ -14,6 +14,8 @@ interface TokenRequestBody {
     authorizationCode: string;
     username: string;
 }
+
+type SignUpData = Omit<CreateUserData, 'roles'>;
 
 type SignUpResponse = Omit<UserModel, 'roles'>;
 
@@ -53,13 +55,13 @@ export class DmaAuthenticationService {
 
     signOut() {
         return this.requestService.post<void>('/authentication/sign-out', null).pipe(
-            switchMap(() => this.sessionService.retrieveSession$),
+            switchMap(() => this.sessionService.retrieveSession()),
             tap(() => this.authenticatedUser$.next(null))
         );
     }
 
-    signUp(userData: CreateUserData) {
-        return this.requestService.post<SignUpResponse, CreateUserData>('/authentication/sign-up', userData);
+    signUp(userData: SignUpData) {
+        return this.requestService.post<SignUpResponse, SignUpData>('/authentication/sign-up', userData);
     }
 
     token(refresh = false, authorizationCode?: string, username?: string) {
@@ -77,11 +79,11 @@ export class DmaAuthenticationService {
                     username: username,
                 }
             )
-        ).pipe(switchMap((tokens) => this.sessionService.retrieveSession$.pipe(map(() => tokens))));
+        ).pipe(switchMap((tokens) => this.sessionService.retrieveSession().pipe(map(() => tokens))));
     }
 
     private generateCodeChallenge() {
-        this.codeVerifier = nanoid(32);
+        this.codeVerifier = createId();
 
         return from(crypto.subtle.digest('SHA-256', this.textCodingService.encode(this.codeVerifier))).pipe(
             switchMap((codeChallenge) =>
