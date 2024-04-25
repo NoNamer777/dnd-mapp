@@ -4,25 +4,31 @@
     display: block;
     height: 100%;
 
-    .leave {
-        visibility: hidden;
-        height: 0;
-    }
-
     article {
         height: 100%;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
 
         form {
-            min-height: 27em;
+            width: 40rem;
 
-            .ng-invalid.ng-dirty {
-                border-right: 2px solid $danger;
+            h2 {
+                margin-bottom: 0.5rem;
             }
 
-            &.ng-submitted {
-                .ng-invalid {
-                    border-right: 2px solid $danger;
+            .message {
+                &.success {
+                    color: $success;
                 }
+
+                &.error {
+                    color: $error;
+                }
+            }
+
+            button {
+                margin-bottom: 0.5rem;
             }
         }
     }

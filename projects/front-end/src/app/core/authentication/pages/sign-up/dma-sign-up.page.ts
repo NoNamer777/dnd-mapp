@@ -1,22 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
-import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, ViewChild } from '@angular/core';
-import {
-    FormControl,
-    FormGroup,
-    FormGroupDirective,
-    FormsModule,
-    ReactiveFormsModule,
-    Validators,
-} from '@angular/forms';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, FormGroupDirective, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { BehaviorSubject, Subject, finalize, takeUntil } from 'rxjs';
-import { DmaIconsModule, PasswordFormControlComponent } from '../../../../shared';
+import { BackEndError, HttpResponseStatusCodes } from '@dnd-mapp/data';
+import { DmaButtonComponent, DmaIconComponent, DmaInputComponent } from '@dnd-mapp/shared-components';
+import { BehaviorSubject, finalize, Subject, takeUntil } from 'rxjs';
+import { NotificationService, PasswordFormControlComponent } from '../../../../shared';
 import { swipeInOutAnimation } from '../../animations';
 import { DmaAuthenticationService } from '../../services';
 import { emailValidator, passwordValidator } from './validators';
-
-const STATUS_CODE_BAD_REQUEST = 400;
 
 @Component({
     selector: 'dma-signup',
@@ -28,56 +20,38 @@ const STATUS_CODE_BAD_REQUEST = 400;
     imports: [
         CommonModule,
         RouterModule,
-        FormsModule,
         ReactiveFormsModule,
-        DmaIconsModule,
         PasswordFormControlComponent,
+        DmaButtonComponent,
+        DmaInputComponent,
+        DmaIconComponent,
     ],
 })
-export class DmaSignUpPage implements AfterViewInit, OnDestroy {
-    error$ = new Subject<string | null>();
+export class DmaSignUpPage implements OnDestroy {
+    private readonly authenticationService = inject(DmaAuthenticationService);
+    private readonly notificationService = inject(NotificationService);
 
-    form = new FormGroup(
+    private readonly destroy$ = new Subject<void>();
+
+    @ViewChild(FormGroupDirective) private readonly formDirective: FormGroupDirective;
+
+    protected readonly loading$ = new BehaviorSubject(false);
+
+    protected readonly form = new FormGroup(
         {
-            username: new FormControl<string | null>(null, [Validators.required]),
+            username: new FormControl<string | null>(null, [Validators.required, Validators.min(3)]),
             email: new FormControl<string | null>(null, [Validators.required, Validators.email]),
-            emailConfirm: new FormControl<string | null>(null, [Validators.required, Validators.email]),
+            emailConfirm: new FormControl<string | null>(null, [Validators.required]),
+            password: new FormControl<string | null>(null, [Validators.required, Validators.min(8)]),
+            passwordConfirm: new FormControl<string | null>(null, [Validators.required]),
         },
         {
-            validators: [emailValidator],
+            validators: [emailValidator, passwordValidator],
         }
     );
 
-    loading$ = new BehaviorSubject(false);
-
-    stage = 1;
-
-    success$ = new Subject<string | null>();
-
-    @ViewChild(FormGroupDirective) private formDirective: FormGroupDirective;
-
-    private destroy$ = new Subject<void>();
-
-    constructor(private readonly authenticationService: DmaAuthenticationService) {}
-
-    get isFormInvalid() {
+    protected get isFormInvalid() {
         return this.form.invalid;
-    }
-
-    get isFirstStageCompleted() {
-        return (
-            this.getFormControl('username').valid &&
-            this.getFormControl('email').valid &&
-            this.getFormControl('emailConfirm').valid
-        );
-    }
-
-    doesControlHasErrors(controlName: string, errorName: string) {
-        return this.form.get(controlName)!.hasError(errorName);
-    }
-
-    getControlError(controlName: string, errorName: string) {
-        return this.form.get(controlName)!.getError(errorName);
     }
 
     ngOnDestroy() {
@@ -85,61 +59,43 @@ export class DmaSignUpPage implements AfterViewInit, OnDestroy {
         this.destroy$.complete();
     }
 
-    ngAfterViewInit() {
-        this.form.addValidators(passwordValidator);
-    }
-
-    onGoToNextStage() {
-        if (!this.isFirstStageCompleted) return;
-        this.stage = 2;
-    }
-
-    onGoToPreviousStage() {
-        this.stage = 1;
-    }
-
-    onSignUpError(error: HttpErrorResponse) {
-        let message = 'Something unexpected has happened. Please, try again later';
-        let formError: Record<string, unknown> = { unexpectedError: true };
-
-        if (error.status === STATUS_CODE_BAD_REQUEST) {
-            if (typeof error.error.message === 'string' && error.error.message.includes('username')) {
-                message = 'The username is currently unavailable. Please, use a different one';
-                formError = { usernameUnavailable: message };
-                this.onGoToPreviousStage();
-
-                this.form.get('username')!.setErrors(formError);
-                return;
-            }
-        }
-        this.error$.next(message);
-        this.form.setErrors(formError);
-    }
-
-    onSignUpSuccess() {
-        this.formDirective.resetForm();
-        this.onGoToPreviousStage();
-        this.success$.next(`You've successfully registered an account. You can now go on and log in`);
-    }
-
-    onSubmit() {
-        const { username, email } = this.form.value;
+    protected onSubmit() {
+        const { username, email, password } = this.form.value;
 
         this.loading$.next(true);
 
         this.authenticationService
-            .signUp({ username: username!, password: this.form.get('password')!.value, emailAddress: email! })
+            .signUp({ username: username, password: password, emailAddress: email })
             .pipe(
                 takeUntil(this.destroy$),
                 finalize(() => this.loading$.next(false))
             )
             .subscribe({
                 next: () => this.onSignUpSuccess(),
-                error: (error: HttpErrorResponse) => this.onSignUpError(error),
+                error: (error: BackEndError) => this.onSignUpError(error),
             });
     }
 
-    private getFormControl(controlName: string) {
-        return this.form.get(controlName)!;
+    private onSignUpSuccess() {
+        this.formDirective.resetForm();
+
+        this.notificationService.show({ title: 'Success', message: 'Sign up successful', type: 'success' });
+    }
+
+    private onSignUpError(error: BackEndError) {
+        let message = 'Something unexpected has happened. Please, try again later';
+        let formError: Record<string, unknown> = { unexpectedError: true };
+
+        if (error.status === HttpResponseStatusCodes.BAD_REQUEST) {
+            if (typeof error.message === 'string' && error.message.includes('username')) {
+                message = 'The username is currently unavailable. Please, use a different one';
+                formError = { usernameUnavailable: message };
+
+                this.form.get('username')!.setErrors(formError);
+                throw error;
+            }
+        }
+        this.form.setErrors(formError);
+        throw error;
     }
 }

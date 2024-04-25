@@ -1,15 +1,11 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { provideHttpClient } from '@angular/common/http';
-import { HttpTestingController } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { fakeAsync, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { defaultUser } from '@dnd-mapp/data/testing';
 import { DmaLoginHarness } from '@dnd-mapp/front-end/testing';
-import { firstValueFrom } from 'rxjs';
-import { environment } from '../../../../../environments';
 import { TextCodingService } from '../../../../shared';
-import { SessionService } from '../../../services';
 import { DmaLoginPage } from './dma-login.page';
 
 xdescribe('DmaLoginComponent', () => {
@@ -32,38 +28,11 @@ xdescribe('DmaLoginComponent', () => {
         );
 
         const harnessLoader = TestbedHarnessEnvironment.loader(TestBed.createComponent(TestComponent));
-        const testingController = TestBed.inject(HttpTestingController);
-
-        await initializeConfigService(testingController);
 
         return {
             harness: await harnessLoader.getHarness(DmaLoginHarness),
-            testingController: testingController,
         };
     }
-
-    async function initializeConfigService(testingController: HttpTestingController) {
-        const configService = TestBed.inject(SessionService);
-
-        const configInit = firstValueFrom(configService.initialize());
-        const request = testingController.expectOne(environment.baseBackEndURL + '/api/client');
-        request.flush({ id: 'client_id', state: request.request.body.state });
-
-        await configInit;
-    }
-
-    async function waitForLoginRequest(testingController: HttpTestingController) {
-        tick(3);
-
-        // Check if the code challenge and verifier have been generated and the code challenge has been sent to the back-end
-        const challengeRequest = testingController.expectOne(environment.baseBackEndURL + '/authentication/challenge');
-        challengeRequest.flush({ state: challengeRequest.request.body.state });
-
-        // Determine that the provided credentials are valid
-        return testingController.expectOne(environment.baseBackEndURL + '/authentication/login');
-    }
-
-    afterEach(() => TestBed.inject(HttpTestingController).verify());
 
     it('should have disabled submit button with empty form', async () => {
         const { harness } = await initializeTestEnvironment();
@@ -72,7 +41,7 @@ xdescribe('DmaLoginComponent', () => {
     });
 
     it('should be able to submit form and succeed', async () => {
-        const { harness, testingController } = await initializeTestEnvironment();
+        const { harness } = await initializeTestEnvironment();
         const { username, password } = defaultUser;
 
         await harness.inputUsername(username);
@@ -90,28 +59,12 @@ xdescribe('DmaLoginComponent', () => {
             }, 1);
         });
 
-        // Check if the code challenge and verifier have been generated and the code challenge has been sent to the back-end
-        const challengeRequest = testingController.expectOne(environment.baseBackEndURL + '/authentication/challenge');
-        challengeRequest.flush({ state: challengeRequest.request.body.state });
-
-        // Determine that the provided credentials are valid
-        const loginRequest = testingController.expectOne(environment.baseBackEndURL + '/authentication/login');
-        loginRequest.flush(null);
-
-        // Retrieve an authorization code
-        const authorizeRequest = testingController.expectOne(environment.baseBackEndURL + '/authentication/authorize');
-        authorizeRequest.flush({ state: authorizeRequest.request.body.state, authorizationCode: 'authorization_code' });
-
-        // Retrieve the access- and refresh tokens with the authorization code and code verifier
-        const tokenRequest = testingController.expectOne(environment.baseBackEndURL + '/authentication/token');
-        tokenRequest.flush(null);
-
         expect(await harness.hasSuccessMessage()).toBeTrue();
         expect(await harness.getSuccessMessage()).toEqual('Login successful');
     });
 
     it('should be able to handle invalid credentials error responses', fakeAsync(async () => {
-        const { harness, testingController } = await initializeTestEnvironment();
+        const { harness } = await initializeTestEnvironment();
         const { username } = defaultUser;
 
         await harness.inputUsername(username);
@@ -119,31 +72,18 @@ xdescribe('DmaLoginComponent', () => {
 
         await harness.clickLoginButton();
 
-        const loginRequest = await waitForLoginRequest(testingController);
-        loginRequest.flush(
-            { statusCode: 400, error: 'Bad Request', message: 'Invalid credentials' },
-            { status: 400, statusText: 'Bad Request' }
-        );
-
         expect(await harness.hasErrorMessage()).toBeTrue();
         expect(await harness.getErrorMessage()).toEqual('Invalid username/password');
     }));
 
     it('should be able to handle client or server error responses', fakeAsync(async () => {
-        const { harness, testingController } = await initializeTestEnvironment();
+        const { harness } = await initializeTestEnvironment();
         const { username, password } = defaultUser;
 
         await harness.inputUsername(username);
         await harness.inputPassword(password);
 
         await harness.clickLoginButton();
-
-        const request = await waitForLoginRequest(testingController);
-
-        request.flush(null, {
-            status: 500,
-            statusText: 'Internal Server Error',
-        });
 
         expect(await harness.hasErrorMessage()).toBeTrue();
         expect(await harness.getErrorMessage()).toEqual(
