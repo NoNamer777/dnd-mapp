@@ -1,12 +1,12 @@
-import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { AbstractControl, ValidatorFn } from '@angular/forms';
 
 function formatControlName(controlName: string) {
-    const capticalLetter = controlName.match(/[A-Z]/);
+    const capitalLetter = controlName.match(/[A-Z]/);
 
-    if (!capticalLetter) {
+    if (!capitalLetter) {
         return controlName.charAt(0).toUpperCase() + controlName.slice(1);
     }
-    return controlName.charAt(0).toUpperCase() + controlName.slice(1).replace(/[A-Z]/, ' ' + capticalLetter[0]);
+    return controlName.charAt(0).toUpperCase() + controlName.slice(1).replace(/[A-Z]/, ' ' + capitalLetter[0]);
 }
 
 function removeErrorIfExist(control: AbstractControl, errorName: string) {
@@ -20,10 +20,10 @@ function removeErrorIfExist(control: AbstractControl, errorName: string) {
 }
 
 export function shouldMatchValidator(controlNameA: string, controlNameB: string): ValidatorFn {
-    return (form: AbstractControl): ValidationErrors | null => {
+    return (form: AbstractControl) => {
         const controlA = form.get(controlNameA)!;
         const controlB = form.get(controlNameB)!;
-        const errorName = `${controlNameA}ShouldMatch`;
+        const errorName = `shouldMatch`;
 
         let message = formatControlName(controlNameA);
         message += ' should match ';
