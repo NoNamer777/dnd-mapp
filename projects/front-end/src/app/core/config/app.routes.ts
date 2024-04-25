@@ -23,7 +23,7 @@ export const appRoutes: Route[] = [
     },
     {
         path: 'me',
-        loadComponent: async () => (await import('../../user')).DmaMyProfilePage,
+        loadComponent: async () => (await import('../../user')).MyProfilePage,
         canActivate: [authenticationGuard()],
     },
     {

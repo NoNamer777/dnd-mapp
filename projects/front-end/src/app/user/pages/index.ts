@@ -1,1 +1,1 @@
-export * from './my-profile/dma-my-profile.page';
+export * from './my-profile/my-profile-page.component';
