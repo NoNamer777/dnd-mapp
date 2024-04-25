@@ -56,19 +56,20 @@
             "outputs": ["{options.coverageDirectory}"],
             "options": {
                 "codeCoverage": true,
-                "colors": true,
                 "coverageReporters": ["html", "text-summary"],
                 "coverageDirectory": "coverage/back-end",
                 "jestConfig": "projects/back-end/jest.config.ts",
-                "onlyChanged": false,
-                "testPathIgnorePatterns": ["./src/test.ts"],
-                "watch": false,
-                "watchAll": false
+                "testPathIgnorePatterns": ["./src/test.ts"]
             },
             "defaultConfiguration": "ci",
             "configurations": {
                 "dev": {
-                    "watchAll": true
+                    "onlyChanged": false,
+                    "watch": true
+                },
+                "ci": {
+                    "watch": false,
+                    "watchAll": false
                 }
             }
         },
