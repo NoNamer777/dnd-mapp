@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, FactoryProvider, inject, Input, OnInit } from '@angular/core';
 import { ControlContainer, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DmaIconComponent } from '@dnd-mapp/shared-components';
 
 type PasswordIconProp = 'eye' | 'eye-slash';
 
@@ -18,7 +19,7 @@ const controlContainerProvider: FactoryProvider = {
     changeDetection: ChangeDetectionStrategy.OnPush,
     viewProviders: [controlContainerProvider],
     standalone: true,
-    imports: [CommonModule, FormsModule, ReactiveFormsModule],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, DmaIconComponent],
 })
 export class PasswordFormControlComponent implements OnInit {
     @Input() label: string;

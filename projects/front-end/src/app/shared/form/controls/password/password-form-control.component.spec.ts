@@ -8,11 +8,7 @@ import { PasswordFormControlComponent } from './password-form-control.component'
 describe('PasswordFormControlComponent', () => {
     @Component({
         template: ` <form [formGroup]="form">
-            <dma-password-form-control
-                label="Password"
-                inputId="password-input"
-                inputFormControlName="password"
-            ></dma-password-form-control>
+            <dma-password-form-control label="Password" inputId="password-input" inputFormControlName="password" />
         </form>`,
     })
     class TestComponent {

@@ -17,7 +17,7 @@ export class PasswordFromControlHarness extends ComponentHarness {
 
     private labelLocator = this.locatorFor('label');
     private inputLocator = this.locatorFor('input');
-    private iconLocator = this.locatorFor('fa-icon svg');
+    private iconLocator = this.locatorFor('dma-icon');
 
     getInputField = async () => await this.inputLocator();
 
@@ -31,7 +31,7 @@ export class PasswordFromControlHarness extends ComponentHarness {
         return await (await this.inputLocator()).getAttribute('ng-reflect-name');
     }
 
-    getShownIcon = async () => await (await this.iconLocator()).getAttribute('data-icon');
+    getShownIcon = async () => await (await this.iconLocator()).getAttribute('icon');
 
     async togglePasswordVisibility() {
         await (await this.iconLocator()).click();
