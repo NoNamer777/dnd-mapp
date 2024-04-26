@@ -7,6 +7,8 @@ export enum DmaIcons {
     CIRCLE_EXCLAMATION = 'circle-exclamation',
     CIRCLE_XMARK = 'circle-xmark',
     ENVELOPE = 'envelope',
+    EYE = 'eye',
+    EYE_SLASH = 'eye-slash',
     LOCK = 'lock',
     MAGNIFYING_GLASS = 'magnifying-glass',
     MICROPHONE = 'microphone',
