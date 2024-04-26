@@ -1,8 +1,7 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter, Router } from '@angular/router';
 import { DmaNavbarMenuHarness } from '@dnd-mapp/front-end/testing';
 import { DmaNavLinkComponent } from '../nav-link/dma-nav-link.component';
 import { DmaNavbarMenuComponent } from './dma-navbar-menu.component';
@@ -20,7 +19,8 @@ describe('DmaNavbarMenuComponent', () => {
 
     async function setupTest() {
         TestBed.configureTestingModule({
-            imports: [DmaNavbarMenuComponent, DmaNavLinkComponent, RouterTestingModule],
+            imports: [DmaNavbarMenuComponent, DmaNavLinkComponent],
+            providers: [provideRouter([])],
             declarations: [TestComponent],
         });
 
