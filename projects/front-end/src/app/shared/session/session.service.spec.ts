@@ -1,8 +1,6 @@
 import { provideHttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { mockSessionDB } from '@dnd-mapp/data/testing';
 import { withInitializedConfig } from '@dnd-mapp/front-end/testing';
-import { firstValueFrom } from 'rxjs';
 import { SessionService } from './session.service';
 
 describe('SessionService', () => {
@@ -15,4 +13,9 @@ describe('SessionService', () => {
             sessionService: TestBed.inject(SessionService),
         };
     }
+
+    it('should initialize', async () => {
+        const { sessionService } = setupTest();
+        expect(sessionService).toBeDefined();
+    });
 });
