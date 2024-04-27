@@ -3,6 +3,7 @@ import {
     Body,
     ClassSerializerInterceptor,
     Controller,
+    ForbiddenException,
     HttpCode,
     HttpStatus,
     Post,
@@ -99,7 +100,7 @@ export class AuthenticationController {
         @Body() requestBody?: TokenRequest
     ) {
         this.logger.log(`Received request for JWT tokens for Session ${request.dmaSession.id}`);
-        const { authorizationCode, codeVerifier } = requestBody;
+        const { authorizationCode, codeVerifier, username } = requestBody;
         const { grantType } = queryParams;
 
         let tokens: Record<TokenType, string>;
@@ -107,14 +108,19 @@ export class AuthenticationController {
         if (grantType === 'authorizationCode') {
             tokens = await this.authenticationService.getTokensForSession(
                 request.dmaSession,
-                requestBody.username,
+                username,
                 codeVerifier,
                 authorizationCode
             );
         } else if (grantType === 'refreshToken') {
-            const user = (request as AuthenticatedRequest).user;
+            const { user, tokenType } = request as AuthenticatedRequest;
 
-            await this.tokenService.generateTokensForUser(user, request.dmaSession);
+            if (tokenType !== 'Refresh') {
+                throw new ForbiddenException(
+                    `You must provide a refresh token in order to generate a new token pair using the grant type 'refreshToken'`
+                );
+            }
+            await this.tokenService.generateTokensForUser(user.id, request.dmaSession);
 
             tokens = await this.authenticationService.getTokensForSession(request.dmaSession, user.username);
         }
