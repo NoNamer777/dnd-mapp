@@ -1,8 +1,7 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter, Router } from '@angular/router';
 import { DmaNavbarBrandHarness } from '@dnd-mapp/front-end/testing';
 import { DmaNavbarBrandComponent } from './dma-navbar-brand.component';
 
@@ -14,8 +13,9 @@ describe('DmaNavbarBrandComponent', () => {
 
     async function setupTest() {
         TestBed.configureTestingModule({
-            imports: [DmaNavbarBrandComponent, RouterTestingModule],
+            imports: [DmaNavbarBrandComponent],
             declarations: [TestComponent],
+            providers: [provideRouter([])],
         });
 
         const router = TestBed.inject(Router);

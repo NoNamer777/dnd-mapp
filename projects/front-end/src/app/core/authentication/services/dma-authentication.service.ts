@@ -21,7 +21,7 @@ type SignUpResponse = Omit<UserModel, 'roles'>;
 
 @Injectable({ providedIn: 'root' })
 export class DmaAuthenticationService {
-    authenticatedUser$ = new BehaviorSubject<UserModel | null>(null);
+    readonly authenticatedUser$ = new BehaviorSubject<UserModel | null>(null);
 
     private readonly requestService = inject(DmaHttpRequestService);
     private readonly textCodingService = inject(TextCodingService);

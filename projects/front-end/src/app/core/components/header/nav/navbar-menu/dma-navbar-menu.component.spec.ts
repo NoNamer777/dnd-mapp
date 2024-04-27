@@ -1,6 +1,6 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { DmaNavbarMenuHarness } from '@dnd-mapp/front-end/testing';
 import { DmaNavLinkComponent } from '../nav-link/dma-nav-link.component';
@@ -42,7 +42,7 @@ describe('DmaNavbarMenuComponent', () => {
         expect(await harness.isOpen()).toBeTrue();
     });
 
-    it('should close on click outside of the menu', async () => {
+    it('should close on click outside of the menu', fakeAsync(async () => {
         const { harness, fixture } = await setupTest();
 
         await harness.toggle();
@@ -50,16 +50,19 @@ describe('DmaNavbarMenuComponent', () => {
         (fixture.nativeElement as HTMLElement).click();
         fixture.detectChanges();
 
-        expect(await harness.isOpen()).toBeFalse();
-    });
+        tick();
 
-    it('should close on click outside of the menu', async () => {
-        const { harness, fixture } = await setupTest();
+        expect(await harness.isOpen()).toBeFalse();
+    }));
+
+    it('should close on second click on menu trigger', async () => {
+        const { harness } = await setupTest();
 
         await harness.toggle();
 
-        (fixture.nativeElement as HTMLElement).click();
+        expect(await harness.isOpen()).toBeTrue();
 
+        await harness.toggle();
         expect(await harness.isOpen()).toBeFalse();
     });
 

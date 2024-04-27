@@ -6,15 +6,15 @@ import {
     ChangeDetectorRef,
     Component,
     ContentChildren,
+    DestroyRef,
     EventEmitter,
     inject,
     Input,
-    OnDestroy,
     Output,
     QueryList,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DmaIconComponent, DmaIcons } from '@dnd-mapp/shared-components';
-import { Subject, takeUntil } from 'rxjs';
 import { DmaNavLinkComponent } from '../nav-link/dma-nav-link.component';
 
 @Component({
@@ -25,7 +25,7 @@ import { DmaNavLinkComponent } from '../nav-link/dma-nav-link.component';
     standalone: true,
     imports: [CommonModule, OverlayModule, DmaIconComponent],
 })
-export class DmaNavbarMenuComponent implements AfterContentInit, OnDestroy {
+export class DmaNavbarMenuComponent implements AfterContentInit {
     @Input() label: string;
 
     @Output() openChange = new EventEmitter<boolean>();
@@ -34,8 +34,7 @@ export class DmaNavbarMenuComponent implements AfterContentInit, OnDestroy {
 
     @ContentChildren(DmaNavLinkComponent) private readonly navLinks: QueryList<DmaNavLinkComponent>;
 
-    private readonly destroy$ = new Subject<void>();
-
+    private readonly destroyRef = inject(DestroyRef);
     private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
     protected get menuIcon() {
@@ -55,14 +54,9 @@ export class DmaNavbarMenuComponent implements AfterContentInit, OnDestroy {
         });
     }
 
-    ngOnDestroy() {
-        this.destroy$.next();
-        this.destroy$.complete();
-    }
-
     ngAfterContentInit() {
         this.navLinks.forEach((navLink) => {
-            navLink.navigating.pipe(takeUntil(this.destroy$)).subscribe({
+            navLink.navigating.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
                 next: () => {
                     this.onMenuToggle();
                     this.changeDetectorRef.markForCheck();
