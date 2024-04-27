@@ -1,6 +1,7 @@
-import { IsDate, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { createId } from '@paralleldrive/cuid2';
 import { Exclude } from 'class-transformer';
+import { IsDate, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { randomBytes } from 'crypto';
 import { TokenModel } from './token.model';
 
 // Authorization codes are valid for 30 seconds,
@@ -42,6 +43,11 @@ export class SessionModel {
         this.authCodeGeneratedAt = null;
     }
 
+    generateAuthorizationCode() {
+        this.authorizationCode = randomBytes(64).toString('base64');
+        this.authCodeGeneratedAt = new Date();
+    }
+
     authorizationCodeUsedWithinTime() {
         const now = new Date();
 
@@ -62,9 +68,8 @@ export class SessionBuilder {
         return this;
     }
 
-    withAuthorizationCode(code: string) {
-        this.session.authorizationCode = code;
-        this.session.authCodeGeneratedAt = new Date();
+    withAuthorizationCode() {
+        this.session.generateAuthorizationCode();
 
         return this;
     }
@@ -78,7 +83,7 @@ export class SessionBuilder {
     withTokens(tokens: SessionTokens) {
         this.session.tokens = {
             access: tokens.access,
-            refresh: tokens.refresh
+            refresh: tokens.refresh,
         };
         return this;
     }

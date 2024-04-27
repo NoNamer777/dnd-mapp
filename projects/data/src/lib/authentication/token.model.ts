@@ -99,8 +99,8 @@ export class TokenModelBuilder {
         return this;
     }
 
-    withId() {
-        this.token.jti = createId();
+    withId(id?: string) {
+        this.token.jti = id ?? createId();
         return this;
     }
 

@@ -1,7 +1,6 @@
-import { SessionBuilder, SessionModel, TokenModel, TokenTypes } from '@dnd-mapp/data';
+import { SessionBuilder, SessionModel } from '@dnd-mapp/data';
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import * as crypto from 'crypto';
-import { randomBytes } from 'crypto';
 import { LoggerService } from '../../../common';
 import { SessionRepository } from '../../repositories';
 import { TokenService } from '../token';
@@ -29,24 +28,7 @@ export class SessionService {
         if (!byId) {
             throw new NotFoundException(`Couldn't find Session: '${sessionId}'`);
         }
-        const sessionBuilder = new SessionBuilder()
-            .withId(byId.id)
-            .withAuthorizationCode(byId.authorizationCode)
-            .codeGeneratedAt(byId.authCodeGeneratedAt)
-            .withCodeChallenge(byId.codeChallenge);
-
-        if (byId.tokens.access) {
-            const tokens = await this.tokenService.getEncodedTokensForUserSession(
-                (byId.tokens.access as TokenModel).subject,
-                sessionId
-            );
-
-            sessionBuilder.withTokens({
-                access: tokens[TokenTypes.ACCESS],
-                refresh: tokens[TokenTypes.REFRESH],
-            });
-        }
-        return sessionBuilder.build();
+        return byId;
     }
 
     async verifyCodeChallenge(session: SessionModel, codeVerifier: string) {
@@ -83,14 +65,11 @@ export class SessionService {
 
     async generateAuthorizationCode(session: SessionModel) {
         this.logger.log(`Generating authorization code for Session: '${session.id}'`);
-        const authorizationCode = randomBytes(64).toString('base64');
-
-        session.authorizationCode = authorizationCode;
-        session.authCodeGeneratedAt = new Date();
+        session.generateAuthorizationCode();
 
         await this.update(session);
 
-        return authorizationCode;
+        return session.authorizationCode;
     }
 
     async end(id: string) {
