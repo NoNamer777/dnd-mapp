@@ -1,4 +1,4 @@
-import { SessionModel, TokenModelBuilder, TokenType, TokenTypes, UserModel } from '@dnd-mapp/data';
+import { SessionModel, TokenModelBuilder, TokenType, TokenTypes } from '@dnd-mapp/data';
 import { ForbiddenException, Inject, Injectable, ValueProvider } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { LoggerService, backEndServerAddress } from '../../../common';
@@ -23,20 +23,20 @@ export class TokenService {
     }
 
     async getByJti(jti: string) {
-        return await this.tokenRepository.findOneByJti(jti);
+        return (await this.tokenRepository.findOneByJti(jti)) ?? null;
     }
 
-    async generateTokensForUser(user: UserModel, session: SessionModel) {
+    async generateTokensForUser(userId: string, session: SessionModel) {
         if (!session.authorizationCode) {
             throw new ForbiddenException(`You're not allowed to generate tokens. Login required`);
         }
-        await this.revokeTokensForUserSession(user.id, session.id);
+        await this.revokeTokensForUserSession(userId, session.id);
 
         const now = new Date();
 
         const accessToken = new TokenModelBuilder()
             .notBefore(now)
-            .assignToUser(user.id)
+            .assignToUser(userId)
             .forSession(session.id)
             .withId()
             .withType(TokenTypes.ACCESS)
@@ -45,7 +45,7 @@ export class TokenService {
 
         const refreshToken = new TokenModelBuilder()
             .notBefore(now)
-            .assignToUser(user.id)
+            .assignToUser(userId)
             .forSession(session.id)
             .withId()
             .withType(TokenTypes.REFRESH)
@@ -55,7 +55,7 @@ export class TokenService {
         await this.tokenRepository.create(accessToken);
         await this.tokenRepository.create(refreshToken);
 
-        await this.cleanUpUserTokens(user);
+        await this.cleanUpUserTokens(userId);
     }
 
     async getEncodedTokensForUserSession(userId: string, sessionId: string) {
@@ -86,9 +86,9 @@ export class TokenService {
         }
     }
 
-    private async cleanUpUserTokens(user: UserModel) {
-        this.loggerService.log(`Removing excess JWT tokens for User ${user.id}`);
-        const userTokens = await this.tokenRepository.findAllTokensForUser(user.id);
+    private async cleanUpUserTokens(userId: string) {
+        this.loggerService.log(`Removing excess JWT tokens for User ${userId}`);
+        const userTokens = await this.tokenRepository.findAllTokensForUser(userId);
 
         if (userTokens.length < this.maxTokens) return;
 

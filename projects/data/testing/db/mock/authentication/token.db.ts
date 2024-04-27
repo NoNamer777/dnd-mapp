@@ -15,14 +15,14 @@ class MockTokenDB {
         this.db = {};
     }
 
-    findAllTokensForUser(userId: string) {
-        return Object.values(this.db).filter((token) => token.subject === userId);
-    }
-
-    findActiveTokensForUserSession(userId: string, sessionId: string) {
+    findActiveTokensForUserOnSession(userId: string, sessionId: string) {
         return Object.values(this.db).filter(
             (token) => token.subject === userId && token.sessionId === sessionId && !token.revoked
         );
+    }
+
+    findAllTokensForUser(userId: string) {
+        return Object.values(this.db).filter((token) => token.subject === userId);
     }
 
     findOneByJti(jti: string) {
@@ -34,8 +34,13 @@ class MockTokenDB {
         return token;
     }
 
-    remove(token: TokenModel) {
-        delete this.db[token.jti];
+    update(token: TokenModel) {
+        this.db[token.jti] = token;
+        return token;
+    }
+
+    remove(jti: string) {
+        delete this.db[jti];
     }
 }
 
