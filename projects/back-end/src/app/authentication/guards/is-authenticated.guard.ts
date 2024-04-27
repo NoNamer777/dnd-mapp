@@ -1,14 +1,16 @@
-import { TokenData, UserModel } from '@dnd-mapp/data';
+import { TokenData, TokenType, UserModel } from '@dnd-mapp/data';
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { DmaSessionRequest, LoggerService } from '../../common';
 import { TokenService, UserService } from '../services';
 
-export type AuthenticatedRequest = DmaSessionRequest & { user?: UserModel };
+export type AuthenticatedRequest = DmaSessionRequest & { user?: UserModel; tokenType?: TokenType };
 
 @Injectable()
 export class IsAuthenticatedGuard implements CanActivate {
     protected readonly loggerContextName = IsAuthenticatedGuard.name;
+
+    private request: AuthenticatedRequest;
 
     constructor(
         private readonly jwtService: JwtService,
@@ -20,44 +22,33 @@ export class IsAuthenticatedGuard implements CanActivate {
     }
 
     async canActivate(context: ExecutionContext) {
-        const request = context.switchToHttp().getRequest<AuthenticatedRequest>();
+        this.request = context.switchToHttp().getRequest<AuthenticatedRequest>();
 
-        if (request.url.includes('token?grantType=authorizationCode')) return true;
-        const token = await this.getToken(context);
+        if (this.request.url.includes('token?grantType=authorizationCode')) return true;
+        const encodedToken = this.validateAuthorizationHeader();
+        const token = await this.getToken(encodedToken);
 
-        request.user = await this.userService.findById(token.sub, false);
+        this.request.user = await this.userService.findById(token.subject, false);
+        this.request.tokenType = token.type;
 
-        return Boolean(request.user);
+        return Boolean(this.request.user);
     }
 
-    protected async getToken(context: ExecutionContext) {
-        const request = context.switchToHttp().getRequest();
-        const tokenHeader = request.headers['authorization'] as string;
-
-        const token = tokenHeader.replace('Bearer ', '').trim();
-
-        if (!tokenHeader || !tokenHeader.startsWith('Bearer ')) {
-            this.loggerService.warn(`Invalid Authorization header for url ${request.url}`);
-            throw new UnauthorizedException('Invalid Authorization header');
-        }
-        if (!token) {
-            this.loggerService.warn(`No token in Authorization header for url ${request.url}`);
-            throw new UnauthorizedException('Missing access token');
-        }
+    protected async getToken(encodedToken: string) {
         let decodedToken: TokenData;
 
         try {
-            decodedToken = await this.jwtService.verifyAsync(token);
+            decodedToken = await this.jwtService.verifyAsync(encodedToken);
         } catch (error) {
-            this.loggerService.warn(`Invalid token in Authorization header for url ${request.url}`);
+            this.loggerService.warn(`Invalid token in Authorization header for url ${this.request.url}`);
             throw new UnauthorizedException();
         }
         // Check if token belongs to current session, otherwise revoke tokens for both sessions
-        if (request.dmaSession.id !== decodedToken.ses) {
+        if (this.request.dmaSession.id !== decodedToken.ses) {
             await this.tokenService.revokeTokensForUserSession(decodedToken.sub, decodedToken.ses);
-            await this.tokenService.revokeTokensForUserSession(decodedToken.sub, request.dmaSession.id);
+            await this.tokenService.revokeTokensForUserSession(decodedToken.sub, this.request.dmaSession.id);
 
-            this.loggerService.warn(`Token for other session used for url ${request.url}`);
+            this.loggerService.warn(`Token for other session used for url ${this.request.url}`);
             throw new UnauthorizedException();
         }
         // Check if token is active
@@ -66,16 +57,32 @@ export class IsAuthenticatedGuard implements CanActivate {
         if (storedToken.revoked) {
             await this.tokenService.revokeTokensForUserSession(decodedToken.sub, decodedToken.ses);
 
-            this.loggerService.warn(`Revoked token for session used for url ${request.url}`);
+            this.loggerService.warn(`Revoked token for session used for url ${this.request.url}`);
             throw new UnauthorizedException();
         }
 
         // Check if the token has expired
         if (Math.floor(Date.now() / 1000) >= decodedToken.exp) {
-            this.loggerService.warn(`Expired token in Authorization header for url ${request.url}`);
+            this.loggerService.warn(`Expired token in Authorization header for url ${this.request.url}`);
             throw new UnauthorizedException('Token expired');
         }
-        return decodedToken;
+        return storedToken;
+    }
+
+    private validateAuthorizationHeader() {
+        const tokenHeader = this.request.headers['authorization'] as string;
+
+        const token = tokenHeader.replace('Bearer ', '').trim();
+
+        if (!tokenHeader || !tokenHeader.startsWith('Bearer ')) {
+            this.loggerService.warn(`Invalid Authorization header for url ${this.request.url}`);
+            throw new UnauthorizedException('Invalid Authorization header');
+        }
+        if (!token) {
+            this.loggerService.warn(`No token in Authorization header for url ${this.request.url}`);
+            throw new UnauthorizedException('Missing access token');
+        }
+        return tokenHeader.replace('Bearer ', '').trim();
     }
 
     private setLoggerContext() {
