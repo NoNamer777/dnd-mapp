@@ -1,3 +1,2 @@
-export * from './authentication/index';
+export * from './authentication';
 export * from './components';
-export * from './theming/dma-theme.harness';
