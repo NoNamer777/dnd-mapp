@@ -1,6 +1,6 @@
 import { createId } from '@paralleldrive/cuid2';
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
-import { EntityModel } from '../models';
+import { EntityModel } from '../../models';
 
 export const Roles = {
     ADMIN: 'Admin',

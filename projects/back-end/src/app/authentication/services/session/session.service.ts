@@ -46,7 +46,7 @@ export class SessionService {
     async verifyAuthorizationCode(session: SessionModel, authorizationCode: string) {
         this.logger.log(`Validating authorization code for Session: '${session.id}'`);
 
-        if (session.authorizationCode !== authorizationCode || !session.authorizationCodeUsedWithinTime()) {
+        if (!session.validAuthorizationCode(authorizationCode)) {
             this.logger.warn(`Authorization code validation failed for Session: '${session.id}'`);
             await this.resetAuthorization(session);
             throw new ForbiddenException();

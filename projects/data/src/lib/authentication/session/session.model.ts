@@ -2,7 +2,7 @@ import { createId } from '@paralleldrive/cuid2';
 import { Exclude } from 'class-transformer';
 import { IsDate, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { randomBytes } from 'crypto';
-import { TokenModel } from './token.model';
+import { TokenModel } from '../token/token.model';
 
 // Authorization codes are valid for 30 seconds,
 // which should be plenty of time for retrieving the JWT tokens.
@@ -48,9 +48,12 @@ export class SessionModel {
         this.authCodeGeneratedAt = new Date();
     }
 
-    authorizationCodeUsedWithinTime() {
-        const now = new Date();
+    validAuthorizationCode(authorizationCode: string) {
+        return this.authorizationCodeUsedWithinTime() && authorizationCode === this.authorizationCode;
+    }
 
+    private authorizationCodeUsedWithinTime() {
+        const now = new Date();
         return now.getTime() - this.authCodeGeneratedAt!.getTime() < MAX_LIFESPAN_AUTHORIZATION_CODE;
     }
 }

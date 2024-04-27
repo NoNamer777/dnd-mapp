@@ -27,36 +27,35 @@ export class TokenData {
 export class TokenModel {
     @IsString()
     @IsNotEmpty()
-    jti: string;
+    jti: string = null;
 
     @IsString()
     @IsNotEmpty()
-    subject: string;
+    subject: string = null;
 
     @IsString()
     @IsNotEmpty()
-    sessionId: string;
+    sessionId: string = null;
 
     @IsString()
     @IsNotEmpty()
     @IsEnum(TokenTypes)
-    type: TokenType;
+    type: TokenType = 'Access';
 
     @IsBoolean()
-    revoked: boolean;
+    revoked = false;
 
     @IsDate()
-    notBefore: Date;
+    notBefore: Date = null;
 
     @IsDate()
-    issuedAt: Date;
+    issuedAt: Date = null;
 
     @IsDate()
-    expiresAt: Date;
+    expiresAt: Date = null;
 
     setExpiresAtBasedOnType() {
-        if (!this.type || !this.issuedAt) return;
-
+        if (!this.issuedAt) return;
         this.expiresAt = new Date(this.issuedAt.getTime() + TOKEN_EXPIRATION_TIME_PER_TYPE[this.type]);
     }
 
@@ -87,8 +86,8 @@ export class TokenModelBuilder {
         return this;
     }
 
-    isIssuedAt(when: Date) {
-        this.token.issuedAt = when;
+    isIssuedAt(when?: Date) {
+        this.token.issuedAt = when ?? new Date();
 
         this.token.setExpiresAtBasedOnType();
         return this;

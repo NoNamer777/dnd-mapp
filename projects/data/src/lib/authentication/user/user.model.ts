@@ -1,8 +1,8 @@
 import { createId } from '@paralleldrive/cuid2';
 import { Exclude } from 'class-transformer';
 import { ArrayMinSize, ArrayNotEmpty, IsArray, IsEmail, IsNotEmpty, IsString } from 'class-validator';
-import { EntityModel } from '../models';
-import { RoleModel, RoleName } from './role.model';
+import { EntityModel } from '../../models';
+import { RoleModel, RoleName } from '../role/role.model';
 
 export class UserModel extends EntityModel {
     @IsString()
