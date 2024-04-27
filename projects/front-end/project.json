@@ -72,7 +72,7 @@
                     },
                     {
                         "glob": "**/*",
-                        "input": "projects/shared-components/assets",
+                        "input": "projects/shared-components/src/assets",
                         "output": "./"
                     },
                     {
