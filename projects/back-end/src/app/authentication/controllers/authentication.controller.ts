@@ -67,9 +67,9 @@ export class AuthenticationController {
     }
 
     @Post('/login')
-    async login(@Body() user: LoginRequest, @Req() request: DmaSessionRequest) {
+    async login(@Body() user: LoginRequest) {
         this.logger.log(`Received a request to authenticate User with username: '${user.username}'`);
-        await this.authenticationService.login(user, request.dmaSession);
+        await this.authenticationService.login(user);
     }
 
     @UseGuards(IsAuthenticatedGuard)

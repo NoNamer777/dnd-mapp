@@ -37,7 +37,7 @@ export class AuthenticationService {
         return await this.tokenService.getEncodedTokensForUserSession(user.id, session.id);
     }
 
-    async login(user: LoginRequest, session: SessionModel) {
+    async login(user: LoginRequest) {
         this.logger.log(`Authenticating User with username: ${user.username}`);
         const byUsername = await this.userService.findByUsername(user.username, false);
 
@@ -45,7 +45,6 @@ export class AuthenticationService {
             this.logger.warn(`Invalid username or password for User with username: ${user.username}`);
             throw new UnauthorizedException('Invalid username/password');
         }
-        await this.tokenService.generateTokensForUser(byUsername, session);
     }
 
     async logout(userId: string, sessionId: string) {
