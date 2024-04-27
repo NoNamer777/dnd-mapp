@@ -53,23 +53,17 @@
         },
         "test": {
             "executor": "@nx/jest:jest",
-            "outputs": ["{options.coverageDirectory}"],
+            "outputs": ["{workspaceRoot}/coverage/back-end"],
             "options": {
-                "codeCoverage": true,
-                "coverageReporters": ["html", "text-summary"],
-                "coverageDirectory": "coverage/back-end",
-                "jestConfig": "projects/back-end/jest.config.ts",
-                "testPathIgnorePatterns": ["./src/test.ts"]
+                "jestConfig": "projects/back-end/jest.config.ts"
             },
             "defaultConfiguration": "ci",
             "configurations": {
                 "dev": {
-                    "onlyChanged": false,
-                    "watch": true
+                    "watchAll": true
                 },
                 "ci": {
-                    "watch": false,
-                    "watchAll": false
+                    "ci": true
                 }
             }
         },

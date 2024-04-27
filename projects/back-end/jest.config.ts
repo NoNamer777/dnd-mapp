@@ -1,14 +1,30 @@
 import type { Config } from 'jest';
 
 const config: Config = {
-    collectCoverageFrom: ['./src/app/**/*.{entity,service}.ts'],
+    collectCoverage: true,
+    collectCoverageFrom: [
+        'src/**/*.ts',
+        '!**/*.controller.ts',
+        '!**/*.repository.ts',
+        '!**/*.module.ts',
+        '!**/*.filter.ts',
+        '!**/index.ts',
+        '!**/common/**/*',
+        '!**/config/**/*',
+        '!src/main.ts',
+    ],
+    coverageDirectory: '../../coverage/back-end',
+    coverageReporters: ['html', 'text-summary'],
     displayName: 'back-end',
-    moduleFileExtensions: ['ts', 'js', 'html'],
+    moduleFileExtensions: ['ts', 'js'],
+    onlyChanged: false,
     preset: '../../jest.preset.js',
+    rootDir: './',
     setupFilesAfterEnv: ['./src/test.ts'],
+    testMatch: ['**/*.spec.ts'],
     testEnvironment: 'node',
     transform: {
-        '^.+\\.[tj]s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
+        '^.+\\.(ts|js)$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
     },
 };
 
