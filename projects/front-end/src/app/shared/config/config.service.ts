@@ -19,9 +19,7 @@ export class ConfigService {
                 console.error('Unable to read config file. Falling back to the default', error);
                 return of(defaultConfig);
             }),
-            tap((config) => {
-                this.configSubject.next(config);
-            }),
+            tap((config) => this.configSubject.next(config)),
             takeUntilDestroyed(this.destroyRef)
         );
     }
