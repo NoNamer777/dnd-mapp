@@ -1,7 +1,8 @@
-import { SessionModel, TokenModelBuilder, TokenType, TokenTypes } from '@dnd-mapp/data';
+import { TokenModelBuilder, TokenType, TokenTypes } from '@dnd-mapp/data';
 import { ForbiddenException, Inject, Injectable, ValueProvider } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { LoggerService, backEndServerAddress } from '../../../common';
+import { BackEndSession } from '../../entities';
 import { TokenRepository } from '../../repositories';
 
 const MAX_TOKENS_PER_USER = 201;
@@ -26,7 +27,7 @@ export class TokenService {
         return (await this.tokenRepository.findOneByJti(jti)) ?? null;
     }
 
-    async generateTokensForUser(userId: string, session: SessionModel) {
+    async generateTokensForUser(userId: string, session: BackEndSession) {
         // TODO: Check whether the Authorization code has been validated
         if (!session.authorizationCode) {
             throw new ForbiddenException(`You're not allowed to generate tokens. Login required`);

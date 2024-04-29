@@ -1,5 +1,5 @@
 import { mockLoggingServiceProvider, mockTokenModuleProviders } from '@dnd-mapp/back-end/testing';
-import { SessionBuilder, TokenModelBuilder } from '@dnd-mapp/data';
+import { TokenModelBuilder } from '@dnd-mapp/data';
 import { defaultUser, mockSessionDB, mockTokenDB } from '@dnd-mapp/data/testing';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
@@ -7,6 +7,7 @@ import { Test } from '@nestjs/testing';
 import { createId } from '@paralleldrive/cuid2';
 import { buildServerUrl } from '../../../common';
 import { DndMappJwtModule, NestConfigModule, ServerConfig } from '../../../config';
+import { BackEndSession, BackEndSessionBuilder } from '../../entities';
 import { TokenService, maxTokensProvider } from './token.service';
 
 describe('TokenService', () => {
@@ -47,7 +48,9 @@ describe('TokenService', () => {
     });
 
     it('should generate tokens for a User', async () => {
-        const session = mockSessionDB.create(new SessionBuilder().withAuthorizationCode().build());
+        const session = mockSessionDB.create(
+            new BackEndSessionBuilder().withAuthorizationCode().build()
+        ) as BackEndSession;
         const { tokenService } = await setupTest();
 
         expect(mockTokenDB.findAllTokensForUser(defaultUser.id)).toHaveLength(0);
@@ -57,7 +60,7 @@ describe('TokenService', () => {
     });
 
     it('should not generate tokens for a User when Session has no Authorization code', async () => {
-        const session = mockSessionDB.create(new SessionBuilder().build());
+        const session = mockSessionDB.create(new BackEndSessionBuilder().build()) as BackEndSession;
         const { tokenService } = await setupTest();
 
         expect(mockTokenDB.findAllTokensForUser(defaultUser.id)).toHaveLength(0);
@@ -69,7 +72,9 @@ describe('TokenService', () => {
     });
 
     it(`should revoke active tokens for a User's Session when generating new tokens`, async () => {
-        const session = mockSessionDB.create(new SessionBuilder().withAuthorizationCode().build());
+        const session = mockSessionDB.create(
+            new BackEndSessionBuilder().withAuthorizationCode().build()
+        ) as BackEndSession;
         const { tokenService } = await setupTest();
 
         await tokenService.generateTokensForUser(defaultUser.id, session);
@@ -82,7 +87,9 @@ describe('TokenService', () => {
     });
 
     it('should remove excess tokens when number of existing User tokens exceeds max tokens limit', async () => {
-        const session = mockSessionDB.create(new SessionBuilder().withAuthorizationCode().build());
+        const session = mockSessionDB.create(
+            new BackEndSessionBuilder().withAuthorizationCode().build()
+        ) as BackEndSession;
         const { tokenService } = await setupTest({ maxTokens: 4 });
 
         // Generate 8 tokens at least
@@ -95,7 +102,9 @@ describe('TokenService', () => {
     });
 
     it(`should retrieve tokens for a User's Session JWT encoded`, async () => {
-        const session = mockSessionDB.create(new SessionBuilder().withAuthorizationCode().build());
+        const session = mockSessionDB.create(
+            new BackEndSessionBuilder().withAuthorizationCode().build()
+        ) as BackEndSession;
         const { tokenService } = await setupTest();
 
         await tokenService.generateTokensForUser(defaultUser.id, session);

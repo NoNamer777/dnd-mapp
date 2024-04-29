@@ -1,8 +1,8 @@
-import { SessionModel, TokenTypes } from '@dnd-mapp/data';
+import { TokenTypes } from '@dnd-mapp/data';
 import { Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { DatabaseService } from '../../config';
-import { Token } from '@angular/compiler';
+import { BackEndSession } from '../entities';
 
 @Injectable()
 export class SessionRepository {
@@ -16,40 +16,43 @@ export class SessionRepository {
                     where: {
                         revoked: false,
                         sessionId: id,
-                    }
-                }
-            }
+                    },
+                },
+            },
         });
 
-        return plainToInstance(SessionModel, {
+        return plainToInstance(BackEndSession, {
             ...result,
             tokens: {
-                access: result.tokens.find(token => token.type === TokenTypes.ACCESS),
-                refresh: result.tokens.find(token => token.type === TokenTypes.REFRESH),
-            }
+                access: result.tokens.find((token) => token.type === TokenTypes.ACCESS),
+                refresh: result.tokens.find((token) => token.type === TokenTypes.REFRESH),
+            },
         });
     }
 
-    async update(session: SessionModel) {
+    async update(session: BackEndSession) {
         return plainToInstance(
-            SessionModel,
+            BackEndSession,
             await this.databaseService.session.update({
                 where: { id: session.id },
                 data: {
                     ...session,
-                    tokens: {}
+                    tokens: {},
                 },
             })
         );
     }
 
-    async create(session: SessionModel) {
-        return plainToInstance(SessionModel, await this.databaseService.session.create({
-            data: {
-                ...session,
-                tokens: {},
-            },
-        }));
+    async create(session: BackEndSession) {
+        return plainToInstance(
+            BackEndSession,
+            await this.databaseService.session.create({
+                data: {
+                    ...session,
+                    tokens: {},
+                },
+            })
+        );
     }
 
     async remove(id: string) {

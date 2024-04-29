@@ -1,7 +1,7 @@
-import { SessionModel } from '@dnd-mapp/data';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { compare } from 'bcryptjs';
 import { LoggerService } from '../../../common';
+import { BackEndSession } from '../../entities';
 import { LoginRequest } from '../../models';
 import { SessionService } from '../session';
 import { TokenService } from '../token';
@@ -19,7 +19,7 @@ export class AuthenticationService {
     }
 
     async getTokensForSession(
-        session: SessionModel,
+        session: BackEndSession,
         username: string,
         codeVerifier?: string,
         authorizationCode?: string

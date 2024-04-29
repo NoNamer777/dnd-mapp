@@ -1,11 +1,11 @@
 import { mockLoggingServiceProvider, mockSessionProviders, mockTokenModuleProviders } from '@dnd-mapp/back-end/testing';
-import { SessionBuilder } from '@dnd-mapp/data';
 import { mockSessionDB } from '@dnd-mapp/data/testing';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { createId } from '@paralleldrive/cuid2';
 import * as crypto from 'node:crypto';
 import { DndMappJwtModule } from '../../../config';
+import { BackEndSession, BackEndSessionBuilder } from '../../entities';
 import { SessionService } from './session.service';
 
 describe('SessionService', () => {
@@ -31,13 +31,13 @@ describe('SessionService', () => {
     });
 
     it('should reset a Session', async () => {
-        let session = new SessionBuilder().withAuthorizationCode().withCodeChallenge('challenge').build();
+        let session = new BackEndSessionBuilder().withAuthorizationCode().withCodeChallenge('challenge').build();
         mockSessionDB.create(session);
 
         const { service } = await setupTest();
 
         await service.resetAuthorization(session);
-        session = mockSessionDB.findOneById(session.id);
+        session = mockSessionDB.findOneById(session.id) as BackEndSession;
 
         expect(session.authorizationCode).toBeNull();
         expect(session.authCodeGeneratedAt).toBeNull();
@@ -45,7 +45,7 @@ describe('SessionService', () => {
     });
 
     it('should remove an Session', async () => {
-        const { id } = mockSessionDB.create(new SessionBuilder().build());
+        const { id } = mockSessionDB.create(new BackEndSessionBuilder().build());
         const { service } = await setupTest();
 
         expect(mockSessionDB.findOneById(id)).toBeDefined();
@@ -55,7 +55,7 @@ describe('SessionService', () => {
     });
 
     it('should generate an Authorization code', async () => {
-        const session = mockSessionDB.create(new SessionBuilder().build());
+        const session = mockSessionDB.create(new BackEndSessionBuilder().build()) as BackEndSession;
 
         const { service } = await setupTest();
 
@@ -69,7 +69,7 @@ describe('SessionService', () => {
 
     describe('findById', () => {
         it('should find one by ID', async () => {
-            const session = mockSessionDB.create(new SessionBuilder().build());
+            const session = mockSessionDB.create(new BackEndSessionBuilder().build());
             const { service } = await setupTest();
 
             expect(await service.findById(session.id)).toEqual(session);
@@ -89,7 +89,7 @@ describe('SessionService', () => {
                 .update('my test code challenge')
                 .digest()
                 .toString('base64');
-            const session = new SessionBuilder().withCodeChallenge(codeChallenge).build();
+            const session = new BackEndSessionBuilder().withCodeChallenge(codeChallenge).build();
 
             mockSessionDB.create(session);
 
@@ -104,7 +104,7 @@ describe('SessionService', () => {
                 .update('my test code challenge')
                 .digest()
                 .toString('base64');
-            let session = new SessionBuilder().withCodeChallenge(codeChallenge).build();
+            let session = new BackEndSessionBuilder().withCodeChallenge(codeChallenge).build();
 
             mockSessionDB.create(session);
 
@@ -113,7 +113,7 @@ describe('SessionService', () => {
             await expect(service.verifyCodeChallenge(session, 'my code challenge')).rejects.toThrow(
                 BadRequestException
             );
-            session = mockSessionDB.findOneById(session.id);
+            session = mockSessionDB.findOneById(session.id) as BackEndSession;
 
             expect(session.codeChallenge).toBeNull();
         });
@@ -121,39 +121,43 @@ describe('SessionService', () => {
 
     describe('verifyAuthorizationCode', () => {
         it('should verify the authorization code', async () => {
-            const session = mockSessionDB.create(new SessionBuilder().withAuthorizationCode().build());
+            const session = mockSessionDB.create(
+                new BackEndSessionBuilder().withAuthorizationCode().build()
+            ) as BackEndSession;
             const { service } = await setupTest();
 
             await expect(service.verifyAuthorizationCode(session, session.authorizationCode)).resolves.not.toThrow();
         });
 
         it('should reject an invalid authorization code', async () => {
-            let session = mockSessionDB.create(new SessionBuilder().withAuthorizationCode().build());
+            let session = mockSessionDB.create(
+                new BackEndSessionBuilder().withAuthorizationCode().build()
+            ) as BackEndSession;
             const { service } = await setupTest();
 
             await expect(service.verifyAuthorizationCode(session, 'random invalid code')).rejects.toThrow(
                 BadRequestException
             );
 
-            session = mockSessionDB.findOneById(session.id);
+            session = mockSessionDB.findOneById(session.id) as BackEndSession;
             expect(session.authorizationCode).toBeNull();
             expect(session.authCodeGeneratedAt).toBeNull();
         });
 
         it('should reject authorization code outside validity period', async () => {
             let session = mockSessionDB.create(
-                new SessionBuilder()
+                new BackEndSessionBuilder()
                     .withAuthorizationCode()
                     .codeGeneratedAt(new Date(Date.now() - 40_0000))
                     .build()
-            );
+            ) as BackEndSession;
             const { service } = await setupTest();
 
             await expect(service.verifyAuthorizationCode(session, session.authorizationCode)).rejects.toThrow(
                 BadRequestException
             );
 
-            session = mockSessionDB.findOneById(session.id);
+            session = mockSessionDB.findOneById(session.id) as BackEndSession;
             expect(session.authorizationCode).toBeNull();
             expect(session.authCodeGeneratedAt).toBeNull();
         });

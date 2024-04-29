@@ -1,15 +1,13 @@
-import { SessionBuilder, SessionModel } from '@dnd-mapp/data';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import * as crypto from 'node:crypto';
 import { LoggerService } from '../../../common';
+import { BackEndSession, BackEndSessionBuilder } from '../../entities';
 import { SessionRepository } from '../../repositories';
-import { TokenService } from '../token';
 
 @Injectable()
 export class SessionService {
     constructor(
         private readonly logger: LoggerService,
-        private readonly tokenService: TokenService,
         private readonly sessionRepository: SessionRepository
     ) {
         this.logger.setContext(SessionService.name);
@@ -18,7 +16,7 @@ export class SessionService {
     async initialize() {
         this.logger.log('Creating a new Session');
 
-        return await this.sessionRepository.create(new SessionBuilder().withId().build());
+        return await this.sessionRepository.create(new BackEndSessionBuilder().withId().build());
     }
 
     async findById(sessionId: string) {
@@ -31,7 +29,7 @@ export class SessionService {
         return byId;
     }
 
-    async verifyCodeChallenge(session: SessionModel, codeVerifier: string) {
+    async verifyCodeChallenge(session: BackEndSession, codeVerifier: string) {
         this.logger.log(`Validating code challenge for Session: '${session.id}'`);
 
         const challengeFromVerifier = crypto.createHash('sha256').update(codeVerifier).digest().toString('base64');
@@ -43,7 +41,7 @@ export class SessionService {
         }
     }
 
-    async verifyAuthorizationCode(session: SessionModel, authorizationCode: string) {
+    async verifyAuthorizationCode(session: BackEndSession, authorizationCode: string) {
         this.logger.log(`Validating authorization code for Session: '${session.id}'`);
 
         if (!session.validAuthorizationCode(authorizationCode)) {
@@ -53,17 +51,17 @@ export class SessionService {
         }
     }
 
-    async resetAuthorization(session: SessionModel) {
+    async resetAuthorization(session: BackEndSession) {
         session.reset();
         await this.update(session);
     }
 
-    async update(session: SessionModel) {
+    async update(session: BackEndSession) {
         this.logger.log(`Updating Session ${session.id}`);
         return await this.sessionRepository.update(session);
     }
 
-    async generateAuthorizationCode(session: SessionModel) {
+    async generateAuthorizationCode(session: BackEndSession) {
         this.logger.log(`Generating authorization code for Session: '${session.id}'`);
         session.generateAuthorizationCode();
 

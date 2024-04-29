@@ -5,7 +5,6 @@ import {
     mockTokenModuleProviders,
     mockUserModuleProviders,
 } from '@dnd-mapp/back-end/testing';
-import { SessionBuilder, SessionModel } from '@dnd-mapp/data';
 import { defaultUser, mockSessionDB, mockTokenDB } from '@dnd-mapp/data/testing';
 import { BadRequestException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -13,6 +12,7 @@ import { Test } from '@nestjs/testing';
 import crypto from 'node:crypto';
 import { buildServerUrl } from '../../../common';
 import { DndMappJwtModule, NestConfigModule, ServerConfig } from '../../../config';
+import { BackEndSession, BackEndSessionBuilder } from '../../entities';
 import { AuthenticationService } from './authentication.service';
 
 describe('AuthenticationService', () => {
@@ -32,7 +32,7 @@ describe('AuthenticationService', () => {
         const { host, port, useSsl, address } = module.get(ConfigService).get<ServerConfig>('server');
         buildServerUrl(host, port, useSsl, address);
 
-        let session: SessionModel;
+        let session: BackEndSession;
 
         if (params?.prepareSession) {
             const codeChallenge = crypto
@@ -40,12 +40,12 @@ describe('AuthenticationService', () => {
                 .update('my test code challenge')
                 .digest()
                 .toString('base64');
-            const sessionBuilder = new SessionBuilder().withCodeChallenge(codeChallenge).withAuthorizationCode();
+            const sessionBuilder = new BackEndSessionBuilder().withCodeChallenge(codeChallenge).withAuthorizationCode();
 
             if (params.authCodeGenTimestamp) {
                 sessionBuilder.codeGeneratedAt(params.authCodeGenTimestamp);
             }
-            session = mockSessionDB.create(sessionBuilder.build());
+            session = mockSessionDB.create(sessionBuilder.build()) as BackEndSession;
         }
         return {
             service: module.get(AuthenticationService),

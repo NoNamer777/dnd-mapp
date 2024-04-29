@@ -1,10 +1,10 @@
-import { SessionModel } from '@dnd-mapp/data';
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request } from 'express';
 import { SessionService } from '../../authentication';
+import { BackEndSession } from '../../authentication/entities';
 import { LoggerService } from '../logging';
 
-export type DmaSessionRequest = Request & { dmaSession?: SessionModel };
+export type DmaSessionRequest = Request & { dmaSession?: BackEndSession };
 
 @Injectable()
 export class SessionCookieMiddleware implements NestMiddleware {
@@ -21,7 +21,7 @@ export class SessionCookieMiddleware implements NestMiddleware {
 
         if (cookie) {
             try {
-                request.dmaSession = (await this.sessionService.findById(cookie)) as unknown as SessionModel;
+                request.dmaSession = await this.sessionService.findById(cookie);
             } catch (error) {
                 this.loggerService.warn('Failed to set Session for Request');
             }

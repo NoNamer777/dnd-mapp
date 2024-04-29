@@ -1,12 +1,12 @@
 import { createId } from '@paralleldrive/cuid2';
-import { SessionModel } from '../../../../src';
+import { Session } from '../../../../src';
 
-interface SessionDB {
-    [id: string]: SessionModel;
+interface SessionDB<T extends Session> {
+    [id: string]: T;
 }
 
-class MockSessionDB {
-    private db: SessionDB;
+class MockSessionDB<T extends Session> {
+    private db: SessionDB<T>;
 
     constructor() {
         this.reset();
@@ -20,7 +20,7 @@ class MockSessionDB {
         return Object.values(this.db).find((session) => session.id === id) ?? null;
     }
 
-    create(data: SessionModel) {
+    create(data: T) {
         data.id = createId();
 
         this.db[data.id] = data;
@@ -31,7 +31,7 @@ class MockSessionDB {
         delete this.db[id];
     }
 
-    update(session: SessionModel) {
+    update(session: T) {
         this.db[session.id] = session;
         return session;
     }
