@@ -45,10 +45,10 @@ export class SessionController {
             sameSite: 'strict',
             secure: true,
             signed: true,
-            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1_000),
+            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1_000), // Expires in 7 days (same as the refresh token)
         });
 
-        return { data: { ...session }, state: state };
+        return { data: session, state: state };
     }
 
     @UseGuards(HasSessionGuard)
