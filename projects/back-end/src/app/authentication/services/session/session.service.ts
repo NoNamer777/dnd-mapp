@@ -1,6 +1,6 @@
 import { SessionBuilder, SessionModel } from '@dnd-mapp/data';
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import * as crypto from 'crypto';
+import * as crypto from 'node:crypto';
 import { LoggerService } from '../../../common';
 import { SessionRepository } from '../../repositories';
 import { TokenService } from '../token';

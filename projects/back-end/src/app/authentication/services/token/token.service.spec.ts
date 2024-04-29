@@ -47,7 +47,7 @@ describe('TokenService', () => {
     });
 
     it('should generate tokens for a User', async () => {
-        const session = mockSessionDB.create(new SessionBuilder().withId().withAuthorizationCode().build());
+        const session = mockSessionDB.create(new SessionBuilder().withAuthorizationCode().build());
         const { tokenService } = await setupTest();
 
         expect(mockTokenDB.findAllTokensForUser(defaultUser.id)).toHaveLength(0);
@@ -57,7 +57,7 @@ describe('TokenService', () => {
     });
 
     it('should not generate tokens for a User when Session has no Authorization code', async () => {
-        const session = mockSessionDB.create(new SessionBuilder().withId().build());
+        const session = mockSessionDB.create(new SessionBuilder().build());
         const { tokenService } = await setupTest();
 
         expect(mockTokenDB.findAllTokensForUser(defaultUser.id)).toHaveLength(0);
@@ -69,7 +69,7 @@ describe('TokenService', () => {
     });
 
     it(`should revoke active tokens for a User's Session when generating new tokens`, async () => {
-        const session = mockSessionDB.create(new SessionBuilder().withId().withAuthorizationCode().build());
+        const session = mockSessionDB.create(new SessionBuilder().withAuthorizationCode().build());
         const { tokenService } = await setupTest();
 
         await tokenService.generateTokensForUser(defaultUser.id, session);
@@ -82,7 +82,7 @@ describe('TokenService', () => {
     });
 
     it('should remove excess tokens when number of existing User tokens exceeds max tokens limit', async () => {
-        const session = mockSessionDB.create(new SessionBuilder().withId().withAuthorizationCode().build());
+        const session = mockSessionDB.create(new SessionBuilder().withAuthorizationCode().build());
         const { tokenService } = await setupTest({ maxTokens: 4 });
 
         // Generate 8 tokens at least
@@ -95,7 +95,7 @@ describe('TokenService', () => {
     });
 
     it(`should retrieve tokens for a User's Session JWT encoded`, async () => {
-        const session = mockSessionDB.create(new SessionBuilder().withId().withAuthorizationCode().build());
+        const session = mockSessionDB.create(new SessionBuilder().withAuthorizationCode().build());
         const { tokenService } = await setupTest();
 
         await tokenService.generateTokensForUser(defaultUser.id, session);
