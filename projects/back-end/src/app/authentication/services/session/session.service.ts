@@ -1,5 +1,5 @@
 import { SessionBuilder, SessionModel } from '@dnd-mapp/data';
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import * as crypto from 'node:crypto';
 import { LoggerService } from '../../../common';
 import { SessionRepository } from '../../repositories';
@@ -39,7 +39,7 @@ export class SessionService {
         if (challengeFromVerifier !== session.codeChallenge) {
             this.logger.warn(`Code challenge validation failed for Session: '${session.id}'`);
             await this.resetAuthorization(session);
-            throw new ForbiddenException();
+            throw new BadRequestException();
         }
     }
 
@@ -49,7 +49,7 @@ export class SessionService {
         if (!session.validAuthorizationCode(authorizationCode)) {
             this.logger.warn(`Authorization code validation failed for Session: '${session.id}'`);
             await this.resetAuthorization(session);
-            throw new ForbiddenException();
+            throw new BadRequestException();
         }
     }
 

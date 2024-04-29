@@ -27,7 +27,7 @@ import {
     TokenQueryParams,
     TokenRequest,
 } from '../models';
-import { AuthenticationService, TokenService } from '../services';
+import { AuthenticationService, SessionService, TokenService, UserService } from '../services';
 
 @Throttle({ default: { limit: 15, ttl: 60_000 } })
 @UseGuards(HasSessionGuard)
@@ -36,6 +36,8 @@ export class AuthenticationController {
     constructor(
         private readonly authenticationService: AuthenticationService,
         private readonly tokenService: TokenService,
+        private readonly sessionService: SessionService,
+        private readonly userService: UserService,
         private readonly logger: LoggerService
     ) {
         logger.setContext(AuthenticationController.name);
@@ -47,7 +49,7 @@ export class AuthenticationController {
         @Req() request: DmaSessionRequest
     ): Promise<AuthorizationCodeResponse> {
         this.logger.log(`Received request to generate authorization code for Session: '${request.dmaSession.id}'`);
-        const authorizationCode = await this.authenticationService.generateAuthorizationCode(request.dmaSession);
+        const authorizationCode = await this.sessionService.generateAuthorizationCode(request.dmaSession);
 
         return { state: requestBody.state, data: { authorizationCode } };
     }
@@ -60,7 +62,8 @@ export class AuthenticationController {
         this.logger.log(`Received request to persist code challenge for Session: '${request.dmaSession.id}'`);
         const { codeChallenge, state } = requestBody;
 
-        await this.authenticationService.storeCodeChallenge(request.dmaSession, codeChallenge);
+        request.dmaSession.codeChallenge = codeChallenge;
+        await this.sessionService.update(request.dmaSession);
 
         return {
             state: state,
@@ -77,7 +80,7 @@ export class AuthenticationController {
     @Post('/sign-out')
     async logout(@Req() request: AuthenticatedRequest) {
         this.logger.log('Receiving a request to log out a User');
-        await this.authenticationService.logout(request.user.id, request.dmaSession.id);
+        await this.tokenService.revokeTokensForUserSession(request.user.id, request.dmaSession.id);
     }
 
     @Post('/sign-up')
@@ -85,7 +88,7 @@ export class AuthenticationController {
     @UseInterceptors(ClassSerializerInterceptor)
     async signup(@Body() userData: SignUpRequest, @Res({ passthrough: true }) response: Response) {
         this.logger.log('Received a request to register a new User');
-        const user = await this.authenticationService.signup(userData);
+        const user = await this.userService.create({ ...userData, roles: [] });
 
         response.header('Location', `${backEndServerAddress}/server/api/user/${user.id}`);
 
@@ -120,8 +123,6 @@ export class AuthenticationController {
                     `You must provide a refresh token in order to generate a new token pair using the grant type 'refreshToken'`
                 );
             }
-            await this.tokenService.generateTokensForUser(user.id, request.dmaSession);
-
             tokens = await this.authenticationService.getTokensForSession(request.dmaSession, user.username);
         }
 

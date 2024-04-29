@@ -1,7 +1,7 @@
 import { mockLoggingServiceProvider, mockSessionProviders, mockTokenModuleProviders } from '@dnd-mapp/back-end/testing';
 import { SessionBuilder } from '@dnd-mapp/data';
 import { mockSessionDB } from '@dnd-mapp/data/testing';
-import { ForbiddenException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { createId } from '@paralleldrive/cuid2';
 import * as crypto from 'node:crypto';
@@ -110,7 +110,9 @@ describe('SessionService', () => {
 
             const { service } = await setupTest();
 
-            await expect(service.verifyCodeChallenge(session, 'my code challenge')).rejects.toThrow(ForbiddenException);
+            await expect(service.verifyCodeChallenge(session, 'my code challenge')).rejects.toThrow(
+                BadRequestException
+            );
             session = mockSessionDB.findOneById(session.id);
 
             expect(session.codeChallenge).toBeNull();
@@ -130,7 +132,7 @@ describe('SessionService', () => {
             const { service } = await setupTest();
 
             await expect(service.verifyAuthorizationCode(session, 'random invalid code')).rejects.toThrow(
-                ForbiddenException
+                BadRequestException
             );
 
             session = mockSessionDB.findOneById(session.id);
@@ -148,7 +150,7 @@ describe('SessionService', () => {
             const { service } = await setupTest();
 
             await expect(service.verifyAuthorizationCode(session, session.authorizationCode)).rejects.toThrow(
-                ForbiddenException
+                BadRequestException
             );
 
             session = mockSessionDB.findOneById(session.id);

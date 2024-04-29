@@ -27,6 +27,7 @@ export class TokenService {
     }
 
     async generateTokensForUser(userId: string, session: SessionModel) {
+        // TODO: Check whether the Authorization code has been validated
         if (!session.authorizationCode) {
             throw new ForbiddenException(`You're not allowed to generate tokens. Login required`);
         }
