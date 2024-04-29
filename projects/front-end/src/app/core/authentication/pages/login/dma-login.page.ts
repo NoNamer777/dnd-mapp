@@ -13,7 +13,7 @@ import {
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { DmaButtonComponent, DmaIconComponent, DmaInputComponent } from '@dnd-mapp/shared-components';
 import { BehaviorSubject, finalize, map, merge, Observable, Subject, takeUntil } from 'rxjs';
-import { DmaAuthenticationService } from '../../services';
+import { AuthenticationService } from '../../services';
 
 const INVALID_CREDENTIALS_STATUS_CODE = [400, 404];
 
@@ -34,7 +34,7 @@ const INVALID_CREDENTIALS_STATUS_CODE = [400, 404];
     ],
 })
 export class DmaLoginPage implements OnDestroy {
-    private readonly authenticationService = inject(DmaAuthenticationService);
+    private readonly authenticationService = inject(AuthenticationService);
     private readonly router = inject(Router);
     private readonly route = inject(ActivatedRoute);
 

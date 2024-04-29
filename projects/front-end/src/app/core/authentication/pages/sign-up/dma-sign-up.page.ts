@@ -7,7 +7,7 @@ import { DmaButtonComponent, DmaIconComponent, DmaInputComponent } from '@dnd-ma
 import { BehaviorSubject, finalize, Subject, takeUntil } from 'rxjs';
 import { NotificationService, PasswordFormControlComponent } from '../../../../shared';
 import { swipeInOutAnimation } from '../../animations';
-import { DmaAuthenticationService } from '../../services';
+import { AuthenticationService } from '../../services';
 import { emailValidator, passwordValidator } from './validators';
 
 @Component({
@@ -28,7 +28,7 @@ import { emailValidator, passwordValidator } from './validators';
     ],
 })
 export class DmaSignUpPage implements OnDestroy {
-    private readonly authenticationService = inject(DmaAuthenticationService);
+    private readonly authenticationService = inject(AuthenticationService);
     private readonly notificationService = inject(NotificationService);
 
     private readonly destroy$ = new Subject<void>();

@@ -4,19 +4,15 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideRouter } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { ConfigService, SessionService, backEndErrorInterceptor } from '../../shared';
-import { DmaAuthenticationService, authorizationInterceptor, refreshInterceptor } from '../authentication';
+import { AuthenticationService, authorizationInterceptor, refreshInterceptor } from '../authentication';
 import { appRoutes } from './app.routes';
 import { provideErrorHandler } from './dma-error-handler.service';
 
 const initializeConfigServiceProvider: FactoryProvider = {
     provide: APP_INITIALIZER,
-    deps: [ConfigService, SessionService, DmaAuthenticationService],
+    deps: [ConfigService, SessionService, AuthenticationService],
     useFactory:
-        (
-            configService: ConfigService,
-            sessionService: SessionService,
-            authenticationService: DmaAuthenticationService
-        ) =>
+        (configService: ConfigService, sessionService: SessionService, authenticationService: AuthenticationService) =>
         async () => {
             await firstValueFrom(configService.initialize());
 

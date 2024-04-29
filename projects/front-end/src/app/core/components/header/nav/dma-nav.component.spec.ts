@@ -7,7 +7,7 @@ import { UserModel } from '@dnd-mapp/data';
 import { defaultUser } from '@dnd-mapp/data/testing';
 import { DmaNavHarness } from '@dnd-mapp/front-end/testing';
 import { BehaviorSubject } from 'rxjs';
-import { DmaAuthenticationService } from '../../../authentication';
+import { AuthenticationService } from '../../../authentication';
 import { DmaNavComponent } from './dma-nav.component';
 
 describe('DmaNavigationComponent', () => {
@@ -22,7 +22,7 @@ describe('DmaNavigationComponent', () => {
     }
 
     const authenticationServiceProvider = {
-        provide: DmaAuthenticationService,
+        provide: AuthenticationService,
         useClass: MockAuthenticationService,
     };
 
@@ -33,7 +33,7 @@ describe('DmaNavigationComponent', () => {
             declarations: [TestComponent],
         });
 
-        const authenticationService = TestBed.inject(DmaAuthenticationService) as MockAuthenticationService;
+        const authenticationService = TestBed.inject(AuthenticationService) as MockAuthenticationService;
         authenticationService.authenticatedUser$ = new BehaviorSubject<UserModel>(
             params?.authenticated ? defaultUser : null
         );

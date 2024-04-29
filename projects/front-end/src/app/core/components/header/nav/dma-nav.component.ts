@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, DestroyRef, inject, NgZone } from '
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { DmaIconComponent } from '@dnd-mapp/shared-components';
-import { DmaAuthenticationService } from '../../../authentication';
+import { AuthenticationService } from '../../../authentication';
 import { DmaNavButtonComponent } from './nav-button/dma-nav-button.component';
 import { DmaNavLinkComponent } from './nav-link/dma-nav-link.component';
 import { DmaNavbarBrandComponent } from './navbar-brand/dma-navbar-brand.component';
@@ -25,7 +25,7 @@ import { DmaNavbarMenuComponent } from './navbar-menu/dma-navbar-menu.component'
     ],
 })
 export class DmaNavComponent {
-    private readonly authenticationService = inject(DmaAuthenticationService);
+    private readonly authenticationService = inject(AuthenticationService);
     private readonly router = inject(Router);
     private readonly ngZone = inject(NgZone);
     private readonly destroyRef = inject(DestroyRef);

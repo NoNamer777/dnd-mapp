@@ -1,15 +1,15 @@
 import { provideHttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { DmaAuthenticationService } from './dma-authentication.service';
+import { AuthenticationService } from './authentication.service';
 
-describe('DmaAuthenticationService', () => {
+describe('AuthenticationService', () => {
     function setupTest() {
         TestBed.configureTestingModule({
-            providers: [provideHttpClient(), DmaAuthenticationService],
+            providers: [provideHttpClient(), AuthenticationService],
         });
 
         return {
-            service: TestBed.inject(DmaAuthenticationService),
+            service: TestBed.inject(AuthenticationService),
         };
     }
 

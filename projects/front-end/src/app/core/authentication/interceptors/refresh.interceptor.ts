@@ -2,10 +2,10 @@ import { HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { BackEndError } from '@dnd-mapp/data';
 import { Observable, catchError, switchMap } from 'rxjs';
-import { DmaAuthenticationService } from '../services';
+import { AuthenticationService } from '../services';
 
 export function refreshInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn) {
-    const authenticationService = inject(DmaAuthenticationService);
+    const authenticationService = inject(AuthenticationService);
 
     return next(request).pipe(
         catchError((error) => {
