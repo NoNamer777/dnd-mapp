@@ -71,6 +71,7 @@ export class AuthenticationController {
     }
 
     @Post('/login')
+    @HttpCode(HttpStatus.OK)
     async login(@Body() user: LoginRequest) {
         this.logger.log(`Received a request to authenticate User with username: '${user.username}'`);
         await this.authenticationService.login(user);
