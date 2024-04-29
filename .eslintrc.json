@@ -60,7 +60,7 @@
                             },
                             {
                                 "sourceTag": "@dnd-mapp/data",
-                                "allowedExternalImports": ["@paralleldrive/cuid2", "class-validator", "class-transformer"]
+                                "allowedExternalImports": ["@paralleldrive/cuid2", "class-validator", "class-transformer", "jest"]
                             }
                         ]
                     }

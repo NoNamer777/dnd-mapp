@@ -22,19 +22,17 @@
         },
         "test": {
             "executor": "@nx/jest:jest",
-            "outputs": ["{options.coverageDirectory}"],
+            "outputs": ["{workspaceRoot}/coverage/data"],
             "options": {
-                "codeCoverage": true,
-                "colors": true,
-                "coverageReporters": ["html", "text-summary"],
-                "coverageDirectory": "coverage/data",
                 "jestConfig": "projects/data/jest.config.ts"
             },
             "defaultConfiguration": "ci",
             "configurations": {
                 "dev": {
-                    "onlyChanged": false,
                     "watchAll": true
+                },
+                "ci": {
+                    "ci": true
                 }
             }
         },

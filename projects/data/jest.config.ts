@@ -1,11 +1,29 @@
-/* eslint-disable */
-export default {
-    collectCoverageFrom: ['./src/**/*', '!./**/index.ts'],
+import type { Config } from 'jest';
+
+const config: Config = {
+    collectCoverage: true,
+    collectCoverageFrom: ['src/**/*.ts', '!**/index.ts'],
+    coverageDirectory: '../../coverage/data-end',
+    coverageReporters: ['html', 'text-summary'],
+    coverageThreshold: {
+        global: {
+            branches: 80,
+            functions: 80,
+            lines: 80,
+            statements: 80,
+        },
+    },
     displayName: 'data',
-    moduleFileExtensions: ['ts', 'js', 'html'],
+    moduleFileExtensions: ['ts', 'js'],
+    onlyChanged: false,
     preset: '../../jest.preset.js',
-    setupFiles: ['./src/setup-test.ts'],
+    rootDir: './',
+    setupFilesAfterEnv: ['./src/test.ts'],
+    testMatch: ['**/*.spec.ts'],
+    testEnvironment: 'node',
     transform: {
-        '^.+\\.[tj]s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
+        '^.+\\.(ts|js)$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
     },
 };
+
+export default config;

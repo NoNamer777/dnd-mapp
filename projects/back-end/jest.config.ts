@@ -15,6 +15,14 @@ const config: Config = {
     ],
     coverageDirectory: '../../coverage/back-end',
     coverageReporters: ['html', 'text-summary'],
+    coverageThreshold: {
+        global: {
+            branches: 80,
+            functions: 80,
+            lines: 80,
+            statements: 80,
+        },
+    },
     displayName: 'back-end',
     moduleFileExtensions: ['ts', 'js'],
     onlyChanged: false,
