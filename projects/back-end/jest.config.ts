@@ -8,6 +8,7 @@ const config: Config = {
         '!**/*.repository.ts',
         '!**/*.module.ts',
         '!**/*.filter.ts',
+        '!**/*.guard.ts',
         '!**/index.ts',
         '!**/common/**/*',
         '!**/config/**/*',
