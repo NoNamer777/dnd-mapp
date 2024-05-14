@@ -1,5 +1,5 @@
+import { resetDatabases } from '@dnd-mapp/data/testing';
 import { setupWorker, SetupWorker } from 'msw/browser';
-import { resetDBs } from '../db';
 import { handlers } from './handlers';
 
 let worker: SetupWorker;
@@ -22,8 +22,7 @@ export function setupMockServiceWorker() {
         stopWorker: () => worker.stop(),
         resetWorker: async () => {
             worker.resetHandlers();
-
-            resetDBs();
+            resetDatabases();
         },
     };
 }

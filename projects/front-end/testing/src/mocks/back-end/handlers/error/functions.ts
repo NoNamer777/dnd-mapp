@@ -3,7 +3,7 @@ import { HttpResponse } from 'msw';
 
 export function errorResponse(code: HttpResponseStatusCode, error: HttpResponseStatusText | string, message: string) {
     return HttpResponse.json(
-        { statusCode: code, error: error, message: message, timestamp: Date.now() },
+        { statusCode: code, error: error, message: message, timestamp: new Date() },
         { status: code, statusText: error }
     );
 }
