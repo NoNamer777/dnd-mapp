@@ -14,6 +14,7 @@ export class UserModel extends EntityModel {
     @IsNotEmpty()
     password: string;
 
+    @Exclude({ toPlainOnly: true })
     @IsString()
     @IsNotEmpty()
     @IsEmail()
