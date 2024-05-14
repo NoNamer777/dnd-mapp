@@ -1,4 +1,5 @@
 export const HttpResponseStatusCodes = {
+    UNKNOWN_ERROR: 0,
     // Successful responses
     OK: 200,
     CREATED: 201,
@@ -21,6 +22,7 @@ export const HttpResponseStatusCodes = {
 export type HttpResponseStatusCode = (typeof HttpResponseStatusCodes)[keyof typeof HttpResponseStatusCodes];
 
 export const HttpResponseStatusTexts = {
+    UNKNOWN_ERROR: 'Unknown Error',
     // Successful responses
     OK: 'OK',
     CREATED: 'Created',
