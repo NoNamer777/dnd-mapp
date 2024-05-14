@@ -25,6 +25,15 @@ export class TokenData {
 }
 
 export class TokenModel {
+    static getJwtPayload = (token: TokenModel) => ({
+        jti: token.jti,
+        sub: token.subject,
+        ses: token.sessionId,
+        nbf: Math.floor(token.notBefore.getTime() / 1_000),
+        iat: Math.floor(token.issuedAt.getTime() / 1_000),
+        exp: Math.floor(token.expiresAt.getTime() / 1_000),
+    });
+
     @IsString()
     @IsNotEmpty()
     jti: string = null;
@@ -58,15 +67,6 @@ export class TokenModel {
         if (!this.issuedAt) return;
         this.expiresAt = new Date(this.issuedAt.getTime() + TOKEN_EXPIRATION_TIME_PER_TYPE[this.type]);
     }
-
-    getJwtPayload = () => ({
-        jti: this.jti,
-        sub: this.subject,
-        ses: this.sessionId,
-        nbf: Math.floor(this.notBefore.getTime() / 1_000),
-        iat: Math.floor(this.issuedAt.getTime() / 1_000),
-        exp: Math.floor(this.expiresAt.getTime() / 1_000),
-    });
 }
 
 export class TokenModelBuilder {

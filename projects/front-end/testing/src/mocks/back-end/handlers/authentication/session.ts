@@ -8,11 +8,19 @@ import { errorResponse } from '../error';
 const basePath = `${baseBackEndURL}/session`;
 
 export const sessionHandlers = [
-    http.post<PathParams, { state: string }>(basePath, async ({ request }) => {
+    http.post<PathParams, { state: string }>(basePath, async ({ request, cookies }) => {
         const { state } = await request.json();
-        const session = mockSessionDB.create(new SessionBuilder().build());
+        const sessionId = cookies['SESSION'];
 
-        return HttpResponse.json({ data: { ...session }, state: state });
+        let session = mockSessionDB.findOneById(sessionId);
+
+        if (!session) {
+            session = mockSessionDB.create(new SessionBuilder().build());
+        }
+        return HttpResponse.json(
+            { data: { ...session }, state: state },
+            { headers: { 'Set-Cookie': `SESSION=${session.id}; HttpOnly; SameSite=Strict;` } }
+        );
     }),
 
     http.delete(basePath + '/:sessionId', ({ params }) => {

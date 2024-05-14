@@ -4,6 +4,7 @@ import { TokenModel } from '../token/token.model';
 
 export class SessionTokens {
     access?: string | TokenModel;
+
     refresh?: string | TokenModel;
 }
 
