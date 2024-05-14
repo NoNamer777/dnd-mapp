@@ -14,7 +14,7 @@ export const helmetConfig: HelmetOptions = {
             // TODO: Replace `'unsafe-inline'` with `'nonce-xxx'` once a good way to add nonce values to each request for requested style resources has been established
             'style-src': [`'self'`, `'unsafe-inline'`],
             'font-src': [`'self'`, 'https://fonts.gstatic.com'],
-            'img-src': [`'self'`, 'data:'],
+            'img-src': [`'self'`],
             'object-src': [`'none'`],
             'form-action': [`'none'`],
         },
