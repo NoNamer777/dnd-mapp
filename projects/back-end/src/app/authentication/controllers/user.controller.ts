@@ -19,6 +19,7 @@ import { HasSessionGuard, IsOwnerOrAdminGuard } from '../guards';
 import { UserService } from '../services';
 
 @UseGuards(HasSessionGuard, IsOwnerOrAdminGuard)
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('api/user')
 export class UserController {
     constructor(
@@ -29,14 +30,12 @@ export class UserController {
     }
 
     @Get()
-    @UseInterceptors(ClassSerializerInterceptor)
     async getAll() {
         this.logger.log('Received request for getting all Users');
         return await this.userService.findAll();
     }
 
     @Post()
-    @UseInterceptors(ClassSerializerInterceptor)
     async create(@Body() data: CreateUserData) {
         this.logger.log('Received request for creating a new User');
         return await this.userService.create(data);
