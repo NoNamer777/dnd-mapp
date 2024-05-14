@@ -1,5 +1,5 @@
 import { createId } from '@paralleldrive/cuid2';
-import { Session } from '../../../../src';
+import { Session, SessionBuilder } from '../../../../src';
 
 interface SessionDB<T extends Session> {
     [id: string]: T;
@@ -37,8 +37,14 @@ class MockSessionDB<T extends Session> {
     }
 
     reset() {
-        this.db = {};
+        defaultSession = new SessionBuilder().withId().build();
+
+        this.db = {
+            [defaultSession.id]: defaultSession as T,
+        };
     }
 }
+
+export let defaultSession: Session;
 
 export const mockSessionDB = new MockSessionDB();
