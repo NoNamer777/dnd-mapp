@@ -11,7 +11,7 @@ interface RequestOptions {
 type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 @Injectable({ providedIn: 'root' })
-export class DmaHttpRequestService {
+export class HttpRequestService {
     private readonly configService = inject(ConfigService);
 
     private readonly httpClient = inject(HttpClient);
