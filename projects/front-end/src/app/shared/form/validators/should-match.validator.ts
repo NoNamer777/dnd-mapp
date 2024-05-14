@@ -23,7 +23,7 @@ export function shouldMatchValidator(controlNameA: string, controlNameB: string)
     return (form: AbstractControl) => {
         const controlA = form.get(controlNameA)!;
         const controlB = form.get(controlNameB)!;
-        const errorName = `shouldMatch`;
+        const errorName = 'shouldMatch';
 
         let message = formatControlName(controlNameA);
         message += ' should match ';
