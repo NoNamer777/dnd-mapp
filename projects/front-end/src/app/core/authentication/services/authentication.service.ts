@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { CreateUserData, TokenData, UserModel } from '@dnd-mapp/data';
 import { createId } from '@paralleldrive/cuid2';
 import { BehaviorSubject, from, iif, map, switchMap, tap } from 'rxjs';
-import { DmaHttpRequestService, JWT_HELPER_SERVICE, SessionService, TextCodingService } from '../../../shared';
+import { HttpRequestService, JWT_HELPER_SERVICE, SessionService, TextCodingService } from '../../../shared';
 import { UserService } from '../../../user';
 
 interface AuthorizeResponse {
@@ -23,7 +23,7 @@ type SignUpResponse = Omit<UserModel, 'roles'>;
 export class AuthenticationService {
     readonly authenticatedUser$ = new BehaviorSubject<UserModel | null>(null);
 
-    private readonly requestService = inject(DmaHttpRequestService);
+    private readonly requestService = inject(HttpRequestService);
     private readonly textCodingService = inject(TextCodingService);
     private readonly jwtService = inject(JWT_HELPER_SERVICE);
     private readonly sessionService = inject(SessionService);

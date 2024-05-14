@@ -1,8 +1,9 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { provideHttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { PasswordFromControlHarness } from '@dnd-mapp/front-end/testing';
+import { PasswordFromControlHarness, TEST_INITIALIZER, withInitializedConfig } from '@dnd-mapp/front-end/testing';
 import { PasswordFormControlComponent } from './password-form-control.component';
 
 describe('PasswordFormControlComponent', () => {
@@ -18,11 +19,14 @@ describe('PasswordFormControlComponent', () => {
     async function setupTestEnvironment() {
         TestBed.configureTestingModule({
             imports: [PasswordFormControlComponent, ReactiveFormsModule],
+            providers: [provideHttpClient(), withInitializedConfig()],
             declarations: [TestComponent],
         });
 
         const fixture = TestBed.createComponent(TestComponent);
         const harnessLoader = TestbedHarnessEnvironment.loader(fixture);
+
+        await TestBed.inject(TEST_INITIALIZER)();
 
         return {
             hostComponent: fixture.componentInstance,
