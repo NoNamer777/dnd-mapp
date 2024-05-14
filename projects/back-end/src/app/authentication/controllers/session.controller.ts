@@ -1,3 +1,4 @@
+import { TokenModel } from '@dnd-mapp/data';
 import {
     Body,
     ClassSerializerInterceptor,
@@ -10,16 +11,18 @@ import {
     UseGuards,
     UseInterceptors,
 } from '@nestjs/common';
+import { instanceToPlain } from 'class-transformer';
 import { Response } from 'express';
 import { DmaSessionRequest, LoggerService } from '../../common';
 import { HasSessionGuard } from '../guards';
 import { StateRequest } from '../models';
-import { SessionService } from '../services';
+import { SessionService, TokenService } from '../services';
 
 @Controller('/session')
 export class SessionController {
     constructor(
         private readonly sessionService: SessionService,
+        private readonly tokenService: TokenService,
         private readonly logger: LoggerService
     ) {
         this.logger.setContext(SessionController.name);
@@ -47,8 +50,11 @@ export class SessionController {
             signed: true,
             expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1_000), // Expires in 7 days (same as the refresh token)
         });
-
-        return { data: session, state: state };
+        if (session.tokens.access) {
+            session.tokens.access = await this.tokenService.encodeToken(session.tokens.access as TokenModel);
+            session.tokens.refresh = await this.tokenService.encodeToken(session.tokens.refresh as TokenModel);
+        }
+        return { data: instanceToPlain(session), state: state };
     }
 
     @UseGuards(HasSessionGuard)
