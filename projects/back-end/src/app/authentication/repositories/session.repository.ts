@@ -1,4 +1,4 @@
-import { TokenTypes } from '@dnd-mapp/data';
+import { SessionTokens, TokenTypes } from '@dnd-mapp/data';
 import { Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { DatabaseService } from '../../config';
@@ -23,10 +23,10 @@ export class SessionRepository {
 
         return plainToInstance(BackEndSession, {
             ...result,
-            tokens: {
+            tokens: plainToInstance(SessionTokens, {
                 access: result.tokens.find((token) => token.type === TokenTypes.ACCESS),
                 refresh: result.tokens.find((token) => token.type === TokenTypes.REFRESH),
-            },
+            }),
         });
     }
 

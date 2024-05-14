@@ -1,4 +1,4 @@
-import { TokenModelBuilder, TokenType, TokenTypes } from '@dnd-mapp/data';
+import { SessionTokens, TokenModel, TokenModelBuilder, TokenTypes } from '@dnd-mapp/data';
 import { ForbiddenException, Inject, Injectable, ValueProvider } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { LoggerService, backEndServerAddress } from '../../../common';
@@ -63,18 +63,22 @@ export class TokenService {
     async getEncodedTokensForUserSession(userId: string, sessionId: string) {
         this.loggerService.log(`Retrieving JWT encoded tokens for User ${userId} for Session ${sessionId}`);
         const tokens = await this.tokenRepository.findActiveTokensForUserOnSession(userId, sessionId);
-        const signedTokens = {} as Record<TokenType, string>;
+        const signedTokens = new SessionTokens();
 
         for (const token of tokens) {
-            signedTokens[token.type] = await this.jwtService.signAsync(
-                { ...token.getJwtPayload() },
-                {
-                    audience: [backEndServerAddress],
-                    issuer: backEndServerAddress,
-                }
-            );
+            signedTokens[token.type.toLowerCase()] = await this.encodeToken(token);
         }
         return signedTokens;
+    }
+
+    async encodeToken(token: TokenModel) {
+        return await this.jwtService.signAsync(
+            { ...TokenModel.getJwtPayload(token) },
+            {
+                audience: [backEndServerAddress],
+                issuer: backEndServerAddress,
+            }
+        );
     }
 
     async revokeTokensForUserSession(userId: string, sessionId: string) {

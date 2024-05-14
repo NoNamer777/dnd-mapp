@@ -1,4 +1,4 @@
-import { TokenType, TokenTypes } from '@dnd-mapp/data';
+import { SessionTokens } from '@dnd-mapp/data';
 import {
     Body,
     ClassSerializerInterceptor,
@@ -107,7 +107,7 @@ export class AuthenticationController {
         const { authorizationCode, codeVerifier, username } = requestBody;
         const { grantType } = queryParams;
 
-        let tokens: Record<TokenType, string>;
+        let tokens: SessionTokens;
 
         if (grantType === 'authorizationCode') {
             tokens = await this.authenticationService.getTokensForSession(
@@ -126,10 +126,6 @@ export class AuthenticationController {
             }
             tokens = await this.authenticationService.getTokensForSession(request.dmaSession, user.username);
         }
-
-        return {
-            [TokenTypes.ACCESS.toLowerCase()]: tokens[TokenTypes.ACCESS],
-            [TokenTypes.REFRESH.toLowerCase()]: tokens[TokenTypes.REFRESH],
-        };
+        return tokens;
     }
 }

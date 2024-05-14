@@ -1,3 +1,4 @@
+import { Session } from '@dnd-mapp/data';
 import { IsBase64, IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
 
 const tokenGrantType = {
@@ -55,6 +56,16 @@ export class CodeChallengeRequest extends StateRequest {
     @IsNotEmpty()
     @IsBase64()
     codeChallenge: string;
+}
+
+export class SessionResponse extends StateResponse {
+    data: Session;
+
+    constructor(state: string, session: Session) {
+        super();
+        this.state = state;
+        this.data = session;
+    }
 }
 
 export class AuthorizationCodeResponse extends StateResponse {
