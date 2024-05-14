@@ -3,16 +3,15 @@ import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
+    DestroyRef,
     HostBinding,
     inject,
     Input,
     NgZone,
-    OnDestroy,
 } from '@angular/core';
-import { interval, Subject, take, takeUntil } from 'rxjs';
-import { notificationLifetime } from '../../models';
-
-const intervalTime = 10;
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { interval, take } from 'rxjs';
+import { intervalTime, notificationLifetime } from '../../models';
 
 @Component({
     selector: 'dma-lifetime-bar',
@@ -21,11 +20,9 @@ const intervalTime = 10;
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
 })
-export class lifetimeBarComponent implements AfterViewInit, OnDestroy {
-    private readonly destroy$ = new Subject<void>();
-
+export class LifetimeBarComponent implements AfterViewInit {
+    private readonly destroyRef = inject(DestroyRef);
     private readonly ngZone = inject(NgZone);
-
     private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
     private progress = 0;
@@ -38,7 +35,7 @@ export class lifetimeBarComponent implements AfterViewInit, OnDestroy {
 
     ngAfterViewInit() {
         interval(intervalTime)
-            .pipe(take(notificationLifetime / intervalTime + 1), takeUntil(this.destroy$))
+            .pipe(take(notificationLifetime / intervalTime), takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (sequence) =>
                     this.ngZone.run(() => {
@@ -48,10 +45,5 @@ export class lifetimeBarComponent implements AfterViewInit, OnDestroy {
                         this.changeDetectorRef.markForCheck();
                     }),
             });
-    }
-
-    ngOnDestroy() {
-        this.destroy$.next();
-        this.destroy$.complete();
     }
 }

@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, HostBinding, Input, OnDestroy } from '@angular/core';
-import { Subject } from 'rxjs';
+import { ChangeDetectionStrategy, Component, DestroyRef, HostBinding, inject, Input } from '@angular/core';
 import { NotificationPayload } from '../../models';
-import { lifetimeBarComponent } from '../lifetime-bar/lifetime-bar.component';
+import { LifetimeBarComponent } from '../lifetime-bar/lifetime-bar.component';
 import { appearAnimation } from './appear.animation';
 
 @Component({
@@ -12,19 +11,19 @@ import { appearAnimation } from './appear.animation';
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [appearAnimation],
     standalone: true,
-    imports: [CommonModule, lifetimeBarComponent],
+    imports: [CommonModule, LifetimeBarComponent],
 })
-export class NotificationComponent implements OnDestroy {
+export class NotificationComponent {
     @Input() payload: NotificationPayload;
 
     @HostBinding('@appear') protected appear = true;
+
+    readonly destroyRef = inject(DestroyRef);
 
     @HostBinding('class')
     get notificationType() {
         return `${this.payload.type}-notification`;
     }
-
-    readonly destroy$ = new Subject<void>();
 
     get typeToBackground() {
         switch (this.payload.type) {
@@ -33,10 +32,5 @@ export class NotificationComponent implements OnDestroy {
             default:
                 return 'var(--error)';
         }
-    }
-
-    ngOnDestroy() {
-        this.destroy$.next();
-        this.destroy$.complete();
     }
 }
