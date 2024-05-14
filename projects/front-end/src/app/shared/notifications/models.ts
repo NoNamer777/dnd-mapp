@@ -13,3 +13,6 @@ export interface NotificationPayload {
 }
 
 export const notificationLifetime = 8_000;
+
+/** Update frequency of the lifetime bar */
+export const intervalTime = 10;
