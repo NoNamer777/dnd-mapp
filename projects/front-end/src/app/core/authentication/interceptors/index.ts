@@ -1,2 +1,2 @@
-export * from './authorization.interceptor';
-export * from './refresh.interceptor';
+export * from './authorization/authorization.interceptor';
+export * from './refresh/refresh.interceptor';

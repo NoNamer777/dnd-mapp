@@ -1,11 +1,11 @@
 import { HttpHandlerFn, HttpRequest } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { SessionService } from '../../../shared';
+import { SessionService } from '../../../../shared';
 
 export function authorizationInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn) {
     const sessionService = inject(SessionService);
 
-    if (!sessionService.session$.value?.tokens) {
+    if (!sessionService.session$.value?.tokens.access) {
         return next(request);
     }
     const token = request.url.includes('token?grantType=refreshToken')
