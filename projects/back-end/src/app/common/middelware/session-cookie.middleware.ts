@@ -1,7 +1,6 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request } from 'express';
-import { SessionService } from '../../authentication';
-import { BackEndSession } from '../../authentication/entities';
+import { BackEndSession, SessionService } from '../../authentication';
 import { LoggerService } from '../logging';
 
 export type DmaSessionRequest = Request & { dmaSession?: BackEndSession };
