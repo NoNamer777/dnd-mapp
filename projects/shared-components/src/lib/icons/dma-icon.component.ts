@@ -37,6 +37,7 @@ export class DmaIconComponent {
     ) {}
 
     private async getIconTemplate() {
+        // TODO: Keeps making requests, would be nice to cache the icons
         const response = await fetch(`../icons/${this.iconType}/dma-${this.icon}.icon.svg`);
 
         this.elementRef.nativeElement.innerHTML = await response.text();
