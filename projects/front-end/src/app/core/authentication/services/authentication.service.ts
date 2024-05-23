@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { CreateUserData, TokenData, UserModel } from '@dnd-mapp/data';
 import { createId } from '@paralleldrive/cuid2';
-import { BehaviorSubject, from, iif, map, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, from, iif, map, of, switchMap, tap } from 'rxjs';
 import { HttpRequestService, JWT_HELPER_SERVICE, SessionService, TextCodingService } from '../../../shared';
 import { UserService } from '../../../user';
 
@@ -97,6 +97,7 @@ export class AuthenticationService {
     }
 
     private setAuthentication(accessToken: string) {
+        if (!accessToken) return of(null);
         const decodedToken = this.jwtService.decodeToken<TokenData>(accessToken);
 
         return this.userService
