@@ -50,7 +50,7 @@ export class SessionController {
             signed: true,
             expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1_000), // Expires in 7 days (same as the refresh token)
         });
-        if (session.tokens.access) {
+        if (session.tokens?.access) {
             session.tokens.access = await this.tokenService.encodeToken(session.tokens.access as TokenModel);
             session.tokens.refresh = await this.tokenService.encodeToken(session.tokens.refresh as TokenModel);
         }
