@@ -1,5 +1,6 @@
-import { SessionBuilder, TokenModelBuilder } from '@dnd-mapp/data';
-import { defaultUser } from '@dnd-mapp/data/testing';
+import { TokenModelBuilder } from '@dnd-mapp/data';
+import { defaultSession, defaultUser } from '@dnd-mapp/data/testing';
+import { decode } from 'jsonwebtoken';
 
 describe('TokenModel', () => {
     it('should set expiration time based on token type', () => {
@@ -28,26 +29,42 @@ describe('TokenModel', () => {
         expect(token.expiresAt).toEqual(new Date(date.getTime() + 15 * 60 * 1_000));
     });
 
-    it('should return a JWT token payload', () => {
-        const session = new SessionBuilder().withId().build();
-        const date = new Date();
-
+    it('should encode the JWT token', () => {
+        const now = new Date();
         const token = new TokenModelBuilder()
             .withId()
-            .isIssuedAt(date)
-            .notBefore(date)
+            .withType('Access')
             .assignToUser(defaultUser.id)
-            .forSession(session.id)
+            .forSession(defaultSession.id)
+            .notBefore(now)
+            .isIssuedAt(now)
             .build();
-        const tokenJWTPayload = token.getJwtPayload();
 
-        expect(tokenJWTPayload).toEqual({
-            jti: token.jti,
-            sub: defaultUser.id,
-            ses: session.id,
-            iat: Math.floor(date.getTime() / 1_000),
-            nbf: Math.floor(date.getTime() / 1_000),
-            exp: Math.floor((date.getTime() + 15 * 60 * 1_000) / 1_000),
+        const secret = 'my-very-strong-and-capable-secret';
+
+        const encoded = token.encode({
+            issuer: 'https://localhost.dndmapp.net',
+            audience: ['https://localhost.dndmapp.net'],
+            secret: secret,
         });
+
+        expect(encoded).toEqual(expect.any(String));
+
+        const decoded = decode(encoded, { json: true });
+
+        expect(decoded).toEqual(
+            expect.objectContaining({
+                jti: expect.any(String),
+                sub: defaultUser.id,
+                ses: defaultSession.id,
+                iss: 'https://localhost.dndmapp.net',
+                aud: ['https://localhost.dndmapp.net'],
+                nbf: Math.floor(new Date(now.getTime()).getTime() / 1_000),
+                iat: Math.floor(new Date(now.getTime()).getTime() / 1_000),
+                exp: Math.floor(new Date(now.getTime() + 15 * 60 * 1_000).getTime() / 1_000),
+            })
+        );
+
+        console.log();
     });
 });

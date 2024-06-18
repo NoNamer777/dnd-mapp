@@ -1,8 +1,9 @@
 import { provideHttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
+import { firstValueFrom } from 'rxjs';
 import { AuthenticationService } from './authentication.service';
 
-describe('AuthenticationService', () => {
+fdescribe('AuthenticationService', () => {
     function setupTest() {
         TestBed.configureTestingModule({
             providers: [provideHttpClient(), AuthenticationService],
@@ -13,8 +14,11 @@ describe('AuthenticationService', () => {
         };
     }
 
-    it('should initialize', async () => {
+    it('should initialize with no User authenticated', async () => {
         const { service } = setupTest();
-        expect(service).toBeDefined();
+
+        await firstValueFrom(service.initialize(null));
+
+        expect(service.authenticatedUser$.value).toBeNull();
     });
 });
