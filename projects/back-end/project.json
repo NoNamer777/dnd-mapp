@@ -65,7 +65,7 @@
                         "prefix": "[back-end]:\t"
                     }
                 ],
-                "envFile": "projects/back-end/.env",
+                "envFile": ".env",
                 "color": true
             }
         },
