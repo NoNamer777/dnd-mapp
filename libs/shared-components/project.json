@@ -1,7 +1,7 @@
 {
     "name": "shared-components",
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
-    "sourceRoot": "projects/shared-components/src",
+    "sourceRoot": "libs/shared-components/src",
     "prefix": "dma",
     "tags": ["@dnd-mapp/shared-components"],
     "implicitDependencies": ["data"],
@@ -11,15 +11,15 @@
             "executor": "@nx/angular:ng-packagr-lite",
             "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
             "options": {
-                "project": "projects/shared-components/ng-package.json"
+                "project": "libs/shared-components/ng-package.json"
             },
             "defaultConfiguration": "prod",
             "configurations": {
                 "prod": {
-                    "tsConfig": "projects/shared-components/tsconfig.lib.prod.json"
+                    "tsConfig": "libs/shared-components/tsconfig.lib.prod.json"
                 },
                 "dev": {
-                    "tsConfig": "projects/shared-components/tsconfig.lib.json",
+                    "tsConfig": "libs/shared-components/tsconfig.lib.json",
                     "watch": true
                 }
             }
@@ -28,18 +28,18 @@
             "executor": "@angular-devkit/build-angular:karma",
             "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
             "options": {
-                "assets": ["projects/shared-components/src/assets"],
+                "assets": ["libs/shared-components/src/assets"],
                 "codeCoverage": true,
                 "codeCoverageExclude": ["**/testing/**/*", "**/*.module.ts", "**/index.ts"],
                 "inlineStyleLanguage": "scss",
-                "karmaConfig": "projects/shared-components/karma.conf.js",
+                "karmaConfig": "libs/shared-components/karma.conf.js",
                 "polyfills": ["zone.js", "zone.js/testing"],
                 "scripts": [],
                 "styles": [
-                    "projects/shared-components/src/assets/styles/theme-variables.scss",
-                    "projects/shared-components/src/assets/styles/font.scss"
+                    "libs/shared-components/src/assets/styles/theme-variables.scss",
+                    "libs/shared-components/src/assets/styles/font.scss"
                 ],
-                "tsConfig": "projects/shared-components/tsconfig.spec.json",
+                "tsConfig": "libs/shared-components/tsconfig.spec.json",
                 "watch": false
             },
             "defaultConfiguration": "ci",
@@ -59,21 +59,21 @@
             "executor": "@storybook/angular:build-storybook",
             "outputs": ["{options.outputDir}"],
             "options": {
-                "assets": ["projects/shared-components/src/assets"],
+                "assets": ["libs/shared-components/src/assets"],
                 "browserTarget": "shared-components:build-storybook",
                 "compodoc": false,
-                "configDir": "projects/shared-components/.storybook",
+                "configDir": "libs/shared-components/.storybook",
                 "outputDir": "dist/shared-components-sb",
-                "styles": ["projects/shared-components/.storybook/styling.scss"]
+                "styles": ["libs/shared-components/.storybook/styling.scss"]
             }
         },
         "storybook": {
             "executor": "@storybook/angular:start-storybook",
             "options": {
-                "assets": ["projects/shared-components/src/assets"],
+                "assets": ["libs/shared-components/src/assets"],
                 "browserTarget": "shared-components:build-storybook",
                 "compodoc": false,
-                "configDir": "projects/shared-components/.storybook",
+                "configDir": "libs/shared-components/.storybook",
                 "enableProdMode": true,
                 "host": "0.0.0.0",
                 "open": false,

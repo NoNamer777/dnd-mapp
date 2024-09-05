@@ -22,11 +22,11 @@ npm install
 
 Find the README's in the individual projects for more information and instructions.
 
-| Project name |                                        |
-| ------------ | -------------------------------------- |
-| Client       | [README](projects/front-end/README.md) |
-| Server       | [README](projects/back-end/README.md)  |
-| Data         | [README](projects/data/README.md)      |
+| Project name |                                    |
+| ------------ | ---------------------------------- |
+| Client       | [README](apps/front-end/README.md) |
+| Server       | [README](apps/back-end/README.md)  |
+| Data         | [README](libs/data/README.md)      |
 
 ## Enable SSL on your development environment
 

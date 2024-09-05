@@ -11,10 +11,10 @@
         "module": "ES2022",
         "moduleResolution": "Node",
         "paths": {
-            "@dnd-mapp/data": ["projects/data/src/index.ts"],
-            "@dnd-mapp/data/testing": ["projects/data/testing/index.ts"],
-            "@dnd-mapp/shared-components": ["projects/shared-components/src/index.ts"],
-            "@dnd-mapp/shared-components/testing": ["projects/shared-components/src/testing/index.ts"]
+            "@dnd-mapp/data": ["libs/data/src/index.ts"],
+            "@dnd-mapp/data/testing": ["libs/data/testing/index.ts"],
+            "@dnd-mapp/shared-components": ["libs/shared-components/src/index.ts"],
+            "@dnd-mapp/shared-components/testing": ["libs/shared-components/src/testing/index.ts"]
         },
         "rootDir": ".",
         "skipLibCheck": true,
