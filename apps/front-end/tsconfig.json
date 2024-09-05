@@ -4,14 +4,14 @@
     "include": [],
     "references": [
         {
-            "path": "./tsconfig.app.json",
+            "path": "./tsconfig.app.json"
         },
         {
-            "path": "./tsconfig.spec.json",
+            "path": "./tsconfig.spec.json"
         },
         {
-            "path": "./tsconfig.editor.json",
-        },
+            "path": "./tsconfig.editor.json"
+        }
     ],
     "compilerOptions": {
         "alwaysStrict": true,
@@ -30,12 +30,12 @@
         "strictPropertyInitialization": false,
         "target": "ES2022",
         "useDefineForClassFields": false,
-        "useUnknownInCatchVariables": true,
+        "useUnknownInCatchVariables": true
     },
     "angularCompilerOptions": {
         "enableI18nLegacyMessageIdFormat": false,
         "strictInjectionParameters": true,
         "strictInputAccessModifiers": true,
-        "strictTemplates": true,
-    },
+        "strictTemplates": true
+    }
 }

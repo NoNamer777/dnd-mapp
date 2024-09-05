@@ -1,7 +1,7 @@
 {
     "name": "data",
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
-    "sourceRoot": "projects/data/src",
+    "sourceRoot": "libs/data/src",
     "projectType": "library",
     "tags": ["@dnd-mapp/data"],
     "targets": {
@@ -9,10 +9,10 @@
             "executor": "@nx/js:tsc",
             "outputs": ["{options.outputPath}"],
             "options": {
-                "assets": ["projects/data/*.md"],
-                "main": "projects/data/src/index.ts",
+                "assets": ["libs/data/*.md"],
+                "main": "libs/data/src/index.ts",
                 "outputPath": "dist/data",
-                "tsConfig": "projects/data/tsconfig.lib.json"
+                "tsConfig": "libs/data/tsconfig.lib.json"
             },
             "configurations": {
                 "dev": {
@@ -28,7 +28,7 @@
                 "colors": true,
                 "coverageReporters": ["html", "text-summary"],
                 "coverageDirectory": "coverage/data",
-                "jestConfig": "projects/data/jest.config.ts"
+                "jestConfig": "libs/data/jest.config.ts"
             },
             "defaultConfiguration": "ci",
             "configurations": {

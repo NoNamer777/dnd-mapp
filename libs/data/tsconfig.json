@@ -4,11 +4,11 @@
     "include": [],
     "references": [
         {
-            "path": "./tsconfig.lib.json",
+            "path": "./tsconfig.lib.json"
         },
         {
-            "path": "./tsconfig.spec.json",
-        },
+            "path": "./tsconfig.spec.json"
+        }
     ],
     "compilerOptions": {
         "alwaysStrict": true,
@@ -29,6 +29,6 @@
         "strictPropertyInitialization": false,
         "target": "ES2022",
         "useDefineForClassFields": false,
-        "useUnknownInCatchVariables": true,
-    },
+        "useUnknownInCatchVariables": true
+    }
 }

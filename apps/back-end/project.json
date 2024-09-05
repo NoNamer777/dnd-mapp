@@ -1,7 +1,7 @@
 {
     "name": "back-end",
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
-    "sourceRoot": "projects/back-end/src",
+    "sourceRoot": "apps/back-end/src",
     "projectType": "application",
     "tags": ["@dnd-mapp/back-end"],
     "targets": {
@@ -9,20 +9,20 @@
             "executor": "@nx/webpack:webpack",
             "outputs": ["{options.outputPath}"],
             "options": {
-                "assets": ["projects/back-end/src/assets"],
+                "assets": ["apps/back-end/src/assets"],
                 "baseHref": "/",
                 "buildLibsFromSource": false,
                 "compiler": "tsc",
                 "extractLicenses": true,
                 "inspect": false,
-                "main": "projects/back-end/src/main.ts",
+                "main": "apps/back-end/src/main.ts",
                 "outputPath": "dist/back-end",
                 "scripts": [],
                 "styles": [],
                 "target": "node",
-                "tsConfig": "projects/back-end/tsconfig.app.json",
+                "tsConfig": "apps/back-end/tsconfig.app.json",
                 "vendor": true,
-                "webpackConfig": "projects/back-end/webpack.config.js"
+                "webpackConfig": "apps/back-end/webpack.config.js"
             },
             "defaultConfiguration": "prod",
             "configurations": {
@@ -77,7 +77,7 @@
                 "colors": true,
                 "coverageReporters": ["html", "text-summary"],
                 "coverageDirectory": "coverage/back-end",
-                "jestConfig": "projects/back-end/jest.config.ts",
+                "jestConfig": "apps/back-end/jest.config.ts",
                 "onlyChanged": false,
                 "testPathIgnorePatterns": ["./src/test.ts"],
                 "watch": false,

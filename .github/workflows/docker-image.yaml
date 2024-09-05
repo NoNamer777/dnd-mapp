@@ -35,7 +35,7 @@ jobs:
               uses: actions/checkout@v4
             - name: Setup front-end environments
               run: |
-                  echo '${{ vars.CLIENT_ENV_VARIABLES_PROD }}' > projects/front-end/src/environments/environment.prod.ts
+                  echo '${{ vars.CLIENT_ENV_VARIABLES_PROD }}' > apps/front-end/src/environments/environment.prod.ts
             - name: Extract metadata for Docker
               id: meta
               uses: docker/metadata-action@v5

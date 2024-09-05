@@ -44,7 +44,7 @@ jobs:
             - name: Check linting
               run: npx nx affected -t lint --no-agents
             - name: Create font-end client production environment file
-              run: echo "${{ vars.CLIENT_ENV_VARIABLES_PROD }}" > projects/front-end/src/environments/environment.prod.ts
+              run: echo "${{ vars.CLIENT_ENV_VARIABLES_PROD }}" > apps/front-end/src/environments/environment.prod.ts
             - name: Create builds
               run: npx nx affected -t build --no-agents
               env:
