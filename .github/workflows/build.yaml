@@ -1,4 +1,9 @@
 name: Build and Test
+on:
+    pull_request:
+    push:
+        branches:
+            - main
 # Needed for the main job to retrieve the appropriate SHAs when running on the main branch
 permissions:
     actions: read
@@ -6,11 +11,6 @@ permissions:
 concurrency:
     group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
     cancel-in-progress: true
-on:
-    pull_request:
-    push:
-        branches:
-            - main
 jobs:
     build-and-test:
         name: Build & Test
@@ -20,38 +20,22 @@ jobs:
               uses: actions/checkout@v4
               with:
                   fetch-depth: 0
-            - name: Restore cached dependencies
-              uses: actions/cache@v4
-              with:
-                  key: npm-dependencies-${{ hashFiles('package-lock.json') }}
-                  path: |
-                      node_modules
+
             - name: Setup Node
               uses: actions/setup-node@v4
               with:
                   node-version: 20
+                  cache: npm
+                  cache-dependency-path: ./package-lock.json
+
             - name: Install dependencies
               run: npm ci
-            - name: Start up Nx Cloud agents
-              run: npx nx-cloud start-ci-run --stop-agents-after "test"
+
             - name: Set Nx branch references
-              uses: nrwl/nx-set-shas@v3
-            - name: Track main branch
-              if: ${{ github.event_name == 'pull_request' }}
-              run: git branch --track main origin/main
+              uses: nrwl/nx-set-shas@v4
+
             - name: Check formatting
               run: npx nx-cloud record -- nx format:check
-            - name: Check linting
-              run: npx nx affected -t lint --no-agents
-            - name: Create font-end client production environment file
-              run: echo "${{ vars.CLIENT_ENV_VARIABLES_PROD }}" > apps/front-end/src/environments/environment.prod.ts
-            - name: Create builds
-              run: npx nx affected -t build --no-agents
-              env:
-                  JWT_SECRET: ${{ vars.JWT_SECRET }}
-                  COOKIE_SECRET: ${{ vars.COOKIE_SECRET }}
-            - name: Run tests
-              run: npx nx affected -t test --no-agents
-              env:
-                  JWT_SECRET: ${{ vars.JWT_SECRET }}
-                  COOKIE_SECRET: ${{ vars.COOKIE_SECRET }}
+
+            - name: Run checks
+              run: npx nx affected -t lint test build
