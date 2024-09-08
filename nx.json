@@ -2,7 +2,6 @@
     "$schema": "./node_modules/nx/schemas/nx-schema.json",
     "defaultBase": "origin/main",
     "nxCloudAccessToken": "NWY0ODgyMDQtZmNmMy00N2VjLThmNTgtYTVjNzczZDI0MThifHJlYWQ=",
-    "nxCloudUrl": "https://cloud.nx.app/orgs/652d34568d6b6eefee172c1a/workspaces/652d33657b380c294d0c048d",
     "useInferencePlugins": false,
     "workspaceLayout": {
         "appsDir": "apps",
