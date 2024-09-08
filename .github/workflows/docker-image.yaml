@@ -1,9 +1,9 @@
-# TODO: Create versioned images whenever a new tag is pushed to the repository and tag the last pushed version as the latest
 name: Build DnD-Mapp Docker image
 on:
-    push:
-        branches:
-            - main
+    workflow_call:
+#    push:
+#        branches:
+#            - main
 concurrency:
     group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
     cancel-in-progress: true
