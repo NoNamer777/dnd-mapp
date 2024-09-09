@@ -1,7 +1,6 @@
 {
     "extends": "./tsconfig.json",
     "include": ["src/**/*.ts"],
-    "exclude": [
-        "vite.config.mts", "vitest.config.ts", "src/**/*.spec.ts"],
+    "exclude": ["vite.config.mts", "vitest.config.ts", "src/**/*.spec.ts"],
     "compilerOptions": {}
 }
