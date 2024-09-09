@@ -16,19 +16,15 @@ node_modules
 !.vscode/extensions.json
 
 # Miscellaneous
-/.angular
-/coverage
+.angular/
+.nx/
+.vite/
+/reports
 
 # System Files
 .DS_Store
 Thumbs.db
 
-.angular
-
 # Configurations, environments and certificates
 .env*
-**/environment.*.ts
 certificate*.pem
-server-config.yaml
-
-.nx/
