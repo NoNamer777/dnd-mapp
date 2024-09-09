@@ -1,10 +1,29 @@
 {
     "$schema": "./node_modules/nx/schemas/nx-schema.json",
     "defaultBase": "origin/main",
+    "defaultProject": "authentication-server-ui",
     "nxCloudAccessToken": "NWY0ODgyMDQtZmNmMy00N2VjLThmNTgtYTVjNzczZDI0MThifHJlYWQ=",
     "useInferencePlugins": false,
     "workspaceLayout": {
         "appsDir": "apps",
         "libsDir": "libs"
+    },
+    "targetDefaults": {
+        "@angular-devkit/build-angular:application": {
+            "cache": true,
+            "dependsOn": ["^build"],
+            "inputs": ["default", "^default"]
+        },
+        "@nx/vite:test": {
+            "inputs": ["default", "^default"]
+        }
+    },
+    "generators": {
+        "@nx/angular:application": {
+            "e2eTestRunner": "playwright",
+            "linter": "eslint",
+            "style": "scss",
+            "unitTestRunner": "none"
+        }
     }
 }
