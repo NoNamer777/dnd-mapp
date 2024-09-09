@@ -40,7 +40,7 @@ jobs:
               run: npx nx-cloud record -- nx format:check
 
             - name: Install Playwright browsers
-              run: npx playwright install chrome
+              run: npx playwright install chromium
 
             - name: Run checks
               run: npx nx affected -t lint test build
