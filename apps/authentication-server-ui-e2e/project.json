@@ -1,0 +1,26 @@
+{
+    "name": "authentication-server-ui-e2e",
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "projectType": "application",
+    "sourceRoot": "apps/authentication-server-ui-e2e/src",
+    "implicitDependencies": ["authentication-server-ui"],
+    "targets": {
+        "e2e": {
+            "executor": "@nx/playwright:playwright",
+            "outputs": ["{workspaceRoot}/dist/.playwright/apps/authentication-server-ui-e2e"],
+            "options": {
+                "config": "apps/authentication-server-ui-e2e/playwright.config.ts"
+            },
+            "defaultConfiguration": "ci",
+            "configurations": {
+                "ci": {},
+                "dev": {
+                    "ui": true
+                }
+            }
+        },
+        "lint": {
+            "executor": "@nx/eslint:lint"
+        }
+    }
+}

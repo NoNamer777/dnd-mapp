@@ -6,20 +6,31 @@
         "declaration": false,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
+        "forceConsistentCasingInFileNames": true,
         "importHelpers": true,
         "lib": ["ES2022", "DOM"],
         "module": "ES2022",
         "moduleResolution": "Node",
+        "noImplicitAny": true,
+        "noImplicitOverride": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noPropertyAccessFromIndexSignature": true,
+        "noUncheckedIndexedAccess": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
         "paths": {
-            "@dnd-mapp/data": ["libs/data/src/index.ts"],
-            "@dnd-mapp/data/testing": ["libs/data/testing/index.ts"],
-            "@dnd-mapp/shared-components": ["libs/shared-components/src/index.ts"],
-            "@dnd-mapp/shared-components/testing": ["libs/shared-components/src/testing/index.ts"]
+            "@dnd-mapp/authentication-server-ui/testing": ["apps/authentication-server-ui/src/testing/public-api.ts"]
         },
         "rootDir": ".",
         "skipLibCheck": true,
         "skipDefaultLibCheck": true,
         "sourceMap": true,
-        "target": "ES2022"
+        "strictBindCallApply": true,
+        "strictFunctionTypes": true,
+        "strictNullChecks": false,
+        "strictPropertyInitialization": false,
+        "target": "ES2022",
+        "useUnknownInCatchVariables": true
     }
 }

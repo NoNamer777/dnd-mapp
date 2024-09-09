@@ -1,0 +1,92 @@
+{
+    "name": "authentication-server-ui",
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "projectType": "application",
+    "prefix": "dma",
+    "sourceRoot": "apps/authentication-server-ui/src",
+    "tags": [],
+    "targets": {
+        "build": {
+            "executor": "@angular-devkit/build-angular:application",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "browser": "apps/authentication-server-ui/src/main.ts",
+                "assets": [
+                    {
+                        "glob": "**/*",
+                        "input": "apps/authentication-server-ui/public"
+                    }
+                ],
+                "index": "apps/authentication-server-ui/src/index.html",
+                "inlineStyleLanguage": "scss",
+                "outputPath": "dist/authentication-server-ui",
+                "styles": ["apps/authentication-server-ui/src/styles.scss"],
+                "tsConfig": "apps/authentication-server-ui/tsconfig.app.json"
+            },
+            "defaultConfiguration": "prod",
+            "configurations": {
+                "prod": {
+                    "budgets": [
+                        {
+                            "type": "initial",
+                            "maximumWarning": "500kb",
+                            "maximumError": "1mb"
+                        },
+                        {
+                            "type": "anyComponentStyle",
+                            "maximumWarning": "2kb",
+                            "maximumError": "4kb"
+                        }
+                    ],
+                    "outputHashing": "all",
+                    "subresourceIntegrity": true
+                },
+                "dev": {
+                    "extractLicenses": false,
+                    "namedChunks": true,
+                    "optimization": false,
+                    "sourceMap": true,
+                    "watch": true
+                }
+            }
+        },
+        "serve": {
+            "executor": "@angular-devkit/build-angular:dev-server",
+            "options": {
+                "port": 4300,
+                "ssl": true,
+                "sslCert": "certificate.pem",
+                "sslKey": "certificate-key.pem"
+            },
+            "defaultConfiguration": "dev",
+            "configurations": {
+                "prod": {
+                    "buildTarget": "authentication-server-ui:build:prod"
+                },
+                "dev": {
+                    "buildTarget": "authentication-server-ui:build:dev"
+                }
+            }
+        },
+        "test": {
+            "executor": "@analogjs/platform:vitest",
+            "outputs": ["{options.reportsDirectory}"],
+            "options": {
+                "reportsDirectory": "../../coverage/authentication-server-ui"
+            },
+            "defaultConfiguration": "ci",
+            "configurations": {
+                "ci": {
+                    "mode": "ci"
+                },
+                "dev": {
+                    "mode": "test",
+                    "watch": true
+                }
+            }
+        },
+        "lint": {
+            "executor": "@nx/eslint:lint"
+        }
+    }
+}
