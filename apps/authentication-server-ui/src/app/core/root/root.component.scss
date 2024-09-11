@@ -1,7 +1,11 @@
+@use '../../../../public/styles/theme-variables' as *;
+
 :host {
     height: 100dvh;
     display: flex;
     flex-direction: column;
+    background-color: $background;
+    color: $on-background;
 
     main {
         flex: 1 1 auto;
