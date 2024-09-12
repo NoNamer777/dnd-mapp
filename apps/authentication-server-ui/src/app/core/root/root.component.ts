@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { SideBarComponent } from '../../shared';
 
 @Component({
     selector: 'dma-root',
@@ -7,6 +8,6 @@ import { RouterModule } from '@angular/router';
     styleUrl: './root.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [RouterModule],
+    imports: [RouterModule, SideBarComponent],
 })
 export class RootComponent {}
