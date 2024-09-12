@@ -21,6 +21,12 @@
                         "prefix": "dma",
                         "style": "kebab-case"
                     }
+                ],
+                "@angular-eslint/component-class-suffix": [
+                    "error",
+                    {
+                        "suffixes": ["Component", "Icon", "Page"]
+                    }
                 ]
             }
         },
