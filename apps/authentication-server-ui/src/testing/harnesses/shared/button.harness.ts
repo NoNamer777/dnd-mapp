@@ -15,4 +15,8 @@ export class ButtonHarness extends ComponentHarness {
     public async getLabel() {
         return await (await this.host()).text();
     }
+
+    public async click() {
+        await (await this.host()).click();
+    }
 }
