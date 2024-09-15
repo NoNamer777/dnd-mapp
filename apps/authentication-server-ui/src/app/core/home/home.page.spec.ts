@@ -1,5 +1,5 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { Component } from '@angular/core';
+import { Component, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { HomeHarness } from '@dnd-mapp/authentication-server-ui/testing';
 import { HomePage } from './home.page';
@@ -14,6 +14,7 @@ describe('HomeComponent', () => {
         TestBed.configureTestingModule({
             imports: [HomePage],
             declarations: [TestComponent],
+            providers: [provideExperimentalZonelessChangeDetection()],
         });
 
         const harnessLoader = TestbedHarnessEnvironment.loader(TestBed.createComponent(TestComponent));
