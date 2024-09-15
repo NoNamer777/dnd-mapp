@@ -6,3 +6,7 @@
     height: $icon-size;
     vertical-align: -0.125rem;
 }
+
+:host-context(button[dma-button]) {
+    --icon-size: 1.5rem;
+}

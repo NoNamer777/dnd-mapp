@@ -1,0 +1,27 @@
+@use '../../../../../public/styles/theme-variables' as *;
+
+:host {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+
+    font-size: inherit;
+
+    background-color: $surface;
+    border-radius: 0.4rem;
+    padding: 0.5rem 1rem;
+    color: $on-surface;
+    border: 1px solid $surface;
+
+    &:hover {
+        cursor: pointer;
+        background-color: $surface-hover;
+        border-color: $surface-hover;
+    }
+
+    &:active {
+        cursor: pointer;
+        background-color: $surface-active;
+        border-color: $surface-active;
+    }
+}
