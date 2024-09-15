@@ -6,7 +6,7 @@ import { ButtonComponent } from './button.component';
 
 describe('ButtonComponent', () => {
     @Component({
-        template: `<dma-button>My Button</dma-button>`,
+        template: `<button dma-button>My Button</button>`,
     })
     class TestComponent {}
 
