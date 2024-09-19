@@ -1,6 +1,7 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { NotFoundHarness } from '@dnd-mapp/authentication-server-ui/testing';
 import { NotFoundPage } from './not-found.page';
 
@@ -14,7 +15,7 @@ describe('NotFoundComponent', () => {
         TestBed.configureTestingModule({
             imports: [NotFoundPage],
             declarations: [TestComponent],
-            providers: [provideExperimentalZonelessChangeDetection()],
+            providers: [provideExperimentalZonelessChangeDetection(), provideRouter([])],
         });
 
         const harnessLoader = TestbedHarnessEnvironment.loader(TestBed.createComponent(TestComponent));
