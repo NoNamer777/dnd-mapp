@@ -1,14 +1,17 @@
+@use './colors' as *;
+@use './functions' as *;
+
 $fw-regular: var(--fw-bold, 400);
 $fw-bold: var(--fw-bold, 600);
 
-$background: var(--background, #1b1b1b);
-$on-background: var(--on-background, #fafafa);
+$background: var(--background, $gray04);
+$on-background: var(--on-background, $gray19);
 
-$surface: var(--surface, #272727);
-$on-surface: var(--on-surface, #fafafa);
+$surface: var(--surface, $gray05);
+$on-surface: var(--on-surface, $gray19);
 
-$surface-hover: var(--surface-hover, #323232);
-$surface-active: var(--surface-active, #222222);
+$surface-hover: var(--surface-hover, hover($gray05));
+$surface-active: var(--surface-active, active($gray05));
 
 $icon-size: var(--icon-size, 1rem);
 
