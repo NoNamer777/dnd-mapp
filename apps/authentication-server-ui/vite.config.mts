@@ -42,6 +42,7 @@ export default defineConfig(({ mode }) => {
             reporters: ['default', 'html'],
             setupFiles: ['src/testing/setup-test.ts'],
             ui: !isRunningInCI,
+            uiBase: '/',
             watch: !isRunningInCI,
         },
     };
