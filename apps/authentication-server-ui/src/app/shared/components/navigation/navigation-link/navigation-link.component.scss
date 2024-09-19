@@ -6,7 +6,6 @@
         gap: 0.7rem;
         border-radius: $border-radius;
         padding: 0.7rem 1rem;
-        text-decoration: none;
         color: $on-surface;
 
         &.active {
@@ -14,8 +13,6 @@
         }
 
         &:hover {
-            cursor: pointer;
-            text-decoration: underline;
             background-color: $surface-hover;
         }
     }
