@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+
+const ButtonTypes = {
+    PRIMARY: 'primary',
+    SECONDARY: 'secondary',
+} as const;
+
+type ButtonType = (typeof ButtonTypes)[keyof typeof ButtonTypes];
 
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
@@ -8,4 +15,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
 })
-export class ButtonComponent {}
+export class ButtonComponent {
+    @Input({ alias: 'dma-button' }) buttonType: ButtonType = 'secondary';
+}
