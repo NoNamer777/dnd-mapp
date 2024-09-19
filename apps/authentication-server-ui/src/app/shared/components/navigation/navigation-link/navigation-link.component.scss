@@ -1,0 +1,22 @@
+@use '../../../../../../public/styles/theme-variables' as *;
+
+:host {
+    a {
+        display: flex;
+        gap: 0.7rem;
+        border-radius: $border-radius;
+        padding: 0.7rem 1rem;
+        text-decoration: none;
+        color: $on-surface;
+
+        &.active {
+            font-weight: $fw-bold;
+        }
+
+        &:hover {
+            cursor: pointer;
+            text-decoration: underline;
+            background-color: $surface-hover;
+        }
+    }
+}
