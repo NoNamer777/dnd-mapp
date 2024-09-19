@@ -1,0 +1,13 @@
+@use '../../../../public/styles/theme-variables' as *;
+
+:host {
+    height: 100dvh;
+    display: flex;
+    background-color: $background;
+    color: $on-background;
+
+    main {
+        flex: 1 1 auto;
+        padding: 0 1rem;
+    }
+}

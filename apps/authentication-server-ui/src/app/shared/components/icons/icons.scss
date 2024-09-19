@@ -1,0 +1,12 @@
+@use '../../../../../public/styles/theme-variables' as *;
+
+:host {
+    display: block;
+    width: $icon-size;
+    height: $icon-size;
+    vertical-align: -0.125rem;
+}
+
+:host-context(button[dma-button]) {
+    --icon-size: 1.5rem;
+}

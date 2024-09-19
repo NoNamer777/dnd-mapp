@@ -1,0 +1,15 @@
+$fw-regular: var(--fw-bold, 400);
+$fw-bold: var(--fw-bold, 600);
+
+$background: var(--background, #1b1b1b);
+$on-background: var(--on-background, #fafafa);
+
+$surface: var(--surface, #272727);
+$on-surface: var(--on-surface, #fafafa);
+
+$surface-hover: var(--surface-hover, #323232);
+$surface-active: var(--surface-active, #222222);
+
+$icon-size: var(--icon-size, 1rem);
+
+$border-radius: var(--border-radius, 0.4rem);

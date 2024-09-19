@@ -1,1 +1,15 @@
-/* You can add global styles to this file, and also import other style files */
+@import '../public/styles/fonts';
+
+* {
+    margin: 0;
+}
+
+html,
+body {
+    height: 100dvh;
+
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 100%;
+}
