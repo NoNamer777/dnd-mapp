@@ -25,6 +25,7 @@ export default defineConfig(({ mode }) => {
                 include: ['src/app/*'],
                 provider: 'istanbul',
                 reporter: ['text-summary', ['html', { subdir: 'coverage', skipEmpty: false }]],
+                reportOnFailure: true,
                 reportsDirectory: '../../reports/authentication-server-ui',
                 skipFull: false,
                 thresholds: {
