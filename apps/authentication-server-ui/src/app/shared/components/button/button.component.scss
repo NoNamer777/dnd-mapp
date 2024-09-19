@@ -7,9 +7,9 @@
     font-size: inherit;
 
     background-color: $surface;
+    color: $on-surface;
     border-radius: $border-radius;
     padding: 0.5rem 1rem;
-    color: $on-surface;
     border: 1px solid $surface;
 
     &[dma-button='primary'] {

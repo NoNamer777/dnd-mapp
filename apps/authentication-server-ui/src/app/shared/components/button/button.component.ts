@@ -1,11 +1,15 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
 
 const ButtonTypes = {
     PRIMARY: 'primary',
     SECONDARY: 'secondary',
 } as const;
 
-type ButtonType = (typeof ButtonTypes)[keyof typeof ButtonTypes];
+export type ButtonType = (typeof ButtonTypes)[keyof typeof ButtonTypes];
+
+function buttonTypeAttribute(value: string) {
+    return Object.values(ButtonTypes).find((buttonType) => buttonType === value) ?? 'secondary';
+}
 
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
@@ -16,5 +20,7 @@ type ButtonType = (typeof ButtonTypes)[keyof typeof ButtonTypes];
     standalone: true,
 })
 export class ButtonComponent {
-    @Input({ alias: 'dma-button' }) buttonType: ButtonType = 'secondary';
+    @Input({ alias: 'dma-button', transform: buttonTypeAttribute })
+    @HostBinding('attr.dma-button-type')
+    public buttonType: ButtonType = 'secondary';
 }
