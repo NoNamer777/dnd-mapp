@@ -1,0 +1,12 @@
+@use './colors' as *;
+@use './functions' as *;
+
+a {
+    color: $blue15;
+    text-decoration: none;
+
+    &:hover {
+        color: hover($blue15);
+        text-decoration: underline;
+    }
+}
