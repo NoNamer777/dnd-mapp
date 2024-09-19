@@ -1,4 +1,15 @@
-<dma-side-bar></dma-side-bar>
+<dma-side-bar>
+    <dma-navigation>
+        <dma-navigation-link route="/home">
+            <dma-icon dma-house-icon />
+            Home
+        </dma-navigation-link>
+        <dma-navigation-link route="/users">
+            <dma-icon dma-user-group-icon />
+            Users
+        </dma-navigation-link>
+    </dma-navigation>
+</dma-side-bar>
 <main>
     <router-outlet></router-outlet>
 </main>
