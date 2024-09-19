@@ -70,19 +70,18 @@
             }
         },
         "test": {
-            "executor": "@analogjs/platform:vitest",
-            "outputs": ["{options.reportsDirectory}"],
+            "executor": "nx:run-commands",
+            "outputs": ["{workspaceRoot}/reports/{projectRoot}/coverage"],
             "options": {
-                "reportsDirectory": "../../coverage/authentication-server-ui"
+                "command": "npx vitest -c apps/authentication-server-ui/vite.config.mts"
             },
             "defaultConfiguration": "ci",
             "configurations": {
                 "ci": {
-                    "mode": "ci"
+                    "args": ["--mode ci"]
                 },
                 "dev": {
-                    "mode": "test",
-                    "watch": true
+                    "args": ["--ui"]
                 }
             }
         },
