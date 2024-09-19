@@ -9,6 +9,7 @@
 !*.scss
 !*.js
 !*.ts
+!*.mts
 !*.json
 !*.yaml
 !*.yml
