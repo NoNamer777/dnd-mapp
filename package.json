@@ -7,6 +7,11 @@
         "nx": "npx nx",
         "docker:build": "docker build . -t nonamer777/dnd-mapp"
     },
+    "msw": {
+        "workerDirectory": [
+            "apps/authentication-server-ui/.msw"
+        ]
+    },
     "dependencies": {
         "@angular/animations": "~18.2.0",
         "@angular/cdk": "~18.2.0",
