@@ -4,12 +4,9 @@ import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import { defineConfig } from 'vite';
 
 export default defineConfig(({ mode }) => ({
-    root: __dirname,
     cacheDir: '../../.vite/authentication-server-ui',
     plugins: [angular(), nxViteTsPaths()],
-    server: {
-        port: 9876,
-    },
+    root: __dirname,
     test: {
         browser: {
             enabled: true,
