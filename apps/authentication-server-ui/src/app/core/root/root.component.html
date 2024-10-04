@@ -2,14 +2,14 @@
     <dma-navigation>
         <dma-navigation-link route="/home">
             <dma-icon dma-house-icon />
-            Home
+            {{ 'NAV_LINK_LABEL_HOME' | translate }}
         </dma-navigation-link>
         <dma-navigation-link route="/users">
             <dma-icon dma-user-group-icon />
-            Users
+            {{ 'NAV_LINK_LABEL_USERS' | translate }}
         </dma-navigation-link>
     </dma-navigation>
 </dma-side-bar>
 <main>
-    <router-outlet></router-outlet>
+    <router-outlet />
 </main>

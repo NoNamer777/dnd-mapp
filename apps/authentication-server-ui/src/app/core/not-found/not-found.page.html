@@ -1,9 +1,9 @@
 <article>
     <section>
-        <h1>Oops, something seems to be missing (Error: 404)...</h1>
-        <p>
-            Nothing seems to exist on this page. <br />
-            Please, return back to the <a routerLink="/home">home page</a>.
+        <h1>{{ 'PAGE_TITLE_NOT_FOUND' | translate }}</h1>
+        <p class="preserve-whitespace">
+            {{ 'NOT_FOND_LABEL' | translate }}
+            <a routerLink="/home">{{ 'NOT_FOND_HOME_LINK_LABEL' | translate }}</a>.
         </p>
     </section>
 </article>

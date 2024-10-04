@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { TranslationModule } from '../../shared';
 
 @Component({
     selector: 'dma-home',
@@ -6,5 +7,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     styleUrl: './home.page.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
+    imports: [TranslationModule],
 })
 export class HomePage {}

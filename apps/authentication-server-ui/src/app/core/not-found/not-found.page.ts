@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { TranslationModule } from '../../shared';
 
 @Component({
     selector: 'dma-not-found',
@@ -7,6 +8,6 @@ import { RouterModule } from '@angular/router';
     styleUrl: './not-found.page.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [RouterModule],
+    imports: [RouterModule, TranslationModule],
 })
 export class NotFoundPage {}

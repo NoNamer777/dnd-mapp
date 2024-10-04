@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ButtonComponent, IconsModule } from '../../shared';
+import { ButtonComponent, IconsModule, TranslationModule } from '../../shared';
 
 @Component({
     selector: 'dma-users-overview',
@@ -7,6 +7,6 @@ import { ButtonComponent, IconsModule } from '../../shared';
     styleUrl: './users-overview.page.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [ButtonComponent, IconsModule],
+    imports: [ButtonComponent, IconsModule, TranslationModule],
 })
 export class UsersOverviewPage {}
