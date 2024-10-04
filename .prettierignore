@@ -15,9 +15,8 @@
 !*.yml
 !*.md
 
-.angular
-coverage
 package-lock.json
+**/mockServiceWorker.js
 
 ## IDE directories
 .idea/
@@ -27,11 +26,12 @@ package-lock.json
 node_modules/
 
 ## Output directories
-dist/
-**/.msw/
 .Ds_Store
 tmp/
+.angular/
+.nx/
+.vite/
+dist/
+reports/
 
 ## Specific files and directories
-
-/.nx/cache
