@@ -9,7 +9,7 @@
     },
     "msw": {
         "workerDirectory": [
-            "apps/authentication-server-ui/.msw"
+            "apps/authentication-server-ui/public"
         ]
     },
     "dependencies": {
