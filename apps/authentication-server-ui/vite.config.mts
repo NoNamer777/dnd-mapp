@@ -3,7 +3,9 @@ import angular from '@analogjs/vite-plugin-angular';
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import { defineConfig } from 'vite';
 
-export default defineConfig(({ mode }) => ({
+const isRunningInCI = process.env['NX_TASK_TARGET_CONFIGURATION'] === 'ci';
+
+export default defineConfig({
     cacheDir: '../../.vite/authentication-server-ui',
     plugins: [angular(), nxViteTsPaths()],
     root: __dirname,
@@ -18,7 +20,6 @@ export default defineConfig(({ mode }) => ({
         coverage: {
             enabled: true,
             exclude: ['src/testing/*', 'src/app/core/config/*', '**/index.ts'],
-            ignoreEmptyLines: true,
             include: ['src/app/*'],
             provider: 'istanbul',
             reporter: ['text-summary', ['html', { subdir: 'coverage', skipEmpty: false }]],
@@ -39,8 +40,8 @@ export default defineConfig(({ mode }) => ({
         include: ['src/**/*.spec.ts'],
         reporters: ['default', 'html'],
         setupFiles: ['src/testing/setup-test.ts'],
-        ui: mode !== 'ci',
+        ui: !isRunningInCI,
         uiBase: '/',
-        watch: mode !== 'ci',
+        watch: !isRunningInCI,
     },
-}));
+});

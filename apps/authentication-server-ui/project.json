@@ -84,9 +84,7 @@
                 "reportsDirectory": "reports/authentication-server-ui"
             },
             "configurations": {
-                "ci": {
-                    "mode": "ci"
-                },
+                "ci": {},
                 "dev": {
                     "watch": true
                 }
