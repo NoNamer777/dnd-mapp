@@ -4,23 +4,23 @@ import { TestBed } from '@angular/core/testing';
 import { ButtonHarness } from '@dnd-mapp/authentication-server-ui/testing';
 import { ButtonComponent, ButtonType } from './button.component';
 
-@Component({
-    template: `<button dma-button>My Button</button>`,
-})
-class BasicTestComponent {}
-
-@Component({
-    template: `<button [dma-button]="buttonType()">My Button</button>`,
-})
-class TestComponent {
-    public readonly buttonType = signal<ButtonType>('secondary');
-}
-
-interface TestParams<T> {
-    component: Type<T>;
-}
-
 describe('ButtonComponent', () => {
+    @Component({
+        template: `<button dma-button>My Button</button>`,
+    })
+    class BasicTestComponent {}
+
+    @Component({
+        template: `<button [dma-button]="buttonType()">My Button</button>`,
+    })
+    class TestComponent {
+        public readonly buttonType = signal<ButtonType>('secondary');
+    }
+
+    interface TestParams<T> {
+        component: Type<T>;
+    }
+
     async function setupTest<T>(params: TestParams<T> = { component: BasicTestComponent as Type<T> }) {
         TestBed.configureTestingModule({
             imports: [ButtonComponent],
