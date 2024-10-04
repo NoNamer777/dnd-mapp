@@ -7,6 +7,11 @@
         "nx": "npx nx",
         "docker:build": "docker build . -t nonamer777/dnd-mapp"
     },
+    "msw": {
+        "workerDirectory": [
+            "apps/authentication-server-ui/public"
+        ]
+    },
     "dependencies": {
         "@angular/animations": "~18.2.0",
         "@angular/cdk": "~18.2.0",
@@ -55,6 +60,7 @@
         "eslint": "~8.57.0",
         "eslint-config-prettier": "~9.1.0",
         "eslint-plugin-playwright": "~1.6.0",
+        "msw": "~2.4.0",
         "nx": "~19.6.0",
         "nx-cloud": "~19.0.0",
         "playwright": "~1.47.0",

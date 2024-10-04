@@ -5,7 +5,7 @@ interface ButtonFilters extends BaseHarnessFilters {
 }
 
 export class ButtonHarness extends ComponentHarness {
-    public static hostSelector = 'button[dma-button]';
+    public static hostSelector = 'button[dma-button-type]';
 
     public static with = (options: ButtonFilters) =>
         new HarnessPredicate(ButtonHarness, options).addOption('button label', options.label, (harness, label) =>
@@ -18,5 +18,9 @@ export class ButtonHarness extends ComponentHarness {
 
     public async click() {
         await (await this.host()).click();
+    }
+
+    public async getButtonType() {
+        return await (await this.host()).getAttribute('dma-button-type');
     }
 }

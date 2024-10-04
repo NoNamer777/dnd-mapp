@@ -11,12 +11,6 @@
             "outputs": ["{options.outputPath}"],
             "options": {
                 "browser": "apps/authentication-server-ui/src/main.ts",
-                "assets": [
-                    {
-                        "glob": "**/*",
-                        "input": "apps/authentication-server-ui/public"
-                    }
-                ],
                 "index": "apps/authentication-server-ui/src/index.html",
                 "inlineStyleLanguage": "scss",
                 "outputPath": "dist/authentication-server-ui",
@@ -26,6 +20,13 @@
             "defaultConfiguration": "prod",
             "configurations": {
                 "prod": {
+                    "assets": [
+                        {
+                            "glob": "**/*",
+                            "input": "apps/authentication-server-ui/public",
+                            "ignore": ["mockServiceWorker.js"]
+                        }
+                    ],
                     "baseHref": "./",
                     "budgets": [
                         {
@@ -43,6 +44,12 @@
                     "subresourceIntegrity": true
                 },
                 "dev": {
+                    "assets": [
+                        {
+                            "glob": "**/*",
+                            "input": "apps/authentication-server-ui/public"
+                        }
+                    ],
                     "extractLicenses": false,
                     "namedChunks": true,
                     "optimization": false,
@@ -70,18 +77,16 @@
             }
         },
         "test": {
-            "executor": "nx:run-commands",
-            "outputs": ["{workspaceRoot}/reports/{projectRoot}/coverage"],
-            "options": {
-                "command": "npx vitest -c apps/authentication-server-ui/vite.config.mts"
-            },
+            "executor": "@nx/vite:test",
+            "outputs": ["{options.reportsDirectory}"],
             "defaultConfiguration": "ci",
+            "options": {
+                "reportsDirectory": "reports/authentication-server-ui"
+            },
             "configurations": {
-                "ci": {
-                    "args": ["--mode ci"]
-                },
+                "ci": {},
                 "dev": {
-                    "args": ["--ui"]
+                    "watch": true
                 }
             }
         },

@@ -1,8 +1,9 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { Component, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { RootHarness } from '@dnd-mapp/authentication-server-ui/testing';
+import { provideDnDMappTesting, RootHarness, runInitializers } from '@dnd-mapp/authentication-server-ui/testing';
+import { provideTranslations } from '../../shared';
 import { appRoutes } from '../config';
 import { RootComponent } from './root.component';
 
@@ -16,8 +17,10 @@ describe('RootComponent', () => {
         TestBed.configureTestingModule({
             imports: [RootComponent],
             declarations: [TestComponent],
-            providers: [provideExperimentalZonelessChangeDetection(), provideRouter(appRoutes)],
+            providers: [provideRouter(appRoutes), provideDnDMappTesting(), provideTranslations()],
         });
+
+        await runInitializers();
 
         const harnessLoader = TestbedHarnessEnvironment.loader(TestBed.createComponent(TestComponent));
 

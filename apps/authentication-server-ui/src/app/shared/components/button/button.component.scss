@@ -3,25 +3,40 @@
 :host {
     display: flex;
     gap: 0.6rem;
-    align-items: center;
 
     font-size: inherit;
 
     background-color: $surface;
+    color: $on-surface;
     border-radius: $border-radius;
     padding: 0.5rem 1rem;
-    color: $on-surface;
     border: 1px solid $surface;
+
+    &[dma-button='primary'] {
+        background-color: $primary;
+        border-color: $primary;
+        color: $on-primary;
+    }
 
     &:hover {
         cursor: pointer;
         background-color: $surface-hover;
         border-color: $surface-hover;
+
+        &[dma-button='primary'] {
+            background-color: $primary-hover;
+            border-color: $primary-hover;
+        }
     }
 
     &:active {
         cursor: pointer;
         background-color: $surface-active;
         border-color: $surface-active;
+
+        &[dma-button='primary'] {
+            background-color: $primary-active;
+            border-color: $primary-active;
+        }
     }
 }
