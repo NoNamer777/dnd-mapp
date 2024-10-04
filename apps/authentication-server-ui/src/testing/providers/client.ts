@@ -1,5 +1,7 @@
 import { provideHttpClient } from '@angular/common/http';
-import { provideExperimentalZonelessChangeDetection, ValueProvider } from '@angular/core';
+import { APP_INITIALIZER, provideExperimentalZonelessChangeDetection, ValueProvider } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { lastValueFrom, Observable } from 'rxjs';
 import { CLIENT_HOST } from '../../app/shared/http/consants';
 
 const provideTestingClientHost = () =>
@@ -10,4 +12,21 @@ const provideTestingClientHost = () =>
 
 export function provideDnDMappTesting() {
     return [provideExperimentalZonelessChangeDetection(), provideHttpClient(), provideTestingClientHost()];
+}
+
+export async function runInitializers() {
+    const initializers = TestBed.inject(APP_INITIALIZER);
+
+    await Promise.all(
+        initializers.map((initializer) => {
+            const init = initializer();
+
+            if (init instanceof Promise) {
+                return init;
+            } else if (init instanceof Observable) {
+                return lastValueFrom(init);
+            }
+            return Promise.resolve(init);
+        })
+    );
 }
