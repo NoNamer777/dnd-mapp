@@ -7,7 +7,7 @@ import { provideTranslations } from '../../shared';
 import { appRoutes } from '../config';
 import { RootComponent } from './root.component';
 
-describe.only('RootComponent', () => {
+describe('RootComponent', () => {
     @Component({
         template: `<dma-root />`,
     })
