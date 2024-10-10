@@ -31,8 +31,12 @@ describe('UsersOverviewPage', () => {
         };
     }
 
-    it('should create', async () => {
+    it('should show no Users message', async () => {
         const { harness } = await setupTest();
-        expect(harness).not.toBeNull();
+
+        const tableHarness = await harness.getUsersTableHarness();
+
+        expect(await tableHarness.isTableEmptyMessageVisible()).toEqual(true);
+        expect(await tableHarness.getTableEmptyMessage()).toEqual('No Users were found');
     });
 });
