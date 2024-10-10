@@ -5,6 +5,6 @@
     "PAGE_TITLE_NOT_FOUND": "Oops, something seems to be missing (Error: 404)...",
     "NAV_LINK_LABEL_HOME": "Home",
     "NAV_LINK_LABEL_USERS": "Users",
-    "NOT_FOND_LABEL": "Nothing seems to exist on this page.\nPlease, return back to the ",
-    "NOT_FOND_HOME_LINK_LABEL": "home page"
+    "NOT_FOUND_LABEL": "Nothing seems to exist on this page.\nPlease, return back to the ",
+    "NOT_FOUND_HOME_LINK_LABEL": "home page",
 }

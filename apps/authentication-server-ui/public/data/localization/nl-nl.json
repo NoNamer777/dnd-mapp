@@ -5,6 +5,6 @@
     "PAGE_TITLE_NOT_FOUND": "Oops, Er mist hier iets (Error: 404)...",
     "NAV_LINK_LABEL_HOME": "Home",
     "NAV_LINK_LABEL_USERS": "Gebruikers",
-    "NOT_FOND_LABEL": "Deze pagina bestaat niet.\nKlik op de link om terug te gaan naar de ",
-    "NOT_FOND_HOME_LINK_LABEL": "home pagina"
+    "NOT_FOUND_LABEL": "Deze pagina bestaat niet.\nKlik op de link om terug te gaan naar de ",
+    "NOT_FOUND_HOME_LINK_LABEL": "home pagina"
 }
