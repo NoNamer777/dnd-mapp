@@ -7,4 +7,8 @@
     "NAV_LINK_LABEL_USERS": "Users",
     "NOT_FOUND_LABEL": "Nothing seems to exist on this page.\nPlease, return back to the ",
     "NOT_FOUND_HOME_LINK_LABEL": "home page",
+    "USERS_TABLE_NO_RESULTS": "No Users were found",
+    "USERS_TABLE_COLUMN_HEADER_ID": "ID",
+    "USERS_TABLE_COLUMN_HEADER_USERNAME": "Username",
+    "USERS_TABLE_COLUMN_HEADER_EMAIL": "Email Address"
 }

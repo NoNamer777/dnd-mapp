@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ButtonComponent, IconsModule, TranslationModule } from '../../shared';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ButtonComponent, IconsModule, TableModule, TranslationModule } from '../../shared';
+import { User } from '../models';
 
 @Component({
     selector: 'dma-users-overview',
@@ -7,6 +8,8 @@ import { ButtonComponent, IconsModule, TranslationModule } from '../../shared';
     styleUrl: './users-overview.page.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [ButtonComponent, IconsModule, TranslationModule],
+    imports: [ButtonComponent, IconsModule, TranslationModule, TableModule],
 })
-export class UsersOverviewPage {}
+export class UsersOverviewPage {
+    protected readonly users = signal<User[]>([]);
+}
