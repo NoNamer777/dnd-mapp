@@ -1,0 +1,19 @@
+{
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "name": "data",
+    "sourceRoot": "libs/data/src",
+    "projectType": "library",
+    "tags": ["scope:shared", "type:model"],
+    "targets": {
+        "test": {
+            "executor": "@nx/vite:test",
+            "outputs": ["{options.reportsDirectory}"],
+            "options": {
+                "reportsDirectory": "../../reports/data"
+            }
+        },
+        "lint": {
+            "executor": "@nx/eslint:lint"
+        }
+    }
+}

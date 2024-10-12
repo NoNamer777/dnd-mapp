@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { User } from '@dnd-mapp/data';
 import { ButtonComponent, IconsModule, TableModule, TranslationModule } from '../../shared';
-import { User } from '../models';
 
 @Component({
     selector: 'dma-users-overview',

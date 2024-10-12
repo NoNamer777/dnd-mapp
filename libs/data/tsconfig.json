@@ -1,0 +1,9 @@
+{
+    "extends": "../../tsconfig.base.json",
+    "references": [{ "path": "./tsconfig.lib.json" }, { "path": "./tsconfig.spec.json" }],
+    "files": [],
+    "include": [],
+    "compilerOptions": {
+        "module": "ES2022"
+    }
+}

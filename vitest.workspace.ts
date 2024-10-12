@@ -1,1 +1,1 @@
-export default ['**/*/vite.config.{mts,ts}', '**/*/vitest.config.{mts,ts}'];
+export default ['**/*/{vite,vitest}.config.{mts,ts}'];
