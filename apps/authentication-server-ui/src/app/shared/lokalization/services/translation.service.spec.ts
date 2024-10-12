@@ -31,12 +31,12 @@ describe('TranslationService', () => {
         await firstValueFrom(translationService.initialize());
 
         expect(translationService.locale()).toEqual('en-US');
-        expect(translationService.translations()).toEqual(expect.objectContaining({ BTN_LABEL_ADD_USER: 'Add User' }));
+        expect(translationService.translations()).toEqual(jasmine.objectContaining({ BTN_LABEL_ADD_USER: 'Add User' }));
     });
 
     it('should warn for an unknown translation key', async () => {
         const { translationService } = await setupTest();
-        const consoleSpy = vi.spyOn(console, 'warn').mockImplementationOnce(() => null);
+        const consoleSpy = spyOn(console, 'warn').and.callFake(() => null);
 
         const translation = translationService.getTranslation('UNKNOWN_KEY');
 
@@ -46,7 +46,7 @@ describe('TranslationService', () => {
 
     it('should return unknown translation key when translations are not initialized', async () => {
         const { translationService } = await setupTest({ initialize: false });
-        const consoleSpy = vi.spyOn(console, 'warn').mockImplementationOnce(() => null);
+        const consoleSpy = spyOn(console, 'warn').and.callFake(() => null);
 
         const translation = translationService.getTranslation('UNKNOWN_KEY');
 
@@ -62,12 +62,14 @@ describe('TranslationService', () => {
         await firstValueFrom(translationService.updateLocale('nl-NL'));
 
         expect(translationService.locale()).toEqual('nl-NL');
-        expect(translationService.translations()).toHaveProperty('BTN_LABEL_ADD_USER', 'Gebruiker toevoegen');
+        expect(translationService.translations()).toEqual(
+            jasmine.objectContaining({ BTN_LABEL_ADD_USER: 'Gebruiker toevoegen' })
+        );
     });
 
     it('should not update translations when switching to current locale', async () => {
         const { translationService } = await setupTest();
-        const requestSpy = vi.spyOn(TestBed.inject(RequestService), 'get');
+        const requestSpy = spyOn(TestBed.inject(RequestService), 'get');
 
         expect(translationService.locale()).toEqual('en-US');
 

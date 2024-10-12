@@ -77,14 +77,28 @@
             }
         },
         "test": {
-            "executor": "@nx/vite:test",
-            "outputs": ["{options.reportsDirectory}"],
+            "executor": "@angular-devkit/build-angular:karma",
+            "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
             "defaultConfiguration": "ci",
             "options": {
-                "reportsDirectory": "reports/authentication-server-ui"
+                "codeCoverage": true,
+                "codeCoverageExclude": ["**/index.ts", "**/config/**", "**/testing/**"],
+                "assets": [
+                    {
+                        "glob": "**/*",
+                        "input": "apps/authentication-server-ui/public"
+                    }
+                ],
+                "inlineStyleLanguage": "scss",
+                "karmaConfig": "apps/authentication-server-ui/src/testing/karma.config.ts",
+                "main": "apps/authentication-server-ui/src/testing/setup-test.ts",
+                "styles": ["apps/authentication-server-ui/src/styles.scss"],
+                "tsConfig": "apps/authentication-server-ui/tsconfig.spec.json"
             },
             "configurations": {
-                "ci": {},
+                "ci": {
+                    "watch": false
+                },
                 "dev": {
                     "watch": true
                 }

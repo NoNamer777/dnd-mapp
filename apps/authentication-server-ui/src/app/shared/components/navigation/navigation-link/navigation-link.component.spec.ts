@@ -1,7 +1,7 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter, Router, Routes } from '@angular/router';
+import { Router, Routes, provideRouter } from '@angular/router';
 import { NavigationLinkHarness } from '@dnd-mapp/authentication-server-ui/testing';
 import { NavigationLinkComponent } from './navigation-link.component';
 
@@ -34,7 +34,7 @@ describe('NavigationLinkComponent', () => {
 
     it('should set the link', async () => {
         const { harness } = await setupTest();
-        const routerSpy = vi.spyOn(TestBed.inject(Router), 'navigateByUrl');
+        const routerSpy = spyOn(TestBed.inject(Router), 'navigateByUrl');
 
         expect(await harness.getRoute()).toBe('/my-link');
 

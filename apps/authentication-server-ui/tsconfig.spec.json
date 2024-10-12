@@ -1,16 +1,9 @@
 {
     "extends": "./tsconfig.json",
-    "include": ["vite.config.mts", "vitest.config.ts", "src/**/*.spec.ts", "src/**/*.d.ts", "src/testing/**/*"],
+    "include": ["src/**/*.spec.ts", "src/**/*.d.ts", "src/testing/**/*.ts"],
     "compilerOptions": {
         "resolveJsonModule": true,
         "outDir": "../../dist/out-tsc",
-        "types": [
-            "@vitest/browser/providers/playwright",
-            "vitest/globals",
-            "vitest/importMeta",
-            "vite/client",
-            "node",
-            "vitest"
-        ]
+        "types": ["jasmine"]
     }
 }
