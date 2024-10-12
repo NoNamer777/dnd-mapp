@@ -10,57 +10,35 @@
                     "error",
                     {
                         "allow": [],
-                        "enforceBuildableLibDependency": true,
                         "allowCircularSelfDependency": true,
                         "depConstraints": [
                             {
-                                "sourceTag": "@dnd-mapp/front-end",
-                                "onlyDependOnLibsWithTags": ["@dnd-mapp/data"],
-                                "bannedExternalImports": [
-                                    "@nestjs/*",
-                                    "typeorm",
-                                    "sqlite3",
-                                    "mysql2",
-                                    "class-validator",
-                                    "axios",
-                                    "reflect-metadata",
-                                    "js-yaml",
-                                    "@storybook/*"
-                                ]
+                                "sourceTag": "type:ui",
+                                "onlyDependOnLibsWithTags": ["scope:shared", "type:model"],
+                                "allowedExternalImports": ["@angular/*", "msw", "msw/*", "rxjs", "nanoid"]
                             },
                             {
-                                "sourceTag": "@dnd-mapp/shared-components",
-                                "onlyDependOnLibsWithTags": ["@dnd-mapp/data"],
-                                "bannedExternalImports": [
-                                    "@nestjs/*",
-                                    "typeorm",
-                                    "sqlite3",
-                                    "mysql2",
-                                    "class-validator",
-                                    "class-transformer",
-                                    "axios",
-                                    "reflect-metadata",
-                                    "js-yaml",
-                                    "@fortawesome/*",
-                                    "bootstrap"
-                                ]
+                                "sourceTag": "type:app",
+                                "onlyDependOnLibsWithTags": ["type:model"]
                             },
                             {
-                                "sourceTag": "@dnd-mapp/back-end",
-                                "onlyDependOnLibsWithTags": ["@dnd-mapp/data"],
-                                "bannedExternalImports": [
-                                    "@angular/*",
-                                    "zone.js",
-                                    "@fortawesome/*",
-                                    "@storybook/*",
-                                    "@fortawesome/*",
-                                    "bootstrap",
-                                    "react"
-                                ]
+                                "sourceTag": "type:model",
+                                "onlyDependOnLibsWithTags": ["scope:shared"],
+                                "allowedExternalImports": ["vite", "@nx/vite/*"]
                             },
                             {
-                                "sourceTag": "@dnd-mapp/data",
-                                "allowedExternalImports": ["nanoid", "class-validator", "class-transformer"]
+                                "sourceTag": "scope:client",
+                                "onlyDependOnLibsWithTags": ["scope:shared", "type:model"],
+                                "allowedExternalImports": ["@angular/*", "msw", "msw/*", "rxjs", "nanoid"]
+                            },
+                            {
+                                "sourceTag": "scope:admin",
+                                "onlyDependOnLibsWithTags": ["scope:shared", "scope:admin"]
+                            },
+                            {
+                                "sourceTag": "scope:shared",
+                                "onlyDependOnLibsWithTags": ["scope:shared"],
+                                "allowedExternalImports": ["vite", "@nx/vite/*"]
                             }
                         ]
                     }
@@ -77,13 +55,6 @@
         {
             "files": ["*.js"],
             "extends": ["plugin:@nx/javascript"],
-            "rules": {}
-        },
-        {
-            "files": ["*.spec.ts"],
-            "env": {
-                "jest": true
-            },
             "rules": {}
         }
     ]
