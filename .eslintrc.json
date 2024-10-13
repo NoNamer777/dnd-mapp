@@ -15,7 +15,7 @@
                             {
                                 "sourceTag": "type:ui",
                                 "onlyDependOnLibsWithTags": ["scope:shared", "type:model"],
-                                "allowedExternalImports": ["@angular/*", "msw", "msw/*", "rxjs", "nanoid"]
+                                "allowedExternalImports": ["@angular/*", "karma", "msw", "msw/*", "nanoid", "rxjs"]
                             },
                             {
                                 "sourceTag": "type:app",
@@ -29,7 +29,7 @@
                             {
                                 "sourceTag": "scope:client",
                                 "onlyDependOnLibsWithTags": ["scope:shared", "type:model"],
-                                "allowedExternalImports": ["@angular/*", "msw", "msw/*", "rxjs", "nanoid"]
+                                "allowedExternalImports": ["@angular/*", "karma", "msw", "msw/*", "nanoid", "rxjs"]
                             },
                             {
                                 "sourceTag": "scope:admin",
