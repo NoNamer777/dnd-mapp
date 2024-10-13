@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular
 const ButtonTypes = {
     PRIMARY: 'primary',
     SECONDARY: 'secondary',
+    DANGER: 'danger',
 } as const;
 
 export type ButtonType = (typeof ButtonTypes)[keyof typeof ButtonTypes];

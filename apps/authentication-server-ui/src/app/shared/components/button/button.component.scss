@@ -18,6 +18,12 @@
         color: $on-primary;
     }
 
+    &[dma-button='danger'] {
+        background-color: $danger;
+        border-color: $danger;
+        color: $on-danger;
+    }
+
     &:hover {
         cursor: pointer;
         background-color: $surface-hover;
@@ -26,6 +32,11 @@
         &[dma-button='primary'] {
             background-color: $primary-hover;
             border-color: $primary-hover;
+        }
+
+        &[dma-button='danger'] {
+            background-color: $danger-hover;
+            border-color: $danger-hover;
         }
     }
 
@@ -37,6 +48,11 @@
         &[dma-button='primary'] {
             background-color: $primary-active;
             border-color: $primary-active;
+        }
+
+        &[dma-button='danger'] {
+            background-color: $danger-active;
+            border-color: $danger-active;
         }
     }
 }
