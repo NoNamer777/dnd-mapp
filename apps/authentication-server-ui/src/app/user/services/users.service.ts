@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
+import { User } from '@dnd-mapp/data';
 import { RequestService } from '../../shared';
-import { User } from '../models';
 
 const basePath = 'https://localhost.dndmapp.net:8080/authentication/users';
 

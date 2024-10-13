@@ -5,7 +5,9 @@ import { appConfig, RootComponent } from './app/core';
 async function main() {
     try {
         if (isDevMode()) {
-            const { startServer } = await import('@dnd-mapp/authentication-server-ui/testing');
+            const { startServer, withDefaultServerState } = await import('@dnd-mapp/authentication-server-ui/testing');
+            withDefaultServerState();
+
             await startServer();
         }
         await bootstrapApplication(RootComponent, appConfig);

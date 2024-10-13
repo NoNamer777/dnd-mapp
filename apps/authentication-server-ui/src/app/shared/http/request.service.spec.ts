@@ -1,5 +1,4 @@
 import { provideHttpClient } from '@angular/common/http';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { getMsw } from '@dnd-mapp/authentication-server-ui/testing';
 import { http, HttpResponse } from 'msw';
@@ -9,7 +8,7 @@ import { RequestService } from './request.service';
 describe('RequestService', () => {
     function setupTest() {
         TestBed.configureTestingModule({
-            providers: [provideExperimentalZonelessChangeDetection(), provideHttpClient()],
+            providers: [provideHttpClient()],
         });
 
         return {

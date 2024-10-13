@@ -6,4 +6,35 @@
             {{ 'BTN_LABEL_ADD_USER' | translate }}
         </button>
     </header>
+    <section>
+        <dma-table>
+            <dma-table-header>
+                <dma-table-column>#</dma-table-column>
+                <dma-table-column>{{ 'USERS_TABLE_COLUMN_HEADER_ID' | translate }}</dma-table-column>
+                <dma-table-column>{{ 'USERS_TABLE_COLUMN_HEADER_USERNAME' | translate }}</dma-table-column>
+                <dma-table-column>{{ 'USERS_TABLE_COLUMN_HEADER_EMAIL' | translate }}</dma-table-column>
+            </dma-table-header>
+            <dma-table-body>
+                @let users = users$ | async;
+
+                @if (busy() === true) {
+                    <dma-table-row>
+                        <dma-table-column><dma-icon dma-spinner-icon /></dma-table-column>
+                    </dma-table-row>
+                } @else if (users.length === 0) {
+                    <dma-table-row class="empty">
+                        <dma-table-column>{{ 'USERS_TABLE_NO_RESULTS' | translate }}</dma-table-column>
+                    </dma-table-row>
+                }
+                @for (user of users; track user.id; let idx = $index) {
+                    <dma-table-row>
+                        <dma-table-column>{{ idx + 1 }}</dma-table-column>
+                        <dma-table-column>{{ user.id }}</dma-table-column>
+                        <dma-table-column>{{ user.username }}</dma-table-column>
+                        <dma-table-column>{{ user.email }}</dma-table-column>
+                    </dma-table-row>
+                }
+            </dma-table-body>
+        </dma-table>
+    </section>
 </article>

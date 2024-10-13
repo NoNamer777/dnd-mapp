@@ -1,5 +1,6 @@
 import { SetupWorker, setupWorker } from 'msw/browser';
 import { UnhandledRequestPrint } from 'msw/lib/core/utils/request/onUnhandledRequest';
+import { withDefaultUsers } from '../db';
 import { authenticationServerHandlers } from './handlers';
 
 let server: SetupWorker;
@@ -16,6 +17,10 @@ export async function startServer() {
         onUnhandledRequest: onUnhandledRequest,
         quiet: true,
     });
+}
+
+export function withDefaultServerState() {
+    withDefaultUsers();
 }
 
 export function resetListeners() {

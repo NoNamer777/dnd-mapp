@@ -1,5 +1,5 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { Component, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Router, Routes, provideRouter } from '@angular/router';
 import { NavigationLinkHarness } from '@dnd-mapp/authentication-server-ui/testing';
@@ -22,7 +22,7 @@ describe('NavigationLinkComponent', () => {
         TestBed.configureTestingModule({
             imports: [NavigationLinkComponent],
             declarations: [TestComponent],
-            providers: [provideExperimentalZonelessChangeDetection(), provideRouter(routes)],
+            providers: [provideRouter(routes)],
         });
 
         const harnessLoader = TestbedHarnessEnvironment.loader(TestBed.createComponent(TestComponent));

@@ -3,6 +3,14 @@
     "bracketSameLine": false,
     "bracketSpacing": true,
     "endOfLine": "lf",
+    "overrides": [
+        {
+            "files": ["*.html"],
+            "options": {
+                "parser": "angular"
+            }
+        }
+    ],
     "plugins": ["prettier-plugin-organize-imports"],
     "printWidth": 120,
     "quoteProps": "consistent",

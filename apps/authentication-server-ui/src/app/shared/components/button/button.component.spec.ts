@@ -1,5 +1,5 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { Component, provideExperimentalZonelessChangeDetection, signal, Type } from '@angular/core';
+import { Component, signal, Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ButtonHarness } from '@dnd-mapp/authentication-server-ui/testing';
 import { ButtonComponent, ButtonType } from './button.component';
@@ -25,7 +25,6 @@ describe('ButtonComponent', () => {
         TestBed.configureTestingModule({
             imports: [ButtonComponent],
             declarations: [params.component],
-            providers: [provideExperimentalZonelessChangeDetection()],
         });
 
         const fixture = TestBed.createComponent(params.component);

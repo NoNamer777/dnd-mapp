@@ -1,5 +1,4 @@
 import { provideHttpClient } from '@angular/common/http';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { lastValueFrom } from 'rxjs';
 import { UsersService } from './users.service';
@@ -7,7 +6,7 @@ import { UsersService } from './users.service';
 describe('UsersService', () => {
     async function setupTest() {
         TestBed.configureTestingModule({
-            providers: [provideExperimentalZonelessChangeDetection(), provideHttpClient()],
+            providers: [provideHttpClient()],
         });
 
         return {
@@ -17,7 +16,6 @@ describe('UsersService', () => {
 
     it('should return all Users', async () => {
         const { usersService } = await setupTest();
-
-        expect(await lastValueFrom(usersService.getAll())).toEqual([]);
+        expect((await lastValueFrom(usersService.getAll())).length).toEqual(3);
     });
 });

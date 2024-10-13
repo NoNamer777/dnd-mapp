@@ -20,7 +20,8 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "paths": {
-            "@dnd-mapp/authentication-server-ui/testing": ["apps/authentication-server-ui/src/testing/public-api.ts"]
+            "@dnd-mapp/authentication-server-ui/testing": ["apps/authentication-server-ui/src/testing/public-api.ts"],
+            "@dnd-mapp/data": ["libs/data/src/lib/public-api.ts"]
         },
         "rootDir": ".",
         "skipLibCheck": true,

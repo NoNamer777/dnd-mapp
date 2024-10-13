@@ -4,6 +4,6 @@
     "compilerOptions": {
         "resolveJsonModule": true,
         "outDir": "../../dist/out-tsc",
-        "types": ["jasmine"]
+        "types": ["jasmine", "node"]
     }
 }

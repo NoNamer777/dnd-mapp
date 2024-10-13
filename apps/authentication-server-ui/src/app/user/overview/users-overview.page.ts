@@ -1,5 +1,10 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ButtonComponent, IconsModule, TranslationModule } from '../../shared';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { User } from '@dnd-mapp/data';
+import { Observable, tap } from 'rxjs';
+import { ButtonComponent, IconsModule, TableModule, TranslationModule } from '../../shared';
+import { UsersService } from '../services/users.service';
 
 @Component({
     selector: 'dma-users-overview',
@@ -7,6 +12,16 @@ import { ButtonComponent, IconsModule, TranslationModule } from '../../shared';
     styleUrl: './users-overview.page.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [ButtonComponent, IconsModule, TranslationModule],
+    imports: [CommonModule, ButtonComponent, IconsModule, TranslationModule, TableModule],
 })
-export class UsersOverviewPage {}
+export class UsersOverviewPage {
+    private readonly usersService = inject(UsersService);
+    protected readonly destroyRef = inject(DestroyRef);
+
+    protected readonly busy = signal(true);
+
+    protected readonly users$: Observable<User[]> = this.usersService.getAll().pipe(
+        tap(() => this.busy.set(false)),
+        takeUntilDestroyed(this.destroyRef)
+    );
+}

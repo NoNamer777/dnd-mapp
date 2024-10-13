@@ -3,4 +3,15 @@
         display: flex;
         justify-content: space-between;
     }
+
+    section {
+        dma-table {
+            margin-top: 1rem;
+        }
+
+        dma-icon[dma-spinner-icon] {
+            width: 2rem;
+            height: 2rem;
+        }
+    }
 }
