@@ -11,4 +11,15 @@ export class UsersService {
     public getAll() {
         return this.requestService.get<User[]>(basePath);
     }
+
+    public edit(userId: string) {
+        // TODO - Show modal with User's details.
+        console.log(`Editing User with ID "${userId}"`);
+    }
+
+    public delete(userId: string) {
+        // TODO - Show dialog to confirm action.
+        // TODO - Once confirmed disable account instead of deleting it.
+        console.log(`Deleting User with ID "${userId}"`);
+    }
 }

@@ -1,0 +1,9 @@
+@use '../../../../../public/styles/theme-variables' as *;
+
+:host {
+    width: 100%;
+    display: flex;
+    align-content: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}

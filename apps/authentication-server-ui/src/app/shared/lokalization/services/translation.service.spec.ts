@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideDnDMappTesting } from '@dnd-mapp/authentication-server-ui/testing';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, noop } from 'rxjs';
 import { RequestService } from '../../http';
 import { TranslationService } from './translation.service';
 
@@ -36,7 +36,7 @@ describe('TranslationService', () => {
 
     it('should warn for an unknown translation key', async () => {
         const { translationService } = await setupTest();
-        const consoleSpy = spyOn(console, 'warn').and.callFake(() => null);
+        const consoleSpy = spyOn(console, 'warn').and.callFake(() => noop());
 
         const translation = translationService.getTranslation('UNKNOWN_KEY');
 
@@ -46,7 +46,7 @@ describe('TranslationService', () => {
 
     it('should return unknown translation key when translations are not initialized', async () => {
         const { translationService } = await setupTest({ initialize: false });
-        const consoleSpy = spyOn(console, 'warn').and.callFake(() => null);
+        const consoleSpy = spyOn(console, 'warn').and.callFake(() => noop());
 
         const translation = translationService.getTranslation('UNKNOWN_KEY');
 
