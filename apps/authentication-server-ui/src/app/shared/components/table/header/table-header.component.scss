@@ -1,7 +1,6 @@
 @use '../../../../../../public/styles/theme-variables' as *;
 
 :host {
-    display: flex;
-    justify-content: space-between;
+    display: block;
     border-bottom: 1px solid $on-background;
 }

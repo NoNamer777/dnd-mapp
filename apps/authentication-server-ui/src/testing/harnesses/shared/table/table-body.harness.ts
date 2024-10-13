@@ -18,4 +18,8 @@ export class TableBodyHarness extends ComponentHarness {
     public async getNumberOfRows() {
         return (await this.rowsLocator()).length;
     }
+
+    public async getRowByIndex(index: number) {
+        return (await this.rowsLocator())[index];
+    }
 }
