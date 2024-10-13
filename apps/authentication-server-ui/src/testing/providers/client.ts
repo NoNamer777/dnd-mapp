@@ -1,7 +1,7 @@
 import { provideHttpClient } from '@angular/common/http';
 import { APP_INITIALIZER, ValueProvider } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { lastValueFrom, Observable } from 'rxjs';
+import { Observable, lastValueFrom } from 'rxjs';
 import { CLIENT_HOST } from '../../app/shared/http/consants';
 
 const provideTestingClientHost = () =>
