@@ -12,7 +12,17 @@ export default (config: Config) => {
         autoWatch: !isRunningInCI,
         autoWatchBatchDelay: 5_000,
         basePath: join(__dirname, '..', '..'),
-        browsers: ['ChromeHeadless'],
+        browsers: ['CustomChromeHeadless'],
+        customLaunchers: {
+            CustomChromeHeadless: {
+                base: 'ChromeHeadless',
+                // Chromium v129 shows a blank window when running Chrome in headless mode
+                // Should be fixed in v130, but temporary fix for the window is moving it offscreen.
+                // Source: https://stackoverflow.com/questions/78996364/chrome-129-headless-shows-blank-window
+                flags: ['--headless', '--disable-gpu', '--window-position=-2400,-2400'],
+            },
+        },
+        concurrency: 1,
         coverageReporter: {
             check: {
                 global: {
