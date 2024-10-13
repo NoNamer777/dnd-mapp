@@ -1,6 +1,14 @@
+@use 'sass:color';
+@use '../../../../../../public/styles/colors' as *;
+
 :host {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 0.5rem;
+}
+
+:host-context(dma-table-body) {
+    &:nth-of-type(even) {
+        background-color: color.scale($gray04, $lightness: 2.5%);
+    }
 }

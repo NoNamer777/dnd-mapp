@@ -4,7 +4,7 @@ import { TableBodyHarness } from './table-body.harness';
 export class TableHarness extends ComponentHarness {
     public static readonly hostSelector = 'dma-table';
 
-    private bodyLocator = this.locatorFor(TableBodyHarness);
+    private readonly bodyLocator = this.locatorFor(TableBodyHarness);
 
     public async isTableEmptyMessageVisible() {
         return await (await this.bodyLocator()).isTableEmptyMessageVisible();
@@ -16,5 +16,9 @@ export class TableHarness extends ComponentHarness {
 
     public async getNumberOfRows() {
         return await (await this.bodyLocator()).getNumberOfRows();
+    }
+
+    public async getRowByIndex(index: number) {
+        return await (await this.bodyLocator()).getRowByIndex(index);
     }
 }

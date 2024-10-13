@@ -8,15 +8,20 @@ $background: var(--background, $gray04);
 $on-background: var(--on-background, $gray19);
 
 $surface: var(--surface, $gray05);
-$on-surface: var(--on-surface, $gray19);
 $surface-hover: var(--surface-hover, hover($gray05));
 $surface-active: var(--surface-active, active($gray05));
+$on-surface: var(--on-surface, $gray19);
 
 $primary: var(--primary, $blue13);
-$on-primary: var(--on-primary, $gray19);
 $primary-hover: var(--primary-hover, hover($blue13));
 $primary-active: var(--primary-active, active($blue13));
+$on-primary: var(--on-primary, $gray19);
 
 $icon-size: var(--icon-size, 1rem);
 
 $border-radius: var(--border-radius, 0.4rem);
+
+$danger: var(--danger, $red10);
+$danger-hover: var(--danger-hover, hover($red10));
+$danger-active: var(--danger-active, active($red10));
+$on-danger: var(--on-danger, $gray19);

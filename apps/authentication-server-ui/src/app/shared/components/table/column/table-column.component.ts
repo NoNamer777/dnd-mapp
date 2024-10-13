@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, signal } from '@angular/core';
 
 @Component({
     selector: 'dma-table-column',
@@ -7,4 +7,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
 })
-export class TableColumnComponent {}
+export class TableColumnComponent {
+    public width = signal(100);
+
+    @HostBinding('style.flexBasis.%') protected get flexBasis() {
+        return this.width();
+    }
+}

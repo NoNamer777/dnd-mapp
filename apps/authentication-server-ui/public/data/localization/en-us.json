@@ -1,14 +1,14 @@
 {
     "BTN_LABEL_ADD_USER": "Add User",
-    "PAGE_TITLE_USERS_OVERVIEW": "Users",
-    "PAGE_TITLE_HOME": "DnD-Mapp Authentication Server Portal",
-    "PAGE_TITLE_NOT_FOUND": "Oops, something seems to be missing (Error: 404)...",
     "NAV_LINK_LABEL_HOME": "Home",
     "NAV_LINK_LABEL_USERS": "Users",
     "NOT_FOUND_LABEL": "Nothing seems to exist on this page.\nPlease, return back to the ",
     "NOT_FOUND_HOME_LINK_LABEL": "home page",
-    "USERS_TABLE_NO_RESULTS": "No Users were found",
+    "PAGE_TITLE_HOME": "DnD-Mapp Authentication Server Portal",
+    "PAGE_TITLE_NOT_FOUND": "Oops, something seems to be missing (Error: 404)...",
+    "PAGE_TITLE_USERS_OVERVIEW": "Users",
+    "USERS_TABLE_COLUMN_HEADER_ACTIONS": "Actions",
     "USERS_TABLE_COLUMN_HEADER_ID": "ID",
     "USERS_TABLE_COLUMN_HEADER_USERNAME": "Username",
-    "USERS_TABLE_COLUMN_HEADER_EMAIL": "Email Address"
+    "USERS_TABLE_NO_RESULTS": "No Users were found"
 }

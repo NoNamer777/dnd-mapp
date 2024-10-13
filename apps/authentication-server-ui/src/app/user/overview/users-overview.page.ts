@@ -5,6 +5,7 @@ import { User } from '@dnd-mapp/data';
 import { Observable, tap } from 'rxjs';
 import { ButtonComponent, IconsModule, TableModule, TranslationModule } from '../../shared';
 import { UsersService } from '../services/users.service';
+import { UserActionsComponent } from './actions/user-actions.component';
 
 @Component({
     selector: 'dma-users-overview',
@@ -12,7 +13,7 @@ import { UsersService } from '../services/users.service';
     styleUrl: './users-overview.page.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [CommonModule, ButtonComponent, IconsModule, TranslationModule, TableModule],
+    imports: [CommonModule, ButtonComponent, IconsModule, TranslationModule, TableModule, UserActionsComponent],
 })
 export class UsersOverviewPage {
     private readonly usersService = inject(UsersService);
