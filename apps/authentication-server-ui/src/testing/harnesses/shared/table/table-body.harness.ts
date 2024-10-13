@@ -5,6 +5,7 @@ export class TableBodyHarness extends ComponentHarness {
     public static readonly hostSelector = 'dma-table-body';
 
     private readonly emptyRowLocator = this.locatorForOptional(TableRowHarness.with({ className: 'empty' }));
+    private readonly rowsLocator = this.locatorForAll(TableRowHarness);
 
     public async isTableEmptyMessageVisible() {
         return Boolean(await this.emptyRowLocator());
@@ -12,5 +13,9 @@ export class TableBodyHarness extends ComponentHarness {
 
     public async getEmptyRowText() {
         return await (await this.emptyRowLocator()).text();
+    }
+
+    public async getNumberOfRows() {
+        return (await this.rowsLocator()).length;
     }
 }

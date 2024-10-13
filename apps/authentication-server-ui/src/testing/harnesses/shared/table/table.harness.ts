@@ -13,4 +13,8 @@ export class TableHarness extends ComponentHarness {
     public async getTableEmptyMessage() {
         return await (await this.bodyLocator()).getEmptyRowText();
     }
+
+    public async getNumberOfRows() {
+        return await (await this.bodyLocator()).getNumberOfRows();
+    }
 }

@@ -1,5 +1,5 @@
-import { mockUserDB } from './user';
+import { withDefaultUsers } from './user';
 
 export function resetDatabases() {
-    mockUserDB.reset();
+    withDefaultUsers();
 }
