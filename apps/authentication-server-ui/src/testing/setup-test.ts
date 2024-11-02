@@ -5,7 +5,7 @@ import { resetDatabases } from './mocks/db';
 
 getTestBed().initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
 
-beforeAll(() => startServer());
+beforeAll(async () => await startServer());
 
 beforeEach(() => {
     resetDatabases();
