@@ -7,6 +7,8 @@
     "PAGE_TITLE_HOME": "DnD-Mapp Authentication Server Portal",
     "PAGE_TITLE_NOT_FOUND": "Oops, something seems to be missing (Error: 404)...",
     "PAGE_TITLE_USERS_OVERVIEW": "Users",
+    "TOOLTIP_LABEL_USER_EDIT": "Edit User",
+    "TOOLTIP_LABEL_USER_DELETE": "Remove User",
     "USERS_TABLE_COLUMN_HEADER_ACTIONS": "Actions",
     "USERS_TABLE_COLUMN_HEADER_ID": "ID",
     "USERS_TABLE_COLUMN_HEADER_USERNAME": "Username",
