@@ -2,7 +2,7 @@ import { DestroyRef, inject, Injectable, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { map, of } from 'rxjs';
 import { RequestService } from '../../http';
-import { CLIENT_HOST } from '../../http/consants';
+import { CLIENT_HOST } from '../../http/constants';
 import { defaultLocale, Locale, Translations } from '../models';
 
 const translationsBasePath = 'data/localization';
