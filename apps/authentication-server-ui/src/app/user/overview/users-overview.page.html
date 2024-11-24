@@ -17,7 +17,7 @@
                 </dma-table-row>
             </dma-table-header>
             <dma-table-body>
-                @let users = users$ | async;
+                @let users = usersService.users();
 
                 @if (busy() === true) {
                     <dma-table-row>

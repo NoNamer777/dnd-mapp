@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideDnDMappTesting, runInitializers, UserActionsHarness } from '@dnd-mapp/authentication-server-ui/testing';
 import { noop } from 'rxjs';
-import { defaultUsers } from '../../../../testing/mocks/db';
+import { defaultUsers, mockUserDB } from '../../../../testing/mocks/db';
 import { provideTranslations } from '../../../shared';
 import { UserActionsComponent } from './user-actions.component';
 
@@ -41,9 +41,11 @@ describe('UserActionsComponent', () => {
 
     it('should delete User', async () => {
         const { harness } = await setupTest();
-        const logSpy = spyOn(console, 'log').and.callFake(() => noop());
+
+        expect(mockUserDB.getById(defaultUsers[0].id)).not.toBeNull();
 
         await harness.delete();
-        expect(logSpy).toHaveBeenCalledWith('Deleting User with ID "mUaZQqsMMrOkP-wlbAiUR"');
+
+        expect(mockUserDB.getById(defaultUsers[0].id)).toBeNull();
     });
 });

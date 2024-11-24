@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, Input } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ButtonComponent, IconsModule, TooltipModule, TranslationModule } from '../../../shared';
 import { UsersService } from '../../services/users.service';
 
@@ -12,6 +13,7 @@ import { UsersService } from '../../services/users.service';
 })
 export class UserActionsComponent {
     private readonly usersService = inject(UsersService);
+    protected readonly destroyRef = inject(DestroyRef);
 
     @Input() public userId: string;
 
@@ -20,6 +22,6 @@ export class UserActionsComponent {
     }
 
     protected onDelete() {
-        this.usersService.delete(this.userId);
+        this.usersService.delete(this.userId).pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
     }
 }
