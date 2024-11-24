@@ -1,6 +1,18 @@
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { ComponentRef, Directive, ElementRef, HostListener, Input, OnDestroy, inject, signal } from '@angular/core';
+import {
+    ComponentRef,
+    DestroyRef,
+    Directive,
+    ElementRef,
+    HostListener,
+    Input,
+    OnDestroy,
+    inject,
+    signal,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ShowHideAnimationState, ShowHideAnimationStates } from './animations';
 import {
     TooltipOrientation,
     TooltipPosition,
@@ -18,6 +30,7 @@ import { TooltipComponent } from './tooltip.component';
 export class TooltipDirective implements OnDestroy {
     private readonly overlay = inject(Overlay);
     private readonly elementRef = inject(ElementRef);
+    protected readonly destroyRef = inject(DestroyRef);
 
     @Input({ alias: 'dmaTooltip', required: true }) public label: string;
 
@@ -47,21 +60,26 @@ export class TooltipDirective implements OnDestroy {
     private componentRef: ComponentRef<TooltipComponent>;
 
     public ngOnDestroy() {
-        this.hide();
-        this.overlayRef = null;
+        this.removeTooltip();
     }
 
     @HostListener('mouseenter')
-    public onHover() {
-        this.show();
+    public onMouseenter() {
+        if (!this.componentRef) this.initializeTooltip();
+
+        this.toggleTooltip(ShowHideAnimationStates.SHOWN);
     }
 
     @HostListener('mouseleave')
-    public onBlur() {
-        this.hide();
+    public onMouseleave() {
+        this.toggleTooltip(ShowHideAnimationStates.HIDDEN);
     }
 
-    private show() {
+    private toggleTooltip(state: ShowHideAnimationState) {
+        this.componentRef.instance.updateAnimationState(state);
+    }
+
+    private initializeTooltip() {
         const positionStrategy = this.withPositionStrategy();
 
         this.overlayRef = this.overlay.create({
@@ -73,14 +91,13 @@ export class TooltipDirective implements OnDestroy {
 
         this.componentRef = this.overlayRef.attach(new ComponentPortal(TooltipComponent));
         this.componentRef.instance.label = this.label;
-    }
 
-    private hide() {
-        this.componentRef?.destroy();
-        this.componentRef = null;
-
-        this.overlayRef?.detach();
-        this.overlayRef?.dispose();
+        this.componentRef.instance.animationDone
+            .asObservable()
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+                next: () => this.removeTooltip(),
+            });
     }
 
     private withPositionStrategy() {
@@ -100,5 +117,16 @@ export class TooltipDirective implements OnDestroy {
 
         this.overlayRef.updatePositionStrategy(this.withPositionStrategy());
         this.overlayRef.updatePosition();
+    }
+
+    private removeTooltip() {
+        if (!this.componentRef) return;
+        this.componentRef.destroy();
+        this.componentRef = null;
+
+        this.overlayRef.detach();
+        this.overlayRef.dispose();
+
+        this.overlayRef = null;
     }
 }
