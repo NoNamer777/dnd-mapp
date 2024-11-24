@@ -89,7 +89,13 @@
                     }
                 ],
                 "codeCoverage": true,
-                "codeCoverageExclude": ["**/index.ts", "**/config/**", "**/testing/**"],
+                "codeCoverageExclude": [
+                    "**/config/**",
+                    "**/testing/**",
+                    "**/index.ts",
+                    "**/rxjs/config.ts",
+                    "**/http/constants.ts"
+                ],
                 "inlineStyleLanguage": "scss",
                 "karmaConfig": "apps/authentication-server-ui/src/testing/karma.config.ts",
                 "main": "apps/authentication-server-ui/src/testing/setup-test.ts",
