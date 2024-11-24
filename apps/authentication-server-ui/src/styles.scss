@@ -1,6 +1,8 @@
 @use '../public/styles/fonts';
 @use '../public/styles/main';
 
+@use '@angular/cdk/overlay-prebuilt.css';
+
 * {
     margin: 0;
 }

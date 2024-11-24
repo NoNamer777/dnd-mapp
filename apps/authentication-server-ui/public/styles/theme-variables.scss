@@ -7,6 +7,9 @@ $fw-bold: var(--fw-bold, 600);
 $background: var(--background, $gray04);
 $on-background: var(--on-background, $gray19);
 
+$inverse-background: var(--inverse-background, $gray19);
+$on-inverse-background: var(--on-inverse-background, $gray01);
+
 $surface: var(--surface, $gray05);
 $surface-hover: var(--surface-hover, hover($gray05));
 $surface-active: var(--surface-active, active($gray05));

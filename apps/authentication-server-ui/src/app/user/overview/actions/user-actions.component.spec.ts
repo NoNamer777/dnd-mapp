@@ -1,9 +1,10 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { provideDnDMappTesting, UserActionsHarness } from '@dnd-mapp/authentication-server-ui/testing';
+import { provideDnDMappTesting, runInitializers, UserActionsHarness } from '@dnd-mapp/authentication-server-ui/testing';
 import { noop } from 'rxjs';
 import { defaultUsers } from '../../../../testing/mocks/db';
+import { provideTranslations } from '../../../shared';
 import { UserActionsComponent } from './user-actions.component';
 
 describe('UserActionsComponent', () => {
@@ -18,8 +19,10 @@ describe('UserActionsComponent', () => {
         TestBed.configureTestingModule({
             imports: [UserActionsComponent],
             declarations: [TestComponent],
-            providers: [provideDnDMappTesting()],
+            providers: [provideDnDMappTesting(), provideTranslations()],
         });
+
+        await runInitializers();
 
         const harnessLoader = TestbedHarnessEnvironment.loader(TestBed.createComponent(TestComponent));
 

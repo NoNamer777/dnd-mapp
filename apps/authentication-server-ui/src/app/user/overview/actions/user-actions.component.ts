@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
-import { ButtonComponent, IconsModule } from '../../../shared';
+import { ButtonComponent, IconsModule, TooltipModule, TranslationModule } from '../../../shared';
 import { UsersService } from '../../services/users.service';
 
 @Component({
@@ -8,7 +8,7 @@ import { UsersService } from '../../services/users.service';
     styleUrl: './user-actions.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [ButtonComponent, IconsModule],
+    imports: [ButtonComponent, IconsModule, TooltipModule, TranslationModule],
 })
 export class UserActionsComponent {
     private readonly usersService = inject(UsersService);

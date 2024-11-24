@@ -30,6 +30,7 @@
                 }
                 @for (user of users; track user.id; let idx = $index) {
                     <dma-table-row>
+                        <!-- TODO - Display User's status (Active,Disabled,Pending)-->
                         <dma-table-column>{{ idx + 1 }}</dma-table-column>
                         <dma-table-column>{{ user.id }}</dma-table-column>
                         <dma-table-column>{{ user.username }}</dma-table-column>

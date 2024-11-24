@@ -1,3 +1,5 @@
+@use '../../../../public/styles/theme-variables' as *;
+
 :host {
     header {
         display: flex;
@@ -7,6 +9,22 @@
     section {
         dma-table {
             margin-top: 1rem;
+
+            dma-table-body {
+                dma-table-row {
+                    dma-user-actions {
+                        visibility: hidden;
+                    }
+
+                    &:hover {
+                        background-color: $surface-hover;
+
+                        dma-user-actions {
+                            visibility: unset;
+                        }
+                    }
+                }
+            }
         }
 
         dma-icon[dma-spinner-icon] {
