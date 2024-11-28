@@ -2,7 +2,6 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideDnDMappTesting, runInitializers, UserActionsHarness } from '@dnd-mapp/authentication-server-ui/testing';
-import { noop } from 'rxjs';
 import { defaultUsers, mockUserDB } from '../../../../testing/mocks/db';
 import { provideTranslations } from '../../../shared';
 import { UserActionsComponent } from './user-actions.component';
@@ -33,7 +32,7 @@ describe('UserActionsComponent', () => {
 
     it('should edit User', async () => {
         const { harness } = await setupTest();
-        const logSpy = spyOn(console, 'log').and.callFake(() => noop());
+        const logSpy = spyOn(console, 'log');
 
         await harness.edit();
         expect(logSpy).toHaveBeenCalledWith('Editing User with ID "mUaZQqsMMrOkP-wlbAiUR"');
