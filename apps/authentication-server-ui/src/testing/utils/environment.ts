@@ -34,11 +34,12 @@ export async function createTestEnvironment<C, H extends ComponentHarness>(param
         if (params.harness) {
             harness = await harnessLoader.getHarness(params.harness as HarnessQuery<H>);
         }
+        return {
+            fixture: fixture,
+            component: fixture.componentInstance,
+            harnessLoader: harnessLoader,
+            harness: harness,
+        };
     }
-    return {
-        fixture: fixture,
-        component: fixture.componentInstance,
-        harnessLoader: harnessLoader,
-        harness: harness,
-    };
+    return null;
 }
