@@ -12,9 +12,7 @@ export class ButtonHarness extends ComponentHarness {
             HarnessPredicate.stringMatches(harness.getLabel(), label)
         );
 
-    public async getLabel() {
-        return await (await this.host()).text();
-    }
+    private readonly processingIconLocator = this.locatorForOptional('dma-icon[dma-spinner-icon]');
 
     public async click() {
         await (await this.host()).click();
@@ -22,5 +20,21 @@ export class ButtonHarness extends ComponentHarness {
 
     public async getButtonType() {
         return await (await this.host()).getAttribute('dma-button-type');
+    }
+
+    public async getLabel() {
+        return await (await this.host()).text();
+    }
+
+    public async getButtonWidth() {
+        return (await (await this.host()).getDimensions()).width;
+    }
+
+    public async isDisabled() {
+        return await (await this.host()).getProperty<boolean>('disabled');
+    }
+
+    public async isProcessing() {
+        return Boolean(await this.processingIconLocator());
     }
 }
