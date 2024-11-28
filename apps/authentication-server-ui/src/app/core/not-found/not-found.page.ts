@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { TranslationModule } from '../../shared';
 
 @Component({
@@ -8,6 +8,6 @@ import { TranslationModule } from '../../shared';
     styleUrl: './not-found.page.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [RouterModule, TranslationModule],
+    imports: [RouterLink, TranslationModule],
 })
 export class NotFoundPage {}

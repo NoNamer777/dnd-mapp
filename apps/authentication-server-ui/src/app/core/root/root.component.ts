@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 import { IconsModule, NavigationModule, SideBarComponent, TranslationModule } from '../../shared';
 
 @Component({
@@ -8,6 +8,6 @@ import { IconsModule, NavigationModule, SideBarComponent, TranslationModule } fr
     styleUrl: './root.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [RouterModule, SideBarComponent, NavigationModule, IconsModule, TranslationModule],
+    imports: [RouterOutlet, SideBarComponent, NavigationModule, IconsModule, TranslationModule],
 })
 export class RootComponent {}

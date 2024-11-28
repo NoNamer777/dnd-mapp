@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
     selector: 'dma-navigation-link',
@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
     styleUrl: './navigation-link.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [RouterModule],
+    imports: [RouterLink, RouterLinkActive],
 })
 export class NavigationLinkComponent {
     @Input({ required: true }) public route: string;
