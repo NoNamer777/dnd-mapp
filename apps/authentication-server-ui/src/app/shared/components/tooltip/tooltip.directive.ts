@@ -63,15 +63,15 @@ export class TooltipDirective implements OnDestroy {
         this.removeTooltip();
     }
 
-    @HostListener('mouseenter')
-    public onMouseenter() {
+    @HostListener('mouseover')
+    public onMouseover() {
         if (!this.componentRef) this.initializeTooltip();
 
         this.toggleTooltip(ShowHideAnimationStates.SHOWN);
     }
 
-    @HostListener('mouseleave')
-    public onMouseleave() {
+    @HostListener('mouseout')
+    public onMouseout() {
         this.toggleTooltip(ShowHideAnimationStates.HIDDEN);
     }
 

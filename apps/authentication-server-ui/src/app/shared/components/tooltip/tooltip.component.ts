@@ -68,13 +68,13 @@ export class TooltipComponent implements OnInit {
         this.nextState.set(animationState);
     }
 
-    @HostListener('mouseenter')
-    protected onMouseenter() {
+    @HostListener('mouseover')
+    protected onMouseover() {
         this.updateAnimationState(ShowHideAnimationStates.SHOWN);
     }
 
-    @HostListener('mouseleave')
-    protected onMouseleave() {
+    @HostListener('mouseout')
+    protected onMouseout() {
         this.updateAnimationState(ShowHideAnimationStates.HIDDEN);
     }
 
