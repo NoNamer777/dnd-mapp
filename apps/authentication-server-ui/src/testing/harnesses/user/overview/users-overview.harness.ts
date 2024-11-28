@@ -1,5 +1,5 @@
 import { ComponentHarness } from '@angular/cdk/testing';
-import { TableHarness } from '../shared';
+import { TableHarness } from '../../shared';
 
 export class UsersOverviewHarness extends ComponentHarness {
     public static hostSelector = 'dma-users-overview';

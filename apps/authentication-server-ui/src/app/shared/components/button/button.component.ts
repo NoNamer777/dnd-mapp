@@ -1,4 +1,15 @@
-import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
+import {
+    AfterViewInit,
+    booleanAttribute,
+    ChangeDetectionStrategy,
+    Component,
+    ElementRef,
+    HostBinding,
+    Input,
+    signal,
+    ViewChild,
+} from '@angular/core';
+import { IconsModule } from '../icons';
 
 const ButtonTypes = {
     PRIMARY: 'primary',
@@ -19,9 +30,37 @@ function buttonTypeAttribute(value: string) {
     styleUrl: './button.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
+    imports: [IconsModule],
 })
-export class ButtonComponent {
+export class ButtonComponent implements AfterViewInit {
     @Input({ alias: 'dma-button', transform: buttonTypeAttribute })
     @HostBinding('attr.dma-button-type')
     public buttonType: ButtonType = 'secondary';
+
+    @Input({ transform: booleanAttribute })
+    public set processing(processing: boolean) {
+        this.disabled = this._processing = processing;
+    }
+
+    public get processing() {
+        return this._processing;
+    }
+
+    private _processing = false;
+
+    @Input({ transform: booleanAttribute })
+    public disabled = false;
+
+    @HostBinding('attr.disabled')
+    protected get isDisabled() {
+        return this.disabled ? '' : undefined;
+    }
+
+    @ViewChild('content') private readonly contentElement: ElementRef<HTMLDivElement>;
+
+    protected readonly contentWidth = signal<string>(null);
+
+    public ngAfterViewInit() {
+        this.contentWidth.set(getComputedStyle(this.contentElement.nativeElement).width);
+    }
 }

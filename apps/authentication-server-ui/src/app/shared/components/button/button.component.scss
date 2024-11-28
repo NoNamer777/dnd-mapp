@@ -1,9 +1,6 @@
 @use '../../../../../public/styles/theme-variables' as *;
 
 :host {
-    display: flex;
-    gap: 0.6rem;
-
     font-size: inherit;
 
     background-color: $surface;
@@ -24,7 +21,7 @@
         color: $on-danger;
     }
 
-    &:hover {
+    &:hover:not(:disabled) {
         cursor: pointer;
         background-color: $surface-hover;
         border-color: $surface-hover;
@@ -40,7 +37,7 @@
         }
     }
 
-    &:active {
+    &:active:not(:disabled) {
         cursor: pointer;
         background-color: $surface-active;
         border-color: $surface-active;
@@ -54,5 +51,15 @@
             background-color: $danger-active;
             border-color: $danger-active;
         }
+    }
+
+    &:disabled {
+        cursor: default;
+        opacity: 0.5;
+    }
+
+    .button-content {
+        display: flex;
+        gap: 0.6rem;
     }
 }

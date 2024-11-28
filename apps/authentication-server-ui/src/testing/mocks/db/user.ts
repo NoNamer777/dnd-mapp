@@ -8,6 +8,14 @@ export class MockUserDB {
         return Object.values(this.records);
     }
 
+    public getById(userId: string) {
+        return this.records[userId] ?? null;
+    }
+
+    public remove(userId: string) {
+        delete this.records[userId];
+    }
+
     public reset(users: User[] = []) {
         this.records = users.reduce((records: MockDatabase<User>, user) => {
             records[user.id] = user;

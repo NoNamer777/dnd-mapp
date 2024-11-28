@@ -1,39 +1,47 @@
-import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
-import { provideDnDMappTesting, runInitializers, UserActionsHarness } from '@dnd-mapp/authentication-server-ui/testing';
-import { noop } from 'rxjs';
-import { defaultUsers } from '../../../../testing/mocks/db';
+import { Component, inject } from '@angular/core';
+import {
+    UserActionsHarness,
+    createTestEnvironment,
+    defaultUsers,
+    mockUserDB,
+    provideDnDMappTesting,
+    runInitializers,
+} from '@dnd-mapp/authentication-server-ui/testing';
 import { provideTranslations } from '../../../shared';
+import { UsersOverviewStore } from '../../services/overview/users-overview-store';
 import { UserActionsComponent } from './user-actions.component';
 
 describe('UserActionsComponent', () => {
     @Component({
-        template: `<dma-user-actions [userId]="userId" />`,
+        template: ` <dma-user-actions [user]="user" (selectUser)="onSelectUser()" />`,
     })
     class TestComponent {
-        protected readonly userId = defaultUsers[0].id;
+        private readonly usersOverviewStore = inject(UsersOverviewStore);
+
+        protected readonly user = defaultUsers[0];
+
+        protected onSelectUser() {
+            this.usersOverviewStore.selectedUser.set(this.user);
+        }
     }
 
     async function setupTest() {
-        TestBed.configureTestingModule({
+        const { harness } = await createTestEnvironment({
+            testComponent: TestComponent,
+            harness: UserActionsHarness,
             imports: [UserActionsComponent],
-            declarations: [TestComponent],
-            providers: [provideDnDMappTesting(), provideTranslations()],
+            providers: [UsersOverviewStore, provideDnDMappTesting(), provideTranslations()],
+            initFunction: async () => await runInitializers(),
         });
 
-        await runInitializers();
-
-        const harnessLoader = TestbedHarnessEnvironment.loader(TestBed.createComponent(TestComponent));
-
         return {
-            harness: await harnessLoader.getHarness(UserActionsHarness),
+            harness: harness,
         };
     }
 
     it('should edit User', async () => {
         const { harness } = await setupTest();
-        const logSpy = spyOn(console, 'log').and.callFake(() => noop());
+        const logSpy = spyOn(console, 'log');
 
         await harness.edit();
         expect(logSpy).toHaveBeenCalledWith('Editing User with ID "mUaZQqsMMrOkP-wlbAiUR"');
@@ -41,9 +49,11 @@ describe('UserActionsComponent', () => {
 
     it('should delete User', async () => {
         const { harness } = await setupTest();
-        const logSpy = spyOn(console, 'log').and.callFake(() => noop());
+
+        expect(mockUserDB.getById(defaultUsers[0].id)).not.toBeNull();
 
         await harness.delete();
-        expect(logSpy).toHaveBeenCalledWith('Deleting User with ID "mUaZQqsMMrOkP-wlbAiUR"');
+
+        expect(mockUserDB.getById(defaultUsers[0].id)).toBeNull();
     });
 });

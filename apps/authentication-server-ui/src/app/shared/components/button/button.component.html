@@ -1,2 +1,8 @@
-<ng-content select="dma-icon.button-icon-before" />
-<ng-content />
+<div class="button-content" #content [style.width]="contentWidth()">
+    @if (processing) {
+        <dma-icon dma-spinner-icon />
+    } @else {
+        <ng-content select="dma-icon.button-icon-before" />
+        <ng-content />
+    }
+</div>

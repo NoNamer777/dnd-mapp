@@ -1,7 +1,5 @@
-import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component, signal, Type } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
-import { ButtonHarness } from '@dnd-mapp/authentication-server-ui/testing';
+import { ButtonHarness, createTestEnvironment } from '@dnd-mapp/authentication-server-ui/testing';
 import { ButtonComponent, ButtonType } from './button.component';
 
 describe('ButtonComponent', () => {
@@ -11,10 +9,14 @@ describe('ButtonComponent', () => {
     class BasicTestComponent {}
 
     @Component({
-        template: `<button [dma-button]="buttonType()">My Button</button>`,
+        template: `<button [dma-button]="buttonType()" [disabled]="disabled()" [processing]="processing()">
+            My Button
+        </button>`,
     })
     class TestComponent {
         public readonly buttonType = signal<ButtonType>('secondary');
+        public readonly disabled = signal(false);
+        public readonly processing = signal(false);
     }
 
     interface TestParams<T> {
@@ -22,16 +24,14 @@ describe('ButtonComponent', () => {
     }
 
     async function setupTest<T>(params: TestParams<T> = { component: BasicTestComponent as Type<T> }) {
-        TestBed.configureTestingModule({
+        const { harness, fixture } = await createTestEnvironment({
+            testComponent: params.component,
+            harness: ButtonHarness,
             imports: [ButtonComponent],
-            declarations: [params.component],
         });
 
-        const fixture = TestBed.createComponent(params.component);
-        const harnessLoader = TestbedHarnessEnvironment.loader(fixture);
-
         return {
-            harness: await harnessLoader.getHarness(ButtonHarness),
+            harness: harness,
             fixture: fixture,
             component: fixture.componentInstance,
         };
@@ -49,5 +49,26 @@ describe('ButtonComponent', () => {
 
         component.buttonType.set('primary');
         expect(await harness.getButtonType()).toBe('primary');
+    });
+
+    it('should toggle disabled', async () => {
+        const { harness, component } = await setupTest({ component: TestComponent });
+
+        expect(await harness.isDisabled()).toBeFalse();
+
+        component.disabled.set(true);
+        expect(await harness.isDisabled()).toBeTrue();
+    });
+
+    it('should toggle processing', async () => {
+        const { harness, component } = await setupTest({ component: TestComponent });
+
+        expect(await harness.isProcessing()).toBeFalse();
+        const buttonWidth = await harness.getButtonWidth();
+
+        component.processing.set(true);
+        expect(await harness.isProcessing()).toBeTrue();
+        expect(await harness.isDisabled()).toBeTrue();
+        expect(await harness.getButtonWidth()).toEqual(buttonWidth);
     });
 });

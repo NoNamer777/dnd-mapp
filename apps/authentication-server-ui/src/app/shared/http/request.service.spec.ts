@@ -16,21 +16,43 @@ describe('RequestService', () => {
         };
     }
 
-    it('should send get request', async () => {
-        getMsw().use(http.get('http://localhost:8080/end-point', () => Response.json({ attribute: 'value' })));
+    describe('get', () => {
+        it('should send get request', async () => {
+            getMsw().use(http.get('http://localhost:8080/end-point', () => HttpResponse.json({ attribute: 'value' })));
 
-        const { service } = setupTest();
+            const { service } = setupTest();
 
-        const response = await lastValueFrom(service.get('http://localhost:8080/end-point'));
-        expect(response).toEqual({ attribute: 'value' });
+            const response = await lastValueFrom(service.get('http://localhost:8080/end-point'));
+            expect(response).toEqual({ attribute: 'value' });
+        });
+
+        it('should return undefined when receiving error', async () => {
+            getMsw().use(http.get('http://localhost:8080/end-point', () => new HttpResponse(null, { status: 500 })));
+
+            const { service } = setupTest();
+
+            const response = await lastValueFrom(service.get('http://localhost:8080/end-point'));
+            expect(response).toBeUndefined();
+        });
     });
 
-    it('should return undefined when receiving error', async () => {
-        getMsw().use(http.get('http://localhost:8080/end-point', () => new HttpResponse(null, { status: 500 })));
+    describe('delete', () => {
+        it('should send delete request', async () => {
+            getMsw().use(http.delete('http://localhost:8080/end-point', () => new HttpResponse(null, { status: 200 })));
 
-        const { service } = setupTest();
+            const { service } = setupTest();
 
-        const response = await lastValueFrom(service.get('http://localhost:8080/end-point'));
-        expect(response).toBeUndefined();
+            await expectAsync(lastValueFrom(service.delete('http://localhost:8080/end-point'))).toBeResolved();
+        });
+
+        it('should return undefined when receiving error', async () => {
+            getMsw().use(http.delete('http://localhost:8080/end-point', () => new HttpResponse(null, { status: 500 })));
+
+            const { service } = setupTest();
+
+            await expectAsync(lastValueFrom(service.delete('http://localhost:8080/end-point'))).toBeResolvedTo(
+                undefined
+            );
+        });
     });
 });

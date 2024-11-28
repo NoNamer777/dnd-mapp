@@ -17,7 +17,7 @@
                 </dma-table-row>
             </dma-table-header>
             <dma-table-body>
-                @let users = users$ | async;
+                @let users = usersService.users();
 
                 @if (busy() === true) {
                     <dma-table-row>
@@ -32,9 +32,10 @@
                     <dma-table-row>
                         <!-- TODO - Display User's status (Active,Disabled,Pending)-->
                         <dma-table-column>{{ idx + 1 }}</dma-table-column>
-                        <dma-table-column>{{ user.id }}</dma-table-column>
                         <dma-table-column>{{ user.username }}</dma-table-column>
-                        <dma-table-column><dma-user-actions [userId]="user.id" /></dma-table-column>
+                        <dma-table-column>
+                            <dma-user-actions (selectUser)="onUserSelected(user)" />
+                        </dma-table-column>
                     </dma-table-row>
                 }
             </dma-table-body>

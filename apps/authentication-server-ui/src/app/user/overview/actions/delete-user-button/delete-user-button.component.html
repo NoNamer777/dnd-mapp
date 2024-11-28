@@ -1,0 +1,11 @@
+<button
+    type="button"
+    dma-button="danger"
+    tooltipOrientation="horizontal"
+    [dmaTooltip]="'TOOLTIP_LABEL_USER_DELETE' | translate"
+    [processing]="usersOverviewStore.processing()"
+    [disabled]="usersOverviewStore.lockActions()"
+    (click)="onDelete()"
+>
+    <dma-icon dma-trash-icon />
+</button>

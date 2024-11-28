@@ -1,7 +1,6 @@
-import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
 import {
+    createTestEnvironment,
     getMsw,
     provideDnDMappTesting,
     runInitializers,
@@ -9,6 +8,7 @@ import {
 } from '@dnd-mapp/authentication-server-ui/testing';
 import { http, HttpResponse } from 'msw';
 import { provideTranslations } from '../../shared';
+import { UsersOverviewStore } from '../services/overview/users-overview-store';
 import { UsersOverviewPage } from './users-overview.page';
 
 describe('UsersOverviewPage', () => {
@@ -18,20 +18,17 @@ describe('UsersOverviewPage', () => {
     class TestComponent {}
 
     async function setupTest() {
-        TestBed.configureTestingModule({
+        const { harness, fixture } = await createTestEnvironment({
+            testComponent: TestComponent,
+            harness: UsersOverviewHarness,
             imports: [UsersOverviewPage],
-            declarations: [TestComponent],
-            providers: [provideDnDMappTesting(), provideTranslations()],
+            providers: [UsersOverviewStore, provideDnDMappTesting(), provideTranslations()],
+            initFunction: async () => await runInitializers(),
         });
 
-        await runInitializers();
-
-        const fixture = TestBed.createComponent(TestComponent);
-        const harnessLoader = TestbedHarnessEnvironment.loader(fixture);
-
         return {
-            harness: await harnessLoader.getHarness(UsersOverviewHarness),
-            fixture,
+            harness: harness,
+            fixture: fixture,
         };
     }
 
