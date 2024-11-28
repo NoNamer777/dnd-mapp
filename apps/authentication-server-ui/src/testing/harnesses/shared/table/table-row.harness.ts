@@ -1,4 +1,4 @@
-import { BaseHarnessFilters, ComponentHarness, HarnessPredicate } from '@angular/cdk/testing';
+import { BaseHarnessFilters, ComponentHarness, HarnessPredicate, HarnessQuery } from '@angular/cdk/testing';
 import { TableColumnHarness } from './table-column.harness';
 
 interface TableRowHarnessFilters extends BaseHarnessFilters {
@@ -27,7 +27,12 @@ export class TableRowHarness extends ComponentHarness {
         return await this.columnLocators();
     }
 
-    public async getColumnByIndex(index: number) {
-        return (await this.columnLocators())[index];
+    public async getColumnByIndex<C extends ComponentHarness, T extends string | HarnessQuery<C>>(
+        index: number,
+        underlyingHarness: T
+    ) {
+        const columHarness = (await this.columnLocators())[index];
+
+        return await columHarness.underlyingHarness(underlyingHarness);
     }
 }

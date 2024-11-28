@@ -1,18 +1,2 @@
-<button
-    type="button"
-    dma-button
-    tooltipOrientation="horizontal"
-    [dmaTooltip]="'TOOLTIP_LABEL_USER_EDIT' | translate"
-    (click)="onEdit()"
->
-    <dma-icon dma-pen-to-square-icon />
-</button>
-<button
-    type="button"
-    dma-button="danger"
-    tooltipOrientation="horizontal"
-    [dmaTooltip]="'TOOLTIP_LABEL_USER_DELETE' | translate"
-    (click)="onDelete()"
->
-    <dma-icon dma-trash-icon />
-</button>
+<dma-edit-user-button (editUser)="onEdit()" />
+<dma-delete-user-button (deleteUser)="onDelete()" />

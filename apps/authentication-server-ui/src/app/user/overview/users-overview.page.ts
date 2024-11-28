@@ -1,8 +1,9 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { User } from '@dnd-mapp/data';
 import { tap } from 'rxjs';
 import { ButtonComponent, IconsModule, TableModule, TranslationModule } from '../../shared';
+import { UsersOverviewStore } from '../services/overview/users-overview-store';
 import { UsersService } from '../services/user/users.service';
 import { UserActionsComponent } from './actions/user-actions.component';
 
@@ -11,12 +12,14 @@ import { UserActionsComponent } from './actions/user-actions.component';
     templateUrl: './users-overview.page.html',
     styleUrl: './users-overview.page.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [UsersOverviewStore],
     standalone: true,
-    imports: [CommonModule, ButtonComponent, IconsModule, TranslationModule, TableModule, UserActionsComponent],
+    imports: [ButtonComponent, IconsModule, TranslationModule, TableModule, UserActionsComponent],
 })
 export class UsersOverviewPage implements OnInit {
     protected readonly destroyRef = inject(DestroyRef);
     protected readonly usersService = inject(UsersService);
+    private readonly usersOverviewStore = inject(UsersOverviewStore);
 
     protected readonly busy = signal(true);
 
@@ -28,5 +31,9 @@ export class UsersOverviewPage implements OnInit {
                 takeUntilDestroyed(this.destroyRef)
             )
             .subscribe();
+    }
+
+    protected onUserSelected(user: User) {
+        this.usersOverviewStore.selectedUser.set(user);
     }
 }

@@ -1,0 +1,10 @@
+<button
+    type="button"
+    dma-button
+    tooltipOrientation="horizontal"
+    [dmaTooltip]="'TOOLTIP_LABEL_USER_EDIT' | translate"
+    [disabled]="usersOverviewStore.lockActions()"
+    (click)="onEdit()"
+>
+    <dma-icon dma-pen-to-square-icon />
+</button>
