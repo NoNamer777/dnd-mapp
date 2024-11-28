@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { User } from '@dnd-mapp/data';
 import { switchMap, tap } from 'rxjs';
-import { RequestService } from '../../shared';
+import { RequestService } from '../../../shared';
 
 const basePath = 'https://localhost.dndmapp.net:8080/authentication/users';
 

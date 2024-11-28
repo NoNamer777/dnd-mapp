@@ -1,7 +1,7 @@
 import { provideHttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { lastValueFrom } from 'rxjs';
-import { defaultUsers, mockUserDB } from '../../../testing/mocks/db';
+import { defaultUsers, mockUserDB } from '../../../../testing/mocks/db';
 import { UsersService } from './users.service';
 
 describe('UsersService', () => {

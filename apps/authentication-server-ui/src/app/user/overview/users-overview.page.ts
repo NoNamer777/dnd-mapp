@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { tap } from 'rxjs';
 import { ButtonComponent, IconsModule, TableModule, TranslationModule } from '../../shared';
-import { UsersService } from '../services/users.service';
+import { UsersService } from '../services/user/users.service';
 import { UserActionsComponent } from './actions/user-actions.component';
 
 @Component({
@@ -15,8 +15,8 @@ import { UserActionsComponent } from './actions/user-actions.component';
     imports: [CommonModule, ButtonComponent, IconsModule, TranslationModule, TableModule, UserActionsComponent],
 })
 export class UsersOverviewPage implements OnInit {
-    protected readonly usersService = inject(UsersService);
     protected readonly destroyRef = inject(DestroyRef);
+    protected readonly usersService = inject(UsersService);
 
     protected readonly busy = signal(true);
 
