@@ -29,7 +29,7 @@ export async function createTestEnvironment<C, H extends ComponentHarness>(param
     }
     if (params.testComponent) {
         fixture = TestBed.createComponent(params.testComponent);
-        harnessLoader = TestbedHarnessEnvironment.loader(fixture);
+        harnessLoader = TestbedHarnessEnvironment.documentRootLoader(fixture);
 
         if (params.harness) {
             harness = await harnessLoader.getHarness(params.harness as HarnessQuery<H>);
