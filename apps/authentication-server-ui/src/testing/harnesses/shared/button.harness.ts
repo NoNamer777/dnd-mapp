@@ -1,7 +1,9 @@
 import { BaseHarnessFilters, ComponentHarness, HarnessPredicate } from '@angular/cdk/testing';
+import { ButtonType } from '../../../app/shared';
 
 interface ButtonFilters extends BaseHarnessFilters {
     label?: string;
+    type?: ButtonType;
 }
 
 export class ButtonHarness extends ComponentHarness {

@@ -14,6 +14,8 @@ import { debounce, timer } from 'rxjs';
 import { RXJS_CONFIG } from '../../../rxjs';
 import { showHideAnimation, ShowHideAnimationState, ShowHideAnimationStates } from './animations';
 
+// TODO: For some reason when a tooltip is showing (during the animation) and a dialog appears the tooltip is not removed.
+
 @Component({
     selector: 'dma-tooltip',
     templateUrl: './tooltip.component.html',

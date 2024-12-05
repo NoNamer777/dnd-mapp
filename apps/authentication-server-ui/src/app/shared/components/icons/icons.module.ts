@@ -5,8 +5,9 @@ import { PlusIcon } from './plus/plus.icon';
 import { SpinnerIcon } from './spinner/spinner.icon';
 import { TrashIcon } from './trash/trash.icon';
 import { UserGroupIcon } from './user-group/user-group.icon';
+import { XmarkIcon } from './xmark/xmark.icon';
 
-const icons = [HouseIcon, PenToSquareIcon, PlusIcon, SpinnerIcon, TrashIcon, UserGroupIcon];
+const icons = [HouseIcon, PenToSquareIcon, PlusIcon, SpinnerIcon, TrashIcon, UserGroupIcon, XmarkIcon];
 
 @NgModule({
     imports: [...icons],

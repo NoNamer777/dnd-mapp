@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, EventEmitter, inject, Output } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { finalize } from 'rxjs';
+import { finalize, switchMap } from 'rxjs';
 import { ButtonComponent, IconsModule, TooltipModule, TranslatePipe } from '../../../../shared';
-import { UsersOverviewStore } from '../../../services/overview/users-overview-store';
+import { UsersOverviewStore } from '../../../services/users-overview-store';
+import { UsersService } from '../../../services/users.service';
 
 @Component({
     selector: 'dma-delete-user-button',
@@ -14,6 +15,7 @@ import { UsersOverviewStore } from '../../../services/overview/users-overview-st
 })
 export class DeleteUserButtonComponent {
     private readonly deleteRef = inject(DestroyRef);
+    private readonly userService = inject(UsersService);
     protected readonly usersOverviewStore = inject(UsersOverviewStore);
 
     @Output() public readonly deleteUser = new EventEmitter<void>();
@@ -26,6 +28,7 @@ export class DeleteUserButtonComponent {
         this.usersOverviewStore
             .delete()
             .pipe(
+                switchMap(() => this.userService.getAll()),
                 takeUntilDestroyed(this.deleteRef),
                 finalize(() => {
                     this.usersOverviewStore.processing.set(false);

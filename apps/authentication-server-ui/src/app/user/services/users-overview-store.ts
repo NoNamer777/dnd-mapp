@@ -1,6 +1,6 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { User } from '@dnd-mapp/data';
-import { UsersService } from '../user/users.service';
+import { UsersService } from './users.service';
 
 @Injectable()
 export class UsersOverviewStore {
@@ -13,7 +13,7 @@ export class UsersOverviewStore {
     public readonly lockActions = computed(() => Boolean(this.selectedUser()) && this.processing());
 
     public delete() {
-        return this.usersService.delete(this.selectedUser().id);
+        return this.usersService.delete(this.selectedUser());
     }
 
     public edit() {

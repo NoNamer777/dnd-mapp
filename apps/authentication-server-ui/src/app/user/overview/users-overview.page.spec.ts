@@ -8,7 +8,7 @@ import {
 } from '@dnd-mapp/authentication-server-ui/testing';
 import { http, HttpResponse } from 'msw';
 import { provideTranslations } from '../../shared';
-import { UsersOverviewStore } from '../services/overview/users-overview-store';
+import { UsersOverviewStore } from '../services/users-overview-store';
 import { UsersOverviewPage } from './users-overview.page';
 
 describe('UsersOverviewPage', () => {

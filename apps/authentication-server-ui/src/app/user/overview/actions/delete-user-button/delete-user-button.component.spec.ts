@@ -2,6 +2,7 @@ import { manualChangeDetection } from '@angular/cdk/testing';
 import { Component, inject } from '@angular/core';
 import {
     DeleteUserButtonHarness,
+    DeleteUserDialogHarness,
     createTestEnvironment,
     defaultUsers,
     mockUserDB,
@@ -9,7 +10,7 @@ import {
     runInitializers,
 } from '@dnd-mapp/authentication-server-ui/testing';
 import { provideTranslations } from '../../../../shared';
-import { UsersOverviewStore } from '../../../services/overview/users-overview-store';
+import { UsersOverviewStore } from '../../../services/users-overview-store';
 import { DeleteUserButtonComponent } from './delete-user-button.component';
 
 describe('DeleteUserButtonComponent', () => {
@@ -25,7 +26,7 @@ describe('DeleteUserButtonComponent', () => {
     }
 
     async function setupTest() {
-        const { harness, fixture } = await createTestEnvironment({
+        const { harness, fixture, harnessLoader } = await createTestEnvironment({
             testComponent: TestComponent,
             harness: DeleteUserButtonHarness,
             imports: [DeleteUserButtonComponent],
@@ -36,11 +37,12 @@ describe('DeleteUserButtonComponent', () => {
         return {
             harness: harness,
             fixture: fixture,
+            harnessLoader: harnessLoader,
         };
     }
 
     it('should delete a user', async () => {
-        const { harness, fixture } = await setupTest();
+        const { harness, fixture, harnessLoader } = await setupTest();
 
         expect(mockUserDB.getById(defaultUsers[0].id)).not.toBeNull();
 
@@ -49,9 +51,11 @@ describe('DeleteUserButtonComponent', () => {
             fixture.detectChanges();
 
             expect(await harness.isProcessing()).toEqual(true);
-
             await fixture.whenStable();
         });
+
+        const deleteUserDialogHarness = await harnessLoader.getHarness(DeleteUserDialogHarness);
+        await deleteUserDialogHarness.delete();
 
         expect(await harness.isProcessing()).toEqual(false);
         expect(mockUserDB.getById(defaultUsers[0].id)).toBeNull();
