@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import {
+    DeleteUserDialogHarness,
     UserActionsHarness,
     createTestEnvironment,
     defaultUsers,
@@ -26,7 +27,7 @@ describe('UserActionsComponent', () => {
     }
 
     async function setupTest() {
-        const { harness } = await createTestEnvironment({
+        const { harness, harnessLoader } = await createTestEnvironment({
             testComponent: TestComponent,
             harness: UserActionsHarness,
             imports: [UserActionsComponent],
@@ -36,6 +37,7 @@ describe('UserActionsComponent', () => {
 
         return {
             harness: harness,
+            harnessLoader: harnessLoader,
         };
     }
 
@@ -48,12 +50,34 @@ describe('UserActionsComponent', () => {
     });
 
     it('should delete User', async () => {
-        const { harness } = await setupTest();
+        const { harness, harnessLoader } = await setupTest();
 
         expect(mockUserDB.getById(defaultUsers[0].id)).not.toBeNull();
 
         await harness.delete();
 
+        const deleteUserDialogHarness = await harnessLoader.getHarness(DeleteUserDialogHarness);
+
+        expect(deleteUserDialogHarness).not.toBeNull();
+        expect(await deleteUserDialogHarness.getDialogTitle()).toEqual(`Delete ${defaultUsers[0].username}?`);
+        expect(await deleteUserDialogHarness.getDialogContent()).toEqual(`This can't be undone`);
+
+        await deleteUserDialogHarness.delete();
         expect(mockUserDB.getById(defaultUsers[0].id)).toBeNull();
+    });
+
+    it('should not delete User', async () => {
+        const { harness, harnessLoader } = await setupTest();
+
+        expect(mockUserDB.getById(defaultUsers[0].id)).not.toBeNull();
+
+        await harness.delete();
+
+        const deleteUserDialogHarness = await harnessLoader.getHarness(DeleteUserDialogHarness);
+
+        expect(deleteUserDialogHarness).not.toBeNull();
+
+        await deleteUserDialogHarness.cancel();
+        expect(mockUserDB.getById(defaultUsers[0].id)).not.toBeNull();
     });
 });

@@ -1,0 +1,12 @@
+<section>
+    <dma-dialog-header>
+        <h1 class="dma-dialog-title">Delete {{ user.username }}?</h1>
+    </dma-dialog-header>
+    <dma-dialog-content>
+        <p>This can't be undone</p>
+    </dma-dialog-content>
+    <dma-dialog-footer>
+        <button dma-button type="button" (click)="onCancel()">Cancel</button>
+        <button dma-button="danger" type="button" (click)="onDelete()">Delete</button>
+    </dma-dialog-footer>
+</section>
