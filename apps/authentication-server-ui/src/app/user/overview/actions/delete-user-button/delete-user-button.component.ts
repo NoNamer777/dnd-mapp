@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, DestroyRef, EventEmitter, inject, O
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { finalize } from 'rxjs';
 import { ButtonComponent, IconsModule, TooltipModule, TranslatePipe } from '../../../../shared';
-import { UsersOverviewStore } from '../../../services/overview/users-overview-store';
+import { UsersOverviewStore } from '../../../services/users-overview-store';
 
 @Component({
     selector: 'dma-delete-user-button',

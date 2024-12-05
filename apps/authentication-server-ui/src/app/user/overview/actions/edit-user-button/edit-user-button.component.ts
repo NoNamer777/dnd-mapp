@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, inject, Output } from '@angular/core';
 import { ButtonComponent, IconsModule, TooltipModule, TranslatePipe } from '../../../../shared';
-import { UsersOverviewStore } from '../../../services/overview/users-overview-store';
+import { UsersOverviewStore } from '../../../services/users-overview-store';
 
 @Component({
     selector: 'dma-edit-user-button',
