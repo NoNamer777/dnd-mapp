@@ -10,6 +10,11 @@
             "outputs": ["{options.reportsDirectory}"],
             "options": {
                 "reportsDirectory": "../../reports/data"
+            },
+            "defaultConfiguration": "ci",
+            "configurations": {
+                "ci": {},
+                "dev": {}
             }
         },
         "lint": {
