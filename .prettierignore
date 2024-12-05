@@ -5,6 +5,7 @@
 # Except for directories and except for specific file types
 !*/
 !*.html
+!*.svg
 !*.css
 !*.scss
 !*.js
