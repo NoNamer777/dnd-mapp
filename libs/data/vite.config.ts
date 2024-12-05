@@ -8,6 +8,7 @@ export default defineConfig({
     plugins: [nxViteTsPaths()],
     root: __dirname,
     test: {
+        api: 9876,
         coverage: {
             enabled: true,
             exclude: [],

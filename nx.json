@@ -2,21 +2,11 @@
     "$schema": "./node_modules/nx/schemas/nx-schema.json",
     "defaultBase": "origin/main",
     "defaultProject": "authentication-server-ui",
-    "nxCloudAccessToken": "NWY0ODgyMDQtZmNmMy00N2VjLThmNTgtYTVjNzczZDI0MThifHJlYWQ=",
+    "nxCloudId": "652d33657b380c294d0c048d",
     "useInferencePlugins": false,
     "workspaceLayout": {
         "appsDir": "apps",
         "libsDir": "libs"
-    },
-    "targetDefaults": {
-        "@angular-devkit/build-angular:application": {
-            "cache": true,
-            "dependsOn": ["^build"],
-            "inputs": ["default", "^default"]
-        },
-        "@nx/vite:test": {
-            "inputs": ["default", "^default"]
-        }
     },
     "generators": {
         "@nx/angular:application": {
@@ -28,6 +18,55 @@
         "@nx/angular:component": {
             "style": "scss",
             "changeDetection": "OnPush"
+        }
+    },
+    "namedInputs": {
+        "default": ["{projectRoot}/**/*", "sharedGlobals"],
+        "production": [
+            "default",
+            "!{projectRoot}/.eslintrc.json",
+            "!{projectRoot}/eslint.config.js",
+            "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+            "!{projectRoot}/tsconfig.spec.json",
+            "!{projectRoot}/jest.config.[jt]s",
+            "!{projectRoot}/src/testing/karma.config.[jt]s",
+            "!{projectRoot}/src/testing/setup-test.[jt]s",
+            "!{projectRoot}/src/test-setup.[jt]s",
+            "!{projectRoot}/test-setup.[jt]s"
+        ],
+        "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
+    },
+    "plugins": [
+        {
+            "plugin": "@nx/playwright/plugin",
+            "options": {
+                "targetName": "e2e"
+            }
+        },
+        {
+            "plugin": "@nx/eslint/plugin",
+            "options": {
+                "targetName": "lint"
+            }
+        }
+    ],
+    "targetDefaults": {
+        "@angular-devkit/build-angular:application": {
+            "cache": true,
+            "dependsOn": ["^build"],
+            "inputs": ["production", "^production"]
+        },
+        "@nx/eslint:lint": {
+            "cache": true,
+            "inputs": [
+                "default",
+                "{workspaceRoot}/.eslintrc.json",
+                "{workspaceRoot}/.eslintignore",
+                "{workspaceRoot}/eslint.config.js"
+            ]
+        },
+        "@nx/vite:test": {
+            "inputs": ["default", "^default"]
         }
     }
 }
