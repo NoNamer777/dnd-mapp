@@ -2,6 +2,7 @@
 @use '../public/styles/main';
 
 @use '@angular/cdk/overlay-prebuilt.css';
+@use './app/shared/components/dialog';
 
 * {
     margin: 0;
