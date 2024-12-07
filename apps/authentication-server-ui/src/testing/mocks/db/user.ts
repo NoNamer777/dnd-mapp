@@ -1,4 +1,4 @@
-import { User } from '@dnd-mapp/data';
+import { defaultUsers, generateDefaultUsers, User } from '@dnd-mapp/data';
 import { MockDatabase } from './models';
 
 export class MockUserDB {
@@ -26,30 +26,7 @@ export class MockUserDB {
 
 export const mockUserDB = new MockUserDB();
 
-export const defaultUsers: User[] = [
-    {
-        id: 'mUaZQqsMMrOkP-wlbAiUR',
-        username: 'Player 1',
-        email: 'player_1@dndmapp.nl.eu.org',
-        password: 'secure_password',
-        roles: ['Player'],
-    },
-    {
-        id: '6C1brq3WrmiXxemlcYoj_',
-        username: 'Player 2',
-        email: 'player_2@dndmapp.nl.eu.org',
-        password: 'secure_password',
-        roles: ['Player', 'Dungeon Master'],
-    },
-    {
-        id: 'f0k8GlWm5DkePutrnwnjr',
-        username: 'Admin',
-        email: 'admin@dndmapp.nl.eu.org',
-        password: 'secure_password',
-        roles: ['Administrator'],
-    },
-];
-
 export function withDefaultUsers() {
+    generateDefaultUsers();
     mockUserDB.reset(defaultUsers);
 }
