@@ -17,7 +17,7 @@ const Roles = {
 
 export type Role = (typeof Roles)[keyof typeof Roles];
 
-const AccountStatuses = {
+export const AccountStatuses = {
     ACTIVE: 'Active',
     PENDING: 'Pending',
     SUSPENDED: 'Suspended',
@@ -25,18 +25,14 @@ const AccountStatuses = {
     DELETED: 'Deleted',
 } as const;
 
-type AccountStatus = (typeof AccountStatuses)[keyof typeof AccountStatuses];
+export type AccountStatus = (typeof AccountStatuses)[keyof typeof AccountStatuses];
 
 export let defaultUsers: User[] = [];
 
+let numberOfUsers = 0;
+
 export function generateDefaultUsers() {
     defaultUsers = [];
-
-    defaultUsers = [...defaultUsers, new UserBuilder().withId('mUaZQqsMMrOkP-wlbAiUR').build()];
-    defaultUsers = [
-        ...defaultUsers,
-        new UserBuilder().withId('6C1brq3WrmiXxemlcYoj_').withRoles(['Player', 'Dungeon Master']).build(),
-    ];
 
     defaultUsers = [
         ...defaultUsers,
@@ -51,6 +47,12 @@ export function generateDefaultUsers() {
         new UserBuilder().withUsername('Admin 2').withId('GNT5nXtnCJf2INzDdSHm-').withRoles(['Administrator']).build(),
     ];
 
+    defaultUsers = [...defaultUsers, new UserBuilder().withId('mUaZQqsMMrOkP-wlbAiUR').build()];
+    defaultUsers = [
+        ...defaultUsers,
+        new UserBuilder().withId('6C1brq3WrmiXxemlcYoj_').withRoles(['Player', 'Dungeon Master']).build(),
+    ];
+
     defaultUsers = [...defaultUsers, new UserBuilder().withId('FWcfy4TC4_QvtWj3nB-lE').withStatus('Pending').build()];
     defaultUsers = [...defaultUsers, new UserBuilder().withId('u2AhHlBXf60UdvEk__13C').withStatus('Pending').build()];
 
@@ -59,8 +61,11 @@ export function generateDefaultUsers() {
         ...defaultUsers,
         new UserBuilder().withId('FQ-6ndIzpA40NccHh_Mtj').withStatus('Deactivated').build(),
     ];
+    defaultUsers = [
+        ...defaultUsers,
+        new UserBuilder().withId('h7wUHgDxrPP1k3TzW_tMg').withStatus('Deactivated').build(),
+    ];
 
-    defaultUsers = [...defaultUsers, new UserBuilder().withId('h7wUHgDxrPP1k3TzW_tMg').withStatus('Deleted').build()];
     defaultUsers = [...defaultUsers, new UserBuilder().withId('GDZSE5FFunRs7SyziS9V5').withStatus('Deleted').build()];
     defaultUsers = [...defaultUsers, new UserBuilder().withId('GVDcHSuAE4fbmyqhM363s').withStatus('Deleted').build()];
 }
@@ -68,15 +73,19 @@ export function generateDefaultUsers() {
 export class UserBuilder {
     private readonly user: Partial<User> = {};
 
+    constructor() {
+        numberOfUsers++;
+    }
+
     public build() {
         if (!this.user.id) {
             this.user.id = nanoid();
         }
         if (!this.user.username) {
-            this.user.username = `Player ${defaultUsers.length + 1}`;
+            this.user.username = `Player ${numberOfUsers}`;
         }
         if (!this.user.email) {
-            this.user.email = `${this.user.username.toLowerCase().replaceAll(' ', '-')}@dndmapp.nl.eu.org`;
+            this.user.email = `${this.user.username.toLowerCase().replaceAll(' ', '_')}@dndmapp.nl.eu.org`;
         }
         if (!this.user.password) {
             this.user.password = 'secure_password';
