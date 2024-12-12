@@ -1,8 +1,12 @@
 @use './colors' as *;
 @use './functions' as *;
 
-$fw-regular: var(--fw-bold, 400);
+$fw-regular: var(--fw-regular, 400);
 $fw-bold: var(--fw-bold, 600);
+
+$icon-size: var(--icon-size, 1rem);
+$border-radius: var(--border-radius, 0.4rem);
+$opacity-disabled: var(--opacity-disabled, 0.333);
 
 $background: var(--background, $gray04);
 $on-background: var(--on-background, $gray19);
@@ -20,11 +24,13 @@ $primary-hover: var(--primary-hover, hover($blue13));
 $primary-active: var(--primary-active, active($blue13));
 $on-primary: var(--on-primary, $gray19);
 
-$icon-size: var(--icon-size, 1rem);
-
-$border-radius: var(--border-radius, 0.4rem);
-
-$danger: var(--danger, $red10);
-$danger-hover: var(--danger-hover, hover($red10));
-$danger-active: var(--danger-active, active($red10));
+$danger: var(--danger, $red09);
+$danger-hover: var(--danger-hover, hover($red09));
+$danger-active: var(--danger-active, active($red09));
 $on-danger: var(--on-danger, $gray19);
+
+$warning: var(--warning, $orange);
+$on-warning: var(--on-warning, $gray01);
+
+$success: var(--success, $green07);
+$on-success: var(--on-success, $gray19);
