@@ -5,9 +5,11 @@ import {
     DestroyRef,
     Directive,
     ElementRef,
+    HostBinding,
     HostListener,
     Input,
     OnDestroy,
+    computed,
     inject,
     signal,
 } from '@angular/core';
@@ -32,7 +34,7 @@ export class TooltipDirective implements OnDestroy {
     private readonly elementRef = inject(ElementRef);
     protected readonly destroyRef = inject(DestroyRef);
 
-    @Input({ alias: 'dmaTooltip', required: true }) public label: string;
+    @Input({ alias: 'dmaTooltip', required: true }) @HostBinding('attr.dmaTooltip') public label: string;
 
     // eslint-disable-next-line @angular-eslint/no-input-rename
     @Input({ alias: 'tooltipOrientation', transform: tooltipOrientationAttribute }) public set orientation(
@@ -59,23 +61,29 @@ export class TooltipDirective implements OnDestroy {
     private overlayRef: OverlayRef;
     private componentRef: ComponentRef<TooltipComponent>;
 
+    public isShowing = computed(() => this.componentRef?.instance.currentState() === ShowHideAnimationStates.SHOWN);
+
     public ngOnDestroy() {
         this.removeTooltip();
     }
 
-    @HostListener('mouseover')
-    public onMouseover() {
-        if (!this.componentRef) this.initializeTooltip();
+    public close() {
+        this.toggleTooltip(ShowHideAnimationStates.HIDDEN);
+    }
 
+    @HostListener('mouseenter')
+    protected onMouseenter() {
+        if (!this.componentRef) this.initializeTooltip();
         this.toggleTooltip(ShowHideAnimationStates.SHOWN);
     }
 
-    @HostListener('mouseout')
-    public onMouseout() {
+    @HostListener('mouseleave')
+    protected onMouseleave() {
         this.toggleTooltip(ShowHideAnimationStates.HIDDEN);
     }
 
     private toggleTooltip(state: ShowHideAnimationState) {
+        if (!this.componentRef) return;
         this.componentRef.instance.updateAnimationState(state);
     }
 
