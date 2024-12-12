@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostBinding, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input, numberAttribute, signal } from '@angular/core';
 
 @Component({
     selector: 'dma-table-column',
@@ -8,9 +8,15 @@ import { ChangeDetectionStrategy, Component, HostBinding, signal } from '@angula
     standalone: true,
 })
 export class TableColumnComponent {
-    public width = signal(100);
-
-    @HostBinding('style.flexBasis.%') protected get flexBasis() {
-        return this.width();
+    @HostBinding('style.flexBasis.%')
+    @Input({ transform: numberAttribute })
+    public set width(percentage: number) {
+        this._width.set(percentage);
     }
+
+    public get width() {
+        return this._width();
+    }
+
+    private _width = signal(100);
 }
