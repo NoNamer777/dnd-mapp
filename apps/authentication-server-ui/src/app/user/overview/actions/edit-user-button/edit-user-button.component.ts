@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, inject, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { ButtonComponent, IconsModule, TooltipModule, TranslatePipe } from '../../../../shared';
 import { UsersOverviewStore } from '../../../services/users-overview-store';
 
@@ -12,6 +12,8 @@ import { UsersOverviewStore } from '../../../services/users-overview-store';
 })
 export class EditUserButtonComponent {
     protected readonly usersOverviewStore = inject(UsersOverviewStore);
+
+    @Input() public disabled = false;
 
     @Output() public readonly editUser = new EventEmitter<void>();
 

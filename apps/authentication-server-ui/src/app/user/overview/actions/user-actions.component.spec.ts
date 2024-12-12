@@ -3,18 +3,18 @@ import {
     DeleteUserDialogHarness,
     UserActionsHarness,
     createTestEnvironment,
-    defaultUsers,
     mockUserDB,
     provideDnDMappTesting,
     runInitializers,
 } from '@dnd-mapp/authentication-server-ui/testing';
+import { defaultUsers } from '@dnd-mapp/data';
 import { provideTranslations } from '../../../shared';
 import { UsersOverviewStore } from '../../services/users-overview-store';
 import { UserActionsComponent } from './user-actions.component';
 
 describe('UserActionsComponent', () => {
     @Component({
-        template: ` <dma-user-actions [user]="user" (selectUser)="onSelectUser()" />`,
+        template: `<dma-user-actions [user]="user" (selectUser)="onSelectUser()" />`,
     })
     class TestComponent {
         private readonly usersOverviewStore = inject(UsersOverviewStore);
@@ -46,7 +46,7 @@ describe('UserActionsComponent', () => {
         const logSpy = spyOn(console, 'log');
 
         await harness.edit();
-        expect(logSpy).toHaveBeenCalledWith('Editing User with ID "mUaZQqsMMrOkP-wlbAiUR"');
+        expect(logSpy).toHaveBeenCalledWith(`Editing User with ID "${defaultUsers[0].id}"`);
     });
 
     it('should delete User', async () => {

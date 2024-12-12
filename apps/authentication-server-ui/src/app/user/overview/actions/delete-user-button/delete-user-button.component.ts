@@ -4,6 +4,7 @@ import {
     DestroyRef,
     EventEmitter,
     inject,
+    Input,
     Output,
     ViewChild,
 } from '@angular/core';
@@ -28,6 +29,8 @@ export class DeleteUserButtonComponent {
     protected readonly usersOverviewStore = inject(UsersOverviewStore);
 
     @Output() public readonly deleteUser = new EventEmitter<void>();
+
+    @Input() public disabled = false;
 
     @ViewChild(TooltipDirective) private readonly tooltip: TooltipDirective;
 

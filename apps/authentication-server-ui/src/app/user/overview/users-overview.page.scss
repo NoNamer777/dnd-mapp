@@ -23,6 +23,11 @@
                             visibility: unset;
                         }
                     }
+
+                    &.deleted {
+                        font-style: italic;
+                        opacity: $opacity-disabled;
+                    }
                 }
             }
         }

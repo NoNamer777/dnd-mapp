@@ -6,6 +6,7 @@ import {
     runInitializers,
     UsersOverviewHarness,
 } from '@dnd-mapp/authentication-server-ui/testing';
+import { defaultUsers } from '@dnd-mapp/data';
 import { http, HttpResponse } from 'msw';
 import { provideTranslations } from '../../shared';
 import { UsersOverviewStore } from '../services/users-overview-store';
@@ -38,7 +39,7 @@ describe('UsersOverviewPage', () => {
         const tableHarness = await harness.getUsersTableHarness();
 
         expect(await tableHarness.isTableEmptyMessageVisible()).toEqual(false);
-        expect(await tableHarness.getNumberOfRows()).toEqual(3);
+        expect(await tableHarness.getNumberOfRows()).toEqual(defaultUsers.length);
     });
 
     it('should show no Users message', async () => {
