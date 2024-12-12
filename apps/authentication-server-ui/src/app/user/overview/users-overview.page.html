@@ -10,9 +10,15 @@
         <dma-table>
             <dma-table-header>
                 <dma-table-row>
-                    <dma-table-column>#</dma-table-column>
+                    <dma-table-column class="align-end" [width]="idColumnWidth">#</dma-table-column>
+                    <dma-table-column class="align-center" [width]="statusColumnWidth">{{
+                        'USERS_TABLE_COLUMN_HEADER_STATUS' | translate
+                    }}</dma-table-column>
                     <dma-table-column>{{ 'USERS_TABLE_COLUMN_HEADER_USERNAME' | translate }}</dma-table-column>
-                    <dma-table-column>{{ 'USERS_TABLE_COLUMN_HEADER_ACTIONS' | translate }}</dma-table-column>
+                    <dma-table-column>{{ 'USERS_TABLE_COLUMN_HEADER_EMAIL' | translate }}</dma-table-column>
+                    <dma-table-column class="align-end">{{
+                        'USERS_TABLE_COLUMN_HEADER_ACTIONS' | translate
+                    }}</dma-table-column>
                 </dma-table-row>
             </dma-table-header>
             <dma-table-body>
@@ -28,12 +34,18 @@
                     </dma-table-row>
                 }
                 @for (user of users; track user.id; let idx = $index) {
-                    <dma-table-row>
-                        <!-- TODO - Display User's status (Active,Disabled,Pending)-->
-                        <dma-table-column>{{ idx + 1 }}</dma-table-column>
+                    <dma-table-row [class.deleted]="user.status === 'Deleted'">
+                        <dma-table-column class="align-end" [width]="idColumnWidth">{{ idx + 1 }}</dma-table-column>
+                        <dma-table-column class="align-center" [width]="statusColumnWidth">
+                            <dma-account-status-dot [status]="user.status" />
+                        </dma-table-column>
                         <dma-table-column>{{ user.username }}</dma-table-column>
-                        <dma-table-column>
-                            <dma-user-actions (selectUser)="onUserSelected(user)" />
+                        <dma-table-column>{{ user.email }}</dma-table-column>
+                        <dma-table-column class="align-end">
+                            <dma-user-actions
+                                [disabled]="user.status === 'Deleted'"
+                                (selectUser)="onUserSelected(user)"
+                            />
                         </dma-table-column>
                     </dma-table-row>
                 }

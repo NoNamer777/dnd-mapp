@@ -12,8 +12,17 @@ export class TableRowComponent implements AfterViewInit {
     @ContentChildren(TableColumnComponent) private readonly columns: QueryList<TableColumnComponent>;
 
     public ngAfterViewInit() {
-        const width = 100 / this.columns.length;
+        const [remainingWidth, columnsWithDefinedWidth] = this.columns.reduce(
+            ([remainingWidth, columnsWithDefinedWidth], column) => {
+                if (column.width === 100) return [remainingWidth, columnsWithDefinedWidth];
+                return [remainingWidth - column.width, columnsWithDefinedWidth + 1];
+            },
+            [100, 0]
+        );
 
-        this.columns.forEach((column) => column.width.set(width));
+        this.columns.forEach((column) => {
+            if (column.width !== 100) return;
+            column.width = remainingWidth / (this.columns.length - columnsWithDefinedWidth);
+        });
     }
 }

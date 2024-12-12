@@ -24,7 +24,7 @@
                             {
                                 "sourceTag": "type:model",
                                 "onlyDependOnLibsWithTags": ["scope:shared"],
-                                "allowedExternalImports": ["vite", "@nx/vite/*"]
+                                "allowedExternalImports": ["vite", "@nx/vite/*", "nanoid"]
                             },
                             {
                                 "sourceTag": "scope:client",
@@ -38,7 +38,7 @@
                             {
                                 "sourceTag": "scope:shared",
                                 "onlyDependOnLibsWithTags": ["scope:shared"],
-                                "allowedExternalImports": ["vite", "@nx/vite/*"]
+                                "allowedExternalImports": ["vite", "@nx/vite/*", "nanoid"]
                             }
                         ]
                     }

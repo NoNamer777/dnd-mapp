@@ -2,10 +2,10 @@ import { Component, inject } from '@angular/core';
 import {
     EditUserButtonHarness,
     createTestEnvironment,
-    defaultUsers,
     provideDnDMappTesting,
     runInitializers,
 } from '@dnd-mapp/authentication-server-ui/testing';
+import { defaultUsers } from '@dnd-mapp/data';
 import { provideTranslations } from '../../../../shared';
 import { UsersOverviewStore } from '../../../services/users-overview-store';
 import { EditUserButtonComponent } from './edit-user-button.component';

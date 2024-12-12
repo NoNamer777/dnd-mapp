@@ -15,6 +15,8 @@ import { EditUserButtonComponent } from './edit-user-button/edit-user-button.com
 export class UserActionsComponent {
     @Input() public user: User;
 
+    @Input() public disabled = false;
+
     @Output() public readonly selectUser = new EventEmitter<User>();
 
     protected onEdit() {

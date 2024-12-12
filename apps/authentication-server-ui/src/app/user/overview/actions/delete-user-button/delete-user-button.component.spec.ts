@@ -4,11 +4,11 @@ import {
     DeleteUserButtonHarness,
     DeleteUserDialogHarness,
     createTestEnvironment,
-    defaultUsers,
     mockUserDB,
     provideDnDMappTesting,
     runInitializers,
 } from '@dnd-mapp/authentication-server-ui/testing';
+import { defaultUsers } from '@dnd-mapp/data';
 import { provideTranslations } from '../../../../shared';
 import { UsersOverviewStore } from '../../../services/users-overview-store';
 import { DeleteUserButtonComponent } from './delete-user-button.component';
@@ -59,5 +59,22 @@ describe('DeleteUserButtonComponent', () => {
 
         expect(await harness.isProcessing()).toEqual(false);
         expect(mockUserDB.getById(defaultUsers[0].id)).toBeNull();
+    });
+
+    it('should remove the tooltip when deleting a User if the tooltip is showing', async () => {
+        const { harness, harnessLoader } = await setupTest();
+
+        expect(await harness.isTooltipVisible()).toEqual(false);
+
+        await harness.hoverOverAnchor();
+
+        expect(await harness.isTooltipVisible()).toEqual(true);
+
+        await harness.click();
+
+        const deleteUserDialogHarness = await harnessLoader.getHarness(DeleteUserDialogHarness);
+        await deleteUserDialogHarness.delete();
+
+        expect(await harness.isTooltipVisible()).toEqual(false);
     });
 });

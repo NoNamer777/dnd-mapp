@@ -5,6 +5,7 @@ import { tap } from 'rxjs';
 import { ButtonComponent, IconsModule, TableModule, TranslationModule } from '../../shared';
 import { UsersOverviewStore } from '../services/users-overview-store';
 import { UsersService } from '../services/users.service';
+import { AccountStatusDotComponent } from './account-status-dot/account-status-dot.component';
 import { UserActionsComponent } from './actions/user-actions.component';
 
 @Component({
@@ -14,7 +15,14 @@ import { UserActionsComponent } from './actions/user-actions.component';
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [UsersOverviewStore],
     standalone: true,
-    imports: [ButtonComponent, IconsModule, TranslationModule, TableModule, UserActionsComponent],
+    imports: [
+        ButtonComponent,
+        IconsModule,
+        TranslationModule,
+        TableModule,
+        UserActionsComponent,
+        AccountStatusDotComponent,
+    ],
 })
 export class UsersOverviewPage implements OnInit {
     protected readonly destroyRef = inject(DestroyRef);
@@ -22,6 +30,10 @@ export class UsersOverviewPage implements OnInit {
     private readonly usersOverviewStore = inject(UsersOverviewStore);
 
     protected readonly busy = signal(true);
+
+    protected readonly idColumnWidth = 4;
+
+    protected readonly statusColumnWidth = 6;
 
     public ngOnInit() {
         this.usersService

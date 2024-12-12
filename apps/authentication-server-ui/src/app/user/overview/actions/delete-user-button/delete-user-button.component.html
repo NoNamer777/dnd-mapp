@@ -4,7 +4,7 @@
     tooltipOrientation="horizontal"
     [dmaTooltip]="'TOOLTIP_LABEL_USER_DELETE' | translate"
     [processing]="usersOverviewStore.processing()"
-    [disabled]="usersOverviewStore.lockActions()"
+    [disabled]="usersOverviewStore.lockActions() || disabled"
     (click)="onDelete()"
 >
     <dma-icon dma-trash-icon />

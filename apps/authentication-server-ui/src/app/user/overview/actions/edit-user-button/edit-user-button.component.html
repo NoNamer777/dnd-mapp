@@ -3,7 +3,7 @@
     dma-button
     tooltipOrientation="horizontal"
     [dmaTooltip]="'TOOLTIP_LABEL_USER_EDIT' | translate"
-    [disabled]="usersOverviewStore.lockActions()"
+    [disabled]="usersOverviewStore.lockActions() || disabled"
     (click)="onEdit()"
 >
     <dma-icon dma-pen-to-square-icon />
