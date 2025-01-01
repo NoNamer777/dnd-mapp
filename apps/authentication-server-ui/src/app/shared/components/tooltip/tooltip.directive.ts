@@ -31,7 +31,7 @@ import { TooltipComponent } from './tooltip.component';
 })
 export class TooltipDirective implements OnDestroy {
     private readonly overlay = inject(Overlay);
-    private readonly elementRef = inject(ElementRef);
+    private readonly elementRef = inject(ElementRef<HTMLElement>);
     protected readonly destroyRef = inject(DestroyRef);
 
     @Input({ alias: 'dmaTooltip', required: true }) @HostBinding('attr.dmaTooltip') public label: string;
@@ -73,6 +73,7 @@ export class TooltipDirective implements OnDestroy {
 
     @HostListener('mouseenter')
     protected onMouseenter() {
+        if (this.isHostDisabled) return;
         if (!this.componentRef) this.initializeTooltip();
         this.toggleTooltip(ShowHideAnimationStates.SHOWN);
     }
@@ -80,6 +81,10 @@ export class TooltipDirective implements OnDestroy {
     @HostListener('mouseleave')
     protected onMouseleave() {
         this.toggleTooltip(ShowHideAnimationStates.HIDDEN);
+    }
+
+    private get isHostDisabled() {
+        return this.elementRef.nativeElement.getAttribute('disabled') === '';
     }
 
     private toggleTooltip(state: ShowHideAnimationState) {

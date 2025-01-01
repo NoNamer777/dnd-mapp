@@ -5,16 +5,16 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { provideRxjsTestingConfig } from '../providers/rxjs';
 
-interface CreateTestEnvironmentParams<C, H extends ComponentHarness> {
+interface CreateTestEnvironmentParams<T, H extends ComponentHarness> {
+    testComponent?: Type<T>;
+    harness?: Type<H>;
     imports?: unknown[];
     providers?: unknown[];
-    testComponent?: Type<C>;
     initFunction?: () => void | Promise<void>;
-    harness?: Type<H>;
 }
 
-export async function createTestEnvironment<C, H extends ComponentHarness>(params: CreateTestEnvironmentParams<C, H>) {
-    let fixture: ComponentFixture<C>;
+export async function createTestEnvironment<T, H extends ComponentHarness>(params: CreateTestEnvironmentParams<T, H>) {
+    let fixture: ComponentFixture<T>;
     let harnessLoader: HarnessLoader;
     let harness: H;
 
@@ -24,16 +24,12 @@ export async function createTestEnvironment<C, H extends ComponentHarness>(param
         providers: [provideNoopAnimations(), provideRxjsTestingConfig(), ...(params.providers ?? [])],
     });
 
-    if (params.initFunction) {
-        await params.initFunction();
-    }
+    if (params.initFunction) await params.initFunction();
     if (params.testComponent) {
-        fixture = TestBed.createComponent(params.testComponent);
+        fixture = TestBed.createComponent<T>(params.testComponent);
         harnessLoader = TestbedHarnessEnvironment.documentRootLoader(fixture);
 
-        if (params.harness) {
-            harness = await harnessLoader.getHarness(params.harness as HarnessQuery<H>);
-        }
+        if (params.harness) harness = await harnessLoader.getHarness<H>(params.harness as HarnessQuery<H>);
         return {
             fixture: fixture,
             component: fixture.componentInstance,
