@@ -1,6 +1,6 @@
 import { manualChangeDetection } from '@angular/cdk/testing';
-import { Component, signal } from '@angular/core';
-import { TooltipAnchorHarness, createTestEnvironment } from '@dnd-mapp/authentication-server-ui/testing';
+import { Component, signal, Type } from '@angular/core';
+import { createTestEnvironment, TooltipAnchorHarness } from '@dnd-mapp/authentication-server-ui/testing';
 import { ButtonComponent } from '../button';
 import { TooltipOrientation, TooltipPosition } from './models';
 import { TooltipModule } from './tooltip.module';
@@ -34,23 +34,31 @@ describe('TooltipDirective', () => {
         public readonly position = signal<TooltipPosition>(null);
     }
 
-    interface SetupTestParams {
+    @Component({
+        template: `<button dma-button dmaTooltip="My Tooltip label" disabled>My Button</button>`,
+    })
+    class DisabledTestComponent {
+        public readonly disabled = signal(true);
+    }
+
+    interface SetupTestParams<T> {
+        testComponent?: Type<T>;
         orientation?: TooltipOrientation;
         position?: TooltipPosition;
     }
 
-    async function setupTest(params: SetupTestParams = {}) {
-        const { harness, component, fixture } = await createTestEnvironment({
+    async function setupTest<T = TestComponent>(params: SetupTestParams<T> = {}) {
+        const testComponent = params?.testComponent ?? (TestComponent as Type<T>);
+
+        const { harness, component, fixture } = await createTestEnvironment<T, TooltipAnchorHarness>({
             imports: [TooltipModule, ButtonComponent],
-            testComponent: TestComponent,
+            testComponent: testComponent,
             harness: TooltipAnchorHarness,
         });
 
-        if (params.orientation) {
-            component.orientation.set(params.orientation);
-        }
-        if (params.position) {
-            component.position.set(params.position);
+        if (component instanceof TestComponent) {
+            if (params.orientation) component.orientation.set(params.orientation);
+            if (params.position) component.position.set(params.position);
         }
         return { harness, component, fixture };
     }
@@ -137,6 +145,13 @@ describe('TooltipDirective', () => {
         expect(await harness.tooltipIsPositionedAt('top')).toBeTrue();
     });
 
+    it('should not show tooltip if anchor element is disabled', async () => {
+        const { harness } = await setupTest({ testComponent: DisabledTestComponent });
+
+        await harness.hoverOverAnchor();
+        expect(await harness.isTooltipAdded()).toBeFalse();
+    });
+
     describe('With position', () => {
         it('should show on top position', async () => {
             const { harness } = await setupTest({ position: 'top' });
@@ -169,7 +184,11 @@ describe('TooltipDirective', () => {
 
     describe('With valid orientation and position combinations', () => {
         it('should throw error for vertical orientation and start position', async () => {
-            const { harness } = await setupTest({ orientation: 'vertical', position: 'start' });
+            const { harness } = await setupTest({
+                testComponent: TestComponent,
+                orientation: 'vertical',
+                position: 'start',
+            });
 
             await expectAsync(harness.hoverOverAnchor()).toBeRejectedWithError(
                 'Invalid Tooltip Position "start" and Tooltip orientation "vertical" combination'
@@ -177,7 +196,11 @@ describe('TooltipDirective', () => {
         });
 
         it('should throw error for vertical orientation and end position', async () => {
-            const { harness } = await setupTest({ orientation: 'vertical', position: 'end' });
+            const { harness } = await setupTest({
+                testComponent: TestComponent,
+                orientation: 'vertical',
+                position: 'end',
+            });
 
             await expectAsync(harness.hoverOverAnchor()).toBeRejectedWithError(
                 'Invalid Tooltip Position "end" and Tooltip orientation "vertical" combination'
@@ -185,7 +208,11 @@ describe('TooltipDirective', () => {
         });
 
         it('should throw error for horizontal orientation and top position', async () => {
-            const { harness } = await setupTest({ orientation: 'horizontal', position: 'top' });
+            const { harness } = await setupTest({
+                testComponent: TestComponent,
+                orientation: 'horizontal',
+                position: 'top',
+            });
 
             await expectAsync(harness.hoverOverAnchor()).toBeRejectedWithError(
                 'Invalid Tooltip Position "top" and Tooltip orientation "horizontal" combination'
@@ -193,7 +220,11 @@ describe('TooltipDirective', () => {
         });
 
         it('should throw error for horizontal orientation and bottom position', async () => {
-            const { harness } = await setupTest({ orientation: 'horizontal', position: 'bottom' });
+            const { harness } = await setupTest({
+                testComponent: TestComponent,
+                orientation: 'horizontal',
+                position: 'bottom',
+            });
 
             await expectAsync(harness.hoverOverAnchor()).toBeRejectedWithError(
                 'Invalid Tooltip Position "bottom" and Tooltip orientation "horizontal" combination'
