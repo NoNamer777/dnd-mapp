@@ -1,5 +1,5 @@
 import { manualChangeDetection } from '@angular/cdk/testing';
-import { Component, signal, Type } from '@angular/core';
+import { Component, computed, signal, Type } from '@angular/core';
 import { createTestEnvironment, TooltipAnchorHarness } from '@dnd-mapp/authentication-server-ui/testing';
 import { ButtonComponent } from '../button';
 import { TooltipOrientation, TooltipPosition } from './models';
@@ -14,6 +14,7 @@ describe('TooltipDirective', () => {
                     dmaTooltip="My Tooltip label"
                     [tooltipPosition]="position()"
                     [tooltipOrientation]="orientation()"
+                    [disabled]="isDisabled()"
                 >
                     My Button
                 </button>
@@ -33,10 +34,13 @@ describe('TooltipDirective', () => {
     class TestComponent {
         public readonly orientation = signal<TooltipOrientation>(null);
         public readonly position = signal<TooltipPosition>(null);
+        public readonly disabled = signal(false);
+
+        protected readonly isDisabled = computed(() => (this.disabled() ? '' : undefined));
     }
 
     @Component({
-        template: `<button dma-button dmaTooltip="My Tooltip label" disabled>My Button</button>`,
+        template: `<button dma-button dmaTooltip="My Tooltip label" [disabled]="disabled()">My Button</button>`,
         imports: [ButtonComponent, TooltipModule],
     })
     class DisabledTestComponent {
@@ -47,9 +51,10 @@ describe('TooltipDirective', () => {
         testComponent?: Type<T>;
         orientation?: TooltipOrientation;
         position?: TooltipPosition;
+        disabled?: boolean;
     }
 
-    async function setupTest<T = TestComponent>(params: SetupTestParams<T> = {}) {
+    async function setupTest<T = TestComponent | DisabledTestComponent>(params: SetupTestParams<T> = {}) {
         const testComponent = params?.testComponent ?? (TestComponent as Type<T>);
 
         const { harness, component, fixture } = await createTestEnvironment<T, TooltipAnchorHarness>({
@@ -60,6 +65,9 @@ describe('TooltipDirective', () => {
         if (component instanceof TestComponent) {
             if (params.orientation) component.orientation.set(params.orientation);
             if (params.position) component.position.set(params.position);
+        }
+        if (component instanceof DisabledTestComponent) {
+            if (params.disabled !== undefined) component.disabled.set(params.disabled);
         }
         return { harness, component, fixture };
     }
@@ -129,7 +137,7 @@ describe('TooltipDirective', () => {
     });
 
     it('should update the position when the orientation changes', async () => {
-        const { harness, component } = await setupTest({ orientation: 'horizontal' });
+        const { harness, component } = await setupTest<TestComponent>({ orientation: 'horizontal' });
 
         await harness.hoverOverAnchor();
         expect(await harness.tooltipIsPositionedAt('start')).toBeTrue();
@@ -146,8 +154,8 @@ describe('TooltipDirective', () => {
         expect(await harness.tooltipIsPositionedAt('top')).toBeTrue();
     });
 
-    it('should not show tooltip if anchor element is disabled', async () => {
-        const { harness } = await setupTest({ testComponent: DisabledTestComponent });
+    it('should not show tooltip when host is disabled', async () => {
+        const { harness } = await setupTest({ disabled: true, testComponent: DisabledTestComponent });
 
         await harness.hoverOverAnchor();
         expect(await harness.isTooltipAdded()).toBeFalse();

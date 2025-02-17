@@ -4,7 +4,6 @@
     "defaultProject": "authentication-server-ui",
     "nxCloudId": "652d33657b380c294d0c048d",
     "useInferencePlugins": false,
-    "useLegacyCache": true,
     "workspaceLayout": {
         "appsDir": "apps",
         "libsDir": "libs"

@@ -26,7 +26,7 @@
 
                 @if (busy() === true) {
                     <dma-table-row>
-                        <dma-table-column><dma-icon dma-spinner-icon /></dma-table-column>
+                        <dma-table-column class="align-center"><dma-icon dma-spinner-icon /></dma-table-column>
                     </dma-table-row>
                 } @else if (users.length === 0) {
                     <dma-table-row class="empty">
