@@ -1,10 +1,7 @@
 <article>
     <header>
         <h1>{{ 'PAGE_TITLE_USERS_OVERVIEW' | translate }}</h1>
-        <button dma-button="primary">
-            <dma-icon dma-plus-icon />
-            {{ 'BTN_LABEL_ADD_USER' | translate }}
-        </button>
+        <dma-create-user-button />
     </header>
     <section>
         <dma-table>

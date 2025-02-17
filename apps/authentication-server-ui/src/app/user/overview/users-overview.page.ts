@@ -2,11 +2,12 @@ import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { User } from '@dnd-mapp/data';
 import { tap } from 'rxjs';
-import { ButtonComponent, IconsModule, TableModule, TranslationModule } from '../../shared';
+import { IconsModule, TableModule, TranslationModule } from '../../shared';
 import { UsersOverviewStore } from '../services/users-overview-store';
 import { UsersService } from '../services/users.service';
 import { AccountStatusDotComponent } from './account-status-dot/account-status-dot.component';
 import { UserActionsComponent } from './actions/user-actions.component';
+import { CreateUserButtonComponent } from './create-user-button/create-user-button.component';
 
 @Component({
     selector: 'dma-users-overview',
@@ -15,12 +16,12 @@ import { UserActionsComponent } from './actions/user-actions.component';
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [UsersOverviewStore],
     imports: [
-        ButtonComponent,
         IconsModule,
         TranslationModule,
         TableModule,
         UserActionsComponent,
         AccountStatusDotComponent,
+        CreateUserButtonComponent,
     ],
 })
 export class UsersOverviewPage implements OnInit {
