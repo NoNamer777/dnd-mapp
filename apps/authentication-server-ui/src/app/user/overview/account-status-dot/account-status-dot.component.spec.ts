@@ -6,6 +6,7 @@ import { AccountStatusDotComponent } from './account-status-dot.component';
 describe('AccountStatusDotComponent', () => {
     @Component({
         template: `<dma-account-status-dot [status]="accountStatus" />`,
+        imports: [AccountStatusDotComponent],
     })
     class TestComponent {
         public accountStatus: AccountStatus = 'Active';
@@ -15,7 +16,6 @@ describe('AccountStatusDotComponent', () => {
         const { harness, component } = await createTestEnvironment({
             testComponent: TestComponent,
             harness: AccountStatusHarness,
-            imports: [AccountStatusDotComponent],
         });
 
         return {

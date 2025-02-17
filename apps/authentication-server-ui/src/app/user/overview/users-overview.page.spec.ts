@@ -15,6 +15,7 @@ import { UsersOverviewPage } from './users-overview.page';
 describe('UsersOverviewPage', () => {
     @Component({
         template: `<dma-users-overview />`,
+        imports: [UsersOverviewPage],
     })
     class TestComponent {}
 
@@ -22,7 +23,6 @@ describe('UsersOverviewPage', () => {
         const { harness, fixture } = await createTestEnvironment({
             testComponent: TestComponent,
             harness: UsersOverviewHarness,
-            imports: [UsersOverviewPage],
             providers: [UsersOverviewStore, provideDnDMappTesting(), provideTranslations()],
             initFunction: async () => await runInitializers(),
         });

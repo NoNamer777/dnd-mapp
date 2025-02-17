@@ -27,7 +27,6 @@ import { TooltipComponent } from './tooltip.component';
 
 @Directive({
     selector: '[dmaTooltip]',
-    standalone: true,
 })
 export class TooltipDirective implements OnDestroy {
     private readonly overlay = inject(Overlay);

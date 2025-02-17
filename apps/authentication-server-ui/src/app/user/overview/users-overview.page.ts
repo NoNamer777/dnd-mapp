@@ -14,7 +14,6 @@ import { UserActionsComponent } from './actions/user-actions.component';
     styleUrl: './users-overview.page.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [UsersOverviewStore],
-    standalone: true,
     imports: [
         ButtonComponent,
         IconsModule,

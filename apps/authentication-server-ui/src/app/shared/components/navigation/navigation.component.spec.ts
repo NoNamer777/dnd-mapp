@@ -7,13 +7,13 @@ import { NavigationComponent } from './navigation.component';
 describe('NavigationComponent', () => {
     @Component({
         template: `<dma-navigation></dma-navigation>`,
+        imports: [NavigationComponent],
     })
     class TestComponent {}
 
     async function setupTest() {
         TestBed.configureTestingModule({
-            imports: [NavigationComponent],
-            declarations: [TestComponent],
+            imports: [TestComponent],
         });
 
         const harnessLoader = TestbedHarnessEnvironment.loader(TestBed.createComponent(TestComponent));

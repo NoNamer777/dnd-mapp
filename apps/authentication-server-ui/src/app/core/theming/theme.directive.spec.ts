@@ -6,6 +6,7 @@ import { Theme, Themes } from './themes';
 describe('ThemeDirective', () => {
     @Component({
         template: `<div [dmaTheme]="theme"></div>`,
+        imports: [ThemeDirective],
     })
     class TestComponent {
         public theme: Theme = Themes.DARK;
@@ -15,7 +16,6 @@ describe('ThemeDirective', () => {
         const { harness, component } = await createTestEnvironment({
             testComponent: TestComponent,
             harness: ThemeHarness,
-            imports: [ThemeDirective],
         });
 
         return {

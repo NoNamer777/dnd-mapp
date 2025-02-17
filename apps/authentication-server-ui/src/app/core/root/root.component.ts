@@ -9,7 +9,6 @@ import { ThemeDirective } from '../theming/theme.directive';
     styleUrl: './root.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     hostDirectives: [ThemeDirective],
-    standalone: true,
     imports: [RouterOutlet, SideBarComponent, NavigationModule, IconsModule, TranslationModule],
 })
 export class RootComponent {}

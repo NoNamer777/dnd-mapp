@@ -23,7 +23,6 @@ import { showHideAnimation, ShowHideAnimationState, ShowHideAnimationStates } fr
         '[@showHide]': 'this.currentState()',
     },
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
 })
 export class TooltipComponent implements OnInit {
     private readonly destroyRef = inject(DestroyRef);

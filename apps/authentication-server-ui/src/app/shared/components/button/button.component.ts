@@ -29,7 +29,6 @@ function buttonTypeAttribute(value: string) {
     templateUrl: './button.component.html',
     styleUrl: './button.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [IconsModule],
 })
 export class ButtonComponent implements AfterViewInit {

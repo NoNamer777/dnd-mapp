@@ -15,6 +15,7 @@ import { UserActionsComponent } from './user-actions.component';
 describe('UserActionsComponent', () => {
     @Component({
         template: `<dma-user-actions [user]="user" (selectUser)="onSelectUser()" />`,
+        imports: [UserActionsComponent],
     })
     class TestComponent {
         private readonly usersOverviewStore = inject(UsersOverviewStore);
@@ -30,7 +31,6 @@ describe('UserActionsComponent', () => {
         const { harness, harnessLoader } = await createTestEnvironment({
             testComponent: TestComponent,
             harness: UserActionsHarness,
-            imports: [UserActionsComponent],
             providers: [UsersOverviewStore, provideDnDMappTesting(), provideTranslations()],
             initFunction: async () => await runInitializers(),
         });

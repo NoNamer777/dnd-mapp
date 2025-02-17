@@ -16,6 +16,7 @@ import { DeleteUserButtonComponent } from './delete-user-button.component';
 describe('DeleteUserButtonComponent', () => {
     @Component({
         template: `<dma-delete-user-button (deleteUser)="onDeleteUser()" />`,
+        imports: [DeleteUserButtonComponent],
     })
     class TestComponent {
         private readonly userOverViewStore = inject(UsersOverviewStore);
@@ -29,7 +30,6 @@ describe('DeleteUserButtonComponent', () => {
         const { harness, fixture, harnessLoader } = await createTestEnvironment({
             testComponent: TestComponent,
             harness: DeleteUserButtonHarness,
-            imports: [DeleteUserButtonComponent],
             providers: [UsersOverviewStore, provideDnDMappTesting(), provideTranslations()],
             initFunction: async () => await runInitializers(),
         });

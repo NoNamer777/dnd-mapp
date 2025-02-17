@@ -8,7 +8,6 @@ import { DialogRef } from '../dialog-ref';
     templateUrl: './close-dialog-button.component.html',
     styleUrl: './close-dialog-button.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [ButtonComponent, IconsModule],
 })
 export class CloseDialogButtonComponent {

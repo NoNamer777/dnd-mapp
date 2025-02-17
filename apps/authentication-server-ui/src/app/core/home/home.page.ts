@@ -6,7 +6,6 @@ import { TranslationModule } from '../../shared';
     templateUrl: './home.page.html',
     styleUrl: './home.page.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [TranslationModule],
 })
 export class HomePage {}

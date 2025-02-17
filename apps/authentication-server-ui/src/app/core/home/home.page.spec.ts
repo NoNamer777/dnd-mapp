@@ -8,13 +8,13 @@ import { HomePage } from './home.page';
 describe('HomeComponent', () => {
     @Component({
         template: `<dma-home />`,
+        imports: [HomePage],
     })
     class TestComponent {}
 
     async function setupTest() {
         TestBed.configureTestingModule({
-            imports: [HomePage],
-            declarations: [TestComponent],
+            imports: [TestComponent],
             providers: [provideDnDMappTesting(), provideTranslations()],
         });
 

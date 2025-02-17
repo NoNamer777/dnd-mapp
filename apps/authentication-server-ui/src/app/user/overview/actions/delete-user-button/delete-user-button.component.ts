@@ -20,7 +20,6 @@ import { UsersService } from '../../../services/users.service';
     templateUrl: './delete-user-button.component.html',
     styleUrl: './delete-user-button.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [TooltipModule, ButtonComponent, TranslatePipe, IconsModule],
 })
 export class DeleteUserButtonComponent {

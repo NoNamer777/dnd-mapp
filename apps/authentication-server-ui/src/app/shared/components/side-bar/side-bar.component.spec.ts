@@ -7,13 +7,13 @@ import { SideBarComponent } from './side-bar.component';
 describe('SideBarComponent', () => {
     @Component({
         template: `<dma-side-bar />`,
+        imports: [SideBarComponent],
     })
     class TestComponent {}
 
     async function setupTest() {
         TestBed.configureTestingModule({
-            imports: [SideBarComponent],
-            declarations: [TestComponent],
+            imports: [TestComponent],
         });
 
         const harnessLoader = TestbedHarnessEnvironment.loader(TestBed.createComponent(TestComponent));

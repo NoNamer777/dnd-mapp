@@ -5,6 +5,5 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     templateUrl: './spinner.icon.svg',
     styleUrls: ['../icons.scss', './spinner.icon.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
 })
 export class SpinnerIcon {}
