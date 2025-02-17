@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { User } from '@dnd-mapp/data';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Roles, User } from '@dnd-mapp/data';
 import {
     ButtonComponent,
     DIALOG_DATA,
@@ -30,12 +31,27 @@ export interface UserDialogData {
     host: {
         class: 'dma-dialog-container',
     },
-    imports: [DialogHeaderComponent, DialogFooterComponent, ButtonComponent, DialogContentComponent],
+    imports: [
+        ReactiveFormsModule,
+        DialogHeaderComponent,
+        DialogFooterComponent,
+        ButtonComponent,
+        DialogContentComponent,
+    ],
 })
 export class UserDialogComponent {
+    private readonly formBuilder = inject(FormBuilder);
     private readonly dialogRef = inject(DialogRef<UserDialogComponent, User>);
-
     protected readonly dialogData = inject<UserDialogData>(DIALOG_DATA);
+
+    protected readonly form = this.formBuilder.group({
+        id: [this.user.id ?? null],
+        username: [this.user.username ?? null, [Validators.required, Validators.minLength(2)]],
+        email: [this.user.email ?? null, [Validators.required, Validators.email]],
+        password: [this.user.password ?? null, [Validators.required, Validators.minLength(12)]],
+        roles: [this.user.roles ?? [Roles.PLAYER], [Validators.minLength(1)]],
+        skipActivation: [false],
+    });
 
     protected get title() {
         return this.editMode ? `Edit ${this.dialogData.user.username}` : 'New User';
@@ -50,10 +66,14 @@ export class UserDialogComponent {
     }
 
     protected onConfirm() {
-        this.dialogRef.close(this.dialogData.user);
+        this.dialogRef.close(this.user);
     }
 
     private get editMode() {
         return this.dialogData.edit;
+    }
+
+    private get user() {
+        return this.dialogData.user;
     }
 }
