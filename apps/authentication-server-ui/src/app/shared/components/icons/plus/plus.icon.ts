@@ -5,6 +5,5 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     templateUrl: './plus.icon.svg',
     styleUrl: '../icons.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
 })
 export class PlusIcon {}

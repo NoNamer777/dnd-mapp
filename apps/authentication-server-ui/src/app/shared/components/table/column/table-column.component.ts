@@ -5,7 +5,6 @@ import { ChangeDetectionStrategy, Component, HostBinding, Input, numberAttribute
     templateUrl: './table-column.component.html',
     styleUrl: './table-column.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
 })
 export class TableColumnComponent {
     @HostBinding('style.flexBasis.%')

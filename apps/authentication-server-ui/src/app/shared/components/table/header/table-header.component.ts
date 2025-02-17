@@ -5,6 +5,5 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     templateUrl: './table-header.component.html',
     styleUrl: './table-header.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
 })
 export class TableHeaderComponent {}

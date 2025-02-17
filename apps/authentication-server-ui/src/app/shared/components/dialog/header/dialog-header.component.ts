@@ -4,10 +4,9 @@ import { CloseDialogButtonComponent } from '../close-button/close-dialog-button.
 
 @Component({
     selector: 'dma-dialog-header',
-    standalone: true,
-    imports: [CommonModule, CloseDialogButtonComponent],
     templateUrl: './dialog-header.component.html',
     styleUrl: './dialog-header.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [CommonModule, CloseDialogButtonComponent],
 })
 export class DialogHeaderComponent {}

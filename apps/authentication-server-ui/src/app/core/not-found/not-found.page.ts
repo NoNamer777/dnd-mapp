@@ -7,7 +7,6 @@ import { TranslationModule } from '../../shared';
     templateUrl: './not-found.page.html',
     styleUrl: './not-found.page.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [RouterLink, TranslationModule],
 })
 export class NotFoundPage {}

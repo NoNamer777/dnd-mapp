@@ -8,13 +8,13 @@ import { TranslatePipe } from './translate.pipe';
 describe('TranslatePipe', () => {
     @Component({
         template: `<p>{{ 'PAGE_TITLE_HOME' | translate }}</p>`,
+        imports: [TranslatePipe],
     })
     class TestComponent {}
 
     async function setupTest() {
         TestBed.configureTestingModule({
-            imports: [TranslatePipe],
-            declarations: [TestComponent],
+            imports: [TestComponent],
             providers: [provideDnDMappTesting(), provideTranslations()],
         });
 

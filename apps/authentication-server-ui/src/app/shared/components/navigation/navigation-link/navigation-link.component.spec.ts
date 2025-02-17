@@ -8,6 +8,7 @@ import { NavigationLinkComponent } from './navigation-link.component';
 describe('NavigationLinkComponent', () => {
     @Component({
         template: `<dma-navigation-link route="/my-link">My Link</dma-navigation-link>`,
+        imports: [NavigationLinkComponent],
     })
     class TestComponent {}
 
@@ -20,8 +21,7 @@ describe('NavigationLinkComponent', () => {
 
     async function setupTest() {
         TestBed.configureTestingModule({
-            imports: [NavigationLinkComponent],
-            declarations: [TestComponent],
+            imports: [TestComponent],
             providers: [provideRouter(routes)],
         });
 

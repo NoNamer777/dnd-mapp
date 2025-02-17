@@ -7,7 +7,6 @@ import { UsersOverviewStore } from '../../../services/users-overview-store';
     templateUrl: './edit-user-button.component.html',
     styleUrl: './edit-user-button.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [TooltipModule, ButtonComponent, IconsModule, TranslatePipe],
 })
 export class EditUserButtonComponent {

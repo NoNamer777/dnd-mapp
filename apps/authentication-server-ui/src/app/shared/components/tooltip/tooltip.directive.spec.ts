@@ -28,6 +28,7 @@ describe('TooltipDirective', () => {
                 width: 20em;
             }
         `,
+        imports: [ButtonComponent, TooltipModule],
     })
     class TestComponent {
         public readonly orientation = signal<TooltipOrientation>(null);
@@ -36,6 +37,7 @@ describe('TooltipDirective', () => {
 
     @Component({
         template: `<button dma-button dmaTooltip="My Tooltip label" disabled>My Button</button>`,
+        imports: [ButtonComponent, TooltipModule],
     })
     class DisabledTestComponent {
         public readonly disabled = signal(true);
@@ -51,7 +53,6 @@ describe('TooltipDirective', () => {
         const testComponent = params?.testComponent ?? (TestComponent as Type<T>);
 
         const { harness, component, fixture } = await createTestEnvironment<T, TooltipAnchorHarness>({
-            imports: [TooltipModule, ButtonComponent],
             testComponent: testComponent,
             harness: TooltipAnchorHarness,
         });

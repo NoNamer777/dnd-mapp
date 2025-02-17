@@ -19,7 +19,6 @@ describe('Dialog', () => {
                 <dma-dialog-content><p>This is a custom dialog</p></dma-dialog-content>
             </section>
         `,
-        standalone: true,
         host: {
             class: 'dma-dialog-container',
         },
@@ -29,6 +28,7 @@ describe('Dialog', () => {
 
     @Component({
         template: `<button type="button" dma-button (click)="onOpenDialog()">Open Dialog</button>`,
+        imports: [ButtonComponent],
     })
     class TestComponent {
         private readonly destroyRef = inject(DestroyRef);
@@ -60,7 +60,6 @@ describe('Dialog', () => {
         } = await createTestEnvironment({
             testComponent: TestComponent,
             harness: ButtonHarness,
-            imports: [ButtonComponent],
         });
 
         return {

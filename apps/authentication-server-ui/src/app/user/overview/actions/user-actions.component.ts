@@ -9,7 +9,6 @@ import { EditUserButtonComponent } from './edit-user-button/edit-user-button.com
     templateUrl: './user-actions.component.html',
     styleUrl: './user-actions.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [IconsModule, EditUserButtonComponent, DeleteUserButtonComponent],
 })
 export class UserActionsComponent {

@@ -25,7 +25,6 @@ export const deleteUserDialogConfig: DialogConfig = {
     host: {
         class: 'dma-dialog-container',
     },
-    standalone: true,
     imports: [DialogHeaderComponent, DialogContentComponent, DialogFooterComponent, ButtonComponent],
 })
 export class DeleteUserDialogComponent {

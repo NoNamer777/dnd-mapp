@@ -7,7 +7,6 @@ import { IconsModule, TooltipModule } from '../../../shared';
     templateUrl: './account-status-dot.component.html',
     styleUrl: './account-status-dot.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [IconsModule, TooltipModule],
 })
 export class AccountStatusDotComponent {

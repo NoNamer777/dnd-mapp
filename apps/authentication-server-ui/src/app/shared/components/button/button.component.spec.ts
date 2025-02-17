@@ -5,6 +5,7 @@ import { ButtonComponent, ButtonType } from './button.component';
 describe('ButtonComponent', () => {
     @Component({
         template: `<button dma-button>My Button</button>`,
+        imports: [ButtonComponent],
     })
     class BasicTestComponent {}
 
@@ -12,6 +13,7 @@ describe('ButtonComponent', () => {
         template: `<button [dma-button]="buttonType()" [disabled]="disabled()" [processing]="processing()">
             My Button
         </button>`,
+        imports: [ButtonComponent],
     })
     class TestComponent {
         public readonly buttonType = signal<ButtonType>('secondary');
@@ -27,7 +29,6 @@ describe('ButtonComponent', () => {
         const { harness, fixture } = await createTestEnvironment({
             testComponent: params.component,
             harness: ButtonHarness,
-            imports: [ButtonComponent],
         });
 
         return {

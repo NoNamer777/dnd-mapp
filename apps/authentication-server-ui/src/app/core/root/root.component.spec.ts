@@ -10,13 +10,13 @@ import { RootComponent } from './root.component';
 describe('RootComponent', () => {
     @Component({
         template: `<dma-root />`,
+        imports: [RootComponent],
     })
     class TestComponent {}
 
     async function setupTest() {
         TestBed.configureTestingModule({
-            imports: [RootComponent],
-            declarations: [TestComponent],
+            imports: [TestComponent],
             providers: [provideRouter(appRoutes), provideDnDMappTesting(), provideTranslations()],
         });
 

@@ -9,13 +9,13 @@ import { NotFoundPage } from './not-found.page';
 describe('NotFoundComponent', () => {
     @Component({
         template: `<dma-not-found />`,
+        imports: [NotFoundPage],
     })
     class TestComponent {}
 
     async function setupTest() {
         TestBed.configureTestingModule({
-            imports: [NotFoundPage],
-            declarations: [TestComponent],
+            imports: [TestComponent],
             providers: [provideRouter([]), provideDnDMappTesting(), provideTranslations()],
         });
 

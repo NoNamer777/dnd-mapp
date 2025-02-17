@@ -4,7 +4,6 @@ import { Theme, themeAttribute } from './themes';
 
 @Directive({
     selector: '[dmaTheme]',
-    standalone: true,
     providers: [ThemeService],
 })
 export class ThemeDirective implements OnInit {

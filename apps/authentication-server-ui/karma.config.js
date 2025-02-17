@@ -1,17 +1,12 @@
-/// <reference types="karma-jasmine" />
-/// <reference types="karma-jasmine-html-reporter" />
-/// <reference types="karma-coverage" />
-
-import { Config } from 'karma';
-import { join } from 'path';
+const { join } = require('path');
 
 const isRunningInCI = process.env['NX_TASK_TARGET_TARGET'] === 'ci';
 
-export default (config: Config) => {
+module.exports = (config) => {
     config.set({
         autoWatch: !isRunningInCI,
         autoWatchBatchDelay: 5_000,
-        basePath: join(__dirname, '..', '..'),
+        basePath: __dirname,
         browsers: ['CustomChromeHeadless'],
         customLaunchers: {
             CustomChromeHeadless: {
@@ -32,7 +27,7 @@ export default (config: Config) => {
                     statements: 80,
                 },
             },
-            dir: join(__dirname, '..', '..', '..', '..', 'reports', 'authentication-server-ui'),
+            dir: join(__dirname, '..', '..', 'reports', 'authentication-server-ui'),
             reporters: [{ type: 'html', subdir: '.' }, { type: 'text-summary' }],
         },
         client: {

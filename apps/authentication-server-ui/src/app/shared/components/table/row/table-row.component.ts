@@ -6,7 +6,6 @@ import { TableColumnComponent } from '../column/table-column.component';
     templateUrl: './table-row.component.html',
     styleUrl: './table-row.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
 })
 export class TableRowComponent implements AfterViewInit {
     @ContentChildren(TableColumnComponent) private readonly columns: QueryList<TableColumnComponent>;

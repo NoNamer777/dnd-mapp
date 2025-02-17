@@ -13,6 +13,7 @@ import { EditUserButtonComponent } from './edit-user-button.component';
 describe('EditUserButtonComponent', () => {
     @Component({
         template: `<dma-edit-user-button (editUser)="onEditUser()" />`,
+        imports: [EditUserButtonComponent],
     })
     class TestComponent {
         private readonly usersOverviewStore = inject(UsersOverviewStore);
@@ -26,7 +27,6 @@ describe('EditUserButtonComponent', () => {
         const { harness } = await createTestEnvironment({
             testComponent: TestComponent,
             harness: EditUserButtonHarness,
-            imports: [EditUserButtonComponent],
             providers: [UsersOverviewStore, provideDnDMappTesting(), provideTranslations()],
             initFunction: async () => await runInitializers(),
         });

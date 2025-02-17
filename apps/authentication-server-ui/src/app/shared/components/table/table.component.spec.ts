@@ -26,13 +26,13 @@ describe('TableComponent', () => {
                 </dma-table-body>
             </dma-table>
         `,
+        imports: [TableModule],
     })
     class TestComponent {}
 
     async function setupTest() {
         TestBed.configureTestingModule({
-            imports: [TableModule],
-            declarations: [TestComponent],
+            imports: [TestComponent],
         });
 
         const harnessLoader = TestbedHarnessEnvironment.loader(TestBed.createComponent(TestComponent));
