@@ -19,8 +19,7 @@ export async function createTestEnvironment<T, H extends ComponentHarness>(param
     let harness: H;
 
     TestBed.configureTestingModule({
-        imports: [...(params.imports ?? [])],
-        declarations: params.testComponent ? [params.testComponent] : [],
+        imports: [...(params.imports ?? []), ...(params.testComponent ? [params.testComponent] : [])],
         providers: [provideNoopAnimations(), provideRxjsTestingConfig(), ...(params.providers ?? [])],
     });
 
