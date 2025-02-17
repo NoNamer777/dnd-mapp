@@ -9,7 +9,7 @@ export interface User {
     status: AccountStatus;
 }
 
-const Roles = {
+export const Roles = {
     PLAYER: 'Player',
     DUNGEON_MASTER: 'Dungeon Master',
     ADMIN: 'Administrator',
