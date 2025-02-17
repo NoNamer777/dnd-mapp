@@ -5,6 +5,7 @@
     "private": true,
     "scripts": {
         "nx": "npx nx",
+        "clean": "ts-node tools/clean",
         "docker:build": "docker build . -t nonamer777/dnd-mapp"
     },
     "msw": {
