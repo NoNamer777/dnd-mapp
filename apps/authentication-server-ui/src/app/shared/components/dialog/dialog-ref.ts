@@ -2,18 +2,18 @@ import { OverlayRef } from '@angular/cdk/overlay';
 import { ComponentRef } from '@angular/core';
 import { Subject } from 'rxjs';
 
-export class DialogRef<T, R = unknown> {
-    public componentRef: ComponentRef<T>;
+export class DialogRef<DialogType, ResultType = unknown> {
+    public componentRef: ComponentRef<DialogType>;
 
     private readonly overlayRef: OverlayRef;
 
-    private readonly close$ = new Subject<R>();
+    private readonly close$ = new Subject<ResultType>();
 
     constructor(overlayRef: OverlayRef) {
         this.overlayRef = overlayRef;
     }
 
-    public close(result?: R) {
+    public close(result?: ResultType) {
         this.close$.next(result);
         this.close$.complete();
 
