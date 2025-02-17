@@ -1,6 +1,6 @@
 {
     "extends": "./tsconfig.json",
     "include": ["src/**/*.ts"],
-    "exclude": ["src/testing/karma.config.ts", "src/**/*.spec.ts"],
+    "exclude": ["src/**/*.spec.ts"],
     "compilerOptions": {}
 }

@@ -97,7 +97,7 @@
                     "**/http/constants.ts"
                 ],
                 "inlineStyleLanguage": "scss",
-                "karmaConfig": "apps/authentication-server-ui/src/testing/karma.config.ts",
+                "karmaConfig": "apps/authentication-server-ui/karma.config.js",
                 "main": "apps/authentication-server-ui/src/testing/setup-test.ts",
                 "polyfills": ["zone.js", "zone.js/testing"],
                 "styles": ["apps/authentication-server-ui/src/styles.scss"],
