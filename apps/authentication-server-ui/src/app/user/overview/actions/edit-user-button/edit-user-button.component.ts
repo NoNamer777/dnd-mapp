@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, EventEmitter, inject, Input, Output } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ButtonComponent, IconsModule, TooltipModule, TranslatePipe } from '../../../../shared';
-import { UsersOverviewStore } from '../../../services/users-overview-store';
+import { UsersOverviewStore } from '../../../services/users-overview.store';
 
 @Component({
     selector: 'dma-edit-user-button',

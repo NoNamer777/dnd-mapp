@@ -10,7 +10,7 @@ import {
 } from '@dnd-mapp/authentication-server-ui/testing';
 import { defaultUsers } from '@dnd-mapp/data';
 import { provideTranslations } from '../../../../shared';
-import { UsersOverviewStore } from '../../../services/users-overview-store';
+import { UsersOverviewStore } from '../../../services/users-overview.store';
 import { DeleteUserButtonComponent } from './delete-user-button.component';
 
 describe('DeleteUserButtonComponent', () => {

@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { User } from '@dnd-mapp/data';
 import { tap } from 'rxjs';
 import { IconsModule, TableModule, TranslationModule } from '../../shared';
-import { UsersOverviewStore } from '../services/users-overview-store';
+import { UsersOverviewStore } from '../services/users-overview.store';
 import { UsersService } from '../services/users.service';
 import { AccountStatusDotComponent } from './account-status-dot/account-status-dot.component';
 import { UserActionsComponent } from './actions/user-actions.component';

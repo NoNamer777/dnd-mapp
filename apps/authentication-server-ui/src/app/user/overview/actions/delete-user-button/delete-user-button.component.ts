@@ -12,7 +12,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { finalize, switchMap } from 'rxjs';
 import { ButtonComponent, IconsModule, TooltipModule, TranslatePipe } from '../../../../shared';
 import { TooltipDirective } from '../../../../shared/components/tooltip/tooltip.directive';
-import { UsersOverviewStore } from '../../../services/users-overview-store';
+import { UsersOverviewStore } from '../../../services/users-overview.store';
 import { UsersService } from '../../../services/users.service';
 
 @Component({
