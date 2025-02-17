@@ -1,0 +1,10 @@
+<section>
+    <dma-dialog-header>
+        <h1 class="dma-dialog-title">{{ title }}</h1>
+    </dma-dialog-header>
+    <dma-dialog-content> UserDialogComponent works! </dma-dialog-content>
+    <dma-dialog-footer>
+        <button dma-button type="button" (click)="onCancel()">Cancel</button>
+        <button dma-button="primary" type="button" (click)="onConfirm()">{{ confirmBtnLabel }}</button>
+    </dma-dialog-footer>
+</section>
