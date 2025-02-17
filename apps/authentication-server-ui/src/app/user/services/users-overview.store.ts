@@ -20,6 +20,18 @@ export class UsersOverviewStore {
         return this.usersService.delete(this.selectedUser());
     }
 
+    public create() {
+        const dialogRef = this.dialogService.open(UserDialogComponent, {
+            ...userDialogConfig,
+            data: {
+                edit: false,
+                user: {},
+            },
+        });
+
+        return dialogRef.afterClose().pipe(tap((createdUser) => console.log({ createdUser })));
+    }
+
     public edit() {
         const dialogRef = this.dialogService.open(UserDialogComponent, {
             ...userDialogConfig,
