@@ -45,7 +45,7 @@ export class UserDialogComponent {
     protected readonly dialogData = inject<UserDialogData>(DIALOG_DATA);
 
     protected readonly form = this.formBuilder.group({
-        id: [this.user.id ?? null],
+        id: [this.user.id ?? null, [Validators.required]],
         username: [this.user.username ?? null, [Validators.required, Validators.minLength(2)]],
         email: [this.user.email ?? null, [Validators.required, Validators.email]],
         password: [this.user.password ?? null, [Validators.required, Validators.minLength(12)]],
