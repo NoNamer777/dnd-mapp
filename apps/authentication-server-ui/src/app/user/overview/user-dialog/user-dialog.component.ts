@@ -12,8 +12,8 @@ import {
 } from '../../../shared';
 
 export const userDialogConfig: DialogConfig = {
-    width: '20rem',
-    height: '20rem',
+    width: '32rem',
+    height: '28rem',
     hasBackdrop: true,
     backdropClass: 'cdk-overlay-dark-backdrop',
 };
@@ -53,6 +53,10 @@ export class UserDialogComponent {
         skipActivation: [false],
     });
 
+    protected get editMode() {
+        return this.dialogData.edit;
+    }
+
     protected get title() {
         return this.editMode ? `Edit ${this.dialogData.user.username}` : 'New User';
     }
@@ -67,10 +71,6 @@ export class UserDialogComponent {
 
     protected onConfirm() {
         this.dialogRef.close(this.user);
-    }
-
-    private get editMode() {
-        return this.dialogData.edit;
     }
 
     private get user() {
