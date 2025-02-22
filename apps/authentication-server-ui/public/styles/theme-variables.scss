@@ -18,6 +18,7 @@ $surface: var(--surface, $gray05);
 $surface-hover: var(--surface-hover, hover($gray05));
 $surface-active: var(--surface-active, active($gray05));
 $on-surface: var(--on-surface, $gray19);
+$on-surface-dim: var(--on-surface-dim, $gray10);
 
 $primary: var(--primary, $blue13);
 $primary-hover: var(--primary-hover, hover($blue13));
