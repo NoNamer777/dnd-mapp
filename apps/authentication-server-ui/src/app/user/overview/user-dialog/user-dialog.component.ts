@@ -9,7 +9,17 @@ import {
     DialogFooterComponent,
     DialogHeaderComponent,
     DialogRef,
+    IconsModule,
+    InputComponent,
 } from '../../../shared';
+import {
+    emailErrorMap,
+    minPasswordLength,
+    minUsernameLength,
+    minUserRoles,
+    passwordErrorMap,
+    usernameErrorMap,
+} from './models';
 
 export const userDialogConfig: DialogConfig = {
     width: '32rem',
@@ -33,10 +43,12 @@ export interface UserDialogData {
     },
     imports: [
         ReactiveFormsModule,
+        IconsModule,
         DialogHeaderComponent,
         DialogFooterComponent,
         ButtonComponent,
         DialogContentComponent,
+        InputComponent,
     ],
 })
 export class UserDialogComponent {
@@ -46,10 +58,10 @@ export class UserDialogComponent {
 
     protected readonly form = this.formBuilder.group({
         id: [this.user.id ?? null, [Validators.required]],
-        username: [this.user.username ?? null, [Validators.required, Validators.minLength(2)]],
+        username: [this.user.username ?? null, [Validators.required, Validators.minLength(minUsernameLength)]],
         email: [this.user.email ?? null, [Validators.required, Validators.email]],
-        password: [this.user.password ?? null, [Validators.required, Validators.minLength(12)]],
-        roles: [this.user.roles ?? [Roles.PLAYER], [Validators.minLength(1)]],
+        password: [this.user.password ?? null, [Validators.required, Validators.minLength(minPasswordLength)]],
+        roles: [this.user.roles ?? [Roles.PLAYER], [Validators.minLength(minUserRoles)]],
         skipActivation: [false],
     });
 
@@ -76,4 +88,8 @@ export class UserDialogComponent {
     private get user() {
         return this.dialogData.user;
     }
+
+    protected readonly usernameErrorMap = usernameErrorMap;
+    protected readonly passwordErrorMap = passwordErrorMap;
+    protected readonly emailErrorMap = emailErrorMap;
 }
