@@ -65,7 +65,11 @@ export class InputComponent implements ControlValueAccessor, OnInit {
     protected readonly focused = signal(false);
 
     protected readonly floatingLabelState = computed<FloatingLabelAnimationState>(() =>
-        this.focused() || this._value() ? FloatingLabelAnimationStates.FLOATING : FloatingLabelAnimationStates.DEFAULT
+        this.focused() || this._value()
+            ? this.hasLeadingIcon()
+                ? FloatingLabelAnimationStates.FLOATING_LEADING_ICON
+                : FloatingLabelAnimationStates.FLOATING
+            : FloatingLabelAnimationStates.DEFAULT
     );
 
     protected readonly hasLeadingIcon = computed<boolean>(() => Boolean(this.leadingIcon()));

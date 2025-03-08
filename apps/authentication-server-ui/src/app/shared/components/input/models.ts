@@ -15,6 +15,7 @@ export function inputTypeAttribute(value: unknown): InputType {
 export const FloatingLabelAnimationStates = {
     DEFAULT: 'default',
     FLOATING: 'floating',
+    FLOATING_LEADING_ICON: 'floating-leading-icon',
 } as const;
 
 export type FloatingLabelAnimationState =
@@ -26,7 +27,19 @@ export const floatingLabelAnimation = trigger('floatingLabel', [
         FloatingLabelAnimationStates.FLOATING,
         style({
             fontSize: '0.8rem',
+            top: '-1rem',
+            paddingTop: '0',
+            paddingBottom: '0',
+            paddingLeft: '0.5rem',
+            paddingRight: '0.5rem',
+        })
+    ),
+    state(
+        FloatingLabelAnimationStates.FLOATING_LEADING_ICON,
+        style({
+            fontSize: '0.8rem',
             top: '-0.5rem',
+            left: '-0.5rem',
             paddingTop: '0',
             paddingBottom: '0',
             paddingLeft: '0.5rem',
@@ -37,9 +50,10 @@ export const floatingLabelAnimation = trigger('floatingLabel', [
     transition(`${FloatingLabelAnimationStates.DEFAULT} => ${FloatingLabelAnimationStates.FLOATING}`, [
         animate('250ms ease-in-out'),
     ]),
-    transition(`${FloatingLabelAnimationStates.FLOATING} => ${FloatingLabelAnimationStates.DEFAULT}`, [
-        animate('100ms ease-in-out'),
+    transition(`${FloatingLabelAnimationStates.DEFAULT} => ${FloatingLabelAnimationStates.FLOATING_LEADING_ICON}`, [
+        animate('250ms ease-in-out'),
     ]),
+    transition(`* => ${FloatingLabelAnimationStates.DEFAULT}`, [animate('100ms ease-in-out')]),
 ]);
 
 export const AutocompleteTypes = {

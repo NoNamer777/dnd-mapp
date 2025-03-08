@@ -61,6 +61,12 @@
             justify-self: end;
         }
 
+        &:not(:has(.leading-icon-container)) {
+            input {
+                margin-left: 0.3rem;
+            }
+        }
+
         &:has(.leading-icon-container) {
             padding: 0;
             width: 100%;
