@@ -31,8 +31,13 @@ export let defaultUsers: User[] = [];
 
 let numberOfUsers = 0;
 
-export function generateDefaultUsers() {
+export function resetNumberOfUsers() {
     defaultUsers = [];
+    numberOfUsers = 0;
+}
+
+export function generateDefaultUsers() {
+    resetNumberOfUsers();
 
     defaultUsers = [
         ...defaultUsers,

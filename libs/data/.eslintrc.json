@@ -11,6 +11,14 @@
             "rules": {}
         },
         {
+            "files": ["*.mts"],
+            "parserOptions": {
+                "ecmaVersion": 2023,
+                "sourceType": "module"
+            },
+            "rules": {}
+        },
+        {
             "files": ["*.js"],
             "rules": {}
         }
