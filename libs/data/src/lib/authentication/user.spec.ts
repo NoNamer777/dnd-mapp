@@ -1,5 +1,5 @@
-import { AccountStatuses, defaultUsers, generateDefaultUsers, resetNumberOfUsers, Roles, UserBuilder } from './user';
 import { nanoid } from 'nanoid';
+import { AccountStatuses, defaultUsers, generateDefaultUsers, resetNumberOfUsers, Roles, UserBuilder } from './user';
 
 describe('User', () => {
     beforeEach(() => {
@@ -58,14 +58,16 @@ describe('User', () => {
         it('should set default values if none are provided', () => {
             const user = new UserBuilder().build();
 
-            expect(user).toEqual(expect.objectContaining({
-                id: expect.any(String),
-                username: 'Player 1',
-                email: 'player_1@dndmapp.nl.eu.org',
-                password: 'secure_password',
-                roles: [Roles.PLAYER],
-                status: AccountStatuses.ACTIVE
-            }))
+            expect(user).toEqual(
+                expect.objectContaining({
+                    id: expect.any(String),
+                    username: 'Player 1',
+                    email: 'player_1@dndmapp.nl.eu.org',
+                    password: 'secure_password',
+                    roles: [Roles.PLAYER],
+                    status: AccountStatuses.ACTIVE,
+                })
+            );
         });
     });
 });
