@@ -9,7 +9,7 @@ export interface User {
     status: AccountStatus;
 }
 
-const Roles = {
+export const Roles = {
     PLAYER: 'Player',
     DUNGEON_MASTER: 'Dungeon Master',
     ADMIN: 'Administrator',
@@ -31,8 +31,13 @@ export let defaultUsers: User[] = [];
 
 let numberOfUsers = 0;
 
-export function generateDefaultUsers() {
+export function resetNumberOfUsers() {
     defaultUsers = [];
+    numberOfUsers = 0;
+}
+
+export function generateDefaultUsers() {
+    resetNumberOfUsers();
 
     defaultUsers = [
         ...defaultUsers,
