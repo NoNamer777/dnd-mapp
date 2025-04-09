@@ -119,6 +119,7 @@ export class InputComponent implements ControlValueAccessor, OnInit {
     }
 
     protected hasErrors(errorCode?: string) {
+        if (!this.ngControl) return false;
         return (
             this.ngControl.touched &&
             (errorCode ? Boolean(this.ngControl.hasError(errorCode)) : Boolean(this.ngControl.errors))
@@ -141,7 +142,7 @@ export class InputComponent implements ControlValueAccessor, OnInit {
     }
 
     protected get isRequired() {
-        return this.ngControl.control.hasValidator(Validators.required);
+        return this.ngControl?.control.hasValidator(Validators.required);
     }
 
     protected onFocus() {
