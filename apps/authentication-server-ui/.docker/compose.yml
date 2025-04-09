@@ -1,0 +1,7 @@
+services:
+    asu:
+        container_name: authentication-server-ui
+        image: dnd-mapp/authentication-server-ui:latest
+        restart: on-failure
+        ports:
+            - '80:80/tcp'
