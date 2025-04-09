@@ -79,6 +79,19 @@
                 }
             }
         },
+        "serve-local": {
+            "executor": "@nx/web:file-server",
+            "options": {
+                "buildTarget": "authentication-server-ui:build",
+                "host": "localhost.dndmapp.net",
+                "port": 443,
+                "spa": true,
+                "ssl": true,
+                "sslCert": "certificate.pem",
+                "sslKey": "certificate-key.pem",
+                "staticFilePath": "dist/authentication-server-ui/browser"
+            }
+        },
         "test": {
             "executor": "@angular-devkit/build-angular:karma",
             "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
