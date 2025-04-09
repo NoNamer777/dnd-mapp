@@ -89,7 +89,7 @@
                         "input": "apps/authentication-server-ui/public"
                     }
                 ],
-                "codeCoverage": true,
+                "codeCoverage": false,
                 "codeCoverageExclude": [
                     "**/config/**",
                     "**/testing/**",

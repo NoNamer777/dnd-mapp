@@ -10,7 +10,7 @@ export default defineConfig({
     test: {
         api: 9876,
         coverage: {
-            enabled: true,
+            enabled: false,
             exclude: [],
             include: ['src/lib/*'],
             provider: 'istanbul',
