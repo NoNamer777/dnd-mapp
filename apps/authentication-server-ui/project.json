@@ -59,6 +59,14 @@
                 }
             }
         },
+        "docker": {
+            "executor": "nx:run-commands",
+            "options": {
+                "commands": [
+                    "docker build -f apps/authentication-server-ui/.docker/Dockerfile -t dnd-mapp/authentication-server-ui ."
+                ]
+            }
+        },
         "serve": {
             "executor": "@angular-devkit/build-angular:dev-server",
             "options": {
