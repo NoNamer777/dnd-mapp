@@ -9,7 +9,7 @@ import {
 import { defaultUsers } from '@dnd-mapp/data';
 import { http, HttpResponse } from 'msw';
 import { provideTranslations } from '../../shared';
-import { UsersOverviewStore } from '../services/users-overview-store';
+import { UsersOverviewStore } from '../services/users-overview.store';
 import { UsersOverviewPage } from './users-overview.page';
 
 describe('UsersOverviewPage', () => {

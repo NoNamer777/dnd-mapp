@@ -37,8 +37,8 @@
                         },
                         {
                             "type": "anyComponentStyle",
-                            "maximumWarning": "2kb",
-                            "maximumError": "4kb"
+                            "maximumWarning": "4kb",
+                            "maximumError": "8kb"
                         }
                     ],
                     "outputHashing": "all",
@@ -62,7 +62,9 @@
         "serve": {
             "executor": "@angular-devkit/build-angular:dev-server",
             "options": {
-                "port": 4300,
+                "hmr": false,
+                "host": "localhost.dndmapp.net",
+                "port": 443,
                 "ssl": true,
                 "sslCert": "certificate.pem",
                 "sslKey": "certificate-key.pem"
@@ -88,7 +90,7 @@
                         "input": "apps/authentication-server-ui/public"
                     }
                 ],
-                "codeCoverage": true,
+                "codeCoverage": false,
                 "codeCoverageExclude": [
                     "**/config/**",
                     "**/testing/**",

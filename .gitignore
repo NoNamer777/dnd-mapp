@@ -8,7 +8,14 @@
 node_modules
 
 # IDEs and editors
-/.idea
+.idea/*
+!.idea/runConfigurations
+!.idea/jsLinters
+!.idea/dnd-mapp.iml
+!.idea/modules.xml
+!.idea/vcs.xml
+!.idea/prettier.xml
+
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json

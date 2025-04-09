@@ -1,0 +1,53 @@
+<section>
+    <dma-dialog-header>
+        <h1 class="dma-dialog-title">{{ title }}</h1>
+    </dma-dialog-header>
+    <dma-dialog-content>
+        <form [formGroup]="form">
+            @if (editMode) {
+                <dma-input readonly type="text" label="ID" formControlName="id" />
+            }
+            <dma-input
+                type="text"
+                label="Username"
+                placeholder="Bob123"
+                autocomplete="username"
+                formControlName="username"
+                [errorMap]="usernameErrorMap"
+            >
+                <dma-icon dma-user-icon #leadingIcon />
+            </dma-input>
+            @if (!editMode) {
+                <dma-input
+                    type="password"
+                    label="Password"
+                    placeholder="secure_Password1234!"
+                    autocomplete="new-password"
+                    formControlName="password"
+                    [errorMap]="passwordErrorMap"
+                >
+                    <dma-icon dma-lock-icon #leadingIcon />
+                </dma-input>
+            }
+            <dma-input
+                type="email"
+                label="Email Address"
+                placeholder="user@domain.com"
+                autocomplete="email"
+                formControlName="email"
+                [errorMap]="emailErrorMap"
+            >
+                <dma-icon dma-envelope-icon #leadingIcon />
+            </dma-input>
+            @if (!editMode) {
+                <dma-checkbox label="Skip email address verification" formControlName="skipEmailVerification" />
+            }
+        </form>
+    </dma-dialog-content>
+    <dma-dialog-footer>
+        <button dma-button type="button" (click)="onCancel()">Cancel</button>
+        <button dma-button="primary" type="button" [disabled]="form.invalid" (click)="onConfirm()">
+            {{ confirmBtnLabel }}
+        </button>
+    </dma-dialog-footer>
+</section>

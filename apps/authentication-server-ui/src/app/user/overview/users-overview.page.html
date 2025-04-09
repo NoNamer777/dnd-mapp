@@ -1,24 +1,21 @@
 <article>
     <header>
         <h1>{{ 'PAGE_TITLE_USERS_OVERVIEW' | translate }}</h1>
-        <button dma-button="primary">
-            <dma-icon dma-plus-icon />
-            {{ 'BTN_LABEL_ADD_USER' | translate }}
-        </button>
+        <dma-create-user-button />
     </header>
     <section>
         <dma-table>
             <dma-table-header>
                 <dma-table-row>
                     <dma-table-column class="align-end" [width]="idColumnWidth">#</dma-table-column>
-                    <dma-table-column class="align-center" [width]="statusColumnWidth">{{
-                        'USERS_TABLE_COLUMN_HEADER_STATUS' | translate
-                    }}</dma-table-column>
+                    <dma-table-column class="align-center" [width]="statusColumnWidth">
+                        {{ 'USERS_TABLE_COLUMN_HEADER_STATUS' | translate }}
+                    </dma-table-column>
                     <dma-table-column>{{ 'USERS_TABLE_COLUMN_HEADER_USERNAME' | translate }}</dma-table-column>
                     <dma-table-column>{{ 'USERS_TABLE_COLUMN_HEADER_EMAIL' | translate }}</dma-table-column>
-                    <dma-table-column class="align-end">{{
-                        'USERS_TABLE_COLUMN_HEADER_ACTIONS' | translate
-                    }}</dma-table-column>
+                    <dma-table-column class="align-end">
+                        {{ 'USERS_TABLE_COLUMN_HEADER_ACTIONS' | translate }}
+                    </dma-table-column>
                 </dma-table-row>
             </dma-table-header>
             <dma-table-body>
