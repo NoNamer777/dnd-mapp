@@ -1,3 +1,4 @@
+export * from './check/check.icon';
 export * from './circle-exclamation/circle-exclamation.icon';
 export * from './circle/circle.icon';
 export * from './envelope/envelope.icon';

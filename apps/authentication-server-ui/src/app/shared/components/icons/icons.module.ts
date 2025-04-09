@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { CheckIcon } from './check/check.icon';
 import { CircleExclamationIcon } from './circle-exclamation/circle-exclamation.icon';
 import { CircleIcon } from './circle/circle.icon';
 import { EnvelopeIcon } from './envelope/envelope.icon';
@@ -13,6 +14,7 @@ import { UserIcon } from './user/user.icon';
 import { XmarkIcon } from './xmark/xmark.icon';
 
 const icons = [
+    CheckIcon,
     CircleIcon,
     CircleExclamationIcon,
     EnvelopeIcon,
