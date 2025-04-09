@@ -62,6 +62,7 @@
         "serve": {
             "executor": "@angular-devkit/build-angular:dev-server",
             "options": {
+                "hmr": false,
                 "host": "localhost.dndmapp.net",
                 "port": 443,
                 "ssl": true,
