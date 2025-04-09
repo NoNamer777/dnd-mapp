@@ -1,21 +1,51 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { UserDialogComponent } from './user-dialog.component';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {
+    ButtonHarness,
+    createTestEnvironment,
+    provideDnDMappTesting,
+    runInitializers,
+    UserDialogHarness,
+} from '@dnd-mapp/authentication-server-ui/testing';
+import { ButtonComponent, provideTranslations } from '../../../shared';
+import { UsersOverviewStore } from '../../services/users-overview.store';
+import { UsersService } from '../../services/users.service';
 
 describe('UserDialogComponent', () => {
-    let component: UserDialogComponent;
-    let fixture: ComponentFixture<UserDialogComponent>;
+    @Component({
+        template: '<button dma-button (click)="onOpenDialog()">Open Dialog</button>',
+        imports: [ButtonComponent],
+    })
+    class TestComponent {
+        private readonly destroyRef = inject(DestroyRef);
+        private readonly userOverviewStore = inject(UsersOverviewStore);
 
-    beforeEach(async () => {
-        await TestBed.configureTestingModule({
-            imports: [UserDialogComponent],
-        }).compileComponents();
+        protected onOpenDialog() {
+            this.userOverviewStore.create().pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
+        }
+    }
 
-        fixture = TestBed.createComponent(UserDialogComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
+    async function setupTest() {
+        const { harnessLoader } = await createTestEnvironment({
+            testComponent: TestComponent,
+            providers: [UsersOverviewStore, UsersService, provideDnDMappTesting(), provideTranslations()],
+            initFunction: async () => await runInitializers(),
+        });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
+        const buttonHarness = await harnessLoader.getHarness(ButtonHarness);
+
+        return {
+            harnessLoader: harnessLoader,
+            buttonHarness: buttonHarness,
+        };
+    }
+
+    it('should render', async () => {
+        const { harnessLoader, buttonHarness } = await setupTest();
+
+        await buttonHarness.click();
+
+        const harness = await harnessLoader.getHarness(UserDialogHarness);
+        expect(harness).toBeDefined();
     });
 });

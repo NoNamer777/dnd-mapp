@@ -17,16 +17,18 @@
             >
                 <dma-icon dma-user-icon #leadingIcon />
             </dma-input>
-            <dma-input
-                type="password"
-                label="Password"
-                placeholder="secure_Password1234!"
-                autocomplete="new-password"
-                formControlName="password"
-                [errorMap]="passwordErrorMap"
-            >
-                <dma-icon dma-lock-icon #leadingIcon />
-            </dma-input>
+            @if (!editMode) {
+                <dma-input
+                    type="password"
+                    label="Password"
+                    placeholder="secure_Password1234!"
+                    autocomplete="new-password"
+                    formControlName="password"
+                    [errorMap]="passwordErrorMap"
+                >
+                    <dma-icon dma-lock-icon #leadingIcon />
+                </dma-input>
+            }
             <dma-input
                 type="email"
                 label="Email Address"
@@ -37,6 +39,9 @@
             >
                 <dma-icon dma-envelope-icon #leadingIcon />
             </dma-input>
+            @if (!editMode) {
+                <dma-checkbox label="Skip email address verification" formControlName="skipEmailVerification" />
+            }
         </form>
     </dma-dialog-content>
     <dma-dialog-footer>
