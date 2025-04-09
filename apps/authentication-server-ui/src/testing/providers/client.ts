@@ -1,17 +1,10 @@
 import { provideHttpClient } from '@angular/common/http';
-import { APP_INITIALIZER, ValueProvider } from '@angular/core';
+import { APP_INITIALIZER } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Observable, lastValueFrom } from 'rxjs';
-import { CLIENT_HOST } from '../../app/shared/http/constants';
-
-const provideTestingClientHost = () =>
-    ({
-        provide: CLIENT_HOST,
-        useValue: 'http://localhost:9876',
-    }) as ValueProvider;
 
 export function provideDnDMappTesting() {
-    return [provideHttpClient(), provideTestingClientHost()];
+    return [provideHttpClient()];
 }
 
 export async function runInitializers() {

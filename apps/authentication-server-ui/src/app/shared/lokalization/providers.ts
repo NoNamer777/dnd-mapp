@@ -1,11 +1,8 @@
-import { APP_INITIALIZER, FactoryProvider } from '@angular/core';
+import { inject, provideAppInitializer } from '@angular/core';
 import { TranslationService } from './services/translation.service';
 
-const initializeTranslations = (translationService: TranslationService) => () => translationService.initialize();
-
-export const provideTranslations: () => FactoryProvider = () => ({
-    provide: APP_INITIALIZER,
-    deps: [TranslationService],
-    useFactory: initializeTranslations,
-    multi: true,
-});
+export const provideTranslations = () =>
+    provideAppInitializer(() => {
+        const translationsService = inject(TranslationService);
+        return translationsService.initialize();
+    });

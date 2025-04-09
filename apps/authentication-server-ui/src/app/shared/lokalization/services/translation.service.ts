@@ -2,7 +2,6 @@ import { DestroyRef, inject, Injectable, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { map, of } from 'rxjs';
 import { RequestService } from '../../http';
-import { CLIENT_HOST } from '../../http/constants';
 import { defaultLocale, Locale, Translations } from '../models';
 
 const translationsBasePath = 'data/localization';
@@ -11,7 +10,6 @@ const translationsBasePath = 'data/localization';
 export class TranslationService {
     private readonly requestService = inject(RequestService);
     private readonly destroyRef = inject(DestroyRef);
-    private readonly clientHost = inject(CLIENT_HOST);
 
     public readonly translations = signal<Translations>(null);
     public readonly locale = signal<Locale>(null);
@@ -48,6 +46,6 @@ export class TranslationService {
     }
 
     private constructTranslationsFilePath(locale: Locale) {
-        return `${this.clientHost}/${translationsBasePath}/${locale.toLowerCase()}.json`;
+        return `${translationsBasePath}/${locale.toLowerCase()}.json`;
     }
 }
